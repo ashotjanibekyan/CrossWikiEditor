@@ -1,0 +1,27 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AutoWikiEditor.Views.ControlViews.Disambig">
+	<Grid RowDefinitions="Auto,Auto,*,Auto" Margin="3">
+		<CheckBox Margin="3" Grid.Row="0">Enable disambiguation</CheckBox>
+		<HeaderedContentControl Margin="3" Grid.Row="1" Header="Link to disambiguate">
+			<Grid ColumnDefinitions="3*,*">
+				<TextBox Grid.Column="0" HorizontalAlignment="Stretch"></TextBox>
+				<Button HorizontalAlignment="Right" Grid.Column="1">Load links</Button>
+			</Grid>
+		</HeaderedContentControl>
+		<HeaderedContentControl Margin="3" Grid.Row="2" Header="Variants" Background="Black">
+			<Grid Margin="3" RowDefinitions="*,Auto,Auto">
+				<TextBox Grid.Row="0" VerticalAlignment="Stretch" TextWrapping="Wrap" />
+				<CheckBox Grid.Row="1">Skip page when no disambiguations made</CheckBox>
+				<Grid ColumnDefinitions="Auto,Auto,Auto" Grid.Row="2">
+					<Label Grid.Column="0" VerticalAlignment="Center">Use: </Label>
+					<NumericUpDown Grid.Column="1" ShowButtonSpinner="False" Value="20" Width="5"/>
+					<Label Margin="10 0 0 0" Grid.Column="2" VerticalAlignment="Center">characters for context</Label>
+					</Grid>
+			</Grid>
+		</HeaderedContentControl>
+	</Grid>
+</UserControl>

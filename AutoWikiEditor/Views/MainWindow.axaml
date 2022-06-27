@@ -20,7 +20,7 @@
         <v:MenuView DataContext="{Binding MenuViewModel}" DockPanel.Dock="Top" />
         <Grid RowDefinitions="*,Auto,Auto">
             <Grid Grid.Row="0">
-                <Rectangle Fill="Blue" />
+                <Rectangle Fill="White" />
             </Grid>
             <Grid Grid.Row="1" Height="500">
                 <Grid ColumnDefinitions="Auto,Auto,*">
@@ -32,6 +32,9 @@
 							</TabItem>
 							<TabItem Header="More" FontSize="14">
 								<controlViews:More />
+							</TabItem>
+							<TabItem Header="Disambig" FontSize="14">
+								<controlViews:Disambig />
 							</TabItem>
 						</TabControl>
 					</Grid>
