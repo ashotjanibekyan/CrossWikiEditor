@@ -5,13 +5,12 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="AutoWikiEditor.Views.ControlViews.Options">
 		<Grid RowDefinitions="Auto,Auto,Auto" Margin="3">
-			<Border Margin="3" Grid.Row="0" BorderThickness="1" BorderBrush="Black">
-				<Grid Margin="3" RowDefinitions="Auto,*,*,*" ColumnDefinitions="2*,*">
-					<Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" >Automatic changes</Label>
-					<CheckBox Grid.Row="1" Grid.Column="0" IsChecked="True">Auto tag</CheckBox>
-					<CheckBox Grid.Row="2" Grid.Column="0" IsChecked="True">Apply general fixes</CheckBox>
-					<CheckBox Grid.Row="3" Grid.Column="0" IsChecked="True">Unicodify whole page</CheckBox>
-					<Grid Grid.Row="1" Grid.RowSpan="3" Grid.Column="1">
+			<HeaderedContentControl Header="Automatic changes" Margin="3" Grid.Row="0" Background="Black">
+				<Grid Margin="3" RowDefinitions="*,*,*" ColumnDefinitions="2*,*">
+					<CheckBox Grid.Row="0" Grid.Column="0" IsChecked="True">Auto tag</CheckBox>
+					<CheckBox Grid.Row="1" Grid.Column="0" IsChecked="True">Apply general fixes</CheckBox>
+					<CheckBox Grid.Row="2" Grid.Column="0" IsChecked="True">Unicodify whole page</CheckBox>
+					<Grid Grid.Row="0" Grid.RowSpan="3" Grid.Column="1">
 						<Button>
 							<StackPanel Orientation="Vertical">
 								<TextBlock>Auto changes</TextBlock>
@@ -20,7 +19,7 @@
 						</Button>
 					</Grid>
 				</Grid>
-			</Border>
+			</HeaderedContentControl>
 			<Border Margin="3" Grid.Row="1" BorderThickness="1" BorderBrush="Black">
 				<Grid Margin="3" RowDefinitions="*,*,*,*,*" ColumnDefinitions="*,*">
 					<CheckBox Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" IsChecked="True">Find and replace</CheckBox>

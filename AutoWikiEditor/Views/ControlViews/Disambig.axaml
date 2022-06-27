@@ -13,14 +13,14 @@
 			</Grid>
 		</HeaderedContentControl>
 		<HeaderedContentControl Margin="3" Grid.Row="2" Header="Variants" Background="Black">
-			<Grid Margin="3" RowDefinitions="*,Auto,Auto">
-				<TextBox Grid.Row="0" VerticalAlignment="Stretch" TextWrapping="Wrap" />
-				<CheckBox Grid.Row="1">Skip page when no disambiguations made</CheckBox>
-				<Grid ColumnDefinitions="Auto,Auto,Auto" Grid.Row="2">
+			<Grid RowDefinitions="*,Auto,Auto">
+				<TextBox Margin="10" Grid.Row="0" VerticalAlignment="Stretch" TextWrapping="Wrap" />
+				<CheckBox Margin="10" Grid.Row="1">Skip page when no disambiguations made</CheckBox>
+				<Grid Margin="10" ColumnDefinitions="Auto,Auto,Auto" Grid.Row="2">
 					<Label Grid.Column="0" VerticalAlignment="Center">Use: </Label>
 					<NumericUpDown Grid.Column="1" ShowButtonSpinner="False" Value="20" Width="5"/>
 					<Label Margin="10 0 0 0" Grid.Column="2" VerticalAlignment="Center">characters for context</Label>
-					</Grid>
+				</Grid>
 			</Grid>
 		</HeaderedContentControl>
 	</Grid>
