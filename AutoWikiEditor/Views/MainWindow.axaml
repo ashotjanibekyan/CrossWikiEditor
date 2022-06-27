@@ -4,6 +4,7 @@
         xmlns:vm="using:AutoWikiEditor.ViewModels"
 		xmlns:v="using:AutoWikiEditor.Views"
 		xmlns:controlViews="using:AutoWikiEditor.Views.ControlViews"
+		xmlns:reportViews="using:AutoWikiEditor.Views.ReportViews"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -45,7 +46,23 @@
 						</TabControl>
 					</Grid>
                     <Grid Column="2">
-                        <Rectangle Fill="Black"></Rectangle>
+						<TabControl>
+							<TabItem Header="Edit box" FontSize="14">
+								<reportViews:EditBoxView DataContext="{Binding EditBoxViewModel}" />
+							</TabItem>
+							<TabItem Header="History" FontSize="14">
+								<reportViews:HistoryView DataContext="{Binding HistoryViewModel}" />
+							</TabItem>
+							<TabItem Header="What links here" FontSize="14">
+								<reportViews:WhatLinksHereView DataContext="{Binding WhatLinksHereViewModel}" />
+							</TabItem>
+							<TabItem Header="Logs" FontSize="14">
+								<reportViews:LogsView DataContext="{Binding LogsViewModel}" />
+							</TabItem>
+							<TabItem Header="Page logs" FontSize="14">
+								<reportViews:PageLogsView DataContext="{Binding PageLogsViewModel}" />
+							</TabItem>
+						</TabControl>
                     </Grid>
                 </Grid>
             </Grid>
