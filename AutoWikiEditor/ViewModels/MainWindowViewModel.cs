@@ -20,6 +20,8 @@ public class MainWindowViewModel : ViewModelBase
         this.WhatLinksHereViewModel  = new WhatLinksHereViewModel();
         this.LogsViewModel  = new LogsViewModel();
         this.PageLogsViewModel = new PageLogsViewModel();
+
+        this.StatusBarViewModel = new StatusBarViewModel();
     }
 
     public DisambigViewModel DisambigViewModel { get; set; }
@@ -34,4 +36,5 @@ public class MainWindowViewModel : ViewModelBase
     public WhatLinksHereViewModel WhatLinksHereViewModel { get; set; }
     public LogsViewModel LogsViewModel { get; set; }
     public PageLogsViewModel PageLogsViewModel { get; set; }
+    public StatusBarViewModel StatusBarViewModel { get; set; }
 }

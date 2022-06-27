@@ -67,7 +67,7 @@
                 </Grid>
             </Grid>
             <Grid Grid.Row="3" Height="20">
-                <Rectangle Fill="White"></Rectangle>
+                <v:StatusBarView DataContext="{Binding StatusBarViewModel}"/>
             </Grid>
         </Grid>
     </DockPanel>

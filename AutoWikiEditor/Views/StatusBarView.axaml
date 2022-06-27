@@ -1,0 +1,20 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:AutoWikiEditor.ViewModels"
+			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AutoWikiEditor.Views.StatusBarView">
+	<Design.DataContext>
+		<vm:StatusBarViewModel />
+	</Design.DataContext>
+	<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+		<Label>Pages/min: 0</Label>
+		<Label>Edits/min: 0</Label>
+		<Label>Edits: 0</Label>
+		<Label>Skipped: 0</Label>
+		<Label>New: 0</Label>
+		<Label>en.wikipedia.org</Label>
+		<Label>User</Label>
+	</StackPanel>
+</UserControl>
