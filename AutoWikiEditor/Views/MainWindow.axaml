@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:AutoWikiEditor.ViewModels"
 		xmlns:v="using:AutoWikiEditor.Views"
+		xmlns:controlViews="using:AutoWikiEditor.Views.ControlViews"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -13,10 +14,10 @@
         Title="AutoWikiEditor">
 
     <Design.DataContext>
-        <vm:MainWindowViewModel/>
+        <vm:MainWindowViewModel />
     </Design.DataContext>
     <DockPanel>
-        <v:MenuView DockPanel.Dock="Top" />
+        <v:MenuView DataContext="{Binding MenuViewModel}" DockPanel.Dock="Top" />
         <Grid RowDefinitions="*,Auto,Auto">
             <Grid Grid.Row="0">
                 <Rectangle Fill="Blue" />
@@ -25,7 +26,7 @@
                 <Grid ColumnDefinitions="Auto,Auto,*">
                     <v:MakeListView DataContext="{Binding MakeListViewModel}" />
                     <Grid Column="1" Width="450">
-                        <Rectangle Fill="Gray"></Rectangle>
+						<controlViews:Options />
                     </Grid>
                     <Grid Column="2">
                         <Rectangle Fill="Black"></Rectangle>

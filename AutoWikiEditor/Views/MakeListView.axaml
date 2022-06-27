@@ -2,8 +2,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:AutoWikiEditor.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="AutoWikiEditor.Views.MakeListView">
+	
+	<Design.DataContext>
+		<vm:MakeListViewModel />
+	</Design.DataContext>
 	<Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,*,Auto" Column="0" Width="350" Margin="5">
 		<Label Grid.Row="0" Margin="5" Content="Make list"/>
 		<Grid Grid.Row="1" Margin="5" ColumnDefinitions="*,200" VerticalAlignment="Center">
