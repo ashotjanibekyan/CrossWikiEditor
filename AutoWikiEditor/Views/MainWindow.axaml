@@ -6,13 +6,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="AutoWikiEditor.Views.MainWindow"
+        MinHeight="500"
+        MinWidth="800"
         Icon="/Assets/avalonia-logo.ico"
         Title="AutoWikiEditor">
 
     <Design.DataContext>
         <vm:MainWindowViewModel/>
     </Design.DataContext>
-    <DockPanel LastChildFill="False">
+    <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
                 <MenuItem Header="Reset to original default settings" />
@@ -107,5 +109,26 @@
                 <MenuItem Header="About"/>
             </MenuItem>
         </Menu>
+        <Grid RowDefinitions="*,Auto,Auto">
+            <Grid Grid.Row="0">
+                <Rectangle Fill="Blue" />
+            </Grid>
+            <Grid Grid.Row="1" Height="450">
+                <Grid ColumnDefinitions="Auto,Auto,*">
+                    <Grid Column="0" Width="350">
+                        <Rectangle Fill="Orange"></Rectangle>
+                    </Grid>
+                    <Grid Column="1" Width="450">
+                        <Rectangle Fill="Gray"></Rectangle>
+                    </Grid>
+                    <Grid Column="2">
+                        <Rectangle Fill="Black"></Rectangle>
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Grid Grid.Row="2" Height="20">
+                <Rectangle Fill="White"></Rectangle>
+            </Grid>
+        </Grid>
     </DockPanel>
 </Window>
