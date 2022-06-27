@@ -28,16 +28,19 @@
 					<Grid Column="1" Width="450">
 						<TabControl>
 							<TabItem Header="Options" FontSize="14">
-								<controlViews:OptionsView />
+								<controlViews:OptionsView DataContext="{Binding OptionsViewModel}" />
 							</TabItem>
 							<TabItem Header="More" FontSize="14">
-								<controlViews:MoreView />
+								<controlViews:MoreView DataContext="{Binding MoreViewModel}" />
 							</TabItem>
 							<TabItem Header="Disambig" FontSize="14">
-								<controlViews:DisambigView />
+								<controlViews:DisambigView DataContext="{Binding DisambigViewModel}" />
 							</TabItem>
 							<TabItem Header="Skip" FontSize="14">
-								<controlViews:SkipView />
+								<controlViews:SkipView DataContext="{Binding SkipViewModel}" />
+							</TabItem>
+							<TabItem Header="Start" FontSize="14">
+								<controlViews:StartView DataContext="{Binding StartViewModel}" />
 							</TabItem>
 						</TabControl>
 					</Grid>
