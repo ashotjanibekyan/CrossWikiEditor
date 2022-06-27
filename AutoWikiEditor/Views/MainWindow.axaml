@@ -1,4 +1,5 @@
 <Window xmlns="https://github.com/avaloniaui"
+        x:Name="Window"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:AutoWikiEditor.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -25,7 +26,10 @@
                 <MenuItem Header="Log out" />
                 <MenuItem Header="Refresh Status/Typos" />
                 <Separator />
-                <MenuItem Header="Exit" />
+                <MenuItem 
+                    Header="Exit" 
+                    Command="{Binding ExitCommand}"
+                    CommandParameter="{Binding ElementName=Window}"/>
             </MenuItem>
             <MenuItem Header="View">
                 <MenuItem Header="Show toolbar" />
