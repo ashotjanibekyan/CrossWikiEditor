@@ -1,8 +1,7 @@
 ﻿using ReactiveUI;
 
-namespace AutoWikiEditor.ViewModels
+namespace AutoWikiEditor.ViewModels;
+
+public class ViewModelBase : ReactiveObject
 {
-    public class ViewModelBase : ReactiveObject
-    {
-    }
 }
