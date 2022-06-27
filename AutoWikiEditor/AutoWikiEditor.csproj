@@ -27,7 +27,7 @@
         <PackageReference Include="XamlNameReferenceGenerator" Version="1.3.4" />
     </ItemGroup>
     <ItemGroup>
-      <Compile Update="Views\ControlViews\More.axaml.cs">
+      <Compile Update="Views\ControlViews\MoreView.axaml.cs">
         <DependentUpon>More.axaml</DependentUpon>
       </Compile>
     </ItemGroup>

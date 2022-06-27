@@ -28,13 +28,13 @@
 					<Grid Column="1" Width="450">
 						<TabControl>
 							<TabItem Header="Options" FontSize="14">
-								<controlViews:Options />
+								<controlViews:OptionsView />
 							</TabItem>
 							<TabItem Header="More" FontSize="14">
-								<controlViews:More />
+								<controlViews:MoreView />
 							</TabItem>
 							<TabItem Header="Disambig" FontSize="14">
-								<controlViews:Disambig />
+								<controlViews:DisambigView />
 							</TabItem>
 						</TabControl>
 					</Grid>

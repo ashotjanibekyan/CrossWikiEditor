@@ -3,9 +3,9 @@ using Avalonia.Markup.Xaml;
 
 namespace AutoWikiEditor.Views.ControlViews
 {
-    public partial class More : UserControl
+    public partial class OptionsView : UserControl
     {
-        public More()
+        public OptionsView()
         {
             InitializeComponent();
         }

@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace AutoWikiEditor.Views.ControlViews
 {
-    public partial class Disambig : UserControl
+    public partial class DisambigView : UserControl
     {
-        public Disambig()
+        public DisambigView()
         {
             InitializeComponent();
         }
