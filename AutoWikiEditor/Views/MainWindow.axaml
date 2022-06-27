@@ -25,9 +25,16 @@
             <Grid Grid.Row="1" Height="500">
                 <Grid ColumnDefinitions="Auto,Auto,*">
                     <v:MakeListView DataContext="{Binding MakeListViewModel}" />
-                    <Grid Column="1" Width="450">
-						<controlViews:Options />
-                    </Grid>
+					<Grid Column="1" Width="450">
+						<TabControl>
+							<TabItem Header="Options" FontSize="14">
+								<controlViews:Options />
+							</TabItem>
+							<TabItem Header="More" FontSize="14">
+								<controlViews:More />
+							</TabItem>
+						</TabControl>
+					</Grid>
                     <Grid Column="2">
                         <Rectangle Fill="Black"></Rectangle>
                     </Grid>
