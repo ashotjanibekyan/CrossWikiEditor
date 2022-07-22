@@ -1,9 +1,10 @@
-name: "Win"
+name: ".NET Core Desktop"
 
 on:
   push:
-    tags:
-      - "master"
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
 
 env:
   PROJECT_PATH: AutoWikiEditor/AutoWikiEditor.csproj
