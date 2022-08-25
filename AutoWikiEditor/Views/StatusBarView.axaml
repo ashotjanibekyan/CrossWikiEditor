@@ -15,6 +15,6 @@
 		<Label>Skipped: 0</Label>
 		<Label>New: 0</Label>
 		<Label>en.wikipedia.org</Label>
-		<Label>User</Label>
+		<Button Command="{Binding UserNameClickedCommand}" Content="{Binding UserName}" />
 	</StackPanel>
 </UserControl>

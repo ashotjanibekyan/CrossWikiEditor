@@ -23,7 +23,7 @@ public class MainWindowViewModel : ViewModelBase
 
         this.StatusBarViewModel = new StatusBarViewModel();
     }
-
+    
     public DisambigViewModel DisambigViewModel { get; set; }
     public MoreViewModel MoreViewModel { get; set; }
     public OptionsViewModel OptionsViewModel { get; set; }

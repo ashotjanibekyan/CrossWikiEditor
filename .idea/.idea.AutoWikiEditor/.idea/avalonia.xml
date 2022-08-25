@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AvaloniaProject">
+    <option name="projectPerEditor">
+      <map>
+        <entry key="AutoWikiEditor/Views/ControlViews/DisambigView.axaml" value="AutoWikiEditor/AutoWikiEditor.csproj" />
+        <entry key="AutoWikiEditor/Views/ControlViews/MoreView.axaml" value="AutoWikiEditor/AutoWikiEditor.csproj" />
+        <entry key="AutoWikiEditor/Views/ControlViews/OptionsView.axaml" value="AutoWikiEditor/AutoWikiEditor.csproj" />
+        <entry key="AutoWikiEditor/Views/MainWindow.axaml" value="AutoWikiEditor/AutoWikiEditor.csproj" />
+        <entry key="AutoWikiEditor/Views/MenuView.axaml" value="AutoWikiEditor/AutoWikiEditor.csproj" />
+        <entry key="AutoWikiEditor/Views/ProfilesWindow.axaml" value="AutoWikiEditor/AutoWikiEditor.csproj" />
+      </map>
+    </option>
+  </component>
+</project>
