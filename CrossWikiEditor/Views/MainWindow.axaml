@@ -6,6 +6,7 @@
         xmlns:views="clr-namespace:CrossWikiEditor.Views"
         xmlns:controlViews="clr-namespace:CrossWikiEditor.Views.ControlViews"
         xmlns:reportViews="clr-namespace:CrossWikiEditor.Views.ReportViews"
+        WindowState="Maximized"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="CrossWikiEditor.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"

@@ -1,21 +1,26 @@
 using System;
 using System.Reactive;
+using System.Threading.Tasks;
+using CrossWikiEditor.Services;
 using ReactiveUI;
 
 namespace CrossWikiEditor.ViewModels;
 
 public class StatusBarViewModel : ViewModelBase
 {
-    public StatusBarViewModel()
+    private readonly IDialogService _dialogService;
+
+    public StatusBarViewModel(IDialogService dialogService)
     {
-        UsernameClickedCommand = ReactiveCommand.Create(UsernameClicked);
+        _dialogService = dialogService;
+        UsernameClickedCommand = ReactiveCommand.CreateFromTask(UsernameClicked);
     }
     
     public string Username { get; set; } = "User: ";
     public ReactiveCommand<Unit, Unit> UsernameClickedCommand { get; }
 
-    private void UsernameClicked()
+    private async Task UsernameClicked()
     {
-        Console.WriteLine("Username is clicked");
+        await _dialogService.ShowDialog<bool>(new ProfilesViewModel());
     }
 }
