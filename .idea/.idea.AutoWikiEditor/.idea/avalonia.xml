@@ -3,12 +3,30 @@
   <component name="AvaloniaProject">
     <option name="projectPerEditor">
       <map>
+        <entry key="AutoWikiEditor/App.axaml" value="AutoWikiEditor/AutoWikiEditor.csproj" />
         <entry key="AutoWikiEditor/Views/ControlViews/DisambigView.axaml" value="AutoWikiEditor/AutoWikiEditor.csproj" />
         <entry key="AutoWikiEditor/Views/ControlViews/MoreView.axaml" value="AutoWikiEditor/AutoWikiEditor.csproj" />
         <entry key="AutoWikiEditor/Views/ControlViews/OptionsView.axaml" value="AutoWikiEditor/AutoWikiEditor.csproj" />
         <entry key="AutoWikiEditor/Views/MainWindow.axaml" value="AutoWikiEditor/AutoWikiEditor.csproj" />
+        <entry key="AutoWikiEditor/Views/MakeListView.axaml" value="AutoWikiEditor/AutoWikiEditor.csproj" />
         <entry key="AutoWikiEditor/Views/MenuView.axaml" value="AutoWikiEditor/AutoWikiEditor.csproj" />
         <entry key="AutoWikiEditor/Views/ProfilesWindow.axaml" value="AutoWikiEditor/AutoWikiEditor.csproj" />
+        <entry key="AutoWikiEditor/Views/StatusBarView.axaml" value="AutoWikiEditor/AutoWikiEditor.csproj" />
+        <entry key="CrossWikiEditor/App.axaml" value="CrossWikiEditor/CrossWikiEditor.csproj" />
+        <entry key="CrossWikiEditor/Views/ControlViews/DisambigView.axaml" value="CrossWikiEditor/CrossWikiEditor.csproj" />
+        <entry key="CrossWikiEditor/Views/ControlViews/MoreView.axaml" value="CrossWikiEditor/CrossWikiEditor.csproj" />
+        <entry key="CrossWikiEditor/Views/ControlViews/OptionsView.axaml" value="CrossWikiEditor/CrossWikiEditor.csproj" />
+        <entry key="CrossWikiEditor/Views/ControlViews/SkipView.axaml" value="CrossWikiEditor/CrossWikiEditor.csproj" />
+        <entry key="CrossWikiEditor/Views/ControlViews/StartView.axaml" value="CrossWikiEditor/CrossWikiEditor.csproj" />
+        <entry key="CrossWikiEditor/Views/MainWindow.axaml" value="CrossWikiEditor/CrossWikiEditor.csproj" />
+        <entry key="CrossWikiEditor/Views/MakeListView.axaml" value="CrossWikiEditor/CrossWikiEditor.csproj" />
+        <entry key="CrossWikiEditor/Views/MenuView.axaml" value="CrossWikiEditor/CrossWikiEditor.csproj" />
+        <entry key="CrossWikiEditor/Views/ReportViews/EditBoxView.axaml" value="CrossWikiEditor/CrossWikiEditor.csproj" />
+        <entry key="CrossWikiEditor/Views/ReportViews/HistoryView.axaml" value="CrossWikiEditor/CrossWikiEditor.csproj" />
+        <entry key="CrossWikiEditor/Views/ReportViews/LogsView.axaml" value="CrossWikiEditor/CrossWikiEditor.csproj" />
+        <entry key="CrossWikiEditor/Views/ReportViews/PageLogsView.axaml" value="CrossWikiEditor/CrossWikiEditor.csproj" />
+        <entry key="CrossWikiEditor/Views/ReportViews/WhatLinksHereView.axaml" value="CrossWikiEditor/CrossWikiEditor.csproj" />
+        <entry key="CrossWikiEditor/Views/StatusBarView.axaml" value="CrossWikiEditor/CrossWikiEditor.csproj" />
       </map>
     </option>
   </component>

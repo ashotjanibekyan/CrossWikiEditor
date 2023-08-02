@@ -1,0 +1,132 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+        <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Folder Include="Models\" />
+        <AvaloniaResource Include="Assets\**" />
+        <Folder Include="Services\" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectCapability Include="Avalonia" />
+        <TrimmerRootAssembly Include="Avalonia.Themes.Fluent" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Autofac" Version="7.0.1" />
+        <PackageReference Include="Avalonia" Version="11.0.2" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.0.2" />
+        <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.2" />
+        <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.2" />
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.2" />
+        <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Views\ControlViews\DisambigView.axaml.cs">
+        <DependentUpon>DisambigView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\ControlViews\MoreView.axaml.cs">
+        <DependentUpon>MoreView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\ControlViews\OptionsView.axaml.cs">
+        <DependentUpon>OptionsView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\ControlViews\SkipView.axaml.cs">
+        <DependentUpon>SkipView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\ControlViews\StartView.axaml.cs">
+        <DependentUpon>StartView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\ControlViews\DisambigView.axaml.cs">
+        <DependentUpon>DisambigView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\ControlViews\MoreView.axaml.cs">
+        <DependentUpon>MoreView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\ControlViews\OptionsView.axaml.cs">
+        <DependentUpon>OptionsView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\ControlViews\SkipView.axaml.cs">
+        <DependentUpon>SkipView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\ControlViews\StartView.axaml.cs">
+        <DependentUpon>StartView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\ReportViews\EditBoxView.axaml.cs">
+        <DependentUpon>EditBoxView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\ReportViews\HistoryView.axaml.cs">
+        <DependentUpon>HistoryView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\ReportViews\LogsView.axaml.cs">
+        <DependentUpon>LogsView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\ReportViews\PageLogsView.axaml.cs">
+        <DependentUpon>PageLogsView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\ReportViews\WhatLinksHereView.axaml.cs">
+        <DependentUpon>WhatLinksHereView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\ReportViews\EditBoxView.axaml.cs">
+        <DependentUpon>EditBoxView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\ReportViews\HistoryView.axaml.cs">
+        <DependentUpon>HistoryView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\ReportViews\LogsView.axaml.cs">
+        <DependentUpon>LogsView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\ReportViews\PageLogsView.axaml.cs">
+        <DependentUpon>PageLogsView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\ReportViews\WhatLinksHereView.axaml.cs">
+        <DependentUpon>WhatLinksHereView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MakeListView.axaml.cs">
+        <DependentUpon>MakeListView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Views\ControlViews\DisambigView.axaml" />
+      <AdditionalFiles Include="Views\ControlViews\MoreView.axaml" />
+      <AdditionalFiles Include="Views\ControlViews\OptionsView.axaml" />
+      <AdditionalFiles Include="Views\ControlViews\SkipView.axaml" />
+      <AdditionalFiles Include="Views\ControlViews\StartView.axaml" />
+      <AdditionalFiles Include="Views\ReportViews\EditBoxView.axaml" />
+      <AdditionalFiles Include="Views\ReportViews\HistoryView.axaml" />
+      <AdditionalFiles Include="Views\ReportViews\LogsView.axaml" />
+      <AdditionalFiles Include="Views\ReportViews\PageLogsView.axaml" />
+      <AdditionalFiles Include="Views\ReportViews\WhatLinksHereView.axaml" />
+    </ItemGroup>
+</Project>
