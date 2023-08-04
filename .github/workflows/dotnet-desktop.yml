@@ -7,7 +7,7 @@ on:
     branches: [ "master" ]
 
 env:
-  PROJECT_PATH: AutoWikiEditor/AutoWikiEditor.csproj
+  PROJECT_PATH: CrossWikiEditor/CrossWikiEditor.csproj
 
 jobs:
   deploy:
