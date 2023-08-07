@@ -39,8 +39,8 @@ public class App : Application
         RegisterViewModels(builder);
         RegisterServices(builder);
         RegisterRepositories(builder);
+        RegisterDialogs(builder);
         
-        builder.RegisterType<ProfilesView>().Named<Window>(nameof(ProfilesViewModel));
         builder.Register(c => _container!).As<IContainer>();
 
         return builder.Build();
@@ -58,6 +58,7 @@ public class App : Application
         builder.RegisterType<DialogService>()
             .As<IDialogService>()
             .WithParameter(new TypedParameter(typeof(Window), _mainWindow)).SingleInstance();
+        builder.RegisterType<CredentialService>().As<ICredentialService>();
     }
     
     private void RegisterViewModels(ContainerBuilder builder)
@@ -77,5 +78,11 @@ public class App : Application
         builder.RegisterType<WhatLinksHereViewModel>();
         builder.RegisterType<LogsViewModel>();
         builder.RegisterType<PageLogsViewModel>();
+    }
+
+    private void RegisterDialogs(ContainerBuilder builder)
+    {
+        builder.RegisterType<ProfilesView>().Named<Window>(nameof(ProfilesViewModel));
+        builder.RegisterType<AddNewProfileView>().Named<Window>(nameof(AddNewProfileViewModel));
     }
 }

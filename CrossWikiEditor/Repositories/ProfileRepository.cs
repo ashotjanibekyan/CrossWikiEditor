@@ -10,6 +10,7 @@ public interface IProfileRepository
     Profile? Get(int id);
     int Insert(Profile profile);
     List<Profile> GetAll();
+    void Delete(int id);
 }
 
 public class ProfileRepository : IProfileRepository
@@ -145,5 +146,21 @@ public class ProfileRepository : IProfileRepository
         connection.Close();
 
         return values;
+    }
+    
+    public void Delete(int id)
+    {
+        using var connection = new SQLiteConnection(_connectionString);
+        connection.Open();
+        using (var command = new SQLiteCommand(connection))
+        {
+            command.CommandText = @"
+                    DELETE FROM Profile
+                    WHERE Id = @Id;
+                ";
+            command.Parameters.AddWithValue("@Id", id);
+            command.ExecuteNonQuery();
+        }
+        connection.Close();
     }
 }

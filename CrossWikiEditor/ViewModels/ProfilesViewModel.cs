@@ -1,21 +1,28 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reactive;
+using System.Threading.Tasks;
 using CrossWikiEditor.Models;
 using CrossWikiEditor.Repositories;
+using CrossWikiEditor.Services;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 
 namespace CrossWikiEditor.ViewModels;
 
 public class ProfilesViewModel : ViewModelBase
 {
+    private readonly IDialogService _dialogService;
     private readonly IProfileRepository _profileRepository;
+    private readonly ICredentialService _credentialService;
 
-    public ProfilesViewModel(IProfileRepository profileRepository)
+    public ProfilesViewModel(IDialogService dialogService, IProfileRepository profileRepository, ICredentialService credentialService)
     {
+        _dialogService = dialogService;
         _profileRepository = profileRepository;
+        _credentialService = credentialService;
         LoginCommand = ReactiveCommand.Create(Login);
-        AddCommand = ReactiveCommand.Create(Add);
+        AddCommand = ReactiveCommand.CreateFromTask(Add);
         EditCommand = ReactiveCommand.Create(Edit);
         DeleteCommand = ReactiveCommand.Create(Delete);
         QuickLoginCommand = ReactiveCommand.Create(QuickLogin);
@@ -24,14 +31,11 @@ public class ProfilesViewModel : ViewModelBase
         Profiles = new ObservableCollection<Profile>(_profileRepository.GetAll());
     }
 
-    private Profile? _selectedProfile = null;
 
-    public Profile? SelectedProfile
-    {
-        get => _selectedProfile;
-        set => this.RaiseAndSetIfChanged(ref _selectedProfile, value);
-    }
+    [Reactive]
+    public Profile? SelectedProfile { get; set; }
 
+    [Reactive]
     public ObservableCollection<Profile> Profiles { get; set; }
     public ReactiveCommand<Unit, Unit> LoginCommand { get; set; }
     public ReactiveCommand<Unit, Unit> AddCommand { get; set; }
@@ -47,9 +51,12 @@ public class ProfilesViewModel : ViewModelBase
         throw new System.NotImplementedException();
     }
 
-    private void Add()
+    private async Task Add()
     {
-        throw new System.NotImplementedException();
+        if (await _dialogService.ShowDialog<bool>(new AddNewProfileViewModel(_profileRepository, _credentialService)))
+        {
+            Profiles = new ObservableCollection<Profile>(_profileRepository.GetAll());
+        }
     }
 
     private void Edit()
@@ -59,7 +66,13 @@ public class ProfilesViewModel : ViewModelBase
 
     private void Delete()
     {
-        throw new System.NotImplementedException();
+        if (SelectedProfile is null)
+        {
+            return;
+        }
+        _profileRepository.Delete(SelectedProfile.Id);
+        SelectedProfile = null;
+        Profiles = new ObservableCollection<Profile>(_profileRepository.GetAll());
     }
 
     private void QuickLogin()

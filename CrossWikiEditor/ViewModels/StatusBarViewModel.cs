@@ -11,11 +11,13 @@ public class StatusBarViewModel : ViewModelBase
 {
     private readonly IDialogService _dialogService;
     private readonly IProfileRepository _profileRepository;
+    private readonly ICredentialService _credentialService;
 
-    public StatusBarViewModel(IDialogService dialogService, IProfileRepository profileRepository)
+    public StatusBarViewModel(IDialogService dialogService, IProfileRepository profileRepository, ICredentialService credentialService)
     {
         _dialogService = dialogService;
         _profileRepository = profileRepository;
+        _credentialService = credentialService;
         UsernameClickedCommand = ReactiveCommand.CreateFromTask(UsernameClicked);
     }
     
@@ -24,6 +26,6 @@ public class StatusBarViewModel : ViewModelBase
 
     private async Task UsernameClicked()
     {
-        await _dialogService.ShowDialog<bool>(new ProfilesViewModel(_profileRepository));
+        await _dialogService.ShowDialog<bool>(new ProfilesViewModel(_dialogService, _profileRepository, _credentialService));
     }
 }
