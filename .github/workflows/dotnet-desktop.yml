@@ -1,4 +1,4 @@
-name: ".NET Core Desktop"
+name: "CI Build"
 
 on:
   push:
@@ -8,9 +8,10 @@ on:
 
 env:
   PROJECT_PATH: CrossWikiEditor/CrossWikiEditor.csproj
+  TEST_PROJECT_PATH: CrossWikiEditor.Tests/CrossWikiEditor.Tests.csproj
 
 jobs:
-  deploy:
+  build:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
@@ -19,9 +20,23 @@ jobs:
         with:
           dotnet-version: 6.0.x
 
-      - run: dotnet publish ${{ env.PROJECT_PATH }} -c Release --self-contained -r win-x64 -p:PublishSingleFile=true
+      - name: Restore dependencies
+        run: dotnet restore ${{ env.PROJECT_PATH }}
 
-      - uses: actions/upload-artifact@v3
+      - name: Build and publish app
+        run: dotnet publish ${{ env.PROJECT_PATH }} -c Release --self-contained -r win-x64 -p:PublishSingleFile=true
+
+      - name: Run unit tests
+        run: dotnet test ${{ env.TEST_PROJECT_PATH }} -c Release --logger "nunit;LogFilePath=test_results.xml"
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: TestResults
+          path: test_results.xml
+
+      - name: Upload app artifact
+        uses: actions/upload-artifact@v2
         with:
           name: CrossWikiEditor-Win
           path: CrossWikiEditor/bin/Release/net6.0/win-x64/publish
