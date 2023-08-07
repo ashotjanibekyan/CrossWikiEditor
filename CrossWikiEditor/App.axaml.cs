@@ -50,7 +50,7 @@ public class App : Application
     {
         builder.RegisterType<ProfileRepository>()
             .As<IProfileRepository>()
-            .WithParameter(new TypedParameter(typeof(string), ConnectionString)).SingleInstance();
+            .WithParameter(new PositionalParameter(0, ConnectionString)).SingleInstance();
     }
 
     private void RegisterServices(ContainerBuilder builder)
