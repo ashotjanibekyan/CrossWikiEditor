@@ -2,7 +2,7 @@ using Autofac;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Markup.Xaml;
+using CrossWikiEditor.Repositories;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.ViewModels;
 using CrossWikiEditor.ViewModels.ControlViewModels;
@@ -15,7 +15,8 @@ public class App : Application
 {
     private IContainer? _container;
     private Window? _mainWindow;
-
+    private const string ConnectionString = @"Data Source=C:\Users\aj\Documents\cwb.db;Version=3;";
+    
     public override void OnFrameworkInitializationCompleted()
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
@@ -37,11 +38,19 @@ public class App : Application
 
         RegisterViewModels(builder);
         RegisterServices(builder);
+        RegisterRepositories(builder);
         
         builder.RegisterType<ProfilesView>().Named<Window>(nameof(ProfilesViewModel));
         builder.Register(c => _container!).As<IContainer>();
 
         return builder.Build();
+    }
+
+    private void RegisterRepositories(ContainerBuilder builder)
+    {
+        builder.RegisterType<ProfileRepository>()
+            .As<IProfileRepository>()
+            .WithParameter(new TypedParameter(typeof(string), ConnectionString)).SingleInstance();
     }
 
     private void RegisterServices(ContainerBuilder builder)
