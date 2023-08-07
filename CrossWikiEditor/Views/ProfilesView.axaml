@@ -2,8 +2,53 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:CrossWikiEditor.ViewModels"
+        Width="600"
+        SizeToContent="WidthAndHeight"
+        ShowInTaskbar="False"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="CrossWikiEditor.Views.ProfilesView"
-        Title="ProfilesView">
-  Welcome to Avalonia!
+        x:DataType="vm:ProfilesViewModel"
+        Title="Profiles">
+	<Window.Styles>
+		<Style Selector="Button">
+			<Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+			<Setter Property="Width" Value="70"></Setter>
+		</Style>
+	</Window.Styles>
+	<Grid RowDefinitions="Auto,Auto,*,Auto" Margin="10">
+		<DataGrid Grid.Row="0" IsReadOnly="True" Height="300" ItemsSource="{Binding Profiles}" SelectedItem="{Binding SelectedProfile}" BorderThickness="2" SelectionMode="Single" BorderBrush="Gray">
+			<DataGrid.Columns>
+				<DataGridTextColumn Header="Id" Binding="{Binding Id}" />
+				<DataGridTextColumn Header="Username" Binding="{Binding Username}" />
+				<DataGridCheckBoxColumn Header="Password saved?" Binding="{Binding IsPasswordSaved}" />
+				<DataGridTextColumn Header="Default settings" Binding="{Binding DefaultSettingsPath}" />
+				<DataGridTextColumn Header="Notes" Binding="{Binding Notes}" />
+			</DataGrid.Columns>
+		</DataGrid>
+		<StackPanel Grid.Row="1" Orientation="Horizontal">
+			<Button Content="Login" Command="{Binding LoginCommand}" IsEnabled="{Binding SelectedProfile, Converter={x:Static ObjectConverters.IsNotNull}}" />
+			<Button Content="Add" Command="{Binding AddCommand}" />
+			<Button Content="Edit..." Command="{Binding EditCommand}" IsEnabled="{Binding SelectedProfile, Converter={x:Static ObjectConverters.IsNotNull}}" />
+			<Button Content="Delete" Command="{Binding DeleteCommand}" IsEnabled="{Binding SelectedProfile, Converter={x:Static ObjectConverters.IsNotNull}}" />
+		</StackPanel>
+		<StackPanel Grid.Row="2" />
+		<HeaderedContentControl Grid.Row="3" Margin="10" Header="Quick Login" Background="Black">
+			<Grid Margin="10" RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,*,Auto">
+				<TextBlock Grid.Row="0" Grid.Column="0">Username: </TextBlock>
+				<TextBlock Grid.Row="1" Grid.Column="0">Password: </TextBlock>
+
+				<TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Username}" />
+				<TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Password}" />
+				
+				<Button Grid.Row="0" 
+				        Grid.Column="2"
+				        Grid.RowSpan="2" 
+				        Command="{Binding QuickLoginCommand}"
+				        Content="Login"
+				        VerticalAlignment="Center" 
+				        HorizontalContentAlignment="Center" />
+			</Grid>
+		</HeaderedContentControl>
+	</Grid>
 </Window>
