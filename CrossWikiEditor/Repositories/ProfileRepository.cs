@@ -102,8 +102,6 @@ public class ProfileRepository : IProfileRepository
                     VALUES (@Username, @EncryptedPassword, @IsPasswordSaved, @DefaultSettingsPath, @Notes);
                 ";
                 
-                var encript = _stringEncryptionService.EncryptStringToBytes(profile.Password);
-
                 command.Parameters.AddWithValue("@Username", profile.Username);
                 command.Parameters.AddWithValue("@EncryptedPassword", profile.Password is null ? DBNull.Value : _stringEncryptionService.EncryptStringToBytes(profile.Password));
                 command.Parameters.AddWithValue("@IsPasswordSaved", profile.IsPasswordSaved);
