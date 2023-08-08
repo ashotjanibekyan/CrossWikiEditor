@@ -1,4 +1,7 @@
-﻿using System.Reactive;
+﻿using System.Collections.Generic;
+using System.Reactive;
+using System.Threading.Tasks;
+using Avalonia.Platform.Storage;
 using CrossWikiEditor.Models;
 using CrossWikiEditor.Repositories;
 using CrossWikiEditor.Services;
@@ -9,14 +12,16 @@ namespace CrossWikiEditor.ViewModels;
 
 public class AddNewProfileViewModel : ViewModelBase
 {
+    private readonly IFileDialogService _fileDialogService;
     private readonly IProfileRepository _profileRepository;
     private readonly ICredentialService _credentialService;
 
-    public AddNewProfileViewModel(IProfileRepository profileRepository, ICredentialService credentialService)
+    public AddNewProfileViewModel(IFileDialogService fileDialogService, IProfileRepository profileRepository, ICredentialService credentialService)
     {
+        _fileDialogService = fileDialogService;
         _profileRepository = profileRepository;
         _credentialService = credentialService;
-        BrowseCommand = ReactiveCommand.Create(Browse);
+        BrowseCommand = ReactiveCommand.CreateFromTask(Browse);
         SaveCommand = ReactiveCommand.Create<IDialog>(Save);
         CancelCommand = ReactiveCommand.Create((IDialog dialog) => dialog.Close(false));
     }
@@ -44,9 +49,19 @@ public class AddNewProfileViewModel : ViewModelBase
     public ReactiveCommand<IDialog, Unit> CancelCommand { get; }
 
 
-    private void Browse()
+    private async Task Browse()
     {
-        throw new System.NotImplementedException();
+        var result = await _fileDialogService.OpenFilePickerAsync("Select settings file", false, new List<FilePickerFileType>
+        {
+            new(null)
+            {
+                Patterns = new List<string>{"*.xml"}
+            }
+        });
+        if (result is not null && result.Length == 1)
+        {
+            DefaultSettingsPath = result[0];
+        }
     }
     
     private void Save(IDialog dialog)

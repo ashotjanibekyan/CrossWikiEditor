@@ -1,7 +1,10 @@
+using System;
+using System.IO;
 using Autofac;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Markup.Xaml;
 using CrossWikiEditor.Repositories;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.ViewModels;
@@ -15,7 +18,22 @@ public class App : Application
 {
     private IContainer? _container;
     private Window? _mainWindow;
-    private const string ConnectionString = @"Data Source=C:\Users\aj\Documents\cwb.db;Version=3;";
+    private string _connectionString;
+
+    public App()
+    {
+        var appdata = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CrossWikiBrowser");
+        if (!Directory.Exists(appdata))
+        {
+            Directory.CreateDirectory(appdata);
+        }
+        _connectionString = $"Data Source={Path.Combine(appdata, "cwb.db")};Version=3;";
+    }
+    
+    public override void Initialize()
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
     
     public override void OnFrameworkInitializationCompleted()
     {
@@ -50,7 +68,7 @@ public class App : Application
     {
         builder.RegisterType<ProfileRepository>()
             .As<IProfileRepository>()
-            .WithParameter(new PositionalParameter(0, ConnectionString)).SingleInstance();
+            .WithParameter(new PositionalParameter(0, _connectionString)).SingleInstance();
     }
 
     private void RegisterServices(ContainerBuilder builder)
@@ -59,6 +77,9 @@ public class App : Application
             .As<IDialogService>()
             .WithParameter(new TypedParameter(typeof(Window), _mainWindow)).SingleInstance();
         builder.RegisterType<CredentialService>().As<ICredentialService>();
+        builder.RegisterType<FileDialogService>()
+            .As<IFileDialogService>()
+            .WithParameter(new TypedParameter(typeof(Window), _mainWindow)).SingleInstance();
     }
     
     private void RegisterViewModels(ContainerBuilder builder)

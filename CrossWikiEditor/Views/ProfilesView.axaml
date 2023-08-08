@@ -6,6 +6,7 @@
         Width="600"
         SizeToContent="WidthAndHeight"
         ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="CrossWikiEditor.Views.ProfilesView"
         x:DataType="vm:ProfilesViewModel"

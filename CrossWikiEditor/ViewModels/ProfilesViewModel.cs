@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Threading.Tasks;
@@ -12,12 +11,17 @@ namespace CrossWikiEditor.ViewModels;
 
 public class ProfilesViewModel : ViewModelBase
 {
+    private readonly IFileDialogService _fileDialogService;
     private readonly IDialogService _dialogService;
     private readonly IProfileRepository _profileRepository;
     private readonly ICredentialService _credentialService;
 
-    public ProfilesViewModel(IDialogService dialogService, IProfileRepository profileRepository, ICredentialService credentialService)
+    public ProfilesViewModel(IFileDialogService fileDialogService,
+        IDialogService dialogService,
+        IProfileRepository profileRepository,
+        ICredentialService credentialService)
     {
+        _fileDialogService = fileDialogService;
         _dialogService = dialogService;
         _profileRepository = profileRepository;
         _credentialService = credentialService;
@@ -53,7 +57,7 @@ public class ProfilesViewModel : ViewModelBase
 
     private async Task Add()
     {
-        if (await _dialogService.ShowDialog<bool>(new AddNewProfileViewModel(_profileRepository, _credentialService)))
+        if (await _dialogService.ShowDialog<bool>(new AddNewProfileViewModel(_fileDialogService, _profileRepository, _credentialService)))
         {
             Profiles = new ObservableCollection<Profile>(_profileRepository.GetAll());
         }
