@@ -27,13 +27,13 @@ jobs:
         run: dotnet publish ${{ env.PROJECT_PATH }} -c Release --self-contained -r win-x64 -p:PublishSingleFile=true
 
       - name: Run unit tests
-        run: dotnet test ${{ env.TEST_PROJECT_PATH }} -c Release --logger "nunit;LogFilePath=test_results.xml"
+        run: dotnet test ${{ env.TEST_PROJECT_PATH }} -c Release --logger:nunit
 
       - name: Upload test results
         uses: actions/upload-artifact@v2
         with:
           name: TestResults
-          path: test_results.xml
+          path: TestResults/TestResults.xml
 
       - name: Upload app artifact
         uses: actions/upload-artifact@v2
