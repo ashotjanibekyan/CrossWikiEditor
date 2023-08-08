@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -23,6 +24,10 @@ public class StringEncryptionService : IStringEncryptionService
     
     public byte[] EncryptStringToBytes(string plainText)
     {
+        if (string.IsNullOrEmpty(plainText))
+        {
+            return Array.Empty<byte>();
+        }
         using var aes = Aes.Create();
         aes.Key = _key;
         aes.IV = _iv;
@@ -38,9 +43,9 @@ public class StringEncryptionService : IStringEncryptionService
         return encryptedBytes;
     }
 
-    public string DecryptStringFromBytes(byte[]? encryptedBytes)
+    public string DecryptStringFromBytes(byte[] encryptedBytes)
     {
-        if (encryptedBytes is null)
+        if (encryptedBytes.Length == 0)
         {
             return string.Empty;
         }

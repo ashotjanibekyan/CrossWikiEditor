@@ -19,16 +19,15 @@ public class App : Application
 {
     private IContainer? _container;
     private Window? _mainWindow;
-    private string _connectionString;
+    private string _appData;
 
     public App()
     {
-        var appdata = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CrossWikiBrowser");
-        if (!Directory.Exists(appdata))
+        _appData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CrossWikiBrowser");
+        if (!Directory.Exists(_appData))
         {
-            Directory.CreateDirectory(appdata);
+            Directory.CreateDirectory(_appData);
         }
-        _connectionString = $"Data Source={Path.Combine(appdata, "cwb.db")};Version=3;";
     }
     
     public override void Initialize()
@@ -67,9 +66,9 @@ public class App : Application
 
     private void RegisterRepositories(ContainerBuilder builder)
     {
-        builder.RegisterType<ProfileRepository>()
+        builder.RegisterType<RealmProfileRepository>()
             .As<IProfileRepository>()
-            .WithParameter(new PositionalParameter(0, _connectionString)).SingleInstance();
+            .WithParameter(new PositionalParameter(0, _appData)).SingleInstance();
     }
 
     private void RegisterServices(ContainerBuilder builder)
