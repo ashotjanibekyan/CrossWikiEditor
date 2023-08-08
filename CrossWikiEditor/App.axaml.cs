@@ -5,6 +5,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Avalonia.Platform.Storage;
 using CrossWikiEditor.Repositories;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.ViewModels;
@@ -73,13 +74,13 @@ public class App : Application
 
     private void RegisterServices(ContainerBuilder builder)
     {
+        var storageProvider = TopLevel.GetTopLevel(_mainWindow)!.StorageProvider;
+        builder.RegisterInstance(storageProvider).As<IStorageProvider>();
         builder.RegisterType<DialogService>()
             .As<IDialogService>()
             .WithParameter(new TypedParameter(typeof(Window), _mainWindow)).SingleInstance();
-        builder.RegisterType<CredentialService>().As<ICredentialService>();
-        builder.RegisterType<FileDialogService>()
-            .As<IFileDialogService>()
-            .WithParameter(new TypedParameter(typeof(Window), _mainWindow)).SingleInstance();
+        builder.RegisterType<CredentialService>().As<ICredentialService>().SingleInstance();
+        builder.RegisterType<FileDialogService>().As<IFileDialogService>().SingleInstance();
     }
     
     private void RegisterViewModels(ContainerBuilder builder)

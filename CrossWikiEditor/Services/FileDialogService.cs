@@ -16,17 +16,20 @@ public interface IFileDialogService
 
 public class FileDialogService : IFileDialogService
 {
-    readonly Window _parent;
+    private readonly IStorageProvider _storageProvider;
 
-    public FileDialogService(Window parent) => _parent = parent;
-    
+    public FileDialogService(IStorageProvider storageProvider)
+    {
+        _storageProvider = storageProvider;
+    }
+
 
     public async  Task<string[]?> OpenFilePickerAsync(
         string title,
         bool allowMultiple,
         List<FilePickerFileType> filters)
     {
-        return (await TopLevel.GetTopLevel(_parent).StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+        return (await _storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
         {
             Title = title,
             AllowMultiple = allowMultiple,
