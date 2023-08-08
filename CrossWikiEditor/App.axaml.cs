@@ -81,6 +81,9 @@ public class App : Application
             .WithParameter(new TypedParameter(typeof(Window), _mainWindow)).SingleInstance();
         builder.RegisterType<CredentialService>().As<ICredentialService>().SingleInstance();
         builder.RegisterType<FileDialogService>().As<IFileDialogService>().SingleInstance();
+        var (key, iv) = StringEncryptionService.GenerateKeyAndIv("SHOULD IMPLEMENT THIS LATER", new byte[16], 32, 16, 10000);
+        IStringEncryptionService stringEncryptionService = new StringEncryptionService(key, iv);
+        builder.RegisterInstance(stringEncryptionService).As<IStringEncryptionService>();
     }
     
     private void RegisterViewModels(ContainerBuilder builder)
@@ -105,6 +108,6 @@ public class App : Application
     private void RegisterDialogs(ContainerBuilder builder)
     {
         builder.RegisterType<ProfilesView>().Named<Window>(nameof(ProfilesViewModel));
-        builder.RegisterType<AddNewProfileView>().Named<Window>(nameof(AddNewProfileViewModel));
+        builder.RegisterType<AddNewProfileView>().Named<Window>(nameof(AddOrEditProfileViewModel));
     }
 }

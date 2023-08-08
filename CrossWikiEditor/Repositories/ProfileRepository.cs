@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SQLite;
 using CrossWikiEditor.Models;
+using CrossWikiEditor.Services;
 
 namespace CrossWikiEditor.Repositories;
 
@@ -9,6 +10,7 @@ public interface IProfileRepository
 {
     Profile? Get(int id);
     int Insert(Profile profile);
+    void Update(Profile profile);
     List<Profile> GetAll();
     void Delete(int id);
 }
@@ -16,10 +18,12 @@ public interface IProfileRepository
 public class ProfileRepository : IProfileRepository
 {
     private readonly string _connectionString;
+    private readonly IStringEncryptionService _stringEncryptionService;
 
-    public ProfileRepository(string connectionString)
+    public ProfileRepository(string connectionString, IStringEncryptionService stringEncryptionService)
     {
         _connectionString = connectionString;
+        _stringEncryptionService = stringEncryptionService;
         CreateProfilesTable();
     }
     
@@ -33,6 +37,7 @@ public class ProfileRepository : IProfileRepository
             command.CommandText = @"CREATE TABLE IF NOT EXISTS Profile (
                                         Id INTEGER PRIMARY KEY,
                                         Username TEXT NOT NULL,
+                                        EncryptedPassword BLOB,
                                         IsPasswordSaved INTEGER NOT NULL,
                                         DefaultSettingsPath TEXT,
                                         Notes TEXT
@@ -68,6 +73,7 @@ public class ProfileRepository : IProfileRepository
                     {
                         Id = Convert.ToInt32(reader["Id"]),
                         Username = Convert.ToString(reader["Username"]),
+                        Password = _stringEncryptionService.DecryptStringFromBytes((byte[])reader["EncryptedPassword"]),
                         IsPasswordSaved = Convert.ToBoolean(reader["IsPasswordSaved"]),
                         DefaultSettingsPath = Convert.ToString(reader["DefaultSettingsPath"]),
                         Notes = Convert.ToString(reader["Notes"])
@@ -92,11 +98,14 @@ public class ProfileRepository : IProfileRepository
             using (var command = new SQLiteCommand(connection))
             {
                 command.CommandText = @"
-                    INSERT INTO Profile (Username, IsPasswordSaved, DefaultSettingsPath, Notes)
-                    VALUES (@Username, @IsPasswordSaved, @DefaultSettingsPath, @Notes);
+                    INSERT INTO Profile (Username, EncryptedPassword, IsPasswordSaved, DefaultSettingsPath, Notes)
+                    VALUES (@Username, @EncryptedPassword, @IsPasswordSaved, @DefaultSettingsPath, @Notes);
                 ";
+                
+                var encript = _stringEncryptionService.EncryptStringToBytes(profile.Password);
 
                 command.Parameters.AddWithValue("@Username", profile.Username);
+                command.Parameters.AddWithValue("@EncryptedPassword", profile.Password is null ? DBNull.Value : _stringEncryptionService.EncryptStringToBytes(profile.Password));
                 command.Parameters.AddWithValue("@IsPasswordSaved", profile.IsPasswordSaved);
                 command.Parameters.AddWithValue("@DefaultSettingsPath", profile.DefaultSettingsPath);
                 command.Parameters.AddWithValue("@Notes", profile.Notes);
@@ -112,6 +121,36 @@ public class ProfileRepository : IProfileRepository
         }
 
         return result;
+    }
+
+    public void Update(Profile profile)
+    {
+        using var connection = new SQLiteConnection(_connectionString);
+        connection.Open();
+
+        using (var command = new SQLiteCommand(connection))
+        {
+            command.CommandText = @"
+                    UPDATE Profile
+                    SET Username = @Username,
+                        EncryptedPassword = @EncryptedPassword,
+                        IsPasswordSaved = @IsPasswordSaved,
+                        DefaultSettingsPath = @DefaultSettingsPath,
+                        Notes = @Notes
+                    WHERE Id = @Id;
+                ";
+
+            command.Parameters.AddWithValue("@Username", profile.Username);
+            command.Parameters.AddWithValue("@EncryptedPassword", profile.Password is null ? DBNull.Value : _stringEncryptionService.EncryptStringToBytes(profile.Password));
+            command.Parameters.AddWithValue("@IsPasswordSaved", profile.IsPasswordSaved);
+            command.Parameters.AddWithValue("@DefaultSettingsPath", profile.DefaultSettingsPath);
+            command.Parameters.AddWithValue("@Notes", profile.Notes);
+            command.Parameters.AddWithValue("@Id", profile.Id);
+
+            command.ExecuteNonQuery();
+        }
+
+        connection.Close();
     }
     
     public List<Profile> GetAll()
@@ -129,10 +168,12 @@ public class ProfileRepository : IProfileRepository
             {
                 while (reader.Read())
                 {
+                    var encryptedPassword = reader["EncryptedPassword"];
                     var profile = new Profile
                     {
                         Id = Convert.ToInt32(reader["Id"]),
                         Username = Convert.ToString(reader["Username"]),
+                        Password = encryptedPassword is byte[] bytes ? _stringEncryptionService.DecryptStringFromBytes(bytes) : null,
                         IsPasswordSaved = Convert.ToBoolean(reader["IsPasswordSaved"]),
                         DefaultSettingsPath = Convert.ToString(reader["DefaultSettingsPath"]),
                         Notes = Convert.ToString(reader["Notes"])

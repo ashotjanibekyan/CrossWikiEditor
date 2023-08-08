@@ -10,17 +10,22 @@ using ReactiveUI.Fody.Helpers;
 
 namespace CrossWikiEditor.ViewModels;
 
-public class AddNewProfileViewModel : ViewModelBase
+public class AddOrEditProfileViewModel : ViewModelBase
 {
     private readonly IFileDialogService _fileDialogService;
     private readonly IProfileRepository _profileRepository;
     private readonly ICredentialService _credentialService;
+    private readonly int _id;
 
-    public AddNewProfileViewModel(IFileDialogService fileDialogService, IProfileRepository profileRepository, ICredentialService credentialService)
+    public AddOrEditProfileViewModel(IFileDialogService fileDialogService,
+        IProfileRepository profileRepository,
+        ICredentialService credentialService,
+        int id)
     {
         _fileDialogService = fileDialogService;
         _profileRepository = profileRepository;
         _credentialService = credentialService;
+        _id = id;
         BrowseCommand = ReactiveCommand.CreateFromTask(Browse);
         SaveCommand = ReactiveCommand.Create<IDialog>(Save);
         CancelCommand = ReactiveCommand.Create((IDialog dialog) => dialog.Close(false));
@@ -84,13 +89,29 @@ public class AddNewProfileViewModel : ViewModelBase
             return;
         }
 
-        _profileRepository.Insert(new Profile
+        if (_id == -1)
         {
-            Username = Username,
-            DefaultSettingsPath = DefaultSettingsPath,
-            IsPasswordSaved = ShouldSavePassword,
-            Notes = Notes
-        });
+            _profileRepository.Insert(new Profile
+            {
+                Username = Username,
+                DefaultSettingsPath = DefaultSettingsPath,
+                IsPasswordSaved = ShouldSavePassword,
+                Password = Password,
+                Notes = Notes
+            });
+        }
+        else
+        {
+            _profileRepository.Update(new Profile
+            {
+                Id = _id,
+                Username = Username,
+                DefaultSettingsPath = DefaultSettingsPath,
+                IsPasswordSaved = ShouldSavePassword,
+                Password = Password,
+                Notes = Notes
+            });
+        }
 
         if (ShouldSavePassword)
         {

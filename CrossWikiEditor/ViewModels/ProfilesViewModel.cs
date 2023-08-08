@@ -27,7 +27,7 @@ public class ProfilesViewModel : ViewModelBase
         _credentialService = credentialService;
         LoginCommand = ReactiveCommand.Create(Login);
         AddCommand = ReactiveCommand.CreateFromTask(Add);
-        EditCommand = ReactiveCommand.Create(Edit);
+        EditCommand = ReactiveCommand.CreateFromTask(Edit);
         DeleteCommand = ReactiveCommand.Create(Delete);
         QuickLoginCommand = ReactiveCommand.Create(QuickLogin);
         Username = "";
@@ -57,15 +57,32 @@ public class ProfilesViewModel : ViewModelBase
 
     private async Task Add()
     {
-        if (await _dialogService.ShowDialog<bool>(new AddNewProfileViewModel(_fileDialogService, _profileRepository, _credentialService)))
+        if (await _dialogService.ShowDialog<bool>(new AddOrEditProfileViewModel(_fileDialogService, _profileRepository, _credentialService, -1)))
         {
             Profiles = new ObservableCollection<Profile>(_profileRepository.GetAll());
         }
     }
 
-    private void Edit()
+    private async Task Edit()
     {
-        throw new System.NotImplementedException();
+        if (SelectedProfile is null)
+        {
+            return;
+        }
+
+        var vm = new AddOrEditProfileViewModel(_fileDialogService, _profileRepository, _credentialService, SelectedProfile.Id)
+        {
+            Username = SelectedProfile.Username,
+            DefaultSettingsPath = SelectedProfile.DefaultSettingsPath,
+            Notes = SelectedProfile.Notes,
+            Password = SelectedProfile.Password ?? string.Empty,
+            ShouldSavePassword = SelectedProfile.IsPasswordSaved,
+            ShouldSelectDefaultSettings = !string.IsNullOrEmpty(SelectedProfile.DefaultSettingsPath),
+        };
+        if (await _dialogService.ShowDialog<bool>(vm))
+        {
+            Profiles = new ObservableCollection<Profile>(_profileRepository.GetAll());
+        }
     }
 
     private void Delete()

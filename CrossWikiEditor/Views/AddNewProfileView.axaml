@@ -9,7 +9,7 @@
         CanResize="False"
         mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="200"
         x:Class="CrossWikiEditor.Views.AddNewProfileView"
-        x:DataType="vm:AddNewProfileViewModel"
+        x:DataType="vm:AddOrEditProfileViewModel"
         x:Name="This"
         Title="Add New Profile">
     <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*" Margin="10" Width="400">
@@ -19,7 +19,7 @@
         <CheckBox Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0" IsChecked="{Binding ShouldSavePassword}">Save Password?</CheckBox>
         
         <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Text="Password: "/>
-        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Password}" IsEnabled="{Binding ShouldSavePassword}" />
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Password}" PasswordChar="*" IsEnabled="{Binding ShouldSavePassword}" />
         
         <CheckBox Grid.Row="3" Grid.ColumnSpan="2" Grid.Column="0" IsChecked="{Binding ShouldSelectDefaultSettings}">Select default settings?</CheckBox>
         
