@@ -33,7 +33,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: TestResults
-          path: TestResults/TestResults.xml
+          path: CrossWikiEditor.Tests/TestResults/TestResults.xml
 
       - name: Upload app artifact
         uses: actions/upload-artifact@v2
