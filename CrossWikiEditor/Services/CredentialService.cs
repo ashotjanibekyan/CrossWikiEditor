@@ -1,17 +1,17 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace CrossWikiEditor.Services;
 
 public interface ICredentialService
 {
-    bool SavePassword(string username, string password);
+    Task<string> GetLoginToken();
 }
 
 public class CredentialService : ICredentialService
 {
-    public bool SavePassword(string username, string password)
+    public Task<string> GetLoginToken()
     {
-        Console.WriteLine(username + " " + password);
-        return true;
+        return Task.FromResult("");
     }
 }

@@ -112,11 +112,7 @@ public class AddOrEditProfileViewModel : ViewModelBase
                 Notes = Notes
             });
         }
-
-        if (ShouldSavePassword)
-        {
-            _credentialService.SavePassword(Username, Password);
-        }
+        
         dialog.Close(true);
     }
 }

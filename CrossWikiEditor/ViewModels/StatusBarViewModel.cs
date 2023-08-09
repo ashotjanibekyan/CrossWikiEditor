@@ -23,13 +23,21 @@ public class StatusBarViewModel : ViewModelBase
         _profileRepository = profileRepository;
         _credentialService = credentialService;
         UsernameClickedCommand = ReactiveCommand.CreateFromTask(UsernameClicked);
+        UsernameClickedCommand = ReactiveCommand.CreateFromTask(CurrentWikiClicked);
     }
     
     public string Username { get; set; } = "User: ";
+    public string CurrentWiki { get; set; } = "hy.wikipedia.org";
     public ReactiveCommand<Unit, Unit> UsernameClickedCommand { get; }
+    public ReactiveCommand<Unit, Unit> CurrentWikiClickedCommand { get; }
 
     private async Task UsernameClicked()
     {
         await _dialogService.ShowDialog<bool>(new ProfilesViewModel(_fileDialogService, _dialogService, _profileRepository, _credentialService));
+    }
+    
+    private async Task CurrentWikiClicked()
+    {
+        await _dialogService.ShowDialog<bool>(new PreferencesViewModel());
     }
 }
