@@ -9,6 +9,7 @@ on:
 env:
   PROJECT_PATH: CrossWikiEditor/CrossWikiEditor.csproj
   TEST_PROJECT_PATH: CrossWikiEditor.Tests/CrossWikiEditor.Tests.csproj
+  WIKI_CLIENT_TEST_PROJECT_PATH: WikiClient.Tests/WikiClient.Tests.csproj
 
 jobs:
   build:
@@ -28,6 +29,9 @@ jobs:
 
       - name: Run unit tests
         run: dotnet test ${{ env.TEST_PROJECT_PATH }} -c Release --logger:nunit
+        
+      - name: Run unit tests
+        run: dotnet test ${{ env.WIKI_CLIENT_TEST_PROJECT_PATH }} -c Release --logger:nunit
 
       - name: Upload test results
         uses: actions/upload-artifact@v2
