@@ -2,38 +2,34 @@
 using CrossWikiEditor.Repositories;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.ViewModels;
-using Moq;
+using NSubstitute;
 
 namespace CrossWikiEditor.Tests.ViewModels;
 
 public class StatusBarViewModelTests
 {
-    private readonly Mock<IFileDialogService> _fileDialogService = new();
-    private readonly Mock<IDialogService> _dialogServiceMock = new();
-    private readonly Mock<IProfileRepository> _profileRepositoryMock = new();
-    private readonly Mock<ICredentialService> _credentialServiceMock = new();
-    private StatusBarViewModel? _statusBarViewModel;
-    
-    
+    private IFileDialogService _fileDialogService = Substitute.For<IFileDialogService>();
+    private IDialogService _dialogServiceMock = Substitute.For<IDialogService>();
+    private IProfileRepository _profileRepositoryMock = Substitute.For<IProfileRepository>();
+    private ICredentialService _credentialServiceMock = Substitute.For<ICredentialService>();
+    private StatusBarViewModel _statusBarViewModel;
+
     [SetUp]
     public void SetUp()
     {
-        _statusBarViewModel = new StatusBarViewModel(_fileDialogService.Object, _dialogServiceMock.Object, _profileRepositoryMock.Object, _credentialServiceMock.Object);
+        _statusBarViewModel = new StatusBarViewModel(_fileDialogService, _dialogServiceMock, _profileRepositoryMock, _credentialServiceMock);
     }
 
     [Test]
     public void UsernameClickedCommand_OpensProfilesWindow()
     {
         // arrange
-        _profileRepositoryMock
-            .Setup(profileService => profileService.GetAll())
-            .Returns(new List<Profile>());
-        
+        _profileRepositoryMock.GetAll().Returns(new List<Profile>());
+
         // act
-        _statusBarViewModel?.UsernameClickedCommand.Execute().Subscribe();
+        _statusBarViewModel.UsernameClickedCommand.Execute().Subscribe();
 
         // assert
-        _dialogServiceMock
-            .Verify(dialogService => dialogService.ShowDialog<bool>(It.IsAny<ProfilesViewModel>()));
+        _dialogServiceMock.ShowDialog<bool>(Arg.Any<ProfilesViewModel>());
     }
 }
