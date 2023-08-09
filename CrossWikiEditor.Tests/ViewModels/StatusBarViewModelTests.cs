@@ -30,6 +30,6 @@ public class StatusBarViewModelTests
         _statusBarViewModel.UsernameClickedCommand.Execute().Subscribe();
 
         // assert
-        _dialogServiceMock.ShowDialog<bool>(Arg.Any<ProfilesViewModel>());
+        _dialogServiceMock.Received().ShowDialog<bool>(Arg.Any<ProfilesViewModel>());
     }
 }

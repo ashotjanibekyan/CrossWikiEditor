@@ -23,7 +23,7 @@ public class StatusBarViewModel : ViewModelBase
         _profileRepository = profileRepository;
         _credentialService = credentialService;
         UsernameClickedCommand = ReactiveCommand.CreateFromTask(UsernameClicked);
-        UsernameClickedCommand = ReactiveCommand.CreateFromTask(CurrentWikiClicked);
+        CurrentWikiClickedCommand = ReactiveCommand.CreateFromTask(CurrentWikiClicked);
     }
     
     public string Username { get; set; } = "User: ";
