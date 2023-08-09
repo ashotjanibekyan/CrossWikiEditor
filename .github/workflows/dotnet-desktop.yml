@@ -21,26 +21,8 @@ jobs:
         with:
           dotnet-version: 6.0.x
 
-      - name: Restore dependencies
-        run: dotnet restore ${{ env.PROJECT_PATH }}
-
-      - name: Build and publish app
-        run: dotnet publish ${{ env.PROJECT_PATH }} -c Release --self-contained -r win-x64 -p:PublishSingleFile=true
-
-      - name: Run unit tests
+      - name: CrossWikiEditor unit tests
         run: dotnet test ${{ env.TEST_PROJECT_PATH }} -c Release --logger:nunit
         
-      - name: Run unit tests
+      - name: WikiClient unit tests
         run: dotnet test ${{ env.WIKI_CLIENT_TEST_PROJECT_PATH }} -c Release --logger:nunit
-
-      - name: Upload test results
-        uses: actions/upload-artifact@v2
-        with:
-          name: TestResults
-          path: CrossWikiEditor.Tests/TestResults/TestResults.xml
-
-      - name: Upload app artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: CrossWikiEditor-Win
-          path: CrossWikiEditor/bin/Release/net6.0/win-x64/publish
