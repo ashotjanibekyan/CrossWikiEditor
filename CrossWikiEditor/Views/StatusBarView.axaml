@@ -13,7 +13,7 @@
         <Label>Edits: 0</Label>
         <Label>Skipped: 0</Label>
         <Label>New: 0</Label>
-        <Button Command="{Binding CurrentWikiClickedCommand}" Content="{Binding CurrentWiki}" />
+        <Button Command="{Binding CurrentWikiClickedCommand}" Classes="Transparent" Content="{Binding CurrentWiki}" />
         <Button Command="{Binding UsernameClickedCommand}" Content="{Binding Username}" />
     </StackPanel>
 </UserControl>

@@ -5,6 +5,7 @@
     <Application.Styles>
         <FluentTheme Palettes="" DensityStyle="Compact"/>
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
+        <StyleInclude Source="./Styles/ButtonStyles.axaml" />
         <Style Selector="HeaderedContentControl">
             <Setter Property="Template">
                 <Setter.Value>
@@ -23,5 +24,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        
     </Application.Styles>
 </Application>
