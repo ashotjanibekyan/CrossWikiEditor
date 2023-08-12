@@ -2,8 +2,50 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        SizeToContent="WidthAndHeight"
+        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="350"
         x:Class="CrossWikiEditor.Views.PreferencesView"
         Title="Preferences">
-    Welcome to Avalonia!
+    <Grid RowDefinitions="*,Auto" Margin="10">
+        <TabControl Grid.Row="0">
+            <TabItem Header="General">
+                <StackPanel>
+                    <CheckBox Content="Minimize to notification area (systray)" />
+                    <CheckBox Content="Warn on exit" />
+                    <CheckBox Content="Save page list with settings" />
+                    <CheckBox Content="Low thread priority (works better in background)" />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="On load: " />
+                        <ComboBox >
+                            <ComboBoxItem Content="Show changes"  IsSelected="True" />
+                            <ComboBoxItem Content="Show preview" />
+                        </ComboBox>
+                    </StackPanel>
+                    <TextBlock Text="Wikis not related to Wikimeida are not guaranteed to function properly." />
+                    <CheckBox Content="Ignore {{bots}} and {{nobots}}" />
+                    <CheckBox Content="Empty page list on project change" />
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Site">
+                
+            </TabItem>
+            <TabItem Header="Editing and saving">
+                
+            </TabItem>
+            <TabItem Header="Tools">
+                
+            </TabItem>
+            <TabItem Header="Privacy">
+                
+            </TabItem>
+            <TabItem Header="Alerts">
+                
+            </TabItem>
+        </TabControl>
+        <Grid Grid.Row="1" ColumnDefinitions="Auto,*,Auto,Auto">
+            <TextBlock Grid.Column="0" Text=" &quot;Save settings as default&quot; to retain values"/>
+            <Button Grid.Column="2" Content="Ok" />
+            <Button Grid.Column="3" Content="Cancel" />
+        </Grid>
+    </Grid> 
 </Window>
