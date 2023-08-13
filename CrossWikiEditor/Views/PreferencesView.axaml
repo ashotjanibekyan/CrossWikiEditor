@@ -2,7 +2,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:CrossWikiEditor.ViewModels"
         SizeToContent="WidthAndHeight"
+        x:DataType="vm:PreferencesViewModel"
         mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="350"
         x:Class="CrossWikiEditor.Views.PreferencesView"
         Title="Preferences">
@@ -10,20 +12,19 @@
         <TabControl Grid.Row="0">
             <TabItem Header="General">
                 <StackPanel>
-                    <CheckBox Content="Minimize to notification area (systray)" />
-                    <CheckBox Content="Warn on exit" />
-                    <CheckBox Content="Save page list with settings" />
-                    <CheckBox Content="Low thread priority (works better in background)" />
+                    <CheckBox IsChecked="{Binding MinimizeToSystray}" Content="Minimize to notification area (systray)" />
+                    <CheckBox IsChecked="{Binding WarnOnExit}" Content="Warn on exit" />
+                    <CheckBox IsChecked="{Binding SavePageListWithSettings}" Content="Save page list with settings" />
+                    <CheckBox IsChecked="{Binding LowThreadPriority}" Content="Low thread priority (works better in background)" />
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="On load: " />
-                        <ComboBox >
-                            <ComboBoxItem Content="Show changes"  IsSelected="True" />
+                        <ComboBox SelectedIndex="0">
+                            <ComboBoxItem Content="Show changes" />
                             <ComboBoxItem Content="Show preview" />
                         </ComboBox>
                     </StackPanel>
-                    <TextBlock Text="Wikis not related to Wikimeida are not guaranteed to function properly." />
-                    <CheckBox Content="Ignore {{bots}} and {{nobots}}" />
-                    <CheckBox Content="Empty page list on project change" />
+                    <CheckBox IsChecked="{Binding PreviewDiffInBotMode}" Content="Preview the Diff in Bot Mode" />
+                    <CheckBox IsChecked="{Binding EnableLogging}" Content="Enable Logging" />
                 </StackPanel>
             </TabItem>
             <TabItem Header="Site">
