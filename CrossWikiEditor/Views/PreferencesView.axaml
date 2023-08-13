@@ -28,7 +28,20 @@
                 </StackPanel>
             </TabItem>
             <TabItem Header="Site">
-                
+                <StackPanel>
+                    <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto">
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Project:" />
+                        <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding Projects}" SelectedItem="{Binding SelectedProject}" />
+                        
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Language:" />
+                        <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Languages}" SelectedItem="{Binding SelectedLanguage}" />
+                        
+                        <CheckBox Grid.Row="2" Grid.Column="1" IsChecked="{Binding SuppressUsingAwb}" Content="Suppress &quot;Using AWB&quot;" />
+                    </Grid>
+                    <TextBlock Text="Wikis not related to Wikimedia are not guaranteed to function properly." />
+                    <CheckBox IsChecked="{Binding IgnoreNoBots}" Content="Ignore {{bots}} and {{nobots}}" />
+                    <CheckBox IsChecked="{Binding EmptyPageListOnProjectChange}" Content="Empty page list on project change" />
+                </StackPanel>
             </TabItem>
             <TabItem Header="Editing and saving">
                 
