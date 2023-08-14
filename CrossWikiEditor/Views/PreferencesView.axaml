@@ -44,16 +44,91 @@
                 </StackPanel>
             </TabItem>
             <TabItem Header="Editing and saving">
-                
+                <StackPanel>
+                    <HeaderedContentControl Background="Black" Header="Auto save edit box">
+                        <StackPanel  Margin="6">
+                            <StackPanel Orientation="Horizontal">
+                                <CheckBox Content="Automatically save edit box every" />
+                                <NumericUpDown ShowButtonSpinner="False"/>
+                                <Label Content="seconds" />
+                            </StackPanel>
+                            <Grid ColumnDefinitions="Auto,*,Auto">
+                                <Label Grid.Column="0" Content="File: " />
+                                <TextBox Grid.Column="1" />
+                                <Button Grid.Column="2" Content="Browse" />
+                            </Grid>
+                        </StackPanel>
+                    </HeaderedContentControl>
+                    
+                    <CheckBox Content="Display moving average timer" />
+                    <CheckBox Content="Add &quot;using AWB&quot; to when deleting or protecting pages" />
+                    
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <Label Content="When ready to save: " />
+                        <CheckBox Content="Flash" />
+                        <CheckBox Content="Beep" />
+                    </StackPanel>
+                    <Button Content="Set edit box font" HorizontalAlignment="Right" />
+                </StackPanel>
             </TabItem>
             <TabItem Header="Tools">
-                
+                <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto">
+                    <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Text="Add current article list to List Comparer:" />
+                    <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Text="Add current article list to List Splitter:" />
+                    <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Text="Add Database Scanner results to current list:" />
+                    
+                    <ComboBox Grid.Row="0" Grid.Column="1" Margin="5" Width="150" SelectedIndex="0">
+                        <ComboBoxItem Content="Ask" />
+                        <ComboBoxItem Content="Always" />
+                        <ComboBoxItem Content="Never" />
+                    </ComboBox>
+                    <ComboBox Grid.Row="1" Grid.Column="1" Margin="5" Width="150" SelectedIndex="0">
+                        <ComboBoxItem Content="Ask" />
+                        <ComboBoxItem Content="Always" />
+                        <ComboBoxItem Content="Never" />
+                    </ComboBox>
+                    <ComboBox Grid.Row="2" Grid.Column="1" Margin="5" Width="150" SelectedIndex="0">
+                        <ComboBoxItem Content="Ask" />
+                        <ComboBoxItem Content="Always" />
+                        <ComboBoxItem Content="Never" />
+                    </ComboBox>
+                </Grid>
             </TabItem>
             <TabItem Header="Privacy">
-                
+                <StackPanel Spacing="10">
+                    <CheckBox Content="Include username to improve accuracy"></CheckBox>
+                    <TextBlock TextWrapping="Wrap">We collect anonymous usage data and store it to our private database to help the developers track use and prioritise development tasks.  Only approved AWB developers can access the individual records.</TextBlock>
+                    <TextBlock TextWrapping="Wrap">We publish aggregrate statistics, where usernames are masked.  The client and server code is available for public inspection in our Sourceforge repository.</TextBlock>
+                    <TextBlock TextWrapping="Wrap">We do not collect IP or MAC addresses, computer names, or passwords.</TextBlock>
+                </StackPanel>
             </TabItem>
-            <TabItem Header="Alerts">
-                
+            <TabItem Header="Alerts" IsSelected="True">
+                <ScrollViewer>
+                    <StackPanel>
+                        <CheckBox Content="Ambiguous citation dates" />
+                        <CheckBox Content="Contains 'sic' tag" />
+                        <CheckBox Content="DAB page with &lt;ref&gt;s" />
+                        <CheckBox Content="Dead links" />
+                        <CheckBox Content="Duplicate parameters in WPBannerShell" />
+                        <CheckBox Content="Has &lt;ref> after &lt;/references>" />
+                        <CheckBox Content="Has 'No/More footnotes' template yet many references" />
+                        <CheckBox Content="Headers with wikilinks" />
+                        <CheckBox Content="Invalid citation parameters" />
+                        <CheckBox Content="Links with double pipes" />
+                        <CheckBox Content="Links with no target" />
+                        <CheckBox Content="Long article with stub tag" />
+                        <CheckBox Content="Multiple DEFAULTSORT" />
+                        <CheckBox Content="No category (may be one in a template)" />
+                        <CheckBox Content="See also section out of place" />
+                        <CheckBox Content="Starts with heading" />
+                        <CheckBox Content="Unbalanced brackets" />
+                        <CheckBox Content="Unclosed tags" />
+                        <CheckBox Content="Unformatted references" />
+                        <CheckBox Content="Unknown parameters in multiple issues" />
+                        <CheckBox Content="Unknown parameters in WPBannerShell" />
+                        <CheckBox Content="Editor's signature or link to user space" />
+                    </StackPanel>
+                </ScrollViewer>
             </TabItem>
         </TabControl>
         <Grid Grid.Row="1" ColumnDefinitions="Auto,*,Auto,Auto">
