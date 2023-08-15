@@ -4,8 +4,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:CrossWikiEditor.ViewModels"
         SizeToContent="WidthAndHeight"
+        MaxHeight="400"
+        MaxWidth="600"
         x:DataType="vm:PreferencesViewModel"
-        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="350"
+        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="400"
         x:Class="CrossWikiEditor.Views.PreferencesView"
         Title="Preferences">
     <Grid RowDefinitions="*,Auto" Margin="10">
@@ -105,28 +107,28 @@
             <TabItem Header="Alerts" IsSelected="True">
                 <ScrollViewer>
                     <StackPanel>
-                        <CheckBox Content="Ambiguous citation dates" />
-                        <CheckBox Content="Contains 'sic' tag" />
-                        <CheckBox Content="DAB page with &lt;ref&gt;s" />
-                        <CheckBox Content="Dead links" />
-                        <CheckBox Content="Duplicate parameters in WPBannerShell" />
-                        <CheckBox Content="Has &lt;ref> after &lt;/references>" />
-                        <CheckBox Content="Has 'No/More footnotes' template yet many references" />
-                        <CheckBox Content="Headers with wikilinks" />
-                        <CheckBox Content="Invalid citation parameters" />
-                        <CheckBox Content="Links with double pipes" />
-                        <CheckBox Content="Links with no target" />
-                        <CheckBox Content="Long article with stub tag" />
-                        <CheckBox Content="Multiple DEFAULTSORT" />
-                        <CheckBox Content="No category (may be one in a template)" />
-                        <CheckBox Content="See also section out of place" />
-                        <CheckBox Content="Starts with heading" />
-                        <CheckBox Content="Unbalanced brackets" />
-                        <CheckBox Content="Unclosed tags" />
-                        <CheckBox Content="Unformatted references" />
-                        <CheckBox Content="Unknown parameters in multiple issues" />
-                        <CheckBox Content="Unknown parameters in WPBannerShell" />
-                        <CheckBox Content="Editor's signature or link to user space" />
+                        <CheckBox Content="Ambiguous citation dates" IsChecked="{Binding Alerts.AmbiguousCitationDates}" />
+                        <CheckBox Content="Contains 'sic' tag" IsChecked="{Binding Alerts.ContainsSicTag}" />
+                        <CheckBox Content="DAB page with &lt;ref&gt;s" IsChecked="{Binding Alerts.DabPageWithRef}" />
+                        <CheckBox Content="Dead links" IsChecked="{Binding Alerts.DeadLinks}" />
+                        <CheckBox Content="Duplicate parameters in WPBannerShell" IsChecked="{Binding Alerts.DuplicateParametersInWpBannerShell}" />
+                        <CheckBox Content="Has &lt;ref> after &lt;/references>" IsChecked="{Binding Alerts.HasRefAfterReferences}" />
+                        <CheckBox Content="Has 'No/More footnotes' template yet many references" IsChecked="{Binding Alerts.HasFootnotesTemplate}" />
+                        <CheckBox Content="Headers with wikilinks" IsChecked="{Binding Alerts.HeadersWithWikilinks}" />
+                        <CheckBox Content="Invalid citation parameters" IsChecked="{Binding Alerts.InvalidCitationParameters}" />
+                        <CheckBox Content="Links with double pipes" IsChecked="{Binding Alerts.LinksWithDoublePipes}" />
+                        <CheckBox Content="Links with no target" IsChecked="{Binding Alerts.LinksWithNoTarget}" />
+                        <CheckBox Content="Long article with stub tag" IsChecked="{Binding Alerts.LongArticleWithStubTag}" />
+                        <CheckBox Content="Multiple DEFAULTSORT" IsChecked="{Binding Alerts.MultipleDefaultSort}" />
+                        <CheckBox Content="No category (may be one in a template)" IsChecked="{Binding Alerts.NoCategory}" />
+                        <CheckBox Content="See also section out of place" IsChecked="{Binding Alerts.SeeAlsoOutOfPlace}" />
+                        <CheckBox Content="Starts with heading" IsChecked="{Binding Alerts.StartsWithHeading}" />
+                        <CheckBox Content="Unbalanced brackets" IsChecked="{Binding Alerts.UnbalancedBrackets}" />
+                        <CheckBox Content="Unclosed tags" IsChecked="{Binding Alerts.UnclosedTags}" />
+                        <CheckBox Content="Unformatted references" IsChecked="{Binding Alerts.UnformattedReferences}" />
+                        <CheckBox Content="Unknown parameters in multiple issues" IsChecked="{Binding Alerts.UnknownParametersInMultipleIssues}" />
+                        <CheckBox Content="Unknown parameters in WPBannerShell" IsChecked="{Binding Alerts.UnknownParametersInWpBannerShell}" />
+                        <CheckBox Content="Editor's signature or link to user space" IsChecked="{Binding Alerts.EditorsSignatureOrLink}" />
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
