@@ -1,11 +1,15 @@
+using System;
 using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Threading.Tasks;
 using CrossWikiEditor.Models;
 using CrossWikiEditor.Repositories;
 using CrossWikiEditor.Services;
+using CrossWikiEditor.Services.WikiServices;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using WikiClient;
+using WikiClient.Actions;
 
 namespace CrossWikiEditor.ViewModels;
 
@@ -14,18 +18,18 @@ public class ProfilesViewModel : ViewModelBase
     private readonly IFileDialogService _fileDialogService;
     private readonly IDialogService _dialogService;
     private readonly IProfileRepository _profileRepository;
-    private readonly ICredentialService _credentialService;
+    private readonly IUserService _userService;
 
     public ProfilesViewModel(IFileDialogService fileDialogService,
         IDialogService dialogService,
         IProfileRepository profileRepository,
-        ICredentialService credentialService)
+        IUserService userService)
     {
         _fileDialogService = fileDialogService;
         _dialogService = dialogService;
         _profileRepository = profileRepository;
-        _credentialService = credentialService;
-        LoginCommand = ReactiveCommand.Create(Login);
+        _userService = userService;
+        LoginCommand = ReactiveCommand.CreateFromTask(Login);
         AddCommand = ReactiveCommand.CreateFromTask(Add);
         EditCommand = ReactiveCommand.CreateFromTask(Edit);
         DeleteCommand = ReactiveCommand.Create(Delete);
@@ -50,14 +54,18 @@ public class ProfilesViewModel : ViewModelBase
     public string Username { get; set; }
     public string Password { get; set; }
 
-    private void Login()
+    private async Task Login()
     {
-        throw new System.NotImplementedException();
+        var result = await _userService.GetLoginToken(new Site("https://hy.wikipedia.org/w/api.php?"));
+        if (result.IsSuccessful)
+        {
+            
+        }
     }
 
     private async Task Add()
     {
-        if (await _dialogService.ShowDialog<bool>(new AddOrEditProfileViewModel(_fileDialogService, _profileRepository, _credentialService, -1)))
+        if (await _dialogService.ShowDialog<bool>(new AddOrEditProfileViewModel(_fileDialogService, _profileRepository, -1)))
         {
             Profiles = new ObservableCollection<Profile>(_profileRepository.GetAll());
         }
@@ -70,7 +78,7 @@ public class ProfilesViewModel : ViewModelBase
             return;
         }
 
-        var vm = new AddOrEditProfileViewModel(_fileDialogService, _profileRepository, _credentialService, SelectedProfile.Id)
+        var vm = new AddOrEditProfileViewModel(_fileDialogService, _profileRepository, SelectedProfile.Id)
         {
             Username = SelectedProfile.Username,
             DefaultSettingsPath = SelectedProfile.DefaultSettingsPath,

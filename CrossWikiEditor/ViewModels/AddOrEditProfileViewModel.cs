@@ -14,17 +14,14 @@ public class AddOrEditProfileViewModel : ViewModelBase
 {
     private readonly IFileDialogService _fileDialogService;
     private readonly IProfileRepository _profileRepository;
-    private readonly ICredentialService _credentialService;
     private readonly int _id;
 
     public AddOrEditProfileViewModel(IFileDialogService fileDialogService,
         IProfileRepository profileRepository,
-        ICredentialService credentialService,
         int id)
     {
         _fileDialogService = fileDialogService;
         _profileRepository = profileRepository;
-        _credentialService = credentialService;
         _id = id;
         BrowseCommand = ReactiveCommand.CreateFromTask(Browse);
         SaveCommand = ReactiveCommand.Create<IDialog>(Save);

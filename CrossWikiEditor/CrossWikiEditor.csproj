@@ -130,4 +130,8 @@
       <AdditionalFiles Include="Views\ReportViews\PageLogsView.axaml" />
       <AdditionalFiles Include="Views\ReportViews\WhatLinksHereView.axaml" />
     </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\WikiClient\WikiClient.csproj" />
+    </ItemGroup>
 </Project>

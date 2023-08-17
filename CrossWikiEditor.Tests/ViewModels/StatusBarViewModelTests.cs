@@ -1,6 +1,7 @@
 ﻿using CrossWikiEditor.Models;
 using CrossWikiEditor.Repositories;
 using CrossWikiEditor.Services;
+using CrossWikiEditor.Services.WikiServices;
 using CrossWikiEditor.ViewModels;
 using NSubstitute;
 
@@ -11,13 +12,13 @@ public class StatusBarViewModelTests
     private IFileDialogService _fileDialogService = Substitute.For<IFileDialogService>();
     private IDialogService _dialogServiceMock = Substitute.For<IDialogService>();
     private IProfileRepository _profileRepositoryMock = Substitute.For<IProfileRepository>();
-    private ICredentialService _credentialServiceMock = Substitute.For<ICredentialService>();
+    private IUserService _userServiceMock = Substitute.For<IUserService>();
     private StatusBarViewModel _statusBarViewModel;
 
     [SetUp]
     public void SetUp()
     {
-        _statusBarViewModel = new StatusBarViewModel(_fileDialogService, _dialogServiceMock, _profileRepositoryMock, _credentialServiceMock);
+        _statusBarViewModel = new StatusBarViewModel(_fileDialogService, _dialogServiceMock, _profileRepositoryMock, _userServiceMock);
     }
 
     [Test]

@@ -8,6 +8,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
 using CrossWikiEditor.Repositories;
 using CrossWikiEditor.Services;
+using CrossWikiEditor.Services.WikiServices;
 using CrossWikiEditor.ViewModels;
 using CrossWikiEditor.ViewModels.ControlViewModels;
 using CrossWikiEditor.ViewModels.ReportViewModels;
@@ -78,8 +79,8 @@ public class App : Application
         builder.RegisterType<DialogService>()
             .As<IDialogService>()
             .WithParameter(new TypedParameter(typeof(Window), _mainWindow)).SingleInstance();
-        builder.RegisterType<CredentialService>().As<ICredentialService>().SingleInstance();
         builder.RegisterType<FileDialogService>().As<IFileDialogService>().SingleInstance();
+        builder.RegisterType<UserService>().As<IUserService>().SingleInstance();
         builder.RegisterType<UserPreferencesService>().As<IUserPreferencesService>().SingleInstance();
         var (key, iv) = StringEncryptionService.GenerateKeyAndIv("SHOULD IMPLEMENT THIS LATER", new byte[16], 32, 16, 10000);
         IStringEncryptionService stringEncryptionService = new StringEncryptionService(key, iv);
