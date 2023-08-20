@@ -1,5 +1,5 @@
 ﻿namespace CrossWikiEditor.ViewModels.ReportViewModels;
 
-public class WhatLinksHereViewModel : ViewModelBase
+public sealed class WhatLinksHereViewModel : ViewModelBase
 {
 }

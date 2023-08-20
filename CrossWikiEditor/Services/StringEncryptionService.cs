@@ -11,7 +11,7 @@ public interface IStringEncryptionService
     string DecryptStringFromBytes(byte[] encryptedBytes);
 }
 
-public class StringEncryptionService : IStringEncryptionService
+public sealed class StringEncryptionService : IStringEncryptionService
 {
     private readonly byte[] _key;
     private readonly byte[] _iv;

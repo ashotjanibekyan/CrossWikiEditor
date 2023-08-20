@@ -2,7 +2,7 @@
 
 namespace WikiClient;
 
-public class Tokens
+public sealed class Tokens
 {
     [JsonPropertyName("createaccounttoken")]
     public string CreateAccountToken { get; set; }

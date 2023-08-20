@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿namespace CrossWikiEditor.ViewModels.ControlViewModels;
 
-namespace CrossWikiEditor.ViewModels.ControlViewModels;
-
-public class SkipViewModel : ViewModelBase
+public sealed class SkipViewModel : ViewModelBase
 {
 }

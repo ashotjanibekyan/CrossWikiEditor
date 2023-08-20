@@ -2,7 +2,7 @@
 
 namespace WikiClient;
 
-public class LowerCaseNamingPolicy : JsonNamingPolicy
+public sealed class LowerCaseNamingPolicy : JsonNamingPolicy
 {
     public override string ConvertName(string name) =>
         name.ToLower();

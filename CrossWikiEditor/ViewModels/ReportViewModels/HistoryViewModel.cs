@@ -1,5 +1,5 @@
 ﻿namespace CrossWikiEditor.ViewModels.ReportViewModels;
 
-public class HistoryViewModel : ViewModelBase
+public sealed class HistoryViewModel : ViewModelBase
 {
 }

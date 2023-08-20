@@ -19,7 +19,7 @@ class RealmProfile : RealmObject
     public string Notes { get; set; }
 }
 
-public class RealmProfileRepository : IProfileRepository
+public sealed class RealmProfileRepository : IProfileRepository
 {
     private readonly IStringEncryptionService _stringEncryptionService;
     private readonly RealmConfigurationBase _realmConfiguration;

@@ -10,7 +10,7 @@ public interface IDialogService
     Task<TResult> ShowDialog<TResult>(ViewModelBase viewModel);
 }
 
-public class DialogService : IDialogService
+public sealed class DialogService : IDialogService
 {
     private readonly IContainer _container;
     private readonly Window _mainWindow;

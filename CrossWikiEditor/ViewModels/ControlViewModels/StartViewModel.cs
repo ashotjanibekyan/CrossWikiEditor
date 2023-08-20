@@ -2,7 +2,7 @@
 
 namespace CrossWikiEditor.ViewModels.ControlViewModels;
 
-public class StartViewModel : ViewModelBase
+public sealed class StartViewModel : ViewModelBase
 {
     public StartViewModel()
     {

@@ -1,6 +1,6 @@
 ﻿namespace WikiClient;
 
-public class QueryBuilder
+public sealed class QueryBuilder
 {
     private string _action;
     private OutputFormat _format;

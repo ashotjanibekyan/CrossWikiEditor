@@ -2,7 +2,7 @@
 
 namespace WikiClient.Actions;
 
-public class QueryAction
+public sealed class QueryAction
 {
     private List<QueryPropertyBase> _queryProperties;
     private List<QueryMetaBase> _queryMetas;

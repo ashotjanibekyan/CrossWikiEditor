@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace CrossWikiEditor.ViewModels;
 
-public class MakeListViewModel : ViewModelBase
+public sealed class MakeListViewModel : ViewModelBase
 {
 
     public MakeListViewModel()

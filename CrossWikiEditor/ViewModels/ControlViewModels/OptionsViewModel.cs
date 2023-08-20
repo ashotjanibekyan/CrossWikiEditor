@@ -1,5 +1,5 @@
 ﻿namespace CrossWikiEditor.ViewModels.ControlViewModels;
 
-public class OptionsViewModel : ViewModelBase
+public sealed class OptionsViewModel : ViewModelBase
 {
 }

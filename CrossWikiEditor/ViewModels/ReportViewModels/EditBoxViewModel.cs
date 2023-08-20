@@ -1,5 +1,5 @@
 ﻿namespace CrossWikiEditor.ViewModels.ReportViewModels;
 
-public class EditBoxViewModel : ViewModelBase
+public sealed class EditBoxViewModel : ViewModelBase
 {
 }

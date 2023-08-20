@@ -1,6 +1,6 @@
 ﻿namespace CrossWikiEditor.Models;
 
-public class Profile
+public sealed class Profile
 {
     public int Id { get; set; }
     public string Username { get; set; }

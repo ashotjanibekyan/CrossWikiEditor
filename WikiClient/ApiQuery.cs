@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace WikiClient;
 
-public class ApiQuery
+public sealed class ApiQuery
 {
     private readonly Site _site;
     private static HttpClient _httpClient = new();

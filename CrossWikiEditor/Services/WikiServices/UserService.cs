@@ -11,7 +11,7 @@ public interface IUserService
     
 }
 
-public class UserService : IUserService
+public sealed class UserService : IUserService
 {
     public async Task<Result<string>> GetLoginToken(Site site)
     {

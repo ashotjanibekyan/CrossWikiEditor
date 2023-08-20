@@ -1,6 +1,6 @@
 ﻿namespace WikiClient;
 
-public class Site
+public sealed class Site
 {
     public readonly string Domain;
 

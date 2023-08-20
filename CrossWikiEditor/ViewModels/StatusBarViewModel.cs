@@ -7,7 +7,7 @@ using ReactiveUI;
 
 namespace CrossWikiEditor.ViewModels;
 
-public class StatusBarViewModel : ViewModelBase
+public sealed class StatusBarViewModel : ViewModelBase
 {
     private readonly IFileDialogService _fileDialogService;
     private readonly IDialogService _dialogService;

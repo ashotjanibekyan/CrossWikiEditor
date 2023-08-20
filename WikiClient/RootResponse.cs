@@ -2,7 +2,7 @@
 
 namespace WikiClient;
 
-public class RootResponse
+public sealed class RootResponse
 {
     [JsonPropertyName("batchcomplete")]
     public bool BatchComplete { get; set; }

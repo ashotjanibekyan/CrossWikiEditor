@@ -12,7 +12,7 @@ public interface IUserPreferencesService
 }
 
 
-public class UserPreferencesService : IUserPreferencesService
+public sealed class UserPreferencesService : IUserPreferencesService
 {
     public UserPrefs GetUserPref(string path)
     {

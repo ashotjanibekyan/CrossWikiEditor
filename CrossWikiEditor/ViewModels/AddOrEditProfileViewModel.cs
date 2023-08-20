@@ -10,7 +10,7 @@ using ReactiveUI.Fody.Helpers;
 
 namespace CrossWikiEditor.ViewModels;
 
-public class AddOrEditProfileViewModel : ViewModelBase
+public sealed class AddOrEditProfileViewModel : ViewModelBase
 {
     private readonly IFileDialogService _fileDialogService;
     private readonly IProfileRepository _profileRepository;

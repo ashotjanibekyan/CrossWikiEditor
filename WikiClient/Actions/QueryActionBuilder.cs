@@ -1,6 +1,6 @@
 ﻿namespace WikiClient.Actions;
 
-public class QueryActionBuilder
+public sealed class QueryActionBuilder
 {
     private MetaTokenType _tokenType;
     private List<string> _titles;

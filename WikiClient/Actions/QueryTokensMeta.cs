@@ -1,6 +1,6 @@
 ﻿namespace WikiClient.Actions;
 
-public class QueryTokensMeta : QueryMetaBase
+public sealed class QueryTokensMeta : QueryMetaBase
 {
     public QueryTokensMeta(MetaTokenType tokenType)
     {

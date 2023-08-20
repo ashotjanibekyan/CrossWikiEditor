@@ -4,7 +4,7 @@ using ReactiveUI.Fody.Helpers;
 
 namespace CrossWikiEditor.ViewModels;
 
-public class PreferencesViewModel : ViewModelBase
+public sealed class PreferencesViewModel : ViewModelBase
 {
     public PreferencesViewModel()
     {

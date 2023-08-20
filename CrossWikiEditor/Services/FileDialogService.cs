@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 
 namespace CrossWikiEditor.Services;
@@ -14,7 +13,7 @@ public interface IFileDialogService
         List<FilePickerFileType> filters);
 }
 
-public class FileDialogService : IFileDialogService
+public sealed class FileDialogService : IFileDialogService
 {
     private readonly IStorageProvider _storageProvider;
 

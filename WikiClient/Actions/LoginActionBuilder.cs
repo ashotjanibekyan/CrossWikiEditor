@@ -1,6 +1,6 @@
 ﻿namespace WikiClient.Actions;
 
-public class LoginActionBuilder
+public sealed class LoginActionBuilder
 {
     private string _username;
     private string _password;

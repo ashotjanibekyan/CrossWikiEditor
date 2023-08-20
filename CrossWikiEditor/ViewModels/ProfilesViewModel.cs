@@ -1,4 +1,3 @@
-using System;
 using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Threading.Tasks;
@@ -9,11 +8,10 @@ using CrossWikiEditor.Services.WikiServices;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using WikiClient;
-using WikiClient.Actions;
 
 namespace CrossWikiEditor.ViewModels;
 
-public class ProfilesViewModel : ViewModelBase
+public sealed class ProfilesViewModel : ViewModelBase
 {
     private readonly IFileDialogService _fileDialogService;
     private readonly IDialogService _dialogService;

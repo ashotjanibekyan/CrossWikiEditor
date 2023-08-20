@@ -3,7 +3,7 @@ using CrossWikiEditor.ViewModels.ReportViewModels;
 
 namespace CrossWikiEditor.ViewModels;
 
-public class MainWindowViewModel : ViewModelBase
+public sealed class MainWindowViewModel : ViewModelBase
 {
     public StatusBarViewModel StatusBarViewModel { get; }
     

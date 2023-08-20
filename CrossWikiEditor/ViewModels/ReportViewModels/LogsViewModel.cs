@@ -1,5 +1,5 @@
 ﻿namespace CrossWikiEditor.ViewModels.ReportViewModels;
 
-public class LogsViewModel : ViewModelBase
+public sealed class LogsViewModel : ViewModelBase
 {
 }
