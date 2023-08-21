@@ -13,7 +13,7 @@ public class UserPrefs
     public UserPrefs()
     {
         Version = "0.0.1";
-        Project = ProjectEnum.wikipedia;
+        Project = ProjectEnum.Wikipedia;
         LanguageCode = "en";
         CustomProject = "";
         Protocol = "http://";

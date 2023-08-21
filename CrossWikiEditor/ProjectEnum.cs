@@ -2,20 +2,20 @@
 
 public enum ProjectEnum
 {
-    wikipedia,
-    wiktionary,
-    wikisource,
-    wikiquote,
-    wikiversity,
-    wikivoyage,
-    wikibooks,
-    wikinews,
-    species,
-    commons,
-    meta,
-    mediawiki,
-    incubator,
-    wikia,
-    fandom,
-    custom
+    Wikipedia,
+    Wiktionary,
+    Wikisource,
+    Wikiquote,
+    Wikiversity,
+    Wikivoyage,
+    Wikibooks,
+    Wikinews,
+    Species,
+    Commons,
+    Meta,
+    Mediawiki,
+    Incubator,
+    Wikia,
+    Fandom,
+    Custom
 }
