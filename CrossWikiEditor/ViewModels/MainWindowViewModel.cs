@@ -10,6 +10,7 @@ public sealed class MainWindowViewModel : ViewModelBase
     public MakeListViewModel MakeListViewModel { get; }
     public OptionsViewModel OptionsViewModel { get; }
     public MoreViewModel MoreViewModel { get; }
+    public MenuViewModel MenuViewModel { get; set; }
     public DisambigViewModel DisambigViewModel { get; }
     public SkipViewModel SkipViewModel { get; }
     public StartViewModel StartViewModel { get; }
@@ -27,6 +28,7 @@ public sealed class MainWindowViewModel : ViewModelBase
         MakeListViewModel makeListViewModel, 
         OptionsViewModel optionsViewModel, 
         MoreViewModel moreViewModel,
+        MenuViewModel menuViewModel,
         DisambigViewModel disambigViewModel, 
         SkipViewModel skipViewModel, 
         StartViewModel startViewModel, 
@@ -40,6 +42,7 @@ public sealed class MainWindowViewModel : ViewModelBase
         MakeListViewModel = makeListViewModel;
         OptionsViewModel = optionsViewModel;
         MoreViewModel = moreViewModel;
+        MenuViewModel = menuViewModel;
         DisambigViewModel = disambigViewModel;
         SkipViewModel = skipViewModel;
         StartViewModel = startViewModel;

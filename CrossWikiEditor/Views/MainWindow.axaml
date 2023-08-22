@@ -14,7 +14,7 @@
         Title="CrossWikiEditor">
 
   <Grid RowDefinitions="Auto,*,Auto" Margin="1">
-    <views:MenuView Grid.Row="0" Grid.Column="0" />
+    <views:MenuView Grid.Row="0" Grid.Column="0" DataContext="{Binding MenuViewModel}" />
     <Grid Grid.Row="1" RowDefinitions="*,1,*">
       <Grid Grid.Row="0">
         <Rectangle Fill="White" />

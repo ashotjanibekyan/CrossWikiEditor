@@ -95,6 +95,7 @@ public class App : Application
         builder.RegisterType<MakeListViewModel>();
         builder.RegisterType<OptionsViewModel>();
         builder.RegisterType<MoreViewModel>();
+        builder.RegisterType<MenuViewModel>().WithParameter(new TypedParameter(typeof(Window), _mainWindow));
         builder.RegisterType<DisambigViewModel>();
         builder.RegisterType<SkipViewModel>();
         builder.RegisterType<StartViewModel>();

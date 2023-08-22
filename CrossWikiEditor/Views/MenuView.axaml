@@ -2,6 +2,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:CrossWikiEditor.ViewModels"
+             x:DataType="vm:MenuViewModel"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="CrossWikiEditor.Views.MenuView">
     	<Menu>
@@ -17,7 +19,7 @@
 			<MenuItem Header="Log out" />
 			<MenuItem Header="Refresh Status/Typos" />
 			<Separator />
-			<MenuItem Header="Exit" />
+			<MenuItem Header="Exit" Command="{Binding ExitCommand}" />
 		</MenuItem>
 		<MenuItem Header="View">
 			<MenuItem Header="Show toolbar" />
