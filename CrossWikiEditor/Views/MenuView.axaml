@@ -8,16 +8,16 @@
              x:Class="CrossWikiEditor.Views.MenuView">
     	<Menu>
 		<MenuItem Header="File">
-			<MenuItem Header="Reset to original default settings" />
-			<MenuItem Header="Open settings..." />
+			<MenuItem Header="Reset to original default settings" Command="{Binding ResetToDefaultSettingsCommand}" />
+			<MenuItem Header="Open settings..." Command="{Binding OpenSettingsCommand}" />
 			<Separator />
-			<MenuItem Header="Save settings" />
-			<MenuItem Header="Save settings as..." />
-			<MenuItem Header="Save settings as default" />
+			<MenuItem Header="Save settings" Command="{Binding SaveSettingsCommand}" />
+			<MenuItem Header="Save settings as..." Command="{Binding SaveSettingsAsCommand}" />
+			<MenuItem Header="Save settings as default" Command="{Binding SaveSettingsAsDefaultCommand}" />
 			<Separator />
-			<MenuItem Header="Login/Profiles..." />
-			<MenuItem Header="Log out" />
-			<MenuItem Header="Refresh Status/Typos" />
+			<MenuItem Header="Login/Profiles..." Command="{Binding LoginProfilesCommand}" />
+			<MenuItem Header="Log out" Command="{Binding LogoutCommand}" />
+			<MenuItem Header="Refresh Status/Typos" Command="{Binding RefreshStatusAndTyposCommand}" />
 			<Separator />
 			<MenuItem Header="Exit" Command="{Binding ExitCommand}" />
 		</MenuItem>
