@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 namespace CrossWikiEditor;
 
 [Serializable, XmlRoot("AutoWikiBrowserPreferences")]
-public class UserPrefs
+public struct UserPrefs
 {
 
     [XmlAttribute("xml:space")]
