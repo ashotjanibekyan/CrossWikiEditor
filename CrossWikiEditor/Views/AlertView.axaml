@@ -1,0 +1,18 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:CrossWikiEditor.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="CrossWikiEditor.Views.AlertView"
+        SizeToContent="WidthAndHeight"
+        CanResize="False"
+        x:DataType="vm:AlertViewModel"
+        x:Name="This"
+        Title="{Binding Title}">
+    <Grid RowDefinitions="Auto,Auto" Margin="16">
+        <TextBlock Grid.Row="0" HorizontalAlignment="Center" Text="{Binding ContentText}" />
+        <Button Grid.Row="1" HorizontalAlignment="Right" Content="Ok" Command="{Binding OkCommand}"
+                CommandParameter="{Binding #This}" Width="50" HorizontalContentAlignment="Center"/>
+    </Grid>
+</Window>
