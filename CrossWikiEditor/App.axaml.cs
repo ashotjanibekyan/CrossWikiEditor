@@ -75,6 +75,7 @@ public class App : Application
     private void RegisterServices(ContainerBuilder builder)
     {
         var storageProvider = TopLevel.GetTopLevel(_mainWindow)!.StorageProvider;
+        builder.RegisterType<ViewModelFactory>().As<IViewModelFactory>().SingleInstance();
         builder.RegisterInstance(storageProvider).As<IStorageProvider>();
         builder.RegisterType<DialogService>()
             .As<IDialogService>()
