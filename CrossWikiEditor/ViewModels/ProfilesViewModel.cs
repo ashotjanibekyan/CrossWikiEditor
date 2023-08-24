@@ -126,13 +126,20 @@ public sealed class ProfilesViewModel : ViewModelBase
 
     private async Task Login(Profile profile)
     {
-        UserPrefs currentUserPref = _userPreferencesService.GetCurrentPref();
+        UserPrefs currentUserPref = string.IsNullOrEmpty(profile.DefaultSettingsPath)
+            ? _userPreferencesService.GetCurrentPref()
+            : _userPreferencesService.GetUserPref(profile.DefaultSettingsPath);
+        
         var site = new Site(currentUserPref.ApiRoot());
         
         Result loginResult = await _userService.Login(profile, site);
         if (loginResult is {IsSuccessful: true})
         {
             _messageBus.SendMessage(new NewAccountLoggedInMessage(profile));
+            if (!string.IsNullOrEmpty(profile.DefaultSettingsPath))
+            {
+                _userPreferencesService.SetCurrentPref(currentUserPref);
+            }
         }
         else
         {

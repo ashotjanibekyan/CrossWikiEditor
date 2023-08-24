@@ -11,7 +11,7 @@ public class ViewModelFactoryTests : BaseTest
     public void SetUp()
     {
         SetUpServices();
-        _sut = new ViewModelFactory(_fileDialogService, _dialogService, _profileRepository, _userService, _userPreferencesServic, _messageBus);
+        _sut = new ViewModelFactory(_fileDialogService, _dialogService, _profileRepository, _userService, _userPreferencesService, _messageBus);
     }
 
     [Test]
