@@ -13,6 +13,7 @@ using CrossWikiEditor.ViewModels;
 using CrossWikiEditor.ViewModels.ControlViewModels;
 using CrossWikiEditor.ViewModels.ReportViewModels;
 using CrossWikiEditor.Views;
+using ReactiveUI;
 
 namespace CrossWikiEditor;
 
@@ -74,18 +75,20 @@ public class App : Application
 
     private void RegisterServices(ContainerBuilder builder)
     {
-        var storageProvider = TopLevel.GetTopLevel(_mainWindow)!.StorageProvider;
+        IStorageProvider storageProvider = TopLevel.GetTopLevel(_mainWindow)!.StorageProvider;
+        (byte[] key, byte[] iv) = StringEncryptionService.GenerateKeyAndIv("SHOULD IMPLEMENT THIS LATER", new byte[16], 32, 16, 10000);
+        IStringEncryptionService stringEncryptionService = new StringEncryptionService(key, iv);
+        
         builder.RegisterType<ViewModelFactory>().As<IViewModelFactory>().SingleInstance();
-        builder.RegisterInstance(storageProvider).As<IStorageProvider>();
+        builder.RegisterType<FileDialogService>().As<IFileDialogService>().SingleInstance();
+        builder.RegisterType<UserPreferencesService>().As<IUserPreferencesService>().SingleInstance();
+        builder.RegisterType<UserService>().As<IUserService>().SingleInstance();
         builder.RegisterType<DialogService>()
             .As<IDialogService>()
             .WithParameter(new TypedParameter(typeof(Window), _mainWindow)).SingleInstance();
-        builder.RegisterType<FileDialogService>().As<IFileDialogService>().SingleInstance();
-        builder.RegisterType<UserService>().As<IUserService>().SingleInstance();
-        builder.RegisterType<UserPreferencesService>().As<IUserPreferencesService>().SingleInstance();
-        var (key, iv) = StringEncryptionService.GenerateKeyAndIv("SHOULD IMPLEMENT THIS LATER", new byte[16], 32, 16, 10000);
-        IStringEncryptionService stringEncryptionService = new StringEncryptionService(key, iv);
+        builder.RegisterInstance(storageProvider).As<IStorageProvider>();
         builder.RegisterInstance(stringEncryptionService).As<IStringEncryptionService>();
+        builder.Register(c => MessageBus.Current).As<IMessageBus>();
     }
     
     private void RegisterViewModels(ContainerBuilder builder)

@@ -19,13 +19,13 @@ public sealed class UserPreferencesService : IUserPreferencesService
 {
     private UserPrefs _currentPref;
 
-    public UserPreferencesService()
+    public UserPreferencesService(IMessageBus messageBus)
     {
         _currentPref = new UserPrefs();
 
-        MessageBus.Current.Listen<LanguageCodeChangedMessage>()
+        messageBus.Listen<LanguageCodeChangedMessage>()
             .Subscribe(m => _currentPref.LanguageCode = m.LanguageCode);
-        MessageBus.Current.Listen<ProjectChangedMessage>()
+        messageBus.Listen<ProjectChangedMessage>()
             .Subscribe(m => _currentPref.Project = m.Project);
     }
     

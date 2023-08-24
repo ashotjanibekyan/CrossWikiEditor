@@ -12,10 +12,12 @@ namespace CrossWikiEditor.ViewModels;
 public sealed class PreferencesViewModel : ViewModelBase
 {
     private readonly IUserPreferencesService _userPreferencesService;
+    private readonly IMessageBus _messageBus;
 
-    public PreferencesViewModel(IUserPreferencesService userPreferencesService)
+    public PreferencesViewModel(IUserPreferencesService userPreferencesService, IMessageBus messageBus)
     {
         _userPreferencesService = userPreferencesService;
+        _messageBus = messageBus;
         Alerts = new()
         {
             AmbiguousCitationDates = true,
@@ -85,8 +87,8 @@ public sealed class PreferencesViewModel : ViewModelBase
     
     private void Save(IDialog dialog)
     {
-        MessageBus.Current.SendMessage(new ProjectChangedMessage(SelectedProject));
-        MessageBus.Current.SendMessage(new LanguageCodeChangedMessage(SelectedLanguage));
+        _messageBus.SendMessage(new ProjectChangedMessage(SelectedProject));
+        _messageBus.SendMessage(new LanguageCodeChangedMessage(SelectedLanguage));
         dialog.Close(true);
     }
 }

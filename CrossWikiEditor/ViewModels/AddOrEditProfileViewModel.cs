@@ -28,6 +28,8 @@ public sealed class AddOrEditProfileViewModel : ViewModelBase
         CancelCommand = ReactiveCommand.Create((IDialog dialog) => dialog.Close(false));
     }
 
+    public bool IsEdit => _id != -1;
+
     [Reactive] 
     public string Username { get; set; } = string.Empty;
 
@@ -95,16 +97,16 @@ public sealed class AddOrEditProfileViewModel : ViewModelBase
             Notes = Notes
         };
 
-        if (_id == -1)
-        {
-            _profileRepository.Insert(profile);
-        }
-        else
+        if (IsEdit)
         {
             profile.Id = _id;
             _profileRepository.Update(profile);
         }
-        
+        else
+        {
+            _profileRepository.Insert(profile);
+        }
+
         dialog.Close(true);
     }
 }

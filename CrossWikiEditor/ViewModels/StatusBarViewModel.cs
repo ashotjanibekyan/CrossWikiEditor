@@ -17,7 +17,10 @@ public sealed class StatusBarViewModel : ViewModelBase
     private ObservableAsPropertyHelper<string> _languageCode;
     private ObservableAsPropertyHelper<string> _project;
 
-    public StatusBarViewModel(IViewModelFactory viewModelFactory, IDialogService dialogService, IUserPreferencesService userPreferencesService)
+    public StatusBarViewModel(IViewModelFactory viewModelFactory,
+        IDialogService dialogService,
+        IUserPreferencesService userPreferencesService,
+        IMessageBus messageBus)
     {
         _viewModelFactory = viewModelFactory;
         _dialogService = dialogService;
@@ -28,17 +31,17 @@ public sealed class StatusBarViewModel : ViewModelBase
         _project = this.WhenAnyValue(x => x.Project)
             .Select(x => x)
             .ToProperty(this, x => x.CurrentWiki);
-        MessageBus.Current.Listen<NewAccountLoggedInMessage>()
+        messageBus.Listen<NewAccountLoggedInMessage>()
             .Subscribe((message) =>
             {
                 Username = message.Profile.Username;
             });
-        MessageBus.Current.Listen<ProjectChangedMessage>()
+        messageBus.Listen<ProjectChangedMessage>()
             .Subscribe(message =>
             {
                 Project = message.Project.ToString();
             });
-        MessageBus.Current.Listen<LanguageCodeChangedMessage>()
+        messageBus.Listen<LanguageCodeChangedMessage>()
             .Subscribe(message =>
             {
                 LanguageCode = message.LanguageCode;

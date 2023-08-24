@@ -19,18 +19,21 @@ public sealed class ProfilesViewModel : ViewModelBase
     private readonly IProfileRepository _profileRepository;
     private readonly IUserService _userService;
     private readonly IUserPreferencesService _userPreferencesService;
+    private readonly IMessageBus _messageBus;
 
     public ProfilesViewModel(IFileDialogService fileDialogService,
         IDialogService dialogService,
         IProfileRepository profileRepository,
         IUserService userService,
-        IUserPreferencesService userPreferencesService)
+        IUserPreferencesService userPreferencesService,
+        IMessageBus messageBus)
     {
         _fileDialogService = fileDialogService;
         _dialogService = dialogService;
         _profileRepository = profileRepository;
         _userService = userService;
         _userPreferencesService = userPreferencesService;
+        _messageBus = messageBus;
         LoginCommand = ReactiveCommand.CreateFromTask(Login);
         AddCommand = ReactiveCommand.CreateFromTask(Add);
         EditCommand = ReactiveCommand.CreateFromTask(Edit);
@@ -67,12 +70,21 @@ public sealed class ProfilesViewModel : ViewModelBase
         Result loginResult = await _userService.Login(SelectedProfile, site);
         if (loginResult is {IsSuccessful: true})
         {
-            MessageBus.Current.SendMessage(new NewAccountLoggedInMessage(SelectedProfile));
+            _messageBus.SendMessage(new NewAccountLoggedInMessage(SelectedProfile));
         }
         else
         {
-            await _dialogService.Alert("Login Attempt Unsuccessful",
-                "Login Attempt Unsuccessful: Please ensure an active internet connection and verify the accuracy of your provided username and password.");
+            if (string.IsNullOrWhiteSpace(loginResult.Error))
+            {
+                await _dialogService.Alert("Login Attempt Unsuccessful",
+                    "Login Attempt Unsuccessful: Please ensure an active internet connection and verify the accuracy of your provided username and password.");
+            }
+            else
+            {
+                
+                await _dialogService.Alert("Login Attempt Unsuccessful", loginResult.Error);
+            }
+
         }
     }
 

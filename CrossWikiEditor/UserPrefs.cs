@@ -41,7 +41,7 @@ public struct UserPrefs
 
     public string ApiRoot()
     {
-        if (string.IsNullOrEmpty(LanguageCode) && new[]
+        if (!string.IsNullOrEmpty(LanguageCode) && new[]
             {
                 ProjectEnum.Wikipedia,
                 ProjectEnum.Wiktionary,

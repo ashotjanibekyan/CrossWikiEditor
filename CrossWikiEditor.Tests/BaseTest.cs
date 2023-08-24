@@ -3,6 +3,7 @@ using CrossWikiEditor.Repositories;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
 using NSubstitute;
+using ReactiveUI;
 
 namespace CrossWikiEditor.Tests;
 
@@ -14,6 +15,7 @@ public abstract class BaseTest
     protected IUserService _userService;
     protected IUserPreferencesService _userPreferencesServic;
     protected IDialog _dialog;
+    protected IMessageBus _messageBus;
 
     public void SetUpServices()
     {
@@ -23,5 +25,6 @@ public abstract class BaseTest
         _userService = Substitute.For<IUserService>();
         _userPreferencesServic = Substitute.For<IUserPreferencesService>();
         _dialog = Substitute.For<IDialog>();
+        _messageBus = Substitute.For<IMessageBus>();
     }
 }
