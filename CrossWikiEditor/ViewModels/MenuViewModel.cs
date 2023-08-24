@@ -1,5 +1,7 @@
 using System.Reactive;
+using System.Threading.Tasks;
 using Avalonia.Controls;
+using CrossWikiEditor.Services;
 using ReactiveUI;
 
 namespace CrossWikiEditor.ViewModels;
@@ -7,16 +9,20 @@ namespace CrossWikiEditor.ViewModels;
 public class MenuViewModel : ViewModelBase
 {
     private readonly Window _mainWindow;
+    private readonly IViewModelFactory _viewModelFactory;
+    private readonly IDialogService _dialogService;
 
-    public MenuViewModel(Window mainWindow)
+    public MenuViewModel(Window mainWindow, IViewModelFactory viewModelFactory, IDialogService dialogService)
     {
         _mainWindow = mainWindow;
+        _viewModelFactory = viewModelFactory;
+        _dialogService = dialogService;
         ResetToDefaultSettingsCommand = ReactiveCommand.Create(ResetToDefaultSettings);
         OpenSettingsCommand = ReactiveCommand.Create(OpenSettings);
         SaveSettingsCommand = ReactiveCommand.Create(SaveSettings);
         SaveSettingsAsCommand = ReactiveCommand.Create(SaveSettingsAs);
         SaveSettingsAsDefaultCommand = ReactiveCommand.Create(SaveSettingsAsDefault);
-        LoginProfilesCommand = ReactiveCommand.Create(LoginProfiles);
+        LoginProfilesCommand = ReactiveCommand.CreateFromTask(LoginProfiles);
         LogoutCommand = ReactiveCommand.Create(Logout);
         RefreshStatusAndTyposCommand = ReactiveCommand.Create(RefreshStatusAndTypos);
         ExitCommand = ReactiveCommand.Create(Exit);
@@ -47,9 +53,9 @@ public class MenuViewModel : ViewModelBase
         throw new System.NotImplementedException();
     }
 
-    private void LoginProfiles()
+    private async Task LoginProfiles()
     {
-        throw new System.NotImplementedException();
+        await _dialogService.ShowDialog<bool>(_viewModelFactory.GetProfilesViewModel());
     }
 
     private void Logout()
@@ -66,7 +72,6 @@ public class MenuViewModel : ViewModelBase
     {
         _mainWindow.Close();
     }
-    
     
     public ReactiveCommand<Unit, Unit> ResetToDefaultSettingsCommand { get; init; }
     public ReactiveCommand<Unit, Unit> OpenSettingsCommand { get; init; }
