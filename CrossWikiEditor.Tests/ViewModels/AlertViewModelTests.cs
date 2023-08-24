@@ -1,5 +1,4 @@
 using CrossWikiEditor.ViewModels;
-using NSubstitute;
 
 namespace CrossWikiEditor.Tests.ViewModels;
 
@@ -11,7 +10,20 @@ public class AlertViewModelTests : BaseTest
     public void SetUp()
     {
         SetUpServices();
-        _sut = new AlertViewModel();
+        _sut = new AlertViewModel("title", "content");
+    }
+
+    [Test]
+    public void Constructor_Should_SetProps()
+    {
+        // arrange
+        _sut = new AlertViewModel("title", "content");
+        
+        // act
+
+        // assert
+        _sut.Title.Should().Be("title");
+        _sut.ContentText.Should().Be("content");
     }
 
     [Test]

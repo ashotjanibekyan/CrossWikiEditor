@@ -1,13 +1,8 @@
 using Avalonia.Platform.Storage;
 using CrossWikiEditor.Models;
-using CrossWikiEditor.Repositories;
-using CrossWikiEditor.Services;
 using CrossWikiEditor.ViewModels;
-using FluentAssertions;
-using NSubstitute;
-using NSubstitute.ReturnsExtensions;
 
-namespace CrossWikiEditor.Tests;
+namespace CrossWikiEditor.Tests.ViewModels;
 
 public class AddOrEditProfileViewModelTests : BaseTest
 {

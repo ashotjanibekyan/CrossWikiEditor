@@ -31,11 +31,7 @@ public sealed class DialogService : IDialogService
 
     public async Task Alert(string title, string content)
     {
-        var viewModel = new AlertViewModel()
-        {
-            Title = title,
-            ContentText = content
-        };
+        var viewModel = new AlertViewModel(title, content);
         Window dialog = _container.ResolveNamed<Window>(nameof(AlertViewModel));
         dialog.DataContext = viewModel;
         await dialog.ShowDialog(_mainWindow);

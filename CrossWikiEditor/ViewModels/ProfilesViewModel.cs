@@ -38,7 +38,7 @@ public sealed class ProfilesViewModel : ViewModelBase
         AddCommand = ReactiveCommand.CreateFromTask(Add);
         EditCommand = ReactiveCommand.CreateFromTask(Edit);
         DeleteCommand = ReactiveCommand.Create(Delete);
-        QuickLoginCommand = ReactiveCommand.Create(QuickLogin);
+        QuickLoginCommand = ReactiveCommand.CreateFromTask(QuickLogin);
         Profiles = new ObservableCollection<Profile>(_profileRepository.GetAll());
     }
 
@@ -49,11 +49,11 @@ public sealed class ProfilesViewModel : ViewModelBase
     [Reactive]
     public ObservableCollection<Profile> Profiles { get; set; }
     
-    public ReactiveCommand<Unit, Unit> LoginCommand { get; set; }
-    public ReactiveCommand<Unit, Unit> AddCommand { get; set; }
-    public ReactiveCommand<Unit, Unit> EditCommand { get; set; }
-    public ReactiveCommand<Unit, Unit> DeleteCommand { get; set; }
-    public ReactiveCommand<Unit, Unit> QuickLoginCommand { get; set; }
+    public ReactiveCommand<Unit, Unit> LoginCommand { get; }
+    public ReactiveCommand<Unit, Unit> AddCommand { get; }
+    public ReactiveCommand<Unit, Unit> EditCommand { get; }
+    public ReactiveCommand<Unit, Unit> DeleteCommand { get; }
+    public ReactiveCommand<Unit, Unit> QuickLoginCommand { get; }
     
     public string Username { get; set; } = "";
     public string Password { get; set; } = "";
@@ -64,28 +64,8 @@ public sealed class ProfilesViewModel : ViewModelBase
         {
             return;
         }
-        UserPrefs currentUserPref = _userPreferencesService.GetCurrentPref();
-        var site = new Site(currentUserPref.ApiRoot());
-        
-        Result loginResult = await _userService.Login(SelectedProfile, site);
-        if (loginResult is {IsSuccessful: true})
-        {
-            _messageBus.SendMessage(new NewAccountLoggedInMessage(SelectedProfile));
-        }
-        else
-        {
-            if (string.IsNullOrWhiteSpace(loginResult.Error))
-            {
-                await _dialogService.Alert("Login Attempt Unsuccessful",
-                    "Login Attempt Unsuccessful: Please ensure an active internet connection and verify the accuracy of your provided username and password.");
-            }
-            else
-            {
-                
-                await _dialogService.Alert("Login Attempt Unsuccessful", loginResult.Error);
-            }
 
-        }
+        await Login(SelectedProfile);
     }
 
     private async Task Add()
@@ -129,8 +109,41 @@ public sealed class ProfilesViewModel : ViewModelBase
         Profiles = new ObservableCollection<Profile>(_profileRepository.GetAll());
     }
 
-    private void QuickLogin()
+    private async Task QuickLogin()
     {
-        throw new System.NotImplementedException();
+        if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
+        {
+            return;
+        }
+        var profile = new Profile()
+        {
+            Username = Username,
+            Password = Password
+        };
+        await Login(profile);
+    }
+
+    private async Task Login(Profile profile)
+    {
+        UserPrefs currentUserPref = _userPreferencesService.GetCurrentPref();
+        var site = new Site(currentUserPref.ApiRoot());
+        
+        Result loginResult = await _userService.Login(profile, site);
+        if (loginResult is {IsSuccessful: true})
+        {
+            _messageBus.SendMessage(new NewAccountLoggedInMessage(profile));
+        }
+        else
+        {
+            if (!string.IsNullOrWhiteSpace(loginResult?.Error))
+            {
+                await _dialogService.Alert("Login Attempt Unsuccessful", loginResult.Error);
+            }
+            else
+            {
+                await _dialogService.Alert("Login Attempt Unsuccessful",
+                    "Login Attempt Unsuccessful: Please ensure an active internet connection and verify the accuracy of your provided username and password.");
+            }
+        }
     }
 }
