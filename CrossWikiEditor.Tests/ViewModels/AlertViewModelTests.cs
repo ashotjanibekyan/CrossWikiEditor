@@ -3,16 +3,15 @@ using NSubstitute;
 
 namespace CrossWikiEditor.Tests.ViewModels;
 
-public class AlertViewModelTests
+public class AlertViewModelTests : BaseTest
 {
     private AlertViewModel _sut;
-    private IDialog _dialog;
 
     [SetUp]
     public void SetUp()
     {
+        SetUpServices();
         _sut = new AlertViewModel();
-        _dialog = Substitute.For<IDialog>();
     }
 
     [Test]

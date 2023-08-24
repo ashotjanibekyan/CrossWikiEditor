@@ -9,27 +9,22 @@ using NSubstitute.ReturnsExtensions;
 
 namespace CrossWikiEditor.Tests;
 
-public class AddOrEditProfileViewModelTests
+public class AddOrEditProfileViewModelTests : BaseTest
 {
     private AddOrEditProfileViewModel _sut;
-    private IFileDialogService _fileDialogServiceMock;
-    private IProfileRepository _profileRepository;
-    private IDialog _dialog;
 
     [SetUp]
     public void SetUp()
     {
-        _fileDialogServiceMock = Substitute.For<IFileDialogService>();
-        _profileRepository = Substitute.For<IProfileRepository>();
-        _dialog = Substitute.For<IDialog>();
-        _sut = new AddOrEditProfileViewModel(_fileDialogServiceMock, _profileRepository, -1);
+        SetUpServices();
+        _sut = new AddOrEditProfileViewModel(_fileDialogService, _profileRepository, -1);
     }
 
     [Test]
     public void BrowseCommand_ShouldSetDefaultSettingsPath_WhenValidFileIsSelected()
     {
         // arrange
-        _fileDialogServiceMock
+        _fileDialogService
             .OpenFilePickerAsync("Select settings file", false,
                 Arg.Is<List<FilePickerFileType>>(
                     x => x.Count == 1 && x[0].Patterns != null && x[0].Patterns.Count == 1 && x[0].Patterns[0] == "*.xml"))
@@ -46,7 +41,7 @@ public class AddOrEditProfileViewModelTests
     public void BrowseCommand_ShouldNotSetDefaultSettingsPath_WhenNoFileIsSelected()
     {
         // arrange
-        _fileDialogServiceMock
+        _fileDialogService
             .OpenFilePickerAsync("Select settings file", false,
                 Arg.Is<List<FilePickerFileType>>(
                     x => x.Count == 1 && x[0].Patterns != null && x[0].Patterns.Count == 1 && x[0].Patterns[0] == "*.xml"))
@@ -64,7 +59,7 @@ public class AddOrEditProfileViewModelTests
     public void BrowseCommand_ShouldNotSetDefaultSettingsPath_WhenBrowseDialogIsCanceled()
     {
         // arrange
-        _fileDialogServiceMock
+        _fileDialogService
             .OpenFilePickerAsync("Select settings file", false,
                 Arg.Is<List<FilePickerFileType>>(
                     x => x.Count == 1 && x[0].Patterns != null && x[0].Patterns.Count == 1 && x[0].Patterns[0] == "*.xml"))
@@ -143,7 +138,7 @@ public class AddOrEditProfileViewModelTests
         string notes)
     {
         // arrange
-        _sut = new AddOrEditProfileViewModel(_fileDialogServiceMock, _profileRepository, -1)
+        _sut = new AddOrEditProfileViewModel(_fileDialogService, _profileRepository, -1)
         {
             Username = username,
             Password = shouldSavePassword ? password : string.Empty,
@@ -178,7 +173,7 @@ public class AddOrEditProfileViewModelTests
         string notes)
     {
         // arrange
-        _sut = new AddOrEditProfileViewModel(_fileDialogServiceMock, _profileRepository, id)
+        _sut = new AddOrEditProfileViewModel(_fileDialogService, _profileRepository, id)
         {
             Username = username,
             Password = shouldSavePassword ? password : string.Empty,
