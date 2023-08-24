@@ -1,6 +1,19 @@
 ﻿namespace CrossWikiEditor;
 
-public class Result<T>
+public sealed class Result
+{
+    Result() { }
+
+    public static Result Failure(string failureMessage) => new() { IsSuccessful = false, Error = failureMessage };
+
+    public static Result Success() => new() { IsSuccessful = true };
+
+    public bool IsSuccessful { get; private init; } = true;
+
+    public string Error { get; private init; } = string.Empty;
+}
+
+public sealed class Result<T>
 {
     private Result(bool isSuccessful, T? value, string? error)
     {
@@ -19,7 +32,7 @@ public class Result<T>
         return new Result<string>(isSuccessful: false, default, errorMessage);
     }
 
-    public bool IsSuccessful { get; set; }
-    public T? Value { get; set; }
+    public bool IsSuccessful { get; private init; }
+    public T? Value { get; private init; }
     public string? Error { get; set; }
 }
