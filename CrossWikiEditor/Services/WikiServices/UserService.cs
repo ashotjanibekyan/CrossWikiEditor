@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Threading.Tasks;
 using System.Web;
 using CrossWikiEditor.Models;
@@ -16,8 +17,8 @@ public interface IUserService
 public sealed class UserService : IUserService
 {
     private ApiQuery _apiQuery;
-    
-    public async Task<Result<string>> GetLoginToken(Site site)
+
+    private async Task<Result<string>> GetLoginToken(Site site)
     {
         var queryBuilder = new QueryBuilder();
 
@@ -46,7 +47,7 @@ public sealed class UserService : IUserService
         
     }
 
-    public async Task<Result> LoginWithToken(Profile profile, Site site, string token)
+    private async Task<Result> LoginWithToken(Profile profile, Site site, string token)
     {
         var queryParams = new Dictionary<string, string>
         {
@@ -63,17 +64,21 @@ public sealed class UserService : IUserService
     
     static string ToQueryString(Dictionary<string, string> dict)
     {
-        var queryParams = HttpUtility.ParseQueryString(string.Empty);
-        foreach (var kvp in dict) queryParams[kvp.Key] = kvp.Value;
+        NameValueCollection queryParams = HttpUtility.ParseQueryString(string.Empty);
+        foreach (KeyValuePair<string, string> kvp in dict)
+        {
+            queryParams[kvp.Key] = kvp.Value;
+        }
+
         return queryParams.ToString();
     }
 
     public async Task<Result> Login(Profile profile, Site site)
     {
-        var token = await GetLoginToken(site);
+        Result<string> token = await GetLoginToken(site);
         if (token is {IsSuccessful: true, Value: not null})
         {
-            var result = await LoginWithToken(profile, site, token.Value);
+            Result result = await LoginWithToken(profile, site, token.Value);
             return result is {IsSuccessful: true} ? Result.Success() : Result.Failure(result.Error);
         }
 

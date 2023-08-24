@@ -1,6 +1,9 @@
+using System;
+using System.Collections.Generic;
 using System.Reactive;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using Avalonia.Platform.Storage;
 using CrossWikiEditor.Services;
 using ReactiveUI;
 
@@ -11,14 +14,22 @@ public class MenuViewModel : ViewModelBase
     private readonly Window _mainWindow;
     private readonly IViewModelFactory _viewModelFactory;
     private readonly IDialogService _dialogService;
+    private readonly IFileDialogService _fileDialogService;
+    private readonly IUserPreferencesService _userPreferencesService;
 
-    public MenuViewModel(Window mainWindow, IViewModelFactory viewModelFactory, IDialogService dialogService)
+    public MenuViewModel(Window mainWindow,
+        IViewModelFactory viewModelFactory,
+        IDialogService dialogService,
+        IFileDialogService fileDialogService,
+        IUserPreferencesService userPreferencesService)
     {
         _mainWindow = mainWindow;
         _viewModelFactory = viewModelFactory;
         _dialogService = dialogService;
+        _fileDialogService = fileDialogService;
+        _userPreferencesService = userPreferencesService;
         ResetToDefaultSettingsCommand = ReactiveCommand.Create(ResetToDefaultSettings);
-        OpenSettingsCommand = ReactiveCommand.Create(OpenSettings);
+        OpenSettingsCommand = ReactiveCommand.CreateFromTask(OpenSettings);
         SaveSettingsCommand = ReactiveCommand.Create(SaveSettings);
         SaveSettingsAsCommand = ReactiveCommand.Create(SaveSettingsAs);
         SaveSettingsAsDefaultCommand = ReactiveCommand.Create(SaveSettingsAsDefault);
@@ -33,9 +44,29 @@ public class MenuViewModel : ViewModelBase
         throw new System.NotImplementedException();
     }
 
-    private void OpenSettings()
+    private async Task OpenSettings()
     {
-        throw new System.NotImplementedException();
+        string[]? result = await _fileDialogService.OpenFilePickerAsync("Select settings", false, new List<FilePickerFileType>
+        {
+            new(null)
+            {
+                Patterns = new List<string>{"*.xml"}.AsReadOnly()
+            }
+        });
+        if (result is {Length: 1})
+        {
+            string newSettingsPath = result[0];
+            try
+            {
+                UserPrefs newUserPref = _userPreferencesService.GetUserPref(newSettingsPath);
+                _userPreferencesService.SetCurrentPref(newUserPref);
+
+            }
+            catch (InvalidOperationException)
+            {
+                await _dialogService.Alert("Failed to load the settings", "Failed to load the settings. Are you sure it is in the correct format?");
+            }
+        }
     }
 
     private void SaveSettings()

@@ -36,8 +36,6 @@ public sealed class ProfilesViewModel : ViewModelBase
         EditCommand = ReactiveCommand.CreateFromTask(Edit);
         DeleteCommand = ReactiveCommand.Create(Delete);
         QuickLoginCommand = ReactiveCommand.Create(QuickLogin);
-        Username = "";
-        Password = "";
         Profiles = new ObservableCollection<Profile>(_profileRepository.GetAll());
     }
 
@@ -54,8 +52,8 @@ public sealed class ProfilesViewModel : ViewModelBase
     public ReactiveCommand<Unit, Unit> DeleteCommand { get; set; }
     public ReactiveCommand<Unit, Unit> QuickLoginCommand { get; set; }
     
-    public string Username { get; set; }
-    public string Password { get; set; }
+    public string Username { get; set; } = "";
+    public string Password { get; set; } = "";
 
     private async Task Login()
     {
@@ -63,17 +61,18 @@ public sealed class ProfilesViewModel : ViewModelBase
         {
             return;
         }
-        var currentUserPref = _userPreferencesService.GetCurrentPref();
+        UserPrefs currentUserPref = _userPreferencesService.GetCurrentPref();
         var site = new Site(currentUserPref.ApiRoot());
         
-        var loginResult = await _userService.Login(SelectedProfile, site);
+        Result loginResult = await _userService.Login(SelectedProfile, site);
         if (loginResult is {IsSuccessful: true})
         {
             MessageBus.Current.SendMessage(new NewAccountLoggedInMessage(SelectedProfile));
         }
         else
         {
-            // TODO: Show alert window
+            await _dialogService.Alert("Login Attempt Unsuccessful",
+                "Login Attempt Unsuccessful: Please ensure an active internet connection and verify the accuracy of your provided username and password.");
         }
     }
 

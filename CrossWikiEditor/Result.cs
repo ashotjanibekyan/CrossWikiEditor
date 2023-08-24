@@ -2,7 +2,7 @@
 
 public sealed class Result
 {
-    Result() { }
+    private Result() { }
 
     public static Result Failure(string failureMessage) => new() { IsSuccessful = false, Error = failureMessage };
 

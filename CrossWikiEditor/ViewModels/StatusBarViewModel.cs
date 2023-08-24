@@ -45,10 +45,7 @@ public sealed class StatusBarViewModel : ViewModelBase
             });
         UsernameClickedCommand = ReactiveCommand.CreateFromTask(UsernameClicked);
         CurrentWikiClickedCommand = ReactiveCommand.CreateFromTask(CurrentWikiClicked);
-        
-        
-        var currentPref = userPreferencesService.GetCurrentPref();
-
+        UserPrefs currentPref = userPreferencesService.GetCurrentPref();
         Project = currentPref.Project.ToString();
         LanguageCode = currentPref.LanguageCode;
     }

@@ -23,16 +23,17 @@ public sealed class FileDialogService : IFileDialogService
     }
 
 
-    public async  Task<string[]?> OpenFilePickerAsync(
+    public async Task<string[]?> OpenFilePickerAsync(
         string title,
         bool allowMultiple,
         List<FilePickerFileType> filters)
     {
-        return (await _storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+        IReadOnlyList<IStorageFile> result = await _storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
         {
             Title = title,
             AllowMultiple = allowMultiple,
             FileTypeFilter = filters,
-        })).Select(f => f.Path.AbsolutePath).ToArray();
+        });
+        return result.Select(f => f.Path.AbsolutePath).ToArray();
     }
 }

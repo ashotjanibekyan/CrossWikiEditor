@@ -32,7 +32,7 @@ public sealed class StringEncryptionService : IStringEncryptionService
         aes.Key = _key;
         aes.IV = _iv;
 
-        using var encryptor = aes.CreateEncryptor();
+        using ICryptoTransform encryptor = aes.CreateEncryptor();
         using var ms = new MemoryStream();
         using (var cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write))
         {
@@ -53,7 +53,7 @@ public sealed class StringEncryptionService : IStringEncryptionService
         aes.Key = _key;
         aes.IV = _iv;
 
-        using var decryptor = aes.CreateDecryptor();
+        using ICryptoTransform decryptor = aes.CreateDecryptor();
         using var ms = new MemoryStream(encryptedBytes);
         using var cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read);
         using var sr = new StreamReader(cs);

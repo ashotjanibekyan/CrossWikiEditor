@@ -2,7 +2,7 @@
 
 namespace CrossWikiEditor.Messages;
 
-public class NewAccountLoggedInMessage
+public sealed class NewAccountLoggedInMessage
 {
     public NewAccountLoggedInMessage(Profile profile)
     {

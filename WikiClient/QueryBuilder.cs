@@ -7,7 +7,7 @@ public sealed class QueryBuilder
     
     public QueryBuilder WithAction(string action)
     {
-        this._action = action;
+        _action = action;
         return this;
     }
 
