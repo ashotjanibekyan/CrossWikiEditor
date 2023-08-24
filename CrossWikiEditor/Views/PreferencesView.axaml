@@ -9,6 +9,7 @@
         x:DataType="vm:PreferencesViewModel"
         mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="400"
         x:Class="CrossWikiEditor.Views.PreferencesView"
+        x:Name="This"
         Title="Preferences">
     <Grid RowDefinitions="*,Auto" Margin="10">
         <TabControl Grid.Row="0">
@@ -29,7 +30,7 @@
                     <CheckBox IsChecked="{Binding EnableLogging}" Content="Enable Logging" />
                 </StackPanel>
             </TabItem>
-            <TabItem Header="Site">
+            <TabItem Header="Site" IsSelected="True">
                 <StackPanel>
                     <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto">
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="Project:" />
@@ -104,7 +105,7 @@
                     <TextBlock TextWrapping="Wrap">We do not collect IP or MAC addresses, computer names, or passwords.</TextBlock>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="Alerts" IsSelected="True">
+            <TabItem Header="Alerts">
                 <ScrollViewer>
                     <StackPanel>
                         <CheckBox Content="Ambiguous citation dates" IsChecked="{Binding Alerts.AmbiguousCitationDates}" />
@@ -135,8 +136,8 @@
         </TabControl>
         <Grid Grid.Row="1" ColumnDefinitions="Auto,*,Auto,Auto">
             <TextBlock Grid.Column="0" Text=" &quot;Save settings as default&quot; to retain values"/>
-            <Button Grid.Column="2" Content="Ok" />
-            <Button Grid.Column="3" Content="Cancel" />
+            <Button Grid.Column="2" Content="Ok" Command="{Binding SaveCommand}" CommandParameter="{Binding #This}" />
+            <Button Grid.Column="3" Content="Cancel" Command="{Binding CancelCommand}" CommandParameter="{Binding #This}" />
         </Grid>
     </Grid> 
 </Window>

@@ -1,13 +1,21 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System;
+using System.Reactive;
+using CrossWikiEditor.Messages;
+using CrossWikiEditor.Services;
+using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
 namespace CrossWikiEditor.ViewModels;
 
 public sealed class PreferencesViewModel : ViewModelBase
 {
-    public PreferencesViewModel()
+    private readonly IUserPreferencesService _userPreferencesService;
+
+    public PreferencesViewModel(IUserPreferencesService userPreferencesService)
     {
+        _userPreferencesService = userPreferencesService;
         Alerts = new()
         {
             AmbiguousCitationDates = true,
@@ -16,7 +24,17 @@ public sealed class PreferencesViewModel : ViewModelBase
             MultipleDefaultSort = true,
             SeeAlsoOutOfPlace = true
         };
+
+        SelectedLanguage = userPreferencesService.GetCurrentPref().LanguageCode;
+        SelectedProject = userPreferencesService.GetCurrentPref().Project;
+
+        SaveCommand = ReactiveCommand.Create<IDialog>(Save);
+        CancelCommand = ReactiveCommand.Create((IDialog dialog) => dialog.Close(false));
     }
+    
+    public ReactiveCommand<IDialog, Unit> SaveCommand { get; }
+    public ReactiveCommand<IDialog, Unit> CancelCommand { get; }
+    
     [Reactive]
     public bool MinimizeToSystray { get; set; }
 
@@ -35,16 +53,10 @@ public sealed class PreferencesViewModel : ViewModelBase
     [Reactive]
     public bool EnableLogging { get; set; }
 
-    [Reactive] 
-    public string SelectedProject { get; set; } = "wikipedia";
+    [Reactive] public ProjectEnum SelectedProject { get; set; } = ProjectEnum.Wikipedia;
 
     [Reactive]
-    public ObservableCollection<string> Projects { get; set; } = new(new List<string>
-    {
-        "wikipedia",
-        "wikiquote",
-        "wiktionary"
-    });
+    public ObservableCollection<ProjectEnum> Projects { get; set; } = new(Enum.GetValues<ProjectEnum>());
 
     [Reactive] 
     public string SelectedLanguage { get; set; } = "en";
@@ -70,6 +82,13 @@ public sealed class PreferencesViewModel : ViewModelBase
 
     [Reactive]
     public Alerts Alerts { get; set; }
+    
+    private void Save(IDialog dialog)
+    {
+        MessageBus.Current.SendMessage(new ProjectChangedMessage(SelectedProject));
+        MessageBus.Current.SendMessage(new LanguageCodeChangedMessage(SelectedLanguage));
+        dialog.Close(true);
+    }
 }
 
 public class Alerts

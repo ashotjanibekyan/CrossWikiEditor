@@ -1,10 +1,8 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
+﻿using Avalonia.Controls;
 
 namespace CrossWikiEditor.Views;
 
-public partial class PreferencesView : Window
+public partial class PreferencesView : Window, IDialog
 {
     public PreferencesView()
     {

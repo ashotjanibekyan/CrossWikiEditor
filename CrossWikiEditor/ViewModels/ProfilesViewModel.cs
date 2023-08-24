@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Threading.Tasks;
+using CrossWikiEditor.Messages;
 using CrossWikiEditor.Models;
 using CrossWikiEditor.Repositories;
 using CrossWikiEditor.Services;
@@ -43,6 +44,7 @@ public sealed class ProfilesViewModel : ViewModelBase
 
     [Reactive]
     public ObservableCollection<Profile> Profiles { get; set; }
+    
     public ReactiveCommand<Unit, Unit> LoginCommand { get; set; }
     public ReactiveCommand<Unit, Unit> AddCommand { get; set; }
     public ReactiveCommand<Unit, Unit> EditCommand { get; set; }
@@ -54,10 +56,19 @@ public sealed class ProfilesViewModel : ViewModelBase
 
     private async Task Login()
     {
-        var result = await _userService.GetLoginToken(new Site("https://hy.wikipedia.org/w/api.php?"));
-        if (result.IsSuccessful)
+        if (SelectedProfile == null)
         {
-            
+            return;
+        }
+        var site = new Site("https://hy.wikipedia.org/w/api.php?"); 
+        var result = await _userService.GetLoginToken(site);
+        if (result is {IsSuccessful: true, Value: not null})
+        {
+            var loginResult = await _userService.LoginWithToken(SelectedProfile, site, result.Value);
+            if (loginResult is {IsSuccessful: true, Value: true})
+            {
+                MessageBus.Current.SendMessage(new NewAccountLoggedInMessage(SelectedProfile));
+            }
         }
     }
 

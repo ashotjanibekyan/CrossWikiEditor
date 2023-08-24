@@ -1,44 +1,75 @@
+using System;
 using System.Reactive;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
-using CrossWikiEditor.Repositories;
+using CrossWikiEditor.Messages;
 using CrossWikiEditor.Services;
-using CrossWikiEditor.Services.WikiServices;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 
 namespace CrossWikiEditor.ViewModels;
 
 public sealed class StatusBarViewModel : ViewModelBase
 {
-    private readonly IFileDialogService _fileDialogService;
+    private readonly IViewModelFactory _viewModelFactory;
     private readonly IDialogService _dialogService;
-    private readonly IProfileRepository _profileRepository;
-    private readonly IUserService _userService;
+    private readonly IUserPreferencesService _userPreferencesService;
+    private ObservableAsPropertyHelper<string> _languageCode;
+    private ObservableAsPropertyHelper<string> _project;
 
-    public StatusBarViewModel(IFileDialogService fileDialogService,
-        IDialogService dialogService,
-        IProfileRepository profileRepository,
-        IUserService userService)
+    public StatusBarViewModel(IViewModelFactory viewModelFactory, IDialogService dialogService, IUserPreferencesService userPreferencesService)
     {
-        _fileDialogService = fileDialogService;
+        _viewModelFactory = viewModelFactory;
         _dialogService = dialogService;
-        _profileRepository = profileRepository;
-        _userService = userService;
+        _userPreferencesService = userPreferencesService;
+        _languageCode = this.WhenAnyValue(x => x.LanguageCode)
+            .Select(x => x)
+            .ToProperty(this, x => x.CurrentWiki);
+        _project = this.WhenAnyValue(x => x.Project)
+            .Select(x => x)
+            .ToProperty(this, x => x.CurrentWiki);
+        MessageBus.Current.Listen<NewAccountLoggedInMessage>()
+            .Subscribe((message) =>
+            {
+                Username = message.Profile.Username;
+            });
+        MessageBus.Current.Listen<ProjectChangedMessage>()
+            .Subscribe(message =>
+            {
+                Project = message.Project.ToString();
+            });
+        MessageBus.Current.Listen<LanguageCodeChangedMessage>()
+            .Subscribe(message =>
+            {
+                LanguageCode = message.LanguageCode;
+            });
         UsernameClickedCommand = ReactiveCommand.CreateFromTask(UsernameClicked);
         CurrentWikiClickedCommand = ReactiveCommand.CreateFromTask(CurrentWikiClicked);
+        
+        
+        var currentPref = userPreferencesService.GetCurrentPref();
+
+        Project = currentPref.Project.ToString();
+        LanguageCode = currentPref.LanguageCode;
     }
     
+    [Reactive]
     public string Username { get; set; } = "User: ";
-    public string CurrentWiki { get; set; } = "hy.wikipedia.org";
+    public string CurrentWiki => $"{_languageCode.Value}:{_project.Value}";
+    [Reactive]
+    private string LanguageCode { get; set; }
+    [Reactive]
+    private string Project { get; set; }
     public ReactiveCommand<Unit, Unit> UsernameClickedCommand { get; }
     public ReactiveCommand<Unit, Unit> CurrentWikiClickedCommand { get; }
 
     private async Task UsernameClicked()
     {
-        await _dialogService.ShowDialog<bool>(new ProfilesViewModel(_fileDialogService, _dialogService, _profileRepository, _userService));
+        await _dialogService.ShowDialog<bool>(_viewModelFactory.GetProfilesViewModel());
     }
     
     private async Task CurrentWikiClicked()
     {
-        await _dialogService.ShowDialog<bool>(new PreferencesViewModel());
+        await _dialogService.ShowDialog<bool>(_viewModelFactory.GetPreferencesViewModel());
     }
 }
