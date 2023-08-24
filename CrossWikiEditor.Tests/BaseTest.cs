@@ -14,6 +14,7 @@ public abstract class BaseTest
     protected IProfileRepository _profileRepository;
     protected IUserService _userService;
     protected IUserPreferencesService _userPreferencesServic;
+    protected IViewModelFactory _viewModelFactory;
     protected IDialog _dialog;
     protected IMessageBus _messageBus;
 
@@ -24,6 +25,7 @@ public abstract class BaseTest
         _profileRepository = Substitute.For<IProfileRepository>();
         _userService = Substitute.For<IUserService>();
         _userPreferencesServic = Substitute.For<IUserPreferencesService>();
+        _viewModelFactory = Substitute.For<IViewModelFactory>();
         _dialog = Substitute.For<IDialog>();
         _messageBus = Substitute.For<IMessageBus>();
     }

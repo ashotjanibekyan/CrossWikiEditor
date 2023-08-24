@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Threading.Tasks;
@@ -39,7 +40,7 @@ public sealed class ProfilesViewModel : ViewModelBase
         EditCommand = ReactiveCommand.CreateFromTask(Edit);
         DeleteCommand = ReactiveCommand.Create(Delete);
         QuickLoginCommand = ReactiveCommand.CreateFromTask(QuickLogin);
-        Profiles = new ObservableCollection<Profile>(_profileRepository.GetAll());
+        Profiles = new ObservableCollection<Profile>(_profileRepository.GetAll() ?? new List<Profile>());
     }
 
 
