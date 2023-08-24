@@ -1,12 +1,11 @@
 using Avalonia.Controls;
 
-namespace CrossWikiEditor.Views.ReportViews
+namespace CrossWikiEditor.Views.ReportViews;
+
+public sealed partial class HistoryView : UserControl
 {
-    public partial class HistoryView : UserControl
+    public HistoryView()
     {
-        public HistoryView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

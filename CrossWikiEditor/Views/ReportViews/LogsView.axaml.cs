@@ -1,12 +1,11 @@
 using Avalonia.Controls;
 
-namespace CrossWikiEditor.Views.ReportViews
+namespace CrossWikiEditor.Views.ReportViews;
+
+public sealed partial class LogsView : UserControl
 {
-    public partial class LogsView : UserControl
+    public LogsView()
     {
-        public LogsView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

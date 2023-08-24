@@ -86,28 +86,23 @@ public sealed class AddOrEditProfileViewModel : ViewModelBase
             return;
         }
 
+        var profile = new Profile()
+        {
+            Username = Username,
+            DefaultSettingsPath = ShouldSelectDefaultSettings ? DefaultSettingsPath : string.Empty,
+            IsPasswordSaved = ShouldSavePassword,
+            Password = ShouldSavePassword ? Password : string.Empty,
+            Notes = Notes
+        };
+
         if (_id == -1)
         {
-            _profileRepository.Insert(new Profile
-            {
-                Username = Username,
-                DefaultSettingsPath = DefaultSettingsPath,
-                IsPasswordSaved = ShouldSavePassword,
-                Password = Password,
-                Notes = Notes
-            });
+            _profileRepository.Insert(profile);
         }
         else
         {
-            _profileRepository.Update(new Profile
-            {
-                Id = _id,
-                Username = Username,
-                DefaultSettingsPath = DefaultSettingsPath,
-                IsPasswordSaved = ShouldSavePassword,
-                Password = Password,
-                Notes = Notes
-            });
+            profile.Id = _id;
+            _profileRepository.Update(profile);
         }
         
         dialog.Close(true);

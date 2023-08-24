@@ -1,12 +1,11 @@
 using Avalonia.Controls;
 
-namespace CrossWikiEditor.Views.ControlViews
+namespace CrossWikiEditor.Views.ControlViews;
+
+public sealed partial class SkipView : UserControl
 {
-    public partial class SkipView : UserControl
+    public SkipView()
     {
-        public SkipView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

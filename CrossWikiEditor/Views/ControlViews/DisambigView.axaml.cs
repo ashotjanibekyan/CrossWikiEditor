@@ -1,12 +1,11 @@
 using Avalonia.Controls;
 
-namespace CrossWikiEditor.Views.ControlViews
+namespace CrossWikiEditor.Views.ControlViews;
+
+public sealed partial class DisambigView : UserControl
 {
-    public partial class DisambigView : UserControl
+    public DisambigView()
     {
-        public DisambigView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

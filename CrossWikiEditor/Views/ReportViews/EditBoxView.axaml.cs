@@ -1,12 +1,11 @@
 using Avalonia.Controls;
 
-namespace CrossWikiEditor.Views.ReportViews
+namespace CrossWikiEditor.Views.ReportViews;
+
+public sealed partial class EditBoxView : UserControl
 {
-    public partial class EditBoxView : UserControl
+    public EditBoxView()
     {
-        public EditBoxView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

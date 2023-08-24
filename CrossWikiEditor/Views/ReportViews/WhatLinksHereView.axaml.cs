@@ -1,12 +1,11 @@
 using Avalonia.Controls;
 
-namespace CrossWikiEditor.Views.ReportViews
+namespace CrossWikiEditor.Views.ReportViews;
+
+public sealed partial class WhatLinksHereView : UserControl
 {
-    public partial class WhatLinksHereView : UserControl
+    public WhatLinksHereView()
     {
-        public WhatLinksHereView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

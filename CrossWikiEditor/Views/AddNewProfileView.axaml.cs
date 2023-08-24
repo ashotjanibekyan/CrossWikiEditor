@@ -2,7 +2,7 @@
 
 namespace CrossWikiEditor.Views;
 
-public partial class AddNewProfileView : Window, IDialog
+public sealed partial class AddNewProfileView : Window, IDialog
 {
     public AddNewProfileView()
     {

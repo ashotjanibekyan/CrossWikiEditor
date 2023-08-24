@@ -2,7 +2,7 @@ using Avalonia.Controls;
 
 namespace CrossWikiEditor.Views;
 
-public partial class ProfilesView : Window
+public sealed partial class ProfilesView : Window
 {
     public ProfilesView()
     {

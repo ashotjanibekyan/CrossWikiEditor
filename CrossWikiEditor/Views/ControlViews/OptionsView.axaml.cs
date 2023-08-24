@@ -1,12 +1,11 @@
 using Avalonia.Controls;
 
-namespace CrossWikiEditor.Views.ControlViews
+namespace CrossWikiEditor.Views.ControlViews;
+
+public sealed partial class OptionsView : UserControl
 {
-    public partial class OptionsView : UserControl
+    public OptionsView()
     {
-        public OptionsView()
-        {
-            InitializeComponent();
-        }
-}
+        InitializeComponent();
+    }
 }

@@ -2,7 +2,7 @@
 
 namespace CrossWikiEditor.Views;
 
-public partial class AlertView : Window, IDialog
+public sealed partial class AlertView : Window, IDialog
 {
     public AlertView()
     {
