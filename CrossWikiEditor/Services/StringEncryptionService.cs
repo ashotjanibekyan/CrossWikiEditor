@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -13,6 +12,10 @@ public interface IStringEncryptionService
 
 public sealed class StringEncryptionService : IStringEncryptionService
 {
+    private static readonly byte[] Salt = {
+        130, 172, 223, 224, 181, 229, 138, 159, 136, 84, 68, 219, 64, 243, 115, 223, 223, 18, 132, 188, 12, 1, 108, 54, 184, 239, 230, 98, 195, 119,
+        226, 97
+    };
     private readonly byte[] _key;
     private readonly byte[] _iv;
 
@@ -24,10 +27,6 @@ public sealed class StringEncryptionService : IStringEncryptionService
     
     public byte[] EncryptStringToBytes(string plainText)
     {
-        if (string.IsNullOrEmpty(plainText))
-        {
-            return Array.Empty<byte>();
-        }
         using var aes = Aes.Create();
         aes.Key = _key;
         aes.IV = _iv;
@@ -45,10 +44,6 @@ public sealed class StringEncryptionService : IStringEncryptionService
 
     public string DecryptStringFromBytes(byte[] encryptedBytes)
     {
-        if (encryptedBytes.Length == 0)
-        {
-            return string.Empty;
-        }
         using var aes = Aes.Create();
         aes.Key = _key;
         aes.IV = _iv;
@@ -60,11 +55,11 @@ public sealed class StringEncryptionService : IStringEncryptionService
         return sr.ReadToEnd();
     }
     
-    public static (byte[] Key, byte[] IV) GenerateKeyAndIv(string passphrase, byte[] salt, int keySize, int ivSize, int iterations)
+    public static (byte[] Key, byte[] IV) GenerateKeyAndIv(string passphrase)
     {
-        using var deriveBytes = new Rfc2898DeriveBytes(passphrase, salt, iterations);
-        var key = deriveBytes.GetBytes(keySize);
-        var iv = deriveBytes.GetBytes(ivSize);
+        using var deriveBytes = new Rfc2898DeriveBytes(passphrase, Salt, 10000);
+        var key = deriveBytes.GetBytes(32);
+        var iv = deriveBytes.GetBytes(16);
         return (key, iv);
     }
 }

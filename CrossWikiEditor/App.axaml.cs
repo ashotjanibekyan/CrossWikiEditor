@@ -76,7 +76,7 @@ public class App : Application
     private void RegisterServices(ContainerBuilder builder)
     {
         IStorageProvider storageProvider = TopLevel.GetTopLevel(_mainWindow)!.StorageProvider;
-        (byte[] key, byte[] iv) = StringEncryptionService.GenerateKeyAndIv("SHOULD IMPLEMENT THIS LATER", new byte[16], 32, 16, 10000);
+        (byte[] key, byte[] iv) = StringEncryptionService.GenerateKeyAndIv("SHOULD IMPLEMENT THIS LATER");
         IStringEncryptionService stringEncryptionService = new StringEncryptionService(key, iv);
         
         builder.RegisterType<ViewModelFactory>().As<IViewModelFactory>().SingleInstance();
