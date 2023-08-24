@@ -18,16 +18,19 @@ public sealed class ProfilesViewModel : ViewModelBase
     private readonly IDialogService _dialogService;
     private readonly IProfileRepository _profileRepository;
     private readonly IUserService _userService;
+    private readonly IUserPreferencesService _userPreferencesService;
 
     public ProfilesViewModel(IFileDialogService fileDialogService,
         IDialogService dialogService,
         IProfileRepository profileRepository,
-        IUserService userService)
+        IUserService userService,
+        IUserPreferencesService userPreferencesService)
     {
         _fileDialogService = fileDialogService;
         _dialogService = dialogService;
         _profileRepository = profileRepository;
         _userService = userService;
+        _userPreferencesService = userPreferencesService;
         LoginCommand = ReactiveCommand.CreateFromTask(Login);
         AddCommand = ReactiveCommand.CreateFromTask(Add);
         EditCommand = ReactiveCommand.CreateFromTask(Edit);
@@ -60,15 +63,17 @@ public sealed class ProfilesViewModel : ViewModelBase
         {
             return;
         }
-        var site = new Site("https://hy.wikipedia.org/w/api.php?"); 
-        var result = await _userService.GetLoginToken(site);
-        if (result is {IsSuccessful: true, Value: not null})
+        var currentUserPref = _userPreferencesService.GetCurrentPref();
+        var site = new Site(currentUserPref.ApiRoot());
+        
+        var loginResult = await _userService.Login(SelectedProfile, site);
+        if (loginResult is {IsSuccessful: true})
         {
-            var loginResult = await _userService.LoginWithToken(SelectedProfile, site, result.Value);
-            if (loginResult is {IsSuccessful: true, Value: true})
-            {
-                MessageBus.Current.SendMessage(new NewAccountLoggedInMessage(SelectedProfile));
-            }
+            MessageBus.Current.SendMessage(new NewAccountLoggedInMessage(SelectedProfile));
+        }
+        else
+        {
+            // TODO: Show alert window
         }
     }
 

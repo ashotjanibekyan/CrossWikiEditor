@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace CrossWikiEditor;
@@ -37,4 +38,24 @@ public struct UserPrefs
     public string CustomProject { get; set; }
     public string Protocol { get; set; }
     public string LoginDomain { get; set; }
+
+    public string ApiRoot()
+    {
+        if (string.IsNullOrEmpty(LanguageCode) && new[]
+            {
+                ProjectEnum.Wikipedia,
+                ProjectEnum.Wiktionary,
+                ProjectEnum.Wikisource,
+                ProjectEnum.Wikiquote,
+                ProjectEnum.Wikiversity,
+                ProjectEnum.Wikivoyage,
+                ProjectEnum.Wikibooks,
+                ProjectEnum.Wikinews
+            }.Contains(Project))
+        {
+            return $"https://{LanguageCode}.{Project.ToString().ToLower()}.org/w/api.php?";
+        }
+
+        throw new NotImplementedException();
+    }
 }

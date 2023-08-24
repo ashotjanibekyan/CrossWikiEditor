@@ -33,7 +33,7 @@ public class ViewModelFactory : IViewModelFactory
     
     public ProfilesViewModel GetProfilesViewModel()
     {
-        return new ProfilesViewModel(_fileDialogService, _dialogService, _profileRepository, _userService);
+        return new ProfilesViewModel(_fileDialogService, _dialogService, _profileRepository, _userService, _userPreferencesService);
     }
 
     public PreferencesViewModel GetPreferencesViewModel()

@@ -10,8 +10,7 @@ namespace CrossWikiEditor.Services.WikiServices;
 
 public interface IUserService
 {
-    Task<Result<string>> GetLoginToken(Site site);
-    Task<Result<bool>> LoginWithToken(Profile profile, Site site, string token);
+    Task<Result> Login(Profile profile, Site site);
 }
 
 public sealed class UserService : IUserService
@@ -47,7 +46,7 @@ public sealed class UserService : IUserService
         
     }
 
-    public async Task<Result<bool>> LoginWithToken(Profile profile, Site site, string token)
+    public async Task<Result> LoginWithToken(Profile profile, Site site, string token)
     {
         var queryParams = new Dictionary<string, string>
         {
@@ -59,7 +58,7 @@ public sealed class UserService : IUserService
         };
 
         var result = await _apiQuery.ExecutePost(ToQueryString(queryParams));
-        return Result<bool>.Success(true);
+        return Result.Success();
     }
     
     static string ToQueryString(Dictionary<string, string> dict)
@@ -67,5 +66,17 @@ public sealed class UserService : IUserService
         var queryParams = HttpUtility.ParseQueryString(string.Empty);
         foreach (var kvp in dict) queryParams[kvp.Key] = kvp.Value;
         return queryParams.ToString();
+    }
+
+    public async Task<Result> Login(Profile profile, Site site)
+    {
+        var token = await GetLoginToken(site);
+        if (token is {IsSuccessful: true, Value: not null})
+        {
+            var result = await LoginWithToken(profile, site, token.Value);
+            return result is {IsSuccessful: true} ? Result.Success() : Result.Failure(result.Error);
+        }
+
+        return Result.Failure("Could not get login token");
     }
 }
