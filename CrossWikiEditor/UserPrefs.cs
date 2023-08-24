@@ -4,12 +4,11 @@ using System.Xml.Serialization;
 
 namespace CrossWikiEditor;
 
-[Serializable, XmlRoot("AutoWikiBrowserPreferences")]
+[Serializable]
+[XmlRoot("AutoWikiBrowserPreferences")]
 public struct UserPrefs
 {
-
-    [XmlAttribute("xml:space")]
-    public string SpacePreserve = "preserve";
+    [XmlAttribute("xml:space")] public string SpacePreserve = "preserve";
 
     public UserPrefs()
     {
@@ -31,8 +30,7 @@ public struct UserPrefs
         LoginDomain = loginDomain;
     }
 
-    [XmlAttribute]
-    public string Version { get; set; }
+    [XmlAttribute] public string Version { get; set; }
     public ProjectEnum Project { get; set; }
     public string LanguageCode { get; set; }
     public string CustomProject { get; set; }

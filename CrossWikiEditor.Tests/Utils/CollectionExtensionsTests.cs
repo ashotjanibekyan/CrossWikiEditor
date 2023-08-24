@@ -16,12 +16,12 @@ public class CollectionExtensionsTests
         // assert
         result.Should().BeEquivalentTo(nums);
     }
-    
+
     [Test]
     public void ToObservableCollection_ShouldReturnFullCollection_WhenEnumerableIsValid()
     {
         // arrange
-        var nums = new List<int>{1, 2, 3, 4, 5};
+        var nums = new List<int> {1, 2, 3, 4, 5};
 
         // act
         var result = nums.ToObservableCollection();

@@ -6,7 +6,7 @@ namespace CrossWikiEditor.Tests.Services;
 public class ViewModelFactoryTests : BaseTest
 {
     private ViewModelFactory _sut;
-        
+
     [SetUp]
     public void SetUp()
     {
@@ -28,7 +28,7 @@ public class ViewModelFactoryTests : BaseTest
         obj2.Should().NotBeNull();
         obj1.Should().NotBe(obj2);
     }
-    
+
     [Test]
     public void GetPreferencesViewModel_ReturnsDifferentObjectEachTime()
     {

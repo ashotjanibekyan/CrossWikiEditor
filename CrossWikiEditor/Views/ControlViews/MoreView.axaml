@@ -1,58 +1,58 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-			 xmlns:vm="using:CrossWikiEditor.ViewModels.ControlViewModels"
+             xmlns:vm="using:CrossWikiEditor.ViewModels.ControlViewModels"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="CrossWikiEditor.Views.ControlViews.MoreView">
-	<Design.DataContext>
-		<vm:MoreViewModel />
-	</Design.DataContext>
-	<Grid RowDefinitions="Auto,Auto,Auto" Margin="3">
-		<HeaderedContentControl Margin="3" Grid.Row="0" Background="Black" Header="Append/Prepend text">
-			<Grid Margin="3" RowDefinitions="Auto,*,Auto">
-				<Grid Grid.Row="0" ColumnDefinitions="*,*,*,*">
-					<CheckBox Grid.Column="0">Enabled</CheckBox>
-					<RadioButton Grid.Column="2" GroupName="Mode" Content="Append"/>
-					<RadioButton Grid.Column="3" GroupName="Mode" Content="Prepend"/>
-				</Grid>
-				<TextBox Height="70" Grid.Row="1" AcceptsReturn="True" TextWrapping="Wrap" />
-				<Grid ColumnDefinitions="Auto,Auto,Auto,*" Grid.Row="2">
-					<Label Grid.Column="0" VerticalAlignment="Center">Use: </Label>
-					<NumericUpDown Grid.Column="1" ShowButtonSpinner="False" Value="10" Width="5"/>
-					<Label Margin="10 0 0 0" Grid.Column="2" VerticalAlignment="Center"> newlines </Label>
-					<CheckBox HorizontalAlignment="Right" Grid.Column="3">Sort meta data after</CheckBox>
-				</Grid>
-			</Grid>
-		</HeaderedContentControl>
-		<HeaderedContentControl Header="Files" Margin="3" Grid.Row="1" Background="Black">
-			<Grid Margin="3" RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,*">
-				<ComboBox SelectedIndex="0" Grid.Column="0" Grid.Row="0">
-					<ComboBoxItem>Choose a task...</ComboBoxItem>
-					<ComboBoxItem>Replace file:</ComboBoxItem>
-					<ComboBoxItem>Remove file:</ComboBoxItem>
-					<ComboBoxItem>Comment out file:</ComboBoxItem>
-				</ComboBox>
-				<TextBox HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="0" />
-				<Label HorizontalAlignment="Right" Grid.Column="0" Grid.Row="1">With: </Label>
-				<TextBox HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="1" />
-				<CheckBox Grid.Row="2" Grid.Column="0">Skip if no file changed</CheckBox>
-			</Grid>
-		</HeaderedContentControl>
-		<HeaderedContentControl Header="Categories" Margin="3" Grid.Row="2" Background="Black">
-			<Grid Margin="3" RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,*">
-				<ComboBox SelectedIndex="0" Grid.Column="0" Grid.Row="0">
-					<ComboBoxItem>Choose a task...</ComboBoxItem>
-					<ComboBoxItem>Replace category:</ComboBoxItem>
-					<ComboBoxItem>Add category:</ComboBoxItem>
-					<ComboBoxItem>Remove category:</ComboBoxItem>
-				</ComboBox>
-				<TextBox HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="0" />
-				<Label HorizontalAlignment="Right" Grid.Column="0" Grid.Row="1">With: </Label>
-				<TextBox HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="1" />
-				<CheckBox Grid.Row="2" Grid.Column="0">Skip if no file changed</CheckBox>
-				<CheckBox Grid.Row="2" Grid.Column="1">Remove softkey</CheckBox>
-			</Grid>
-		</HeaderedContentControl>
-	</Grid>
+    <Design.DataContext>
+        <vm:MoreViewModel />
+    </Design.DataContext>
+    <Grid RowDefinitions="Auto,Auto,Auto" Margin="3">
+        <HeaderedContentControl Margin="3" Grid.Row="0" Background="Black" Header="Append/Prepend text">
+            <Grid Margin="3" RowDefinitions="Auto,*,Auto">
+                <Grid Grid.Row="0" ColumnDefinitions="*,*,*,*">
+                    <CheckBox Grid.Column="0">Enabled</CheckBox>
+                    <RadioButton Grid.Column="2" GroupName="Mode" Content="Append" />
+                    <RadioButton Grid.Column="3" GroupName="Mode" Content="Prepend" />
+                </Grid>
+                <TextBox Height="70" Grid.Row="1" AcceptsReturn="True" TextWrapping="Wrap" />
+                <Grid ColumnDefinitions="Auto,Auto,Auto,*" Grid.Row="2">
+                    <Label Grid.Column="0" VerticalAlignment="Center">Use: </Label>
+                    <NumericUpDown Grid.Column="1" ShowButtonSpinner="False" Value="10" Width="5" />
+                    <Label Margin="10 0 0 0" Grid.Column="2" VerticalAlignment="Center"> newlines </Label>
+                    <CheckBox HorizontalAlignment="Right" Grid.Column="3">Sort meta data after</CheckBox>
+                </Grid>
+            </Grid>
+        </HeaderedContentControl>
+        <HeaderedContentControl Header="Files" Margin="3" Grid.Row="1" Background="Black">
+            <Grid Margin="3" RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,*">
+                <ComboBox SelectedIndex="0" Grid.Column="0" Grid.Row="0">
+                    <ComboBoxItem>Choose a task...</ComboBoxItem>
+                    <ComboBoxItem>Replace file:</ComboBoxItem>
+                    <ComboBoxItem>Remove file:</ComboBoxItem>
+                    <ComboBoxItem>Comment out file:</ComboBoxItem>
+                </ComboBox>
+                <TextBox HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="0" />
+                <Label HorizontalAlignment="Right" Grid.Column="0" Grid.Row="1">With: </Label>
+                <TextBox HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="1" />
+                <CheckBox Grid.Row="2" Grid.Column="0">Skip if no file changed</CheckBox>
+            </Grid>
+        </HeaderedContentControl>
+        <HeaderedContentControl Header="Categories" Margin="3" Grid.Row="2" Background="Black">
+            <Grid Margin="3" RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,*">
+                <ComboBox SelectedIndex="0" Grid.Column="0" Grid.Row="0">
+                    <ComboBoxItem>Choose a task...</ComboBoxItem>
+                    <ComboBoxItem>Replace category:</ComboBoxItem>
+                    <ComboBoxItem>Add category:</ComboBoxItem>
+                    <ComboBoxItem>Remove category:</ComboBoxItem>
+                </ComboBox>
+                <TextBox HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="0" />
+                <Label HorizontalAlignment="Right" Grid.Column="0" Grid.Row="1">With: </Label>
+                <TextBox HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="1" />
+                <CheckBox Grid.Row="2" Grid.Column="0">Skip if no file changed</CheckBox>
+                <CheckBox Grid.Row="2" Grid.Column="1">Remove softkey</CheckBox>
+            </Grid>
+        </HeaderedContentControl>
+    </Grid>
 </UserControl>

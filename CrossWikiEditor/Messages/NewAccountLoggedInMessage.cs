@@ -8,5 +8,6 @@ public sealed class NewAccountLoggedInMessage : BaseMessage
     {
         Profile = profile;
     }
+
     public Profile Profile { get; }
 }

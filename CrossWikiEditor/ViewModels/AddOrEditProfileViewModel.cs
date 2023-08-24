@@ -30,24 +30,18 @@ public sealed class AddOrEditProfileViewModel : ViewModelBase
 
     public bool IsEdit => _id != -1;
 
-    [Reactive] 
-    public string Username { get; set; } = string.Empty;
+    [Reactive] public string Username { get; set; } = string.Empty;
 
-    [Reactive] 
-    public string Password { get; set; } = string.Empty;
+    [Reactive] public string Password { get; set; } = string.Empty;
 
-    [Reactive] 
-    public string DefaultSettingsPath { get; set; } = string.Empty;
-    
-    [Reactive]
-    public bool ShouldSavePassword { get; set; }
-    
-    [Reactive]
-    public bool ShouldSelectDefaultSettings { get; set; }
-    
-    [Reactive]
-    public string Notes { get; set; } = string.Empty;
-    
+    [Reactive] public string DefaultSettingsPath { get; set; } = string.Empty;
+
+    [Reactive] public bool ShouldSavePassword { get; set; }
+
+    [Reactive] public bool ShouldSelectDefaultSettings { get; set; }
+
+    [Reactive] public string Notes { get; set; } = string.Empty;
+
     public ReactiveCommand<Unit, Unit> BrowseCommand { get; }
     public ReactiveCommand<IDialog, Unit> SaveCommand { get; }
     public ReactiveCommand<IDialog, Unit> CancelCommand { get; }
@@ -55,11 +49,11 @@ public sealed class AddOrEditProfileViewModel : ViewModelBase
 
     private async Task Browse()
     {
-        var result = await _fileDialogService.OpenFilePickerAsync("Select settings file", false, new List<FilePickerFileType>
+        string[]? result = await _fileDialogService.OpenFilePickerAsync("Select settings file", false, new List<FilePickerFileType>
         {
             new(null)
             {
-                Patterns = new List<string>{"*.xml"}
+                Patterns = new List<string> {"*.xml"}
             }
         });
         if (result is not null && result.Length == 1)
@@ -67,7 +61,7 @@ public sealed class AddOrEditProfileViewModel : ViewModelBase
             DefaultSettingsPath = result[0];
         }
     }
-    
+
     private void Save(IDialog dialog)
     {
         if (string.IsNullOrWhiteSpace(Username))

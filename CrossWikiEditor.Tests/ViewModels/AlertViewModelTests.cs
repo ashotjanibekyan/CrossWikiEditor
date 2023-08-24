@@ -18,7 +18,7 @@ public class AlertViewModelTests : BaseTest
     {
         // arrange
         _sut = new AlertViewModel("title", "content");
-        
+
         // act
 
         // assert

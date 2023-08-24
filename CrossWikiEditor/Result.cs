@@ -2,11 +2,19 @@
 
 public sealed class Result
 {
-    private Result() { }
+    private Result()
+    {
+    }
 
-    public static Result Failure(string failureMessage) => new() { IsSuccessful = false, Error = failureMessage };
+    public static Result Failure(string failureMessage)
+    {
+        return new Result {IsSuccessful = false, Error = failureMessage};
+    }
 
-    public static Result Success() => new() { IsSuccessful = true };
+    public static Result Success()
+    {
+        return new Result {IsSuccessful = true};
+    }
 
     public bool IsSuccessful { get; private init; } = true;
 
@@ -21,15 +29,15 @@ public sealed class Result<T>
         Value = value;
         Error = error;
     }
-    
+
     public static Result<T> Success(T result)
     {
-        return new Result<T>(isSuccessful: true, result, null);
+        return new Result<T>(true, result, null);
     }
-    
+
     public static Result<string> Failure(string errorMessage)
     {
-        return new Result<string>(isSuccessful: false, default, errorMessage);
+        return new Result<string>(false, default, errorMessage);
     }
 
     public bool IsSuccessful { get; private init; }

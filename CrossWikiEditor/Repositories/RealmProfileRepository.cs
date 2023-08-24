@@ -8,10 +8,9 @@ using Realms.Schema;
 
 namespace CrossWikiEditor.Repositories;
 
-class RealmProfile : RealmObject
+internal class RealmProfile : RealmObject
 {
-    [PrimaryKey]
-    public int Id { get; set; }
+    [PrimaryKey] public int Id { get; set; }
     public string Username { get; set; }
     public bool IsPasswordSaved { get; set; }
     public byte[] Password { get; set; }
@@ -30,32 +29,29 @@ public sealed class RealmProfileRepository : IProfileRepository
 
         _realmConfiguration = new RealmConfiguration(Path.Combine(appData, "profiles.realm"))
         {
-            Schema =new RealmSchema.Builder
+            Schema = new RealmSchema.Builder
             {
                 new ObjectSchema.Builder(typeof(RealmProfile))
             }
         };
     }
-    
+
     public Profile? Get(int id)
     {
         using var realm = Realm.GetInstance(_realmConfiguration);
-        var profile = realm.Find<RealmProfile>(id);
+        RealmProfile? profile = realm.Find<RealmProfile>(id);
         return profile is null ? null : RealmProfileToProfile(profile);
     }
 
     public int Insert(Profile profile)
     {
-        var realmProfile = ProfileToRealmProfile(profile);
+        RealmProfile? realmProfile = ProfileToRealmProfile(profile);
         using var realm = Realm.GetInstance(_realmConfiguration);
 
         var all = realm.All<RealmProfile>().ToList();
         realmProfile.Id = all.Any() ? all.Max(p => p.Id) + 1 : 0;
-        
-        realm.Write(() =>
-        {
-            realm.Add(realmProfile);
-        });
+
+        realm.Write(() => { realm.Add(realmProfile); });
 
         return realmProfile.Id;
     }
@@ -63,11 +59,8 @@ public sealed class RealmProfileRepository : IProfileRepository
     public void Update(Profile profile)
     {
         using var realm = Realm.GetInstance(_realmConfiguration);
-        var realmProfile = ProfileToRealmProfile(profile);
-        realm.Write(() =>
-        {
-            realm.Add(realmProfile, update: true);
-        });
+        RealmProfile? realmProfile = ProfileToRealmProfile(profile);
+        realm.Write(() => { realm.Add(realmProfile, true); });
     }
 
     public List<Profile> GetAll()
@@ -80,16 +73,13 @@ public sealed class RealmProfileRepository : IProfileRepository
     public void Delete(int id)
     {
         using var realm = Realm.GetInstance(_realmConfiguration);
-        var profile = realm.Find<RealmProfile>(id);
+        RealmProfile? profile = realm.Find<RealmProfile>(id);
         if (profile != null)
         {
-            realm.Write(() =>
-            {
-                realm.Remove(profile);
-            });
+            realm.Write(() => { realm.Remove(profile); });
         }
     }
-    
+
     private RealmProfile ProfileToRealmProfile(Profile profile)
     {
         return new RealmProfile
@@ -112,7 +102,7 @@ public sealed class RealmProfileRepository : IProfileRepository
             IsPasswordSaved = realmProfile.IsPasswordSaved,
             Password = _stringEncryptionService.DecryptStringFromBytes(realmProfile.Password),
             Notes = realmProfile.Notes,
-            Username = realmProfile.Username,
+            Username = realmProfile.Username
         };
     }
 }

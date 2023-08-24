@@ -34,7 +34,7 @@ public class ViewModelFactory : IViewModelFactory
         _userPreferencesService = userPreferencesService;
         _messageBus = messageBus;
     }
-    
+
     public ProfilesViewModel GetProfilesViewModel()
     {
         return new ProfilesViewModel(_fileDialogService, _dialogService, _profileRepository, _userService, _userPreferencesService, _messageBus);

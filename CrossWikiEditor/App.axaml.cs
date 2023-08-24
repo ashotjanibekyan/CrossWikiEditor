@@ -11,6 +11,7 @@ using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
 using CrossWikiEditor.ViewModels;
 using CrossWikiEditor.ViewModels.ControlViewModels;
+using CrossWikiEditor.ViewModels.MenuViewModels;
 using CrossWikiEditor.ViewModels.ReportViewModels;
 using CrossWikiEditor.Views;
 using ReactiveUI;
@@ -31,12 +32,12 @@ public class App : Application
             Directory.CreateDirectory(_appData);
         }
     }
-    
+
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
     }
-    
+
     public override void OnFrameworkInitializationCompleted()
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
@@ -60,7 +61,7 @@ public class App : Application
         RegisterServices(builder);
         RegisterRepositories(builder);
         RegisterDialogs(builder);
-        
+
         builder.Register(c => _container!).As<IContainer>();
 
         return builder.Build();
@@ -78,7 +79,7 @@ public class App : Application
         IStorageProvider storageProvider = TopLevel.GetTopLevel(_mainWindow)!.StorageProvider;
         (byte[] key, byte[] iv) = StringEncryptionService.GenerateKeyAndIv("SHOULD IMPLEMENT THIS LATER");
         IStringEncryptionService stringEncryptionService = new StringEncryptionService(key, iv);
-        
+
         builder.RegisterType<ViewModelFactory>().As<IViewModelFactory>().SingleInstance();
         builder.RegisterType<FileDialogService>().As<IFileDialogService>().SingleInstance();
         builder.RegisterType<UserPreferencesService>().As<IUserPreferencesService>().SingleInstance();
@@ -90,7 +91,7 @@ public class App : Application
         builder.RegisterInstance(stringEncryptionService).As<IStringEncryptionService>();
         builder.Register(c => MessageBus.Current).As<IMessageBus>();
     }
-    
+
     private void RegisterViewModels(ContainerBuilder builder)
     {
         builder.RegisterType<MainWindowViewModel>();
@@ -99,7 +100,8 @@ public class App : Application
         builder.RegisterType<MakeListViewModel>();
         builder.RegisterType<OptionsViewModel>();
         builder.RegisterType<MoreViewModel>();
-        builder.RegisterType<MenuViewModel>().WithParameter(new TypedParameter(typeof(Window), _mainWindow));
+        builder.RegisterType<MenuViewModel>();
+        builder.RegisterType<FileMenuViewModel>().WithParameter(new TypedParameter(typeof(Window), _mainWindow));
         builder.RegisterType<DisambigViewModel>();
         builder.RegisterType<SkipViewModel>();
         builder.RegisterType<StartViewModel>();

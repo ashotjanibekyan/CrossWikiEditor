@@ -32,7 +32,7 @@ public sealed class FileDialogService : IFileDialogService
         {
             Title = title,
             AllowMultiple = allowMultiple,
-            FileTypeFilter = filters,
+            FileTypeFilter = filters
         });
         return result.Select(f => f.Path.AbsolutePath).ToArray();
     }

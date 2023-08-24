@@ -41,7 +41,7 @@ public class ProfilesViewModelTests : BaseTest
         var profile = new Profile()
         {
             Username = "username",
-            Password = "password",
+            Password = "password"
         };
         _sut.SelectedProfile = profile;
         _userPreferencesService.GetCurrentPref().Returns(new UserPrefs()
@@ -99,7 +99,7 @@ public class ProfilesViewModelTests : BaseTest
         var profile = new Profile()
         {
             Username = "username",
-            Password = "password",
+            Password = "password"
         };
         _sut.SelectedProfile = profile;
         _userPreferencesService.GetCurrentPref().Returns(new UserPrefs()
@@ -127,7 +127,7 @@ public class ProfilesViewModelTests : BaseTest
         var profile = new Profile()
         {
             Username = "username",
-            Password = "password",
+            Password = "password"
         };
         _sut.SelectedProfile = profile;
         _userPreferencesService.GetCurrentPref().Returns(new UserPrefs()
@@ -166,16 +166,16 @@ public class ProfilesViewModelTests : BaseTest
         // arrange
         var newProfiles = new List<Profile>()
         {
-            new Profile()
+            new()
             {
                 Username = "username",
                 Password = "Qwer1234"
             },
-            new Profile()
+            new()
             {
                 Username = "username2",
                 Password = "Qwer1234"
-            },
+            }
         };
         _dialogService.ShowDialog<bool>(Arg.Is<AddOrEditProfileViewModel>(vm => !vm.IsEdit)).Returns(true);
         _profileRepository.GetAll().Returns(newProfiles);
@@ -187,7 +187,7 @@ public class ProfilesViewModelTests : BaseTest
                 didProfileChange = true;
             }
         };
-        
+
         // act
         _sut.AddCommand.Execute().Subscribe();
 
@@ -318,9 +318,10 @@ public class ProfilesViewModelTests : BaseTest
             Arg.Is<Site>(s => s.Domain == "https://hyw.wikipedia.org/w/api.php?"));
     }
 
-    [Test, Combinatorial]
+    [Test]
+    [Combinatorial]
     public void QuickLoginCommand_ShouldReturn_WhenUsernameOrPasswordIsMissing(
-        [Values("username", "", " ", null)] string username, 
+        [Values("username", "", " ", null)] string username,
         [Values("password", "", " ", null)] string password)
     {
         // arrange
@@ -328,6 +329,7 @@ public class ProfilesViewModelTests : BaseTest
         {
             return;
         }
+
         _sut.Username = username;
         _sut.Password = password;
 

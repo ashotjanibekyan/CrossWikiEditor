@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reactive;
 using System.Threading.Tasks;
@@ -7,27 +7,25 @@ using Avalonia.Platform.Storage;
 using CrossWikiEditor.Services;
 using ReactiveUI;
 
-namespace CrossWikiEditor.ViewModels;
+namespace CrossWikiEditor.ViewModels.MenuViewModels;
 
-public class MenuViewModel : ViewModelBase
+public sealed class FileMenuViewModel
 {
-    private readonly Window _mainWindow;
-    private readonly IViewModelFactory _viewModelFactory;
     private readonly IDialogService _dialogService;
     private readonly IFileDialogService _fileDialogService;
+    private readonly Window _mainWindow;
     private readonly IUserPreferencesService _userPreferencesService;
+    private readonly IViewModelFactory _viewModelFactory;
 
-    public MenuViewModel(Window mainWindow,
-        IViewModelFactory viewModelFactory,
-        IDialogService dialogService,
-        IFileDialogService fileDialogService,
-        IUserPreferencesService userPreferencesService)
+    public FileMenuViewModel(Window mainWindow, IViewModelFactory viewModelFactory, IFileDialogService fileDialogService,
+        IUserPreferencesService userPreferencesService, IDialogService dialogService)
     {
         _mainWindow = mainWindow;
         _viewModelFactory = viewModelFactory;
-        _dialogService = dialogService;
         _fileDialogService = fileDialogService;
         _userPreferencesService = userPreferencesService;
+        _dialogService = dialogService;
+
         ResetToDefaultSettingsCommand = ReactiveCommand.Create(ResetToDefaultSettings);
         OpenSettingsCommand = ReactiveCommand.CreateFromTask(OpenSettings);
         SaveSettingsCommand = ReactiveCommand.Create(SaveSettings);
@@ -39,9 +37,19 @@ public class MenuViewModel : ViewModelBase
         ExitCommand = ReactiveCommand.Create(Exit);
     }
 
+    public ReactiveCommand<Unit, Unit> ResetToDefaultSettingsCommand { get; init; }
+    public ReactiveCommand<Unit, Unit> OpenSettingsCommand { get; init; }
+    public ReactiveCommand<Unit, Unit> SaveSettingsCommand { get; init; }
+    public ReactiveCommand<Unit, Unit> SaveSettingsAsCommand { get; init; }
+    public ReactiveCommand<Unit, Unit> SaveSettingsAsDefaultCommand { get; init; }
+    public ReactiveCommand<Unit, Unit> LoginProfilesCommand { get; init; }
+    public ReactiveCommand<Unit, Unit> LogoutCommand { get; init; }
+    public ReactiveCommand<Unit, Unit> RefreshStatusAndTyposCommand { get; init; }
+    public ReactiveCommand<Unit, Unit> ExitCommand { get; init; }
+
     private void ResetToDefaultSettings()
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 
     private async Task OpenSettings()
@@ -50,7 +58,7 @@ public class MenuViewModel : ViewModelBase
         {
             new(null)
             {
-                Patterns = new List<string>{"*.xml"}.AsReadOnly()
+                Patterns = new List<string> {"*.xml"}.AsReadOnly()
             }
         });
         if (result is {Length: 1})
@@ -60,7 +68,6 @@ public class MenuViewModel : ViewModelBase
             {
                 UserPrefs newUserPref = _userPreferencesService.GetUserPref(newSettingsPath);
                 _userPreferencesService.SetCurrentPref(newUserPref);
-
             }
             catch (InvalidOperationException)
             {
@@ -71,17 +78,17 @@ public class MenuViewModel : ViewModelBase
 
     private void SaveSettings()
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 
     private void SaveSettingsAs()
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 
     private void SaveSettingsAsDefault()
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 
     private async Task LoginProfiles()
@@ -91,26 +98,16 @@ public class MenuViewModel : ViewModelBase
 
     private void Logout()
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 
     private void RefreshStatusAndTypos()
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 
     private void Exit()
     {
         _mainWindow.Close();
     }
-    
-    public ReactiveCommand<Unit, Unit> ResetToDefaultSettingsCommand { get; init; }
-    public ReactiveCommand<Unit, Unit> OpenSettingsCommand { get; init; }
-    public ReactiveCommand<Unit, Unit> SaveSettingsCommand { get; init; }
-    public ReactiveCommand<Unit, Unit> SaveSettingsAsCommand { get; init; }
-    public ReactiveCommand<Unit, Unit> SaveSettingsAsDefaultCommand { get; init; }
-    public ReactiveCommand<Unit, Unit> LoginProfilesCommand { get; init; }
-    public ReactiveCommand<Unit, Unit> LogoutCommand { get; init; }
-    public ReactiveCommand<Unit, Unit> RefreshStatusAndTyposCommand { get; init; }
-    public ReactiveCommand<Unit, Unit> ExitCommand { get; init; }
 }

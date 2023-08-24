@@ -23,7 +23,7 @@ public sealed class LoginActionBuilder
         _tokan = token;
         return this;
     }
-    
+
     public string Build()
     {
         return $"action=login&format=json&lgname={_username}&lgpassword={_password}&lgtoken={_tokan}";

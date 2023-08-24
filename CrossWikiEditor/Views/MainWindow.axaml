@@ -13,57 +13,57 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="CrossWikiEditor">
 
-  <Grid RowDefinitions="Auto,*,Auto" Margin="1">
-    <views:MenuView Grid.Row="0" Grid.Column="0" DataContext="{Binding MenuViewModel}" />
-    <Grid Grid.Row="1" RowDefinitions="*,1,*">
-      <Grid Grid.Row="0">
-        <Rectangle Fill="White" />
-      </Grid>
-      <GridSplitter Grid.Row="1" Background="Black" ResizeDirection="Rows" />
-      <Grid Grid.Row="2">
-        <Grid ColumnDefinitions="Auto,Auto,*">
-          <views:MakeListView Grid.Column="0" DataContext="{Binding MakeListViewModel}" />
-          <Grid Column="1" Width="450">
-            <TabControl>
-              <TabItem Header="Options" FontSize="14">
-                <controlViews:OptionsView DataContext="{Binding OptionsViewModel}" />
-              </TabItem>
-              <TabItem Header="More" FontSize="14">
-                <controlViews:MoreView DataContext="{Binding MoreViewModel}" />
-              </TabItem>
-              <TabItem Header="Disambig" FontSize="14">
-                <controlViews:DisambigView DataContext="{Binding DisambigViewModel}" />
-              </TabItem>
-              <TabItem Header="Skip" FontSize="14">
-                <controlViews:SkipView DataContext="{Binding SkipViewModel}" />
-              </TabItem>
-              <TabItem Header="Start" FontSize="14">
-                <controlViews:StartView DataContext="{Binding StartViewModel}" />
-              </TabItem>
-            </TabControl>
-          </Grid>
-          <Grid Column="2">
-            <TabControl>
-              <TabItem Header="Edit box" FontSize="14">
-                <reportViews:EditBoxView DataContext="{Binding EditBoxViewModel}" />
-              </TabItem>
-              <TabItem Header="History" FontSize="14">
-                <reportViews:HistoryView DataContext="{Binding HistoryViewModel}" />
-              </TabItem>
-              <TabItem Header="What links here" FontSize="14">
-                <reportViews:WhatLinksHereView DataContext="{Binding WhatLinksHereViewModel}" />
-              </TabItem>
-              <TabItem Header="Logs" FontSize="14">
-                <reportViews:LogsView DataContext="{Binding LogsViewModel}" />
-              </TabItem>
-              <TabItem Header="Page logs" FontSize="14">
-                <reportViews:PageLogsView DataContext="{Binding PageLogsViewModel}" />
-              </TabItem>
-            </TabControl>
-          </Grid>
+    <Grid RowDefinitions="Auto,*,Auto" Margin="1">
+        <views:MenuView Grid.Row="0" Grid.Column="0" DataContext="{Binding MenuViewModel}" />
+        <Grid Grid.Row="1" RowDefinitions="*,1,*">
+            <Grid Grid.Row="0">
+                <Rectangle Fill="White" />
+            </Grid>
+            <GridSplitter Grid.Row="1" Background="Black" ResizeDirection="Rows" />
+            <Grid Grid.Row="2">
+                <Grid ColumnDefinitions="Auto,Auto,*">
+                    <views:MakeListView Grid.Column="0" DataContext="{Binding MakeListViewModel}" />
+                    <Grid Column="1" Width="450">
+                        <TabControl>
+                            <TabItem Header="Options" FontSize="14">
+                                <controlViews:OptionsView DataContext="{Binding OptionsViewModel}" />
+                            </TabItem>
+                            <TabItem Header="More" FontSize="14">
+                                <controlViews:MoreView DataContext="{Binding MoreViewModel}" />
+                            </TabItem>
+                            <TabItem Header="Disambig" FontSize="14">
+                                <controlViews:DisambigView DataContext="{Binding DisambigViewModel}" />
+                            </TabItem>
+                            <TabItem Header="Skip" FontSize="14">
+                                <controlViews:SkipView DataContext="{Binding SkipViewModel}" />
+                            </TabItem>
+                            <TabItem Header="Start" FontSize="14">
+                                <controlViews:StartView DataContext="{Binding StartViewModel}" />
+                            </TabItem>
+                        </TabControl>
+                    </Grid>
+                    <Grid Column="2">
+                        <TabControl>
+                            <TabItem Header="Edit box" FontSize="14">
+                                <reportViews:EditBoxView DataContext="{Binding EditBoxViewModel}" />
+                            </TabItem>
+                            <TabItem Header="History" FontSize="14">
+                                <reportViews:HistoryView DataContext="{Binding HistoryViewModel}" />
+                            </TabItem>
+                            <TabItem Header="What links here" FontSize="14">
+                                <reportViews:WhatLinksHereView DataContext="{Binding WhatLinksHereViewModel}" />
+                            </TabItem>
+                            <TabItem Header="Logs" FontSize="14">
+                                <reportViews:LogsView DataContext="{Binding LogsViewModel}" />
+                            </TabItem>
+                            <TabItem Header="Page logs" FontSize="14">
+                                <reportViews:PageLogsView DataContext="{Binding PageLogsViewModel}" />
+                            </TabItem>
+                        </TabControl>
+                    </Grid>
+                </Grid>
+            </Grid>
         </Grid>
-      </Grid>
+        <views:StatusBarView Grid.Row="2" Grid.Column="0" DataContext="{Binding StatusBarViewModel}" />
     </Grid>
-    <views:StatusBarView Grid.Row="2" Grid.Column="0" DataContext="{Binding StatusBarViewModel}" />
-  </Grid>
 </Window>

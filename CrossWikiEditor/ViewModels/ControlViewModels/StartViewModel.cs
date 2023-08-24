@@ -6,8 +6,8 @@ public sealed class StartViewModel : ViewModelBase
 {
     public StartViewModel()
     {
-        this.Summaries = new List<string>
-        { 
+        Summaries = new List<string>
+        {
             "Summary 1",
             "Summary 2",
             "Summary 3",
@@ -17,7 +17,7 @@ public sealed class StartViewModel : ViewModelBase
             "Summary 7",
             "Summary 8",
             "Summary 9",
-            "Summary 10",
+            "Summary 10"
         };
     }
 

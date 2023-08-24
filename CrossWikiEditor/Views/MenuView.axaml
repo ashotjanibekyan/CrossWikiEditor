@@ -2,99 +2,101 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="clr-namespace:CrossWikiEditor.ViewModels"
-             x:DataType="vm:MenuViewModel"
+             xmlns:menuViewModels="clr-namespace:CrossWikiEditor.ViewModels.MenuViewModels"
+             x:DataType="menuViewModels:MenuViewModel"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="CrossWikiEditor.Views.MenuView">
-    	<Menu>
-		<MenuItem Header="File">
-			<MenuItem Header="Reset to original default settings" Command="{Binding ResetToDefaultSettingsCommand}" />
-			<MenuItem Header="Open settings..." Command="{Binding OpenSettingsCommand}" />
-			<Separator />
-			<MenuItem Header="Save settings" Command="{Binding SaveSettingsCommand}" />
-			<MenuItem Header="Save settings as..." Command="{Binding SaveSettingsAsCommand}" />
-			<MenuItem Header="Save settings as default" Command="{Binding SaveSettingsAsDefaultCommand}" />
-			<Separator />
-			<MenuItem Header="Login/Profiles..." Command="{Binding LoginProfilesCommand}" />
-			<MenuItem Header="Log out" Command="{Binding LogoutCommand}" />
-			<MenuItem Header="Refresh Status/Typos" Command="{Binding RefreshStatusAndTyposCommand}" />
-			<Separator />
-			<MenuItem Header="Exit" Command="{Binding ExitCommand}" />
-		</MenuItem>
-		<MenuItem Header="View">
-			<MenuItem Header="Show toolbar" />
-			<MenuItem Header="Show control panel" />
-			<MenuItem Header="Enlarge Edit box" />
-			<MenuItem Header="Show Edit Box Toolbar" />
-			<Separator />
-			<MenuItem Header="Display false positives button" />
-		</MenuItem>
-		<MenuItem Header="List">
-			<MenuItem Header="Keep alphabetized" />
-			<MenuItem Header="Remove duplicates" />
-			<MenuItem Header="Remove non-mainspace" />
-			<Separator />
-			<MenuItem Header="Convert to talk pages" />
-			<MenuItem Header="Convert from talk pages" />
-			<Separator />
-			<MenuItem Header="Filter..." />
-			<MenuItem Header="Save list..." />
-			<MenuItem Header="lear current list..." />
-		</MenuItem>
-		<MenuItem Header="Plugins">
-			<MenuItem Header="Load..." />
-			<MenuItem Header="Manager..." />
-		</MenuItem>
-		<MenuItem Header="Options">
-			<MenuItem Header="Preferences..." />
-			<MenuItem Header="Summaries..." />
-			<MenuItem Header="Default Edit Summaries..." />
-			<MenuItem Header="Auto save settings file every 10 edits" />
-			<Separator />
-			<MenuItem Header="Use pre-parse mode" />
-			<MenuItem Header="Follow redirects" />
-			<Separator />
-			<MenuItem Header="Apply changes automatically" />
-			<MenuItem Header="Auto focus end of the text box" />
-			<MenuItem Header="Do not use section edit summaries" />
-			<MenuItem Header="Restrict {{DEFAULTSORT}} change/addition" />
-			<MenuItem Header="Restrict orphan tag addition to linkless pages" />
-			<MenuItem Header="Do not apply WP:MOS fixes" />
-			<MenuItem Header="Highlight syntax in edit box" />
-			<MenuItem Header="Highlight Find matches" />
-			<MenuItem Header="Highlight errors" />
-			<Separator />
-			<MenuItem Header="Mark all as minor" />
-			<MenuItem Header="Watchlist behaviour">
-				<MenuItem Header="Add all to watchlist" />
-				<MenuItem Header="Remove all from watchlist" />
-				<MenuItem Header="Leave watchlist unchanged" />
-				<MenuItem Header="Use MW preferences" />
-			</MenuItem>
-			<Separator />
-			<MenuItem Header="Sort interwiki links" />
-			<MenuItem Header="Replace Reference Tags" />
-		</MenuItem>
-		<MenuItem Header="Tools">
-			<MenuItem Header="Make Module" />
-			<MenuItem Header="External processing" />
-			<Separator/>
-			<MenuItem Header="Regex tester" />
-			<MenuItem Header="Database scanner" />
-			<MenuItem Header="List comparer" />
-			<MenuItem Header="List splitter" />
-			<Separator/>
-			<MenuItem Header="Reset saved/skipped counts" />
-			<MenuItem Header="Submit stats" />
-			<Separator/>
-			<MenuItem Header="Profile typos" />
-			<MenuItem Header="Invalidate cache" />
-		</MenuItem>
-		<MenuItem Header="Help">
-			<MenuItem Header="Help"/>
-			<MenuItem Header="Usage statistics"/>
-			<MenuItem Header="Check for updates"/>
-			<MenuItem Header="About"/>
-		</MenuItem>
-	</Menu>
+    <Menu>
+        <MenuItem Header="File">
+            <MenuItem Header="Reset to original default settings"
+                      Command="{Binding FileMenuViewModel.ResetToDefaultSettingsCommand}" />
+            <MenuItem Header="Open settings..." Command="{Binding FileMenuViewModel.OpenSettingsCommand}" />
+            <Separator />
+            <MenuItem Header="Save settings" Command="{Binding FileMenuViewModel.SaveSettingsCommand}" />
+            <MenuItem Header="Save settings as..." Command="{Binding FileMenuViewModel.SaveSettingsAsCommand}" />
+            <MenuItem Header="Save settings as default"
+                      Command="{Binding FileMenuViewModel.SaveSettingsAsDefaultCommand}" />
+            <Separator />
+            <MenuItem Header="Login/Profiles..." Command="{Binding FileMenuViewModel.LoginProfilesCommand}" />
+            <MenuItem Header="Log out" Command="{Binding FileMenuViewModel.LogoutCommand}" />
+            <MenuItem Header="Refresh Status/Typos" Command="{Binding FileMenuViewModel.RefreshStatusAndTyposCommand}" />
+            <Separator />
+            <MenuItem Header="Exit" Command="{Binding FileMenuViewModel.ExitCommand}" />
+        </MenuItem>
+        <MenuItem Header="View">
+            <MenuItem Header="Show toolbar" />
+            <MenuItem Header="Show control panel" />
+            <MenuItem Header="Enlarge Edit box" />
+            <MenuItem Header="Show Edit Box Toolbar" />
+            <Separator />
+            <MenuItem Header="Display false positives button" />
+        </MenuItem>
+        <MenuItem Header="List">
+            <MenuItem Header="Keep alphabetized" />
+            <MenuItem Header="Remove duplicates" />
+            <MenuItem Header="Remove non-mainspace" />
+            <Separator />
+            <MenuItem Header="Convert to talk pages" />
+            <MenuItem Header="Convert from talk pages" />
+            <Separator />
+            <MenuItem Header="Filter..." />
+            <MenuItem Header="Save list..." />
+            <MenuItem Header="lear current list..." />
+        </MenuItem>
+        <MenuItem Header="Plugins">
+            <MenuItem Header="Load..." />
+            <MenuItem Header="Manager..." />
+        </MenuItem>
+        <MenuItem Header="Options">
+            <MenuItem Header="Preferences..." />
+            <MenuItem Header="Summaries..." />
+            <MenuItem Header="Default Edit Summaries..." />
+            <MenuItem Header="Auto save settings file every 10 edits" />
+            <Separator />
+            <MenuItem Header="Use pre-parse mode" />
+            <MenuItem Header="Follow redirects" />
+            <Separator />
+            <MenuItem Header="Apply changes automatically" />
+            <MenuItem Header="Auto focus end of the text box" />
+            <MenuItem Header="Do not use section edit summaries" />
+            <MenuItem Header="Restrict {{DEFAULTSORT}} change/addition" />
+            <MenuItem Header="Restrict orphan tag addition to linkless pages" />
+            <MenuItem Header="Do not apply WP:MOS fixes" />
+            <MenuItem Header="Highlight syntax in edit box" />
+            <MenuItem Header="Highlight Find matches" />
+            <MenuItem Header="Highlight errors" />
+            <Separator />
+            <MenuItem Header="Mark all as minor" />
+            <MenuItem Header="Watchlist behaviour">
+                <MenuItem Header="Add all to watchlist" />
+                <MenuItem Header="Remove all from watchlist" />
+                <MenuItem Header="Leave watchlist unchanged" />
+                <MenuItem Header="Use MW preferences" />
+            </MenuItem>
+            <Separator />
+            <MenuItem Header="Sort interwiki links" />
+            <MenuItem Header="Replace Reference Tags" />
+        </MenuItem>
+        <MenuItem Header="Tools">
+            <MenuItem Header="Make Module" />
+            <MenuItem Header="External processing" />
+            <Separator />
+            <MenuItem Header="Regex tester" />
+            <MenuItem Header="Database scanner" />
+            <MenuItem Header="List comparer" />
+            <MenuItem Header="List splitter" />
+            <Separator />
+            <MenuItem Header="Reset saved/skipped counts" />
+            <MenuItem Header="Submit stats" />
+            <Separator />
+            <MenuItem Header="Profile typos" />
+            <MenuItem Header="Invalidate cache" />
+        </MenuItem>
+        <MenuItem Header="Help">
+            <MenuItem Header="Help" />
+            <MenuItem Header="Usage statistics" />
+            <MenuItem Header="Check for updates" />
+            <MenuItem Header="About" />
+        </MenuItem>
+    </Menu>
 </UserControl>

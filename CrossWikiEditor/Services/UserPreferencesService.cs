@@ -28,13 +28,13 @@ public sealed class UserPreferencesService : IUserPreferencesService
         messageBus.Listen<ProjectChangedMessage>()
             .Subscribe(m => _currentPref.Project = m.Project);
     }
-    
+
     public UserPrefs GetUserPref(string path)
     {
-        var settings = File.ReadAllText(path, Encoding.UTF8);
+        string settings = File.ReadAllText(path, Encoding.UTF8);
         settings = Regex.Replace(settings, @"<(/?)\s*SourceIndex>", "<$1SelectedProvider>");
         var xs = new XmlSerializer(typeof(UserPrefs));
-        return (UserPrefs)(xs.Deserialize(new StringReader(settings)) ?? throw new InvalidOperationException());
+        return (UserPrefs) (xs.Deserialize(new StringReader(settings)) ?? throw new InvalidOperationException());
     }
 
     public void SetCurrentPref(UserPrefs userPrefs)

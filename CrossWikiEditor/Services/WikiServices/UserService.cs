@@ -22,7 +22,7 @@ public sealed class UserService : IUserService
     {
         var queryBuilder = new QueryBuilder();
 
-        var query = queryBuilder
+        string? query = queryBuilder
             .WithAction(new QueryActionBuilder()
                 .WithMeta(MetaTokenType.login)
                 .Build())
@@ -32,7 +32,7 @@ public sealed class UserService : IUserService
         try
         {
             _apiQuery = new ApiQuery(site);
-            var result = await _apiQuery.ExecuteGet(query);
+            RootResponse? result = await _apiQuery.ExecuteGet(query);
             if (result is {BatchComplete: true, Query: not null} && result.Query.ContainsKey("tokens") && result.Query["tokens"] is Tokens tokens)
             {
                 return Result<string>.Success(tokens.LoginToken);
@@ -43,8 +43,7 @@ public sealed class UserService : IUserService
         catch (Exception e)
         {
             return Result<string>.Failure(e.Message);
-        }    
-        
+        }
     }
 
     private async Task<Result> LoginWithToken(Profile profile, Site site, string token)
@@ -58,11 +57,11 @@ public sealed class UserService : IUserService
             {"format", "json"}
         };
 
-        var result = await _apiQuery.ExecutePost(ToQueryString(queryParams));
+        RootResponse? result = await _apiQuery.ExecutePost(ToQueryString(queryParams));
         return Result.Success();
     }
-    
-    static string ToQueryString(Dictionary<string, string> dict)
+
+    private static string ToQueryString(Dictionary<string, string> dict)
     {
         NameValueCollection queryParams = HttpUtility.ParseQueryString(string.Empty);
         foreach (KeyValuePair<string, string> kvp in dict)

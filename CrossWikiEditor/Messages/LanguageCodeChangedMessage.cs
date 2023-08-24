@@ -6,5 +6,6 @@ public sealed class LanguageCodeChangedMessage : BaseMessage
     {
         LanguageCode = languageCode;
     }
+
     public string LanguageCode { get; }
 }

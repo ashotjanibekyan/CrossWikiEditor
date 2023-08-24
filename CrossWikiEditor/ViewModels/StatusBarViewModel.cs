@@ -32,34 +32,22 @@ public sealed class StatusBarViewModel : ViewModelBase
             .Select(x => x)
             .ToProperty(this, x => x.CurrentWiki);
         messageBus.Listen<NewAccountLoggedInMessage>()
-            .Subscribe((message) =>
-            {
-                Username = message.Profile.Username;
-            });
+            .Subscribe((message) => { Username = message.Profile.Username; });
         messageBus.Listen<ProjectChangedMessage>()
-            .Subscribe(message =>
-            {
-                Project = message.Project.ToString();
-            });
+            .Subscribe(message => { Project = message.Project.ToString(); });
         messageBus.Listen<LanguageCodeChangedMessage>()
-            .Subscribe(message =>
-            {
-                LanguageCode = message.LanguageCode;
-            });
+            .Subscribe(message => { LanguageCode = message.LanguageCode; });
         UsernameClickedCommand = ReactiveCommand.CreateFromTask(UsernameClicked);
         CurrentWikiClickedCommand = ReactiveCommand.CreateFromTask(CurrentWikiClicked);
         UserPrefs currentPref = userPreferencesService.GetCurrentPref();
         Project = currentPref.Project.ToString();
         LanguageCode = currentPref.LanguageCode;
     }
-    
-    [Reactive]
-    public string Username { get; set; } = "User: ";
+
+    [Reactive] public string Username { get; set; } = "User: ";
     public string CurrentWiki => $"{_languageCode.Value}:{_project.Value}";
-    [Reactive]
-    private string LanguageCode { get; set; }
-    [Reactive]
-    private string Project { get; set; }
+    [Reactive] private string LanguageCode { get; set; }
+    [Reactive] private string Project { get; set; }
     public ReactiveCommand<Unit, Unit> UsernameClickedCommand { get; }
     public ReactiveCommand<Unit, Unit> CurrentWikiClickedCommand { get; }
 
@@ -67,7 +55,7 @@ public sealed class StatusBarViewModel : ViewModelBase
     {
         await _dialogService.ShowDialog<bool>(_viewModelFactory.GetProfilesViewModel());
     }
-    
+
     private async Task CurrentWikiClicked()
     {
         await _dialogService.ShowDialog<bool>(_viewModelFactory.GetPreferencesViewModel());

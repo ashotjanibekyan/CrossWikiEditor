@@ -11,5 +11,5 @@ public static class Fakers
         .RuleFor(p => p.Id, f => f.UniqueIndex)
         .RuleFor(p => p.Password, f => f.Internet.Password())
         .RuleFor(p => p.Notes, f => f.Random.Words())
-        .RuleFor(p => p.Username, f => f.Internet.UserName());  
+        .RuleFor(p => p.Username, f => f.Internet.UserName());
 }

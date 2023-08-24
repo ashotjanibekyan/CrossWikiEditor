@@ -4,7 +4,7 @@ public sealed class QueryActionBuilder
 {
     private MetaTokenType _tokenType;
     private List<string> _titles;
-    
+
     public QueryActionBuilder WithMeta(MetaTokenType tokenType)
     {
         _tokenType = tokenType;

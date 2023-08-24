@@ -21,7 +21,7 @@ public sealed class DialogService : IDialogService
         _container = container;
         _mainWindow = mainWindow;
     }
-    
+
     public async Task<TResult> ShowDialog<TResult>(ViewModelBase viewModel)
     {
         Window dialog = _container.ResolveNamed<Window>(viewModel.GetType().Name);

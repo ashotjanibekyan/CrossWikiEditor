@@ -44,18 +44,16 @@ public sealed class ProfilesViewModel : ViewModelBase
     }
 
 
-    [Reactive]
-    public Profile? SelectedProfile { get; set; }
+    [Reactive] public Profile? SelectedProfile { get; set; }
 
-    [Reactive]
-    public ObservableCollection<Profile> Profiles { get; set; }
-    
+    [Reactive] public ObservableCollection<Profile> Profiles { get; set; }
+
     public ReactiveCommand<Unit, Unit> LoginCommand { get; }
     public ReactiveCommand<Unit, Unit> AddCommand { get; }
     public ReactiveCommand<Unit, Unit> EditCommand { get; }
     public ReactiveCommand<Unit, Unit> DeleteCommand { get; }
     public ReactiveCommand<Unit, Unit> QuickLoginCommand { get; }
-    
+
     public string Username { get; set; } = "";
     public string Password { get; set; } = "";
 
@@ -91,7 +89,7 @@ public sealed class ProfilesViewModel : ViewModelBase
             Notes = SelectedProfile.Notes,
             Password = SelectedProfile.Password ?? string.Empty,
             ShouldSavePassword = SelectedProfile.IsPasswordSaved,
-            ShouldSelectDefaultSettings = !string.IsNullOrEmpty(SelectedProfile.DefaultSettingsPath),
+            ShouldSelectDefaultSettings = !string.IsNullOrEmpty(SelectedProfile.DefaultSettingsPath)
         };
         if (await _dialogService.ShowDialog<bool>(vm))
         {
@@ -105,6 +103,7 @@ public sealed class ProfilesViewModel : ViewModelBase
         {
             return;
         }
+
         _profileRepository.Delete(SelectedProfile.Id);
         SelectedProfile = null;
         Profiles = new ObservableCollection<Profile>(_profileRepository.GetAll());
@@ -116,6 +115,7 @@ public sealed class ProfilesViewModel : ViewModelBase
         {
             return;
         }
+
         var profile = new Profile()
         {
             Username = Username,
@@ -129,9 +129,9 @@ public sealed class ProfilesViewModel : ViewModelBase
         UserPrefs currentUserPref = string.IsNullOrEmpty(profile.DefaultSettingsPath)
             ? _userPreferencesService.GetCurrentPref()
             : _userPreferencesService.GetUserPref(profile.DefaultSettingsPath);
-        
+
         var site = new Site(currentUserPref.ApiRoot());
-        
+
         Result loginResult = await _userService.Login(profile, site);
         if (loginResult is {IsSuccessful: true})
         {

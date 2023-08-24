@@ -6,7 +6,7 @@ namespace CrossWikiEditor.Tests.ViewModels;
 public class StatusBarViewModelTests : BaseTest
 {
     private StatusBarViewModel _sut;
-    
+
     [SetUp]
     public void SetUp()
     {
@@ -41,7 +41,7 @@ public class StatusBarViewModelTests : BaseTest
         var preferencesViewModel = new PreferencesViewModel(_userPreferencesService, _messageBus);
         _dialogService.ShowDialog<bool>(Arg.Any<PreferencesViewModel>()).Returns(true);
         _viewModelFactory.GetPreferencesViewModel().Returns(preferencesViewModel);
-        
+
         // act
         _sut.CurrentWikiClickedCommand.Execute().Subscribe();
 
@@ -52,16 +52,17 @@ public class StatusBarViewModelTests : BaseTest
             _dialogService.Received(1).ShowDialog<bool>(preferencesViewModel);
         });
     }
-    
-    
+
+
     [Test]
     public void UsernameClickedCommand_ShouldOpenPreferencesView()
     {
         // arrange
-        var profilesViewModel = new ProfilesViewModel(_fileDialogService, _dialogService, _profileRepository, _userService, _userPreferencesService, _messageBus);
+        var profilesViewModel = new ProfilesViewModel(_fileDialogService, _dialogService, _profileRepository, _userService, _userPreferencesService,
+            _messageBus);
         _dialogService.ShowDialog<bool>(Arg.Any<PreferencesViewModel>()).Returns(true);
         _viewModelFactory.GetProfilesViewModel().Returns(profilesViewModel);
-        
+
         // act
         _sut.UsernameClickedCommand.Execute().Subscribe();
 

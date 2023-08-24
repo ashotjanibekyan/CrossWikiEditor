@@ -4,17 +4,16 @@ namespace CrossWikiEditor.ViewModels;
 
 public sealed class MakeListViewModel : ViewModelBase
 {
-
     public MakeListViewModel()
     {
-        this.Sources = new List<string>
+        Sources = new List<string>
         {
             "List 1",
             "List 2",
             "List 3",
             "List 4"
         };
-        this.Pages = new List<string>
+        Pages = new List<string>
         {
             "Page 1",
             "Page 2",
@@ -35,7 +34,7 @@ public sealed class MakeListViewModel : ViewModelBase
             "Page 17",
             "Page 18",
             "Page 19",
-            "Page 20",
+            "Page 20"
         };
     }
 

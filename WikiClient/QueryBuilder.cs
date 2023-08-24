@@ -4,7 +4,7 @@ public sealed class QueryBuilder
 {
     private string _action;
     private OutputFormat _format;
-    
+
     public QueryBuilder WithAction(string action)
     {
         _action = action;

@@ -41,8 +41,8 @@ public class AddOrEditProfileViewModelTests : BaseTest
                 Arg.Is<List<FilePickerFileType>>(
                     x => x.Count == 1 && x[0].Patterns != null && x[0].Patterns.Count == 1 && x[0].Patterns[0] == "*.xml"))
             .Returns(Array.Empty<string>());
-        var initialDefaultSettingsPath = _sut.DefaultSettingsPath;
-        
+        string? initialDefaultSettingsPath = _sut.DefaultSettingsPath;
+
         // act
         _sut.BrowseCommand.Execute().Subscribe();
 
@@ -59,8 +59,8 @@ public class AddOrEditProfileViewModelTests : BaseTest
                 Arg.Is<List<FilePickerFileType>>(
                     x => x.Count == 1 && x[0].Patterns != null && x[0].Patterns.Count == 1 && x[0].Patterns[0] == "*.xml"))
             .ReturnsNull();
-        var initialDefaultSettingsPath = _sut.DefaultSettingsPath;
-        
+        string? initialDefaultSettingsPath = _sut.DefaultSettingsPath;
+
         // act
         _sut.BrowseCommand.Execute().Subscribe();
 
@@ -84,7 +84,7 @@ public class AddOrEditProfileViewModelTests : BaseTest
         // assert
         _dialog.Received(1).Close(false);
     }
-    
+
     [TestCase(null)]
     [TestCase("")]
     [TestCase("  ")]
@@ -102,11 +102,12 @@ public class AddOrEditProfileViewModelTests : BaseTest
         // assert
         _dialog.Received(1).Close(false);
     }
-        
+
     [TestCase(null)]
     [TestCase("")]
     [TestCase("  ")]
-    public void SaveCommand_ShouldCloseWithFalseResult_WhenDefaultSettingsPathIsNullOrEmpty_And_ShouldSelectDefaultSettings(string? defaultSettingsPath)
+    public void SaveCommand_ShouldCloseWithFalseResult_WhenDefaultSettingsPathIsNullOrEmpty_And_ShouldSelectDefaultSettings(
+        string? defaultSettingsPath)
     {
         // arrange
         _sut.DefaultSettingsPath = defaultSettingsPath;
@@ -121,10 +122,10 @@ public class AddOrEditProfileViewModelTests : BaseTest
         _dialog.Received(1).Close(false);
     }
 
-    [TestCase("username",  "Qwer1234", true, "some/path/file.xml", true, "this is a note")]
-    [TestCase("username",  "Qwer1234", false, "some/path/file.xml", true, "this is a note")]
-    [TestCase("username",  "", false, "some/path/file.xml", false, "this is a note")]
-    [TestCase("username",  "Qwer1234", false, "", false, "")]
+    [TestCase("username", "Qwer1234", true, "some/path/file.xml", true, "this is a note")]
+    [TestCase("username", "Qwer1234", false, "some/path/file.xml", true, "this is a note")]
+    [TestCase("username", "", false, "some/path/file.xml", false, "this is a note")]
+    [TestCase("username", "Qwer1234", false, "", false, "")]
     public void SaveCommand_ShouldInsertProfile_WhenIdIsMinus1(string username,
         string password,
         bool shouldSavePassword,
@@ -148,17 +149,18 @@ public class AddOrEditProfileViewModelTests : BaseTest
 
         // assert
         _profileRepository.Received(1).Insert(Arg.Is<Profile>(p =>
-            p.Username == username && p.DefaultSettingsPath == (shouldSelectDefaultSettings ? defaultSettingsPath : "") && p.IsPasswordSaved == shouldSavePassword &&
+            p.Username == username && p.DefaultSettingsPath == (shouldSelectDefaultSettings ? defaultSettingsPath : "") &&
+            p.IsPasswordSaved == shouldSavePassword &&
             p.Password == (shouldSavePassword ? password : "") && p.Notes == notes));
         _profileRepository.DidNotReceive().Update(Arg.Any<Profile>());
         _dialog.Received(1).Close(true);
     }
-    
-    
-    [TestCase(0, "username",  "Qwer1234", true, "some/path/file.xml", true, "this is a note")]
-    [TestCase(1, "username",  "Qwer1234", false, "some/path/file.xml", true, "this is a note")]
-    [TestCase(2, "username",  "", false, "some/path/file.xml", false, "this is a note")]
-    [TestCase(3, "username",  "Qwer1234", false, "", false, "")]
+
+
+    [TestCase(0, "username", "Qwer1234", true, "some/path/file.xml", true, "this is a note")]
+    [TestCase(1, "username", "Qwer1234", false, "some/path/file.xml", true, "this is a note")]
+    [TestCase(2, "username", "", false, "some/path/file.xml", false, "this is a note")]
+    [TestCase(3, "username", "Qwer1234", false, "", false, "")]
     public void SaveCommand_ShouldUpdateProfile_WhenIdIsNonNegatives(int id,
         string username,
         string password,
@@ -183,7 +185,8 @@ public class AddOrEditProfileViewModelTests : BaseTest
 
         // assert
         _profileRepository.Received(1).Update(Arg.Is<Profile>(p =>
-            p.Username == username && p.DefaultSettingsPath == (shouldSelectDefaultSettings ? defaultSettingsPath : "") && p.IsPasswordSaved == shouldSavePassword &&
+            p.Username == username && p.DefaultSettingsPath == (shouldSelectDefaultSettings ? defaultSettingsPath : "") &&
+            p.IsPasswordSaved == shouldSavePassword &&
             p.Password == (shouldSavePassword ? password : "") && p.Notes == notes && p.Id == id));
         _dialog.Received(1).Close(true);
     }

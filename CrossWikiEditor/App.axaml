@@ -3,15 +3,16 @@
              RequestedThemeVariant="Light"
              x:Class="CrossWikiEditor.App">
     <Application.Styles>
-        <FluentTheme Palettes="" DensityStyle="Compact"/>
-        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
+        <FluentTheme Palettes="" DensityStyle="Compact" />
+        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
         <StyleInclude Source="./Styles/ButtonStyles.axaml" />
         <Style Selector="HeaderedContentControl">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate>
                         <Grid RowDefinitions="Auto,*" ColumnDefinitions="Auto,*">
-                            <Border Grid.Row="0" Grid.Column="0" ZIndex="1" Padding="5,0,5,0" Background="White" Margin="5,0,0,0">
+                            <Border Grid.Row="0" Grid.Column="0" ZIndex="1" Padding="5,0,5,0" Background="White"
+                                    Margin="5,0,0,0">
                                 <TextBlock FontWeight="Bold" Text="{TemplateBinding Header}" />
                             </Border>
                             <Border Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Grid.Column="0" Margin="0,10,0,0"
@@ -24,6 +25,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
     </Application.Styles>
 </Application>

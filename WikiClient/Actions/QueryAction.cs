@@ -10,8 +10,8 @@ public sealed class QueryAction
 
     public QueryAction()
     {
-        
     }
+
     public QueryAction(List<QueryPropertyBase> queryProperties, List<QueryMetaBase> queryMetas, List<QueryListBase> queryLists)
     {
         _queryProperties = queryProperties;
@@ -24,17 +24,15 @@ public sealed class QueryAction
         var sb = new StringBuilder();
         sb.Append("query");
 
-        foreach (var meta in _queryMetas)
+        foreach (QueryMetaBase? meta in _queryMetas)
         {
-                
         }
-        
+
         return sb.ToString();
     }
 
     public async Task Execute()
     {
-        
     }
 
     public static object WithMeta(MetaTokenType login)
