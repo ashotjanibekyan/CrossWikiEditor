@@ -149,15 +149,15 @@ public class MakeListViewModelTests : BaseTest
     public void MakeListCommand_ShouldDoNothing_WhenSelectedProviderCanNotMake()
     {
         // arrange
-        IPageProvider pageProvider = Substitute.For<IPageProvider>();
-        _sut.SelectedPageProvider = pageProvider;
-        pageProvider.CanMake.Returns(false);
+        IListProvider listProvider = Substitute.For<IListProvider>();
+        _sut.SelectedListProvider = listProvider;
+        listProvider.CanMake.Returns(false);
 
         // act
         _sut.MakeListCommand.Execute().Subscribe();
 
         // assert
-        pageProvider.Received(0).MakeList();
+        listProvider.Received(0).MakeList();
         _dialogService.Received(0).Alert(Arg.Any<string>(), Arg.Any<string>());
     }
 
@@ -165,16 +165,16 @@ public class MakeListViewModelTests : BaseTest
     public void MakeListCommand_ShouldUpdatePages_WhenMakeListReturnsNewList()
     {
         // arrange
-        IPageProvider pageProvider = Substitute.For<IPageProvider>();
-        _sut.SelectedPageProvider = pageProvider;
+        IListProvider listProvider = Substitute.For<IListProvider>();
+        _sut.SelectedListProvider = listProvider;
         
         List<string> existingPages = Fakers.WordsFaker(10);
         _sut.Pages = existingPages.ToObservableCollection();
         
-        pageProvider.CanMake.Returns(true);
+        listProvider.CanMake.Returns(true);
         
         List<string> newPages = Fakers.WordsFaker(10);
-        pageProvider.MakeList().Returns(Result<List<string>>.Success(newPages));
+        listProvider.MakeList().Returns(Result<List<string>>.Success(newPages));
 
         // act
         _sut.MakeListCommand.Execute().Subscribe();
@@ -187,10 +187,10 @@ public class MakeListViewModelTests : BaseTest
     public void MakeListCommand_ShouldAlertUser_WhenMakeListReturnsFailure()
     {
         // arrange
-        IPageProvider pageProvider = Substitute.For<IPageProvider>();
-        _sut.SelectedPageProvider = pageProvider;
-        pageProvider.CanMake.Returns(true);
-        pageProvider.MakeList().Returns(Result<List<string>>.Failure("error message"));
+        IListProvider listProvider = Substitute.For<IListProvider>();
+        _sut.SelectedListProvider = listProvider;
+        listProvider.CanMake.Returns(true);
+        listProvider.MakeList().Returns(Result<List<string>>.Failure("error message"));
         List<string> existingPages = Fakers.WordsFaker(10);
         _sut.Pages = existingPages.ToObservableCollection();
 
@@ -200,5 +200,35 @@ public class MakeListViewModelTests : BaseTest
         // assert
         _dialogService.Received(1).Alert("Failed to get the list", "error message");
         _sut.Pages.Should().BeEquivalentTo(existingPages);
+    }
+
+    [Test]
+    public void MakeListCommand_ShouldRequestAdditionalParams_WhenNeedsAdditionalParamsIsTrue()
+    {
+        // arrange
+        IListProvider listProvider = Substitute.For<IListProvider>();
+        _sut.SelectedListProvider = listProvider;
+        listProvider.NeedsAdditionalParams.Returns(true);
+
+        // act
+        _sut.MakeListCommand.Execute().Subscribe();
+
+        // assert
+        listProvider.Received(1).GetAdditionalParams();
+    }
+
+    [Test]
+    public void MakeListCommand_ShouldNotRequestAdditionalParams_WhenNeedsAdditionalParamsIsFalse()
+    {
+        // arrange
+        IListProvider listProvider = Substitute.For<IListProvider>();
+        _sut.SelectedListProvider = listProvider;
+        listProvider.NeedsAdditionalParams.Returns(false);
+
+        // act
+        _sut.MakeListCommand.Execute().Subscribe();
+
+        // assert
+        listProvider.Received(0).GetAdditionalParams();
     }
 }

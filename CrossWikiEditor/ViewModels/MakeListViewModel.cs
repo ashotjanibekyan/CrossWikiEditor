@@ -24,21 +24,31 @@ public sealed class MakeListViewModel : ViewModelBase
         RemovePageCommand = ReactiveCommand.Create(RemovePage);
         MakeListCommand = ReactiveCommand.CreateFromTask(MakeList);
         
-        PageProviders = new List<IPageProvider>
+        ListProviders = new List<IListProvider>
         {
-            new CategoriesOnPageProvider(pageService, userPreferencesService)
+            new CategoriesOnPageListProvider(pageService, userPreferencesService),
+            new CategoriesOnPageNoHiddenCategoriesListProvider(pageService, userPreferencesService),
+            new CategoriesOnPageOnlyHiddenCategoriesListProvider(pageService, userPreferencesService),
+            new CategoryListProvider(pageService, userPreferencesService),
+            new CategoryRecursive1LevelListProvider(pageService, userPreferencesService),
+            new CategoryRecursiveUserDefinedLevelListProvider(pageService, userPreferencesService, dialogService)
         }.ToObservableCollection();
-        SelectedPageProvider = PageProviders[0];
+        SelectedListProvider = ListProviders[0];
     }
 
     private async Task MakeList(CancellationToken arg)
     {
-        if (!SelectedPageProvider.CanMake)
+        if (SelectedListProvider.NeedsAdditionalParams)
+        {
+            await SelectedListProvider.GetAdditionalParams();
+        }
+        
+        if (!SelectedListProvider.CanMake)
         {
             return;
         }
 
-        Result<List<string>> result = await SelectedPageProvider.MakeList();
+        Result<List<string>> result = await SelectedListProvider.MakeList();
         if (result is {IsSuccessful: true, Value: not null})
         {
             Pages.AddRange(result.Value);
@@ -69,8 +79,8 @@ public sealed class MakeListViewModel : ViewModelBase
         NewPageTitle = string.Empty;
     }
 
-    public ObservableCollection<IPageProvider> PageProviders { get; }
-    [Reactive] public IPageProvider SelectedPageProvider { get; set; }
+    public ObservableCollection<IListProvider> ListProviders { get; }
+    [Reactive] public IListProvider SelectedListProvider { get; set; }
     [Reactive] public ObservableCollection<string> Pages { get; set; } = new();
     [Reactive] public string SelectedPage { get; set; }
     [Reactive] public string NewPageTitle { get; set; } = string.Empty;

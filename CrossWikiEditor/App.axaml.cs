@@ -119,6 +119,7 @@ public class App : Application
     private void RegisterDialogs(ContainerBuilder builder)
     {
         builder.RegisterType<AlertView>().Named<Window>(nameof(AlertViewModel));
+        builder.RegisterType<PromptView>().Named<Window>(nameof(PromptViewModel));
         builder.RegisterType<ProfilesView>().Named<Window>(nameof(ProfilesViewModel));
         builder.RegisterType<PreferencesView>().Named<Window>(nameof(PreferencesViewModel));
         builder.RegisterType<AddNewProfileView>().Named<Window>(nameof(AddOrEditProfileViewModel));

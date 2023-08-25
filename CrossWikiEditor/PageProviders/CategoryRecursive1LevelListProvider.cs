@@ -5,25 +5,32 @@ using CrossWikiEditor.Services.WikiServices;
 
 namespace CrossWikiEditor.PageProviders;
 
-public class CategoriesOnPageProvider : IPageProvider
+public class CategoryRecursive1LevelListProvider : IListProvider
 {
     private readonly IPageService _pageService;
     private readonly IUserPreferencesService _userPreferencesService;
-
-    public CategoriesOnPageProvider(
+    
+    public CategoryRecursive1LevelListProvider(
         IPageService pageService,
         IUserPreferencesService userPreferencesService)
     {
         _pageService = pageService;
         _userPreferencesService = userPreferencesService;
     }
-    public string Title => "Categories on page";
-    public string ParamTitle => "Page";
+    
+    public string Title => "Category (recursive 1 level)";
+    public string ParamTitle => "Category";
     public string Param { get; set; } = string.Empty;
     public bool CanMake => !string.IsNullOrWhiteSpace(Param);
+    public bool NeedsAdditionalParams => false;
     public async Task<Result<List<string>>> MakeList()
     {
         UserPrefs userPrefs = _userPreferencesService.GetCurrentPref();
-        return await _pageService.GetCategoriesOf(userPrefs.Site, Param);
+        return await _pageService.GetPagesOfCategory(userPrefs.Site, Param, recursive: 1);
+    }
+
+    public Task GetAdditionalParams()
+    {
+        return Task.CompletedTask;
     }
 }
