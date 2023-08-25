@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Reactive;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,7 +22,7 @@ public sealed class MakeListViewModel : ViewModelBase
     {
         _dialogService = dialogService;
         AddNewPageCommand = ReactiveCommand.Create(AddNewPage);
-        RemovePageCommand = ReactiveCommand.Create(RemovePage);
+        RemoveCommand = ReactiveCommand.Create(Remove);
         MakeListCommand = ReactiveCommand.CreateFromTask(MakeList);
         
         ListProviders = new List<IListProvider>
@@ -31,7 +32,8 @@ public sealed class MakeListViewModel : ViewModelBase
             new CategoriesOnPageOnlyHiddenCategoriesListProvider(pageService, userPreferencesService),
             new CategoryListProvider(pageService, userPreferencesService),
             new CategoryRecursive1LevelListProvider(pageService, userPreferencesService),
-            new CategoryRecursiveUserDefinedLevelListProvider(pageService, userPreferencesService, dialogService)
+            new CategoryRecursiveUserDefinedLevelListProvider(pageService, userPreferencesService, dialogService),
+            new CategoryRecursiveListProvider(pageService, userPreferencesService)
         }.ToObservableCollection();
         SelectedListProvider = ListProviders[0];
     }
@@ -59,14 +61,14 @@ public sealed class MakeListViewModel : ViewModelBase
         }
     }
 
-    private void RemovePage()
+    private void Remove()
     {
-        if (!string.IsNullOrWhiteSpace(SelectedPage) && Pages.Contains(SelectedPage))
+        if (SelectedPages.Any())
         {
-            Pages.Remove(SelectedPage);
+            Pages.Remove(new List<string>(SelectedPages));
         }
 
-        SelectedPage = string.Empty;
+        SelectedPages = new ObservableCollection<string>();
     }
 
     private void AddNewPage()
@@ -82,9 +84,9 @@ public sealed class MakeListViewModel : ViewModelBase
     public ObservableCollection<IListProvider> ListProviders { get; }
     [Reactive] public IListProvider SelectedListProvider { get; set; }
     [Reactive] public ObservableCollection<string> Pages { get; set; } = new();
-    [Reactive] public string SelectedPage { get; set; }
+    [Reactive] public ObservableCollection<string> SelectedPages { get; set; } = new();
     [Reactive] public string NewPageTitle { get; set; } = string.Empty;
     public ReactiveCommand<Unit, Unit> AddNewPageCommand { get; }
-    public ReactiveCommand<Unit, Unit> RemovePageCommand { get; set; }
+    public ReactiveCommand<Unit, Unit> RemoveCommand { get; set; }
     public ReactiveCommand<Unit, Unit> MakeListCommand { get; set; }
 }

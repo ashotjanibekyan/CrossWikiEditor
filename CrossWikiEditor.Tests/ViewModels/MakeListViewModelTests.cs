@@ -1,4 +1,5 @@
-﻿using CrossWikiEditor.PageProviders;
+﻿using System.Collections.ObjectModel;
+using CrossWikiEditor.PageProviders;
 using CrossWikiEditor.Utils;
 using CrossWikiEditor.ViewModels;
 
@@ -86,46 +87,48 @@ public class MakeListViewModelTests : BaseTest
     }
 
     [Test]
-    public void RemovePageCommand_ShouldDoNothing_WhenThereIsNoSelectedPage([Values("", null)] string selectedPage)
+    public void RemoveCommand_ShouldDoNothing_WhenThereIsNoSelectedPage()
     {
         // arrange
         List<string> randomPages = Fakers.WordsFaker(10);
         _sut.Pages = randomPages.ToObservableCollection();
-        _sut.SelectedPage = selectedPage;
+        _sut.SelectedPages = new ObservableCollection<string>();
 
         // act
-        _sut.RemovePageCommand.Execute().Subscribe();
+        _sut.RemoveCommand.Execute().Subscribe();
 
         // assert
         _sut.Pages.Should().BeEquivalentTo(randomPages);
     }
 
     [Test]
-    public void RemovePageCommand_ShouldRemoveSelectedPage_WhenSelectedPageIsInPages()
+    public void RemoveCommand_ShouldRemoveSelectedPages_WhenSelectedPageIsInPages()
     {
         // arrange
         List<string> randomPages = Fakers.WordsFaker(10);
         _sut.Pages = randomPages.ToObservableCollection();
-        _sut.SelectedPage = randomPages[3];
-        randomPages.RemoveAt(3);
+        _sut.SelectedPages = new []{randomPages[3], randomPages[6], randomPages[1]}.ToObservableCollection();
+        randomPages.RemoveAt(1);
+        randomPages.RemoveAt(2);
+        randomPages.RemoveAt(4);
 
         // act
-        _sut.RemovePageCommand.Execute().Subscribe();
+        _sut.RemoveCommand.Execute().Subscribe();
 
         // assert
         _sut.Pages.Should().BeEquivalentTo(randomPages);
     }
 
     [Test]
-    public void RemovePageCommand_ShouldDoNothing_WhenSelectedPageIsNotInPages()
+    public void RemoveCommand_ShouldDoNothing_WhenSelectedPageIsNotInPages()
     {
 
         List<string> randomPages = Fakers.WordsFaker(10);
         _sut.Pages = randomPages.ToObservableCollection();
-        _sut.SelectedPage = "ugiui uihui ho";
+        _sut.SelectedPages = new List<string>{"fwe fwe", "ifowe ewiofnwekj fwe"}.ToObservableCollection();
 
         // act
-        _sut.RemovePageCommand.Execute().Subscribe();
+        _sut.RemoveCommand.Execute().Subscribe();
 
         // assert
         _sut.Pages.Should().BeEquivalentTo(randomPages);
@@ -133,16 +136,16 @@ public class MakeListViewModelTests : BaseTest
     
     
     [Test]
-    public void RemovePageCommand_ShouldClearSelectedPage([Values("", null, " ", "new title")] string selectedPage)
+    public void RemoveCommand_ShouldClearSelectedPage()
     {
         // arrange
-        _sut.SelectedPage = selectedPage;
+        _sut.SelectedPages = new List<string>{"", " ", "fioew "}.ToObservableCollection();
 
         // act
-        _sut.RemovePageCommand.Execute().Subscribe();
+        _sut.RemoveCommand.Execute().Subscribe();
 
         // assert
-        _sut.SelectedPage.Should().BeEmpty();
+        _sut.SelectedPages.Should().BeEmpty();
     }
 
     [Test]
