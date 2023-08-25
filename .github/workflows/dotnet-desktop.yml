@@ -6,11 +6,6 @@ on:
   pull_request:
     branches: [ "master" ]
 
-env:
-  PROJECT_PATH: CrossWikiEditor/CrossWikiEditor.csproj
-  TEST_PROJECT_PATH: CrossWikiEditor.Tests/CrossWikiEditor.Tests.csproj
-  WIKI_CLIENT_TEST_PROJECT_PATH: WikiClient.Tests/WikiClient.Tests.csproj
-
 jobs:
   build:
     runs-on: windows-latest
@@ -22,7 +17,4 @@ jobs:
           dotnet-version: 6.0.x
 
       - name: CrossWikiEditor unit tests
-        run: dotnet test ${{ env.TEST_PROJECT_PATH }} -c Release --logger:nunit
-        
-      - name: WikiClient unit tests
-        run: dotnet test ${{ env.WIKI_CLIENT_TEST_PROJECT_PATH }} -c Release --logger:nunit
+        run: dotnet test CrossWikiEditor.Tests/CrossWikiEditor.Tests.csproj -c Release --logger:nunit

@@ -9,7 +9,6 @@ using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using WikiClient;
 
 namespace CrossWikiEditor.ViewModels;
 
@@ -130,9 +129,7 @@ public sealed class ProfilesViewModel : ViewModelBase
             ? _userPreferencesService.GetCurrentPref()
             : _userPreferencesService.GetUserPref(profile.DefaultSettingsPath);
 
-        var site = new Site(currentUserPref.ApiRoot());
-
-        Result loginResult = await _userService.Login(profile, site);
+        Result loginResult = await _userService.Login(profile, currentUserPref.ApiRoot());
         if (loginResult is {IsSuccessful: true})
         {
             _messageBus.SendMessage(new NewAccountLoggedInMessage(profile));

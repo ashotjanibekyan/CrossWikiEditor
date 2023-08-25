@@ -26,7 +26,7 @@ public class CategoriesOnPageListProvider : IListProvider
     public virtual async Task<Result<List<string>>> MakeList()
     {
         UserPrefs userPrefs = _userPreferencesService.GetCurrentPref();
-        return await _pageService.GetCategoriesOf(userPrefs.Site, Param);
+        return await _pageService.GetCategoriesOf(userPrefs.ApiRoot(), Param);
     }
 
     public Task GetAdditionalParams()

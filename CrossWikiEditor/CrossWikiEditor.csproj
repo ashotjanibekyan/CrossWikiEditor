@@ -27,6 +27,7 @@
         <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.2"/>
         <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.2"/>
         <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.2"/>
+        <PackageReference Include="CXuesong.MW.WikiClientLibrary" Version="0.7.5" />
         <PackageReference Include="ReactiveUI.Fody" Version="19.4.1"/>
         <PackageReference Include="Realm" Version="11.3.0"/>
     </ItemGroup>
@@ -129,9 +130,5 @@
         <AdditionalFiles Include="Views\ReportViews\LogsView.axaml"/>
         <AdditionalFiles Include="Views\ReportViews\PageLogsView.axaml"/>
         <AdditionalFiles Include="Views\ReportViews\WhatLinksHereView.axaml"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\WikiClient\WikiClient.csproj"/>
     </ItemGroup>
 </Project>

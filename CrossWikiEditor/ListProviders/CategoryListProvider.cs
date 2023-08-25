@@ -27,7 +27,7 @@ public class CategoryListProvider : IListProvider
     public async Task<Result<List<string>>> MakeList()
     {
         UserPrefs userPrefs = _userPreferencesService.GetCurrentPref();
-        return await _pageService.GetPagesOfCategory(userPrefs.Site, Param);
+        return await _pageService.GetPagesOfCategory(userPrefs.ApiRoot(), Param);
     }
 
     public Task GetAdditionalParams()

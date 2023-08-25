@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Xml.Serialization;
-using WikiClient;
 
 namespace CrossWikiEditor;
 
@@ -37,9 +36,6 @@ public struct UserPrefs
     public string CustomProject { get; set; }
     public string Protocol { get; set; }
     public string LoginDomain { get; set; }
-
-    public Site Site => new(ApiRoot());
-    
     public string ApiRoot()
     {
         if (!string.IsNullOrEmpty(LanguageCode) && new[]

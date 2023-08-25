@@ -18,6 +18,6 @@ public class CategoriesOnPageNoHiddenCategoriesListProvider : CategoriesOnPageLi
     public override async Task<Result<List<string>>> MakeList()
     {
         UserPrefs userPrefs = _userPreferencesService.GetCurrentPref();
-        return await _pageService.GetCategoriesOf(userPrefs.Site, Param, includeHidden: false);
+        return await _pageService.GetCategoriesOf(userPrefs.ApiRoot(), Param, includeHidden: false);
     }
 }

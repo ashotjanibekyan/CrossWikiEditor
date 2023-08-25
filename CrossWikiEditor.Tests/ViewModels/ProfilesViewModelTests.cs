@@ -2,7 +2,6 @@ using CrossWikiEditor.Messages;
 using CrossWikiEditor.Models;
 using CrossWikiEditor.Utils;
 using CrossWikiEditor.ViewModels;
-using WikiClient;
 
 namespace CrossWikiEditor.Tests.ViewModels;
 
@@ -31,7 +30,7 @@ public class ProfilesViewModelTests : BaseTest
         // assert
         _userPreferencesService.Received(0).GetCurrentPref();
         _messageBus.Received(0).SendMessage(Arg.Any<object>());
-        _userService.Received(0).Login(Arg.Any<Profile>(), Arg.Any<Site>());
+        _userService.Received(0).Login(Arg.Any<Profile>(), Arg.Any<string>());
     }
 
     [Test]
@@ -49,14 +48,14 @@ public class ProfilesViewModelTests : BaseTest
             LanguageCode = "hy",
             Project = ProjectEnum.Wikipedia
         });
-        _userService.Login(Arg.Any<Profile>(), Arg.Any<Site>()).Returns(Result.Success());
+        _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Result.Success());
 
         // act
         _sut.LoginCommand.Execute(_dialog).Subscribe();
 
         // assert
         _userService.Received(1).Login(Arg.Is<Profile>(p => p.Username == profile.Username && p.Password == profile.Password),
-            Arg.Is<Site>(s => s.Domain == "https://hy.wikipedia.org/w/api.php?"));
+            "https://hy.wikipedia.org/w/api.php?");
         _messageBus.Received(1).SendMessage(Arg.Any<NewAccountLoggedInMessage>());
         _dialogService.Received(0).Alert(Arg.Any<string>(), Arg.Any<string>());
         _dialog.Received(1).Close(true);
@@ -79,7 +78,7 @@ public class ProfilesViewModelTests : BaseTest
             Project = ProjectEnum.Wikipedia
         };
         _userPreferencesService.GetUserPref(profile.DefaultSettingsPath).Returns(userPrefs);
-        _userService.Login(Arg.Any<Profile>(), Arg.Any<Site>()).Returns(Result.Success());
+        _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Result.Success());
 
         // act
         _sut.LoginCommand.Execute(_dialog).Subscribe();
@@ -88,7 +87,7 @@ public class ProfilesViewModelTests : BaseTest
         _userPreferencesService.Received(1)
             .SetCurrentPref(userPrefs);
         _userService.Received(1).Login(Arg.Is<Profile>(p => p.Username == profile.Username && p.Password == profile.Password),
-            Arg.Is<Site>(s => s.Domain == "https://hy.wikipedia.org/w/api.php?"));
+            "https://hy.wikipedia.org/w/api.php?");
         _messageBus.Received(1).SendMessage(Arg.Any<NewAccountLoggedInMessage>());
         _dialogService.Received(0).Alert(Arg.Any<string>(), Arg.Any<string>());
         _dialog.Received(1).Close(true);
@@ -109,14 +108,14 @@ public class ProfilesViewModelTests : BaseTest
             LanguageCode = "hy",
             Project = ProjectEnum.Wikipedia
         });
-        _userService.Login(Arg.Any<Profile>(), Arg.Any<Site>()).Returns(Result.Failure(string.Empty));
+        _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Result.Failure(string.Empty));
 
         // act
         _sut.LoginCommand.Execute(_dialog).Subscribe();
 
         // assert
         _userService.Received(1).Login(Arg.Is<Profile>(p => p.Username == profile.Username && p.Password == profile.Password),
-            Arg.Is<Site>(s => s.Domain == "https://hy.wikipedia.org/w/api.php?"));
+            "https://hy.wikipedia.org/w/api.php?");
         _messageBus.Received(0).SendMessage(Arg.Any<NewAccountLoggedInMessage>());
         _dialogService.Received(1).Alert("Login Attempt Unsuccessful",
             "Login Attempt Unsuccessful: Please ensure an active internet connection and verify the accuracy of your provided username and password.");
@@ -137,14 +136,14 @@ public class ProfilesViewModelTests : BaseTest
             LanguageCode = "hy",
             Project = ProjectEnum.Wikipedia
         });
-        _userService.Login(Arg.Any<Profile>(), Arg.Any<Site>()).Returns(Result.Failure("this is an error message"));
+        _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Result.Failure("this is an error message"));
 
         // act
         _sut.LoginCommand.Execute(_dialog).Subscribe();
 
         // assert
         _userService.Received(1).Login(Arg.Is<Profile>(p => p.Username == profile.Username && p.Password == profile.Password),
-            Arg.Is<Site>(s => s.Domain == "https://hy.wikipedia.org/w/api.php?"));
+            "https://hy.wikipedia.org/w/api.php?");
         _messageBus.Received(0).SendMessage(Arg.Any<NewAccountLoggedInMessage>());
         _dialogService.Received(1).Alert("Login Attempt Unsuccessful", "this is an error message");
     }
@@ -310,14 +309,14 @@ public class ProfilesViewModelTests : BaseTest
             LanguageCode = "hyw",
             Project = ProjectEnum.Wikipedia
         });
-        _userService.Login(Arg.Any<Profile>(), Arg.Any<Site>()).Returns(Result.Success());
+        _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Result.Success());
 
         // act
         _sut.QuickLoginCommand.Execute(_dialog).Subscribe();
 
         // assert
         _userService.Received(1).Login(Arg.Is<Profile>(p => p.Username == "username" && p.Password == "Qwer1234"),
-            Arg.Is<Site>(s => s.Domain == "https://hyw.wikipedia.org/w/api.php?"));
+            "https://hyw.wikipedia.org/w/api.php?");
         _dialog.Received(1).Close(true);
     }
 
@@ -354,7 +353,7 @@ public class ProfilesViewModelTests : BaseTest
             LanguageCode = "hyw",
             Project = ProjectEnum.Wikipedia
         });
-        _userService.Login(Arg.Any<Profile>(), Arg.Any<Site>()).Returns(Result.Success());
+        _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Result.Success());
 
         // act
         _sut.QuickLoginCommand.Execute(_dialog).Subscribe();
@@ -376,7 +375,7 @@ public class ProfilesViewModelTests : BaseTest
             LanguageCode = "hyw",
             Project = ProjectEnum.Wikipedia
         });
-        _userService.Login(Arg.Any<Profile>(), Arg.Any<Site>()).Returns(Result.Failure("Password is wrong"));
+        _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Result.Failure("Password is wrong"));
 
         // act
         _sut.QuickLoginCommand.Execute(_dialog).Subscribe();
@@ -398,7 +397,7 @@ public class ProfilesViewModelTests : BaseTest
             LanguageCode = "hyw",
             Project = ProjectEnum.Wikipedia
         });
-        _userService.Login(Arg.Any<Profile>(), Arg.Any<Site>()).Returns(Result.Failure(errorMessage));
+        _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Result.Failure(errorMessage));
 
         // act
         _sut.QuickLoginCommand.Execute(_dialog).Subscribe();

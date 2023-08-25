@@ -26,7 +26,7 @@ public class CategoryRecursive1LevelListProvider : IListProvider
     public async Task<Result<List<string>>> MakeList()
     {
         UserPrefs userPrefs = _userPreferencesService.GetCurrentPref();
-        return await _pageService.GetPagesOfCategory(userPrefs.Site, Param, recursive: 1);
+        return await _pageService.GetPagesOfCategory(userPrefs.ApiRoot(), Param, recursive: 1);
     }
 
     public Task GetAdditionalParams()
