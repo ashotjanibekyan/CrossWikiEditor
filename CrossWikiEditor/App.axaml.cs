@@ -83,7 +83,10 @@ public class App : Application
         builder.RegisterType<ViewModelFactory>().As<IViewModelFactory>().SingleInstance();
         builder.RegisterType<FileDialogService>().As<IFileDialogService>().SingleInstance();
         builder.RegisterType<UserPreferencesService>().As<IUserPreferencesService>().SingleInstance();
+        
         builder.RegisterType<UserService>().As<IUserService>().SingleInstance();
+        builder.RegisterType<PageService>().As<IPageService>().SingleInstance();
+        
         builder.RegisterType<DialogService>()
             .As<IDialogService>()
             .WithParameter(new TypedParameter(typeof(Window), _mainWindow)).SingleInstance();

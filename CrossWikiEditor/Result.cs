@@ -35,9 +35,9 @@ public sealed class Result<T>
         return new Result<T>(true, result, null);
     }
 
-    public static Result<string> Failure(string errorMessage)
+    public static Result<T> Failure(string errorMessage)
     {
-        return new Result<string>(false, default, errorMessage);
+        return new Result<T>(false, default, errorMessage);
     }
 
     public bool IsSuccessful { get; private init; }

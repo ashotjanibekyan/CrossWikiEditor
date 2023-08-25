@@ -1,4 +1,4 @@
-﻿using Bogus;
+﻿using CrossWikiEditor.PageProviders;
 using CrossWikiEditor.Utils;
 using CrossWikiEditor.ViewModels;
 
@@ -12,7 +12,7 @@ public class MakeListViewModelTests : BaseTest
     public void SetUp()
     {
         SetUpServices();
-        _sut = new MakeListViewModel();
+        _sut = new MakeListViewModel(_dialogService, _pageService, _userPreferencesService);
     }
 
     [Test]
@@ -143,5 +143,62 @@ public class MakeListViewModelTests : BaseTest
 
         // assert
         _sut.SelectedPage.Should().BeEmpty();
+    }
+
+    [Test]
+    public void MakeListCommand_ShouldDoNothing_WhenSelectedProviderCanNotMake()
+    {
+        // arrange
+        IPageProvider pageProvider = Substitute.For<IPageProvider>();
+        _sut.SelectedPageProvider = pageProvider;
+        pageProvider.CanMake.Returns(false);
+
+        // act
+        _sut.MakeListCommand.Execute().Subscribe();
+
+        // assert
+        pageProvider.Received(0).MakeList();
+        _dialogService.Received(0).Alert(Arg.Any<string>(), Arg.Any<string>());
+    }
+
+    [Test]
+    public void MakeListCommand_ShouldUpdatePages_WhenMakeListReturnsNewList()
+    {
+        // arrange
+        IPageProvider pageProvider = Substitute.For<IPageProvider>();
+        _sut.SelectedPageProvider = pageProvider;
+        
+        List<string> existingPages = Fakers.WordsFaker(10);
+        _sut.Pages = existingPages.ToObservableCollection();
+        
+        pageProvider.CanMake.Returns(true);
+        
+        List<string> newPages = Fakers.WordsFaker(10);
+        pageProvider.MakeList().Returns(Result<List<string>>.Success(newPages));
+
+        // act
+        _sut.MakeListCommand.Execute().Subscribe();
+
+        // assert
+        _sut.Pages.Should().BeEquivalentTo(existingPages.Concat(newPages));
+    }
+
+    [Test]
+    public void MakeListCommand_ShouldAlertUser_WhenMakeListReturnsFailure()
+    {
+        // arrange
+        IPageProvider pageProvider = Substitute.For<IPageProvider>();
+        _sut.SelectedPageProvider = pageProvider;
+        pageProvider.CanMake.Returns(true);
+        pageProvider.MakeList().Returns(Result<List<string>>.Failure("error message"));
+        List<string> existingPages = Fakers.WordsFaker(10);
+        _sut.Pages = existingPages.ToObservableCollection();
+
+        // act
+        _sut.MakeListCommand.Execute().Subscribe();
+
+        // assert
+        _dialogService.Received(1).Alert("Failed to get the list", "error message");
+        _sut.Pages.Should().BeEquivalentTo(existingPages);
     }
 }
