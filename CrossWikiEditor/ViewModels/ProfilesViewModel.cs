@@ -35,11 +35,11 @@ public sealed class ProfilesViewModel : ViewModelBase
         _userService = userService;
         _userPreferencesService = userPreferencesService;
         _messageBus = messageBus;
-        LoginCommand = ReactiveCommand.CreateFromTask(Login);
+        LoginCommand = ReactiveCommand.CreateFromTask<IDialog>(Login);
         AddCommand = ReactiveCommand.CreateFromTask(Add);
         EditCommand = ReactiveCommand.CreateFromTask(Edit);
         DeleteCommand = ReactiveCommand.Create(Delete);
-        QuickLoginCommand = ReactiveCommand.CreateFromTask(QuickLogin);
+        QuickLoginCommand = ReactiveCommand.CreateFromTask<IDialog>(QuickLogin);
         Profiles = new ObservableCollection<Profile>(_profileRepository.GetAll() ?? new List<Profile>());
     }
 
@@ -48,23 +48,23 @@ public sealed class ProfilesViewModel : ViewModelBase
 
     [Reactive] public ObservableCollection<Profile> Profiles { get; set; }
 
-    public ReactiveCommand<Unit, Unit> LoginCommand { get; }
+    public ReactiveCommand<IDialog, Unit> LoginCommand { get; }
     public ReactiveCommand<Unit, Unit> AddCommand { get; }
     public ReactiveCommand<Unit, Unit> EditCommand { get; }
     public ReactiveCommand<Unit, Unit> DeleteCommand { get; }
-    public ReactiveCommand<Unit, Unit> QuickLoginCommand { get; }
+    public ReactiveCommand<IDialog, Unit> QuickLoginCommand { get; }
 
     public string Username { get; set; } = "";
     public string Password { get; set; } = "";
 
-    private async Task Login()
+    private async Task Login(IDialog dialog)
     {
         if (SelectedProfile == null)
         {
             return;
         }
 
-        await Login(SelectedProfile);
+        await Login(SelectedProfile, dialog);
     }
 
     private async Task Add()
@@ -109,7 +109,7 @@ public sealed class ProfilesViewModel : ViewModelBase
         Profiles = new ObservableCollection<Profile>(_profileRepository.GetAll());
     }
 
-    private async Task QuickLogin()
+    private async Task QuickLogin(IDialog dialog)
     {
         if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
         {
@@ -121,10 +121,10 @@ public sealed class ProfilesViewModel : ViewModelBase
             Username = Username,
             Password = Password
         };
-        await Login(profile);
+        await Login(profile, dialog);
     }
 
-    private async Task Login(Profile profile)
+    private async Task Login(Profile profile, IDialog dialog)
     {
         UserPrefs currentUserPref = string.IsNullOrEmpty(profile.DefaultSettingsPath)
             ? _userPreferencesService.GetCurrentPref()
@@ -140,6 +140,7 @@ public sealed class ProfilesViewModel : ViewModelBase
             {
                 _userPreferencesService.SetCurrentPref(currentUserPref);
             }
+            dialog.Close(true);
         }
         else
         {

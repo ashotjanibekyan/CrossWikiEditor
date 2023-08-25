@@ -10,6 +10,7 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="CrossWikiEditor.Views.ProfilesView"
         x:DataType="vm:ProfilesViewModel"
+        x:Name="This"
         Title="Profiles">
     <Window.Styles>
         <Style Selector="Button">
@@ -30,7 +31,7 @@
             </DataGrid.Columns>
         </DataGrid>
         <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <Button Content="Login" Command="{Binding LoginCommand}"
+            <Button Content="Login" Command="{Binding LoginCommand}" CommandParameter="{Binding #This}"
                     IsEnabled="{Binding SelectedProfile, Converter={x:Static ObjectConverters.IsNotNull}}" />
             <Button Content="Add" Command="{Binding AddCommand}" />
             <Button Content="Edit..." Command="{Binding EditCommand}"
@@ -51,6 +52,7 @@
                         Grid.Column="2"
                         Grid.RowSpan="2"
                         Command="{Binding QuickLoginCommand}"
+                        CommandParameter="{Binding #This}"
                         Content="Login"
                         VerticalAlignment="Center"
                         HorizontalContentAlignment="Center" />

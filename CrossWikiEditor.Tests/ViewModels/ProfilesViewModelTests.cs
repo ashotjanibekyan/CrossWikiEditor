@@ -52,13 +52,14 @@ public class ProfilesViewModelTests : BaseTest
         _userService.Login(Arg.Any<Profile>(), Arg.Any<Site>()).Returns(Result.Success());
 
         // act
-        _sut.LoginCommand.Execute().Subscribe();
+        _sut.LoginCommand.Execute(_dialog).Subscribe();
 
         // assert
         _userService.Received(1).Login(Arg.Is<Profile>(p => p.Username == profile.Username && p.Password == profile.Password),
             Arg.Is<Site>(s => s.Domain == "https://hy.wikipedia.org/w/api.php?"));
         _messageBus.Received(1).SendMessage(Arg.Any<NewAccountLoggedInMessage>());
         _dialogService.Received(0).Alert(Arg.Any<string>(), Arg.Any<string>());
+        _dialog.Received(1).Close(true);
     }
 
     [Test]
@@ -81,7 +82,7 @@ public class ProfilesViewModelTests : BaseTest
         _userService.Login(Arg.Any<Profile>(), Arg.Any<Site>()).Returns(Result.Success());
 
         // act
-        _sut.LoginCommand.Execute().Subscribe();
+        _sut.LoginCommand.Execute(_dialog).Subscribe();
 
         // assert
         _userPreferencesService.Received(1)
@@ -90,6 +91,7 @@ public class ProfilesViewModelTests : BaseTest
             Arg.Is<Site>(s => s.Domain == "https://hy.wikipedia.org/w/api.php?"));
         _messageBus.Received(1).SendMessage(Arg.Any<NewAccountLoggedInMessage>());
         _dialogService.Received(0).Alert(Arg.Any<string>(), Arg.Any<string>());
+        _dialog.Received(1).Close(true);
     }
 
     [Test]
@@ -110,7 +112,7 @@ public class ProfilesViewModelTests : BaseTest
         _userService.Login(Arg.Any<Profile>(), Arg.Any<Site>()).Returns(Result.Failure(string.Empty));
 
         // act
-        _sut.LoginCommand.Execute().Subscribe();
+        _sut.LoginCommand.Execute(_dialog).Subscribe();
 
         // assert
         _userService.Received(1).Login(Arg.Is<Profile>(p => p.Username == profile.Username && p.Password == profile.Password),
@@ -138,7 +140,7 @@ public class ProfilesViewModelTests : BaseTest
         _userService.Login(Arg.Any<Profile>(), Arg.Any<Site>()).Returns(Result.Failure("this is an error message"));
 
         // act
-        _sut.LoginCommand.Execute().Subscribe();
+        _sut.LoginCommand.Execute(_dialog).Subscribe();
 
         // assert
         _userService.Received(1).Login(Arg.Is<Profile>(p => p.Username == profile.Username && p.Password == profile.Password),
@@ -311,11 +313,12 @@ public class ProfilesViewModelTests : BaseTest
         _userService.Login(Arg.Any<Profile>(), Arg.Any<Site>()).Returns(Result.Success());
 
         // act
-        _sut.QuickLoginCommand.Execute().Subscribe();
+        _sut.QuickLoginCommand.Execute(_dialog).Subscribe();
 
         // assert
         _userService.Received(1).Login(Arg.Is<Profile>(p => p.Username == "username" && p.Password == "Qwer1234"),
             Arg.Is<Site>(s => s.Domain == "https://hyw.wikipedia.org/w/api.php?"));
+        _dialog.Received(1).Close(true);
     }
 
     [Test]
@@ -334,7 +337,7 @@ public class ProfilesViewModelTests : BaseTest
         _sut.Password = password;
 
         // act
-        _sut.QuickLoginCommand.Execute().Subscribe();
+        _sut.QuickLoginCommand.Execute(_dialog).Subscribe();
 
         // assert
         _userService.DidNotReceiveWithAnyArgs().Login(default, default);
@@ -354,11 +357,12 @@ public class ProfilesViewModelTests : BaseTest
         _userService.Login(Arg.Any<Profile>(), Arg.Any<Site>()).Returns(Result.Success());
 
         // act
-        _sut.QuickLoginCommand.Execute().Subscribe();
+        _sut.QuickLoginCommand.Execute(_dialog).Subscribe();
 
         // assert
         _messageBus.Received(1).SendMessage(Arg.Any<NewAccountLoggedInMessage>());
         _dialogService.DidNotReceive().Alert(Arg.Any<string>(), Arg.Any<string>());
+        _dialog.Received(1).Close(true);
     }
 
     [Test]
@@ -375,7 +379,7 @@ public class ProfilesViewModelTests : BaseTest
         _userService.Login(Arg.Any<Profile>(), Arg.Any<Site>()).Returns(Result.Failure("Password is wrong"));
 
         // act
-        _sut.QuickLoginCommand.Execute().Subscribe();
+        _sut.QuickLoginCommand.Execute(_dialog).Subscribe();
 
         // assert
         _dialogService.Received(1).Alert("Login Attempt Unsuccessful", "Password is wrong");
@@ -384,7 +388,7 @@ public class ProfilesViewModelTests : BaseTest
     [TestCase("")]
     [TestCase("  ")]
     [TestCase(null)]
-    public void QuickLoginCommand_ShouldAlertDefaultMessage__WhenLoginIsUnsuccessfulAndThereIsNoMessage(string errorMessage)
+    public void QuickLoginCommand_ShouldAlertDefaultMessage_WhenLoginIsUnsuccessfulAndThereIsNoMessage(string errorMessage)
     {
         // arrange
         _sut.Username = "username";
@@ -397,7 +401,7 @@ public class ProfilesViewModelTests : BaseTest
         _userService.Login(Arg.Any<Profile>(), Arg.Any<Site>()).Returns(Result.Failure(errorMessage));
 
         // act
-        _sut.QuickLoginCommand.Execute().Subscribe();
+        _sut.QuickLoginCommand.Execute(_dialog).Subscribe();
 
         // assert
         _dialogService.Received(1).Alert("Login Attempt Unsuccessful",
