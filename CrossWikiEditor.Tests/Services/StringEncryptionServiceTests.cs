@@ -1,7 +1,5 @@
 ﻿using System.Security.Cryptography;
-using Bogus;
 using CrossWikiEditor.Services;
-using NUnit.Framework.Internal;
 
 namespace CrossWikiEditor.Tests.Services;
 

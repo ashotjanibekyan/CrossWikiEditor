@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CrossWikiEditor.Models;
-using WikiClientLibrary.Client;
 using WikiClientLibrary.Sites;
 
 namespace CrossWikiEditor.Services.WikiServices;

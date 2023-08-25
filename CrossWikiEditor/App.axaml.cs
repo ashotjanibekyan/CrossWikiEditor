@@ -16,7 +16,6 @@ using CrossWikiEditor.ViewModels.MenuViewModels;
 using CrossWikiEditor.ViewModels.ReportViewModels;
 using CrossWikiEditor.Views;
 using ReactiveUI;
-using WikiClientLibrary.Client;
 
 namespace CrossWikiEditor;
 

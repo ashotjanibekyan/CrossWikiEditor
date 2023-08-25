@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using CrossWikiEditor.ListProviders;
 using CrossWikiEditor.Services;
-using CrossWikiEditor.Services.WikiServices;
 using CrossWikiEditor.Utils;
 using DynamicData;
 using ReactiveUI;
