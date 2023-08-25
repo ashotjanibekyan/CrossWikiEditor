@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace CrossWikiEditor.PageProviders;
+namespace CrossWikiEditor.ListProviders;
 
 public interface IListProvider
 {

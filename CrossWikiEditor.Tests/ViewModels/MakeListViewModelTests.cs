@@ -1,5 +1,5 @@
 ﻿using System.Collections.ObjectModel;
-using CrossWikiEditor.PageProviders;
+using CrossWikiEditor.ListProviders;
 using CrossWikiEditor.Utils;
 using CrossWikiEditor.ViewModels;
 
@@ -13,7 +13,12 @@ public class MakeListViewModelTests : BaseTest
     public void SetUp()
     {
         SetUpServices();
-        _sut = new MakeListViewModel(_dialogService, _pageService, _userPreferencesService);
+        List<IListProvider> listProviders = new()
+        {
+            Substitute.For<IListProvider>(),
+            Substitute.For<IListProvider>()
+        };
+        _sut = new MakeListViewModel(_dialogService, listProviders);
     }
 
     [Test]

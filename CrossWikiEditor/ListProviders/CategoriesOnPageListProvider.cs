@@ -3,30 +3,30 @@ using System.Threading.Tasks;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
 
-namespace CrossWikiEditor.PageProviders;
+namespace CrossWikiEditor.ListProviders;
 
-public class CategoryRecursive1LevelListProvider : IListProvider
+public class CategoriesOnPageListProvider : IListProvider
 {
-    private readonly IPageService _pageService;
-    private readonly IUserPreferencesService _userPreferencesService;
-    
-    public CategoryRecursive1LevelListProvider(
+    protected readonly IPageService _pageService;
+    protected readonly IUserPreferencesService _userPreferencesService;
+
+    public CategoriesOnPageListProvider(
         IPageService pageService,
         IUserPreferencesService userPreferencesService)
     {
         _pageService = pageService;
         _userPreferencesService = userPreferencesService;
     }
-    
-    public string Title => "Category (recursive 1 level)";
-    public string ParamTitle => "Category";
+    public virtual string Title => "Categories on page";
+    public string ParamTitle => "Page";
     public string Param { get; set; } = string.Empty;
     public bool CanMake => !string.IsNullOrWhiteSpace(Param);
     public bool NeedsAdditionalParams => false;
-    public async Task<Result<List<string>>> MakeList()
+
+    public virtual async Task<Result<List<string>>> MakeList()
     {
         UserPrefs userPrefs = _userPreferencesService.GetCurrentPref();
-        return await _pageService.GetPagesOfCategory(userPrefs.Site, Param, recursive: 1);
+        return await _pageService.GetCategoriesOf(userPrefs.Site, Param);
     }
 
     public Task GetAdditionalParams()

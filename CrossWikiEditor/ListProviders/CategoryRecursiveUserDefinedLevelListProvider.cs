@@ -4,7 +4,7 @@ using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
 using CrossWikiEditor.ViewModels;
 
-namespace CrossWikiEditor.PageProviders;
+namespace CrossWikiEditor.ListProviders;
 
 public class CategoryRecursiveUserDefinedLevelListProvider : IListProvider
 {

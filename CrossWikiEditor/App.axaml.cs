@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
+using CrossWikiEditor.ListProviders;
 using CrossWikiEditor.Repositories;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
@@ -61,6 +62,7 @@ public class App : Application
         RegisterServices(builder);
         RegisterRepositories(builder);
         RegisterDialogs(builder);
+        RegisterListProviders(builder);
 
         builder.Register(c => _container!).As<IContainer>();
 
@@ -123,5 +125,16 @@ public class App : Application
         builder.RegisterType<ProfilesView>().Named<Window>(nameof(ProfilesViewModel));
         builder.RegisterType<PreferencesView>().Named<Window>(nameof(PreferencesViewModel));
         builder.RegisterType<AddNewProfileView>().Named<Window>(nameof(AddOrEditProfileViewModel));
+    }
+
+    private void RegisterListProviders(ContainerBuilder builder)
+    {
+        builder.RegisterType<CategoriesOnPageListProvider>().As<IListProvider>();
+        builder.RegisterType<CategoriesOnPageNoHiddenCategoriesListProvider>().As<IListProvider>();
+        builder.RegisterType<CategoriesOnPageOnlyHiddenCategoriesListProvider>().As<IListProvider>();
+        builder.RegisterType<CategoryListProvider>().As<IListProvider>();
+        builder.RegisterType<CategoryRecursive1LevelListProvider>().As<IListProvider>();
+        builder.RegisterType<CategoryRecursiveUserDefinedLevelListProvider>().As<IListProvider>();
+        builder.RegisterType<CategoryRecursiveListProvider>().As<IListProvider>();
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reactive;
 using System.Threading;
 using System.Threading.Tasks;
-using CrossWikiEditor.PageProviders;
+using CrossWikiEditor.ListProviders;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
 using CrossWikiEditor.Utils;
@@ -18,23 +18,14 @@ public sealed class MakeListViewModel : ViewModelBase
 {
     private readonly IDialogService _dialogService;
 
-    public MakeListViewModel(IDialogService dialogService, IPageService pageService, IUserPreferencesService userPreferencesService)
+    public MakeListViewModel(IDialogService dialogService, IEnumerable<IListProvider> listProviders)
     {
         _dialogService = dialogService;
         AddNewPageCommand = ReactiveCommand.Create(AddNewPage);
         RemoveCommand = ReactiveCommand.Create(Remove);
         MakeListCommand = ReactiveCommand.CreateFromTask(MakeList);
         
-        ListProviders = new List<IListProvider>
-        {
-            new CategoriesOnPageListProvider(pageService, userPreferencesService),
-            new CategoriesOnPageNoHiddenCategoriesListProvider(pageService, userPreferencesService),
-            new CategoriesOnPageOnlyHiddenCategoriesListProvider(pageService, userPreferencesService),
-            new CategoryListProvider(pageService, userPreferencesService),
-            new CategoryRecursive1LevelListProvider(pageService, userPreferencesService),
-            new CategoryRecursiveUserDefinedLevelListProvider(pageService, userPreferencesService, dialogService),
-            new CategoryRecursiveListProvider(pageService, userPreferencesService)
-        }.ToObservableCollection();
+        ListProviders = listProviders.ToObservableCollection();
         SelectedListProvider = ListProviders[0];
     }
 

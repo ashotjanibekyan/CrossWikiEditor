@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
 
-namespace CrossWikiEditor.PageProviders;
+namespace CrossWikiEditor.ListProviders;
 
 public class CategoryListProvider : IListProvider
 {
