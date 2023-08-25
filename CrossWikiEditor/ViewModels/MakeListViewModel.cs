@@ -1,4 +1,8 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Reactive;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 
 namespace CrossWikiEditor.ViewModels;
 
@@ -6,38 +10,34 @@ public sealed class MakeListViewModel : ViewModelBase
 {
     public MakeListViewModel()
     {
-        Sources = new List<string>
-        {
-            "List 1",
-            "List 2",
-            "List 3",
-            "List 4"
-        };
-        Pages = new List<string>
-        {
-            "Page 1",
-            "Page 2",
-            "Page 3",
-            "Page 4",
-            "Page 5",
-            "Page 6",
-            "Page 7",
-            "Page 8",
-            "Page 9",
-            "Page 10",
-            "Page 11",
-            "Page 12",
-            "Page 13",
-            "Page 14",
-            "Page 15",
-            "Page 16",
-            "Page 17",
-            "Page 18",
-            "Page 19",
-            "Page 20"
-        };
+        AddNewPageCommand = ReactiveCommand.Create(AddNewPage);
+        RemovePageCommand = ReactiveCommand.Create(RemovePage);
     }
 
-    public IEnumerable<string> Sources { get; }
-    public IEnumerable<string> Pages { get; }
+    private void RemovePage()
+    {
+        if (!string.IsNullOrWhiteSpace(SelectedPage) && Pages.Contains(SelectedPage))
+        {
+            Pages.Remove(SelectedPage);
+        }
+
+        SelectedPage = string.Empty;
+    }
+
+    private void AddNewPage()
+    {
+        if (!string.IsNullOrWhiteSpace(NewPageTitle) && !Pages.Contains(NewPageTitle.Trim()))
+        {
+            Pages.Add(NewPageTitle.Trim());
+        }
+
+        NewPageTitle = string.Empty;
+    }
+
+    public IEnumerable<string> PageGenerators { get; }
+    [Reactive] public ObservableCollection<string> Pages { get; set; } = new();
+    [Reactive] public string NewPageTitle { get; set; } = string.Empty;
+    public ReactiveCommand<Unit, Unit> AddNewPageCommand { get; }
+    public string SelectedPage { get; set; }
+    public ReactiveCommand<Unit, Unit> RemovePageCommand { get; set; }
 }
