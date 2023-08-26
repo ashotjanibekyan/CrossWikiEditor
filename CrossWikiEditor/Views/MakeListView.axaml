@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:CrossWikiEditor.ViewModels"
+             xmlns:models="clr-namespace:CrossWikiEditor.Models"
              x:DataType="vm:MakeListViewModel"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="CrossWikiEditor.Views.MakeListView">
@@ -33,7 +34,71 @@
         </Grid>
         <Grid Grid.Row="5">
             <ListBox SelectionMode="Multiple,Toggle" Margin="3" ScrollViewer.HorizontalScrollBarVisibility="Visible"
-                     ItemsSource="{Binding Pages}" SelectedItems="{Binding SelectedPages}" />
+                     ItemsSource="{Binding Pages}" SelectedItems="{Binding SelectedPages}">
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Command="{Binding OpenInBrowserCommand}" Header="Open in browser" HotKey="Ctrl+Shift+P" />
+                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Command="{Binding OpenHistoryInBrowserCommand}" Header="Open history in browser" HotKey="Ctrl+Shift+H" />
+                        <Separator />
+                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Command="{Binding CutCommand}" Header="Cut" HotKey="Ctrl+X" />
+                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Command="{Binding CopyCommand}" Header="Copy" HotKey="Ctrl+C" />
+                        <MenuItem Header="Paste" Command="{Binding PasteCommand}" HotKey="Ctrl+V" />
+                        <Separator />
+                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Header="Select">
+                            <MenuItem Header="All" Command="{Binding SelectAllCommand}" />
+                            <MenuItem Header="None" Command="{Binding SelectNoneCommand}" />
+                            <MenuItem Header="Inverse" Command="{Binding SelectInverseCommand}" />
+                        </MenuItem>
+                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Header="Remove">
+                            <MenuItem Header="Selected" />
+                            <MenuItem Header="All" />
+                            <MenuItem Header="Duplicate" />
+                            <MenuItem Header="Non-main space" />
+                        </MenuItem>
+                        <Separator />
+                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Header="Add selected tolist from...">
+                            <MenuItem Header="temp" />
+                            <MenuItem Header="temp" />
+                            <MenuItem Header="temp" />
+                            <MenuItem Header="temp" />
+                            <MenuItem Header="temp" />
+                            <MenuItem Header="temp" />
+                            <MenuItem Header="temp" />
+                            <MenuItem Header="temp" />
+                            <MenuItem Header="temp" />
+                            <MenuItem Header="temp" />
+                            <MenuItem Header="temp" />
+                            <MenuItem Header="temp" />
+                            <MenuItem Header="temp" />
+                            <MenuItem Header="temp" />
+                            <MenuItem Header="temp" />
+                            <MenuItem Header="temp" />
+                            <MenuItem Header="temp" />
+                            <MenuItem Header="temp" />
+                            <MenuItem Header="temp" />
+                            <MenuItem Header="temp" />
+                            <MenuItem Header="temp" />
+                        </MenuItem>
+                        <Separator />
+                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Header="Move to top" />
+                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Header="Move to bottom" />
+                        <Separator />
+                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Header="Convert to talk pages" />
+                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Header="Convert from talk pages" />
+                        <Separator />
+                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Header="Format page titles per displaytitle" />
+                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Header="Filter" />
+                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Header="Save list" />
+                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Header="Sort alphabetically" />
+                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Header="Sort reverse alphabetically" />
+                    </ContextMenu>
+                </ListBox.ContextMenu>
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="models:WikiPageModel">
+                        <TextBlock Text="{Binding Title}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Grid>
         <Grid Grid.Row="6" ColumnDefinitions="*,*">
             <Button Grid.Column="0" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Width="150" Command="{Binding RemoveCommand}">Remove</Button>

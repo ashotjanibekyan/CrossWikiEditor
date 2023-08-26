@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CrossWikiEditor.Models;
 using WikiClientLibrary;
 using WikiClientLibrary.Generators;
 using WikiClientLibrary.Pages;
@@ -11,21 +12,27 @@ namespace CrossWikiEditor.Services.WikiServices;
 
 public interface IPageService
 {
-    Task<Result<List<string>>> GetCategoriesOf(string apiRoot, string page, bool includeHidden = true, bool onlyHidden = false);
-    Task<Result<List<string>>> GetPagesOfCategory(string apiRoot, string categoryName, int recursive = 0);
+    Task<Result<List<WikiPageModel>>> GetCategoriesOf(string apiRoot, string page, bool includeHidden = true, bool onlyHidden = false);
+    Task<Result<List<WikiPageModel>>> GetPagesOfCategory(string apiRoot, string categoryName, int recursive = 0);
 }
 
 public sealed class PageService : IPageService
 {
-    public async Task<Result<List<string>>> GetCategoriesOf(string apiRoot, string page, bool includeHidden = true, bool onlyHidden = false)
+    private readonly IWikiClientCache _wikiClientCache;
+
+    public PageService(IWikiClientCache wikiClientCache)
+    {
+        _wikiClientCache = wikiClientCache;
+    }
+    public async Task<Result<List<WikiPageModel>>> GetCategoriesOf(string apiRoot, string page, bool includeHidden = true, bool onlyHidden = false)
     {
         try
         {
             if (!includeHidden && onlyHidden)
             {
-                return Result<List<string>>.Success(new List<string>());
+                return Result<List<WikiPageModel>>.Success(new List<WikiPageModel>());
             }
-            WikiSite site = await WikiClientCache.GetWikiSite(apiRoot);
+            WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot);
             var catGen = new CategoriesGenerator(site, page)
             {
                 HiddenCategoryFilter = PropertyFilterOption.Disable
@@ -40,20 +47,20 @@ public sealed class PageService : IPageService
             }
 
             List<WikiPage> result = await catGen.EnumPagesAsync().ToListAsync();
-            return Result<List<string>>.Success(result.Select(x => x.Title).ToList());
+            return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
         }
         catch (Exception e)
         {
-            return Result<List<string>>.Failure(e.Message);
+            return Result<List<WikiPageModel>>.Failure(e.Message);
         }
     }
 
-    public async Task<Result<List<string>>> GetPagesOfCategory(string apiRoot, string categoryName, int recursive = 0)
+    public async Task<Result<List<WikiPageModel>>> GetPagesOfCategory(string apiRoot, string categoryName, int recursive = 0)
     {
         try
         {
             List<List<WikiPage>> resultByDepth = new();
-            WikiSite site = await WikiClientCache.GetWikiSite(apiRoot);
+            WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot);
             var catGen = new CategoryMembersGenerator(new WikiPage(site, categoryName));
             resultByDepth.Add(await catGen.EnumPagesAsync().ToListAsync());
 
@@ -69,11 +76,11 @@ public sealed class PageService : IPageService
                 resultByDepth.Add(temp);
             }
             
-            return Result<List<string>>.Success(resultByDepth.SelectMany(list => list).Select(x => x.Title).ToList());
+            return Result<List<WikiPageModel>>.Success(resultByDepth.SelectMany(list => list).Select(x => new WikiPageModel(x)).ToList());
         }
         catch (Exception e)
         {
-            return Result<List<string>>.Failure(e.Message);
+            return Result<List<WikiPageModel>>.Failure(e.Message);
         }
     }
 }

@@ -1,16 +1,26 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using CrossWikiEditor.Models;
 using WikiClientLibrary.Client;
+using WikiClientLibrary.Pages;
 using WikiClientLibrary.Sites;
 
 namespace CrossWikiEditor.Services.WikiServices;
 
-public static class WikiClientCache
+public interface IWikiClientCache
 {
-    private static Dictionary<string, WikiClient> _wikiClients = new();
-    private static Dictionary<string, WikiSite> _wikiSites = new();
+    WikiClient GetWikiClient(string apiRoot, bool forceNew = false);
+    Task<WikiSite> GetWikiSite(string apiRoot, bool forceNew = false);
+    Task<Result<WikiPageModel>> GetWikiPageModel(string apiRoot, string title, bool forceNew = false);
+}
 
-    public static WikiClient GetWikiClient(string apiRoot, bool forceNew = false)
+public class WikiClientCache : IWikiClientCache
+{
+    private Dictionary<string, WikiClient> _wikiClients = new();
+    private Dictionary<string, WikiSite> _wikiSites = new();
+
+    public WikiClient GetWikiClient(string apiRoot, bool forceNew = false)
     {
         if (!_wikiClients.ContainsKey(apiRoot) || forceNew)
         {
@@ -20,7 +30,7 @@ public static class WikiClientCache
         return _wikiClients[apiRoot];
     }
 
-    public static async Task<WikiSite> GetWikiSite(string apiRoot, bool forceNew = false)
+    public async Task<WikiSite> GetWikiSite(string apiRoot, bool forceNew = false)
     {
         if (!_wikiSites.ContainsKey(apiRoot) || forceNew)
         {
@@ -30,5 +40,18 @@ public static class WikiClientCache
         }
 
         return _wikiSites[apiRoot];
+    }
+
+    public async Task<Result<WikiPageModel>> GetWikiPageModel(string apiRoot, string title, bool forceNew = false)
+    {
+        try
+        {
+            var page = new WikiPage(await GetWikiSite(apiRoot, forceNew), title);
+            return Result<WikiPageModel>.Success(new WikiPageModel(page.Title));
+        }
+        catch (Exception e)
+        {
+            return Result<WikiPageModel>.Failure(e.Message);
+        }
     }
 }

@@ -5,7 +5,9 @@ using System.Reactive;
 using System.Threading;
 using System.Threading.Tasks;
 using CrossWikiEditor.ListProviders;
+using CrossWikiEditor.Models;
 using CrossWikiEditor.Services;
+using CrossWikiEditor.Services.WikiServices;
 using CrossWikiEditor.Utils;
 using DynamicData;
 using ReactiveUI;
@@ -16,16 +18,56 @@ namespace CrossWikiEditor.ViewModels;
 public sealed class MakeListViewModel : ViewModelBase
 {
     private readonly IDialogService _dialogService;
+    private readonly IWikiClientCache _clientCache;
+    private readonly ISystemService _systemService;
+    private readonly IUserPreferencesService _userPreferencesService;
 
-    public MakeListViewModel(IDialogService dialogService, IEnumerable<IListProvider> listProviders)
+    public MakeListViewModel(IDialogService dialogService,
+        IWikiClientCache clientCache,
+        ISystemService systemService,
+        IUserPreferencesService userPreferencesService,
+        IEnumerable<IListProvider> listProviders)
     {
         _dialogService = dialogService;
-        AddNewPageCommand = ReactiveCommand.Create(AddNewPage);
+        _clientCache = clientCache;
+        _systemService = systemService;
+        _userPreferencesService = userPreferencesService;
+        AddNewPageCommand = ReactiveCommand.CreateFromTask(AddNewPage);
         RemoveCommand = ReactiveCommand.Create(Remove);
         MakeListCommand = ReactiveCommand.CreateFromTask(MakeList);
+        OpenInBrowserCommand = ReactiveCommand.Create(OpenInBrowser);
+        OpenHistoryInBrowserCommand = ReactiveCommand.Create(OpenHistoryInBrowser);
+        CutCommand = ReactiveCommand.CreateFromTask(Cut);
+        CopyCommand = ReactiveCommand.CreateFromTask(Copy);
+        PasteCommand = ReactiveCommand.Create(Paste);
+        SelectAllCommand = ReactiveCommand.Create(SelectAll);
+        SelectNoneCommand = ReactiveCommand.Create(SelectNone);
+        SelectInverseCommand = ReactiveCommand.Create(SelectInverse);
         
         ListProviders = listProviders.ToObservableCollection();
         SelectedListProvider = ListProviders[0];
+    }
+
+
+    private async Task AddNewPage()
+    {
+        if (!string.IsNullOrWhiteSpace(NewPageTitle))
+        {
+            Result<WikiPageModel> result = await _clientCache.GetWikiPageModel(_userPreferencesService.GetCurrentPref().UrlApi(), NewPageTitle);
+            Pages.Add(result is {IsSuccessful: true, Value: not null} ? result.Value : new WikiPageModel(NewPageTitle.Trim()));
+        }
+
+        NewPageTitle = string.Empty;
+    }
+
+    private void Remove()
+    {
+        if (SelectedPages.Any())
+        {
+            Pages.Remove(new List<WikiPageModel>(SelectedPages));
+        }
+
+        SelectedPages = new ObservableCollection<WikiPageModel>();
     }
 
     private async Task MakeList(CancellationToken arg)
@@ -40,7 +82,7 @@ public sealed class MakeListViewModel : ViewModelBase
             return;
         }
 
-        Result<List<string>> result = await SelectedListProvider.MakeList();
+        Result<List<WikiPageModel>> result = await SelectedListProvider.MakeList();
         if (result is {IsSuccessful: true, Value: not null})
         {
             Pages.AddRange(result.Value);
@@ -51,32 +93,86 @@ public sealed class MakeListViewModel : ViewModelBase
         }
     }
 
-    private void Remove()
+    private void OpenInBrowser()
     {
-        if (SelectedPages.Any())
+        if (!SelectedPages.Any())
         {
-            Pages.Remove(new List<string>(SelectedPages));
+            return;
         }
-
-        SelectedPages = new ObservableCollection<string>();
+        foreach (WikiPageModel selectedPage in SelectedPages)
+        {
+            _systemService.OpenLinkInBrowser($"{_userPreferencesService.GetCurrentPref().UrlIndex()}title={selectedPage.Title}");
+        }
     }
 
-    private void AddNewPage()
+    private void OpenHistoryInBrowser()
     {
-        if (!string.IsNullOrWhiteSpace(NewPageTitle) && !Pages.Contains(NewPageTitle.Trim()))
+        if (!SelectedPages.Any())
         {
-            Pages.Add(NewPageTitle.Trim());
+            return;
+        }
+        foreach (WikiPageModel selectedPage in SelectedPages)
+        {
+            _systemService.OpenLinkInBrowser($"{_userPreferencesService.GetCurrentPref().UrlIndex()}title={selectedPage.Title}&action=history");
+        }
+    }
+
+    private async Task Cut()
+    {
+        if (!SelectedPages.Any())
+        {
+            return;
         }
 
-        NewPageTitle = string.Empty;
+        await _systemService.SetClipboardTextAsync(string.Join('\n', SelectedPages.Select(x => x.Title)));
+        Pages.Remove(SelectedPages.ToList());
+        SelectedPages = new ObservableCollection<WikiPageModel>();
+    }
+
+    private async Task Copy()
+    {
+        if (!SelectedPages.Any())
+        {
+            return;
+        }
+
+        await _systemService.SetClipboardTextAsync(string.Join('\n', SelectedPages.Select(x => x.Title)));
+    }
+
+    private void Paste()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    private void SelectAll()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    private void SelectNone()
+    {
+        throw new System.NotImplementedException();
+    }
+    
+    private void SelectInverse()
+    {
+        throw new System.NotImplementedException();
     }
 
     public ObservableCollection<IListProvider> ListProviders { get; }
     [Reactive] public IListProvider SelectedListProvider { get; set; }
-    [Reactive] public ObservableCollection<string> Pages { get; set; } = new();
-    [Reactive] public ObservableCollection<string> SelectedPages { get; set; } = new();
+    [Reactive] public ObservableCollection<WikiPageModel> Pages { get; set; } = new();
+    [Reactive] public ObservableCollection<WikiPageModel> SelectedPages { get; set; } = new();
     [Reactive] public string NewPageTitle { get; set; } = string.Empty;
     public ReactiveCommand<Unit, Unit> AddNewPageCommand { get; }
-    public ReactiveCommand<Unit, Unit> RemoveCommand { get; set; }
-    public ReactiveCommand<Unit, Unit> MakeListCommand { get; set; }
+    public ReactiveCommand<Unit, Unit> RemoveCommand { get; }
+    public ReactiveCommand<Unit, Unit> MakeListCommand { get; }
+    public ReactiveCommand<Unit, Unit> OpenInBrowserCommand { get; }
+    public ReactiveCommand<Unit, Unit> OpenHistoryInBrowserCommand { get; }
+    public ReactiveCommand<Unit, Unit> CutCommand { get; }
+    public ReactiveCommand<Unit, Unit> CopyCommand { get; }
+    public ReactiveCommand<Unit, Unit> PasteCommand { get; }
+    public ReactiveCommand<Unit, Unit> SelectAllCommand { get; }
+    public ReactiveCommand<Unit, Unit> SelectNoneCommand { get; }
+    public ReactiveCommand<Unit, Unit> SelectInverseCommand { get; }
 }

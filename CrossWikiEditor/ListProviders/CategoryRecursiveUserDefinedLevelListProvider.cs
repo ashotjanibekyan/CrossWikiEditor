@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using CrossWikiEditor.Models;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
 using CrossWikiEditor.ViewModels;
+using WikiClientLibrary.Pages;
 
 namespace CrossWikiEditor.ListProviders;
 
@@ -28,15 +30,15 @@ public class CategoryRecursiveUserDefinedLevelListProvider : IListProvider
     public string Param { get; set; } = string.Empty;
     public bool CanMake => recursionLevel is not null && !string.IsNullOrWhiteSpace(Param);
     public bool NeedsAdditionalParams => true;
-    public async Task<Result<List<string>>> MakeList()
+    public async Task<Result<List<WikiPageModel>>> MakeList()
     {
         if (recursionLevel is null)
         {
-            return Result<List<string>>.Failure("Please select recursive level.");
+            return Result<List<WikiPageModel>>.Failure("Please select recursive level.");
         }
 
         UserPrefs userPrefs = _userPreferencesService.GetCurrentPref();
-        return await _pageService.GetPagesOfCategory(userPrefs.ApiRoot(), Param, recursive: (int)recursionLevel);
+        return await _pageService.GetPagesOfCategory(userPrefs.UrlApi(), Param, recursive: (int)recursionLevel);
 
     }
 

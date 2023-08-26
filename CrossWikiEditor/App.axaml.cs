@@ -4,6 +4,7 @@ using Autofac;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Input.Platform;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
 using CrossWikiEditor.ListProviders;
@@ -84,10 +85,12 @@ public class App : Application
 
         builder.RegisterType<ViewModelFactory>().As<IViewModelFactory>().SingleInstance();
         builder.RegisterType<FileDialogService>().As<IFileDialogService>().SingleInstance();
+        builder.RegisterType<SystemService>().As<ISystemService>().SingleInstance();
         builder.RegisterType<UserPreferencesService>().As<IUserPreferencesService>().SingleInstance();
         
         builder.RegisterType<UserService>().As<IUserService>().SingleInstance();
         builder.RegisterType<PageService>().As<IPageService>().SingleInstance();
+        builder.RegisterType<WikiClientCache>().As<IWikiClientCache>().SingleInstance();
         
         builder.RegisterType<DialogService>()
             .As<IDialogService>()
@@ -95,6 +98,7 @@ public class App : Application
         builder.RegisterInstance(storageProvider).As<IStorageProvider>();
         builder.RegisterInstance(stringEncryptionService).As<IStringEncryptionService>();
         builder.Register(c => MessageBus.Current).As<IMessageBus>();
+        builder.Register(c => TopLevel.GetTopLevel(_mainWindow).Clipboard).As<IClipboard>();
     }
 
     private void RegisterViewModels(ContainerBuilder builder)

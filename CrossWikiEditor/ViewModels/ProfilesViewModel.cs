@@ -129,7 +129,7 @@ public sealed class ProfilesViewModel : ViewModelBase
             ? _userPreferencesService.GetCurrentPref()
             : _userPreferencesService.GetUserPref(profile.DefaultSettingsPath);
 
-        Result loginResult = await _userService.Login(profile, currentUserPref.ApiRoot());
+        Result loginResult = await _userService.Login(profile, currentUserPref.UrlApi());
         if (loginResult is {IsSuccessful: true})
         {
             _messageBus.SendMessage(new NewAccountLoggedInMessage(profile));

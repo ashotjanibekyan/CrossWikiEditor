@@ -12,11 +12,17 @@ public interface IUserService
 
 public sealed class UserService : IUserService
 {
+    private readonly IWikiClientCache _wikiClientCache;
+
+    public UserService(IWikiClientCache wikiClientCache)
+    {
+        _wikiClientCache = wikiClientCache;
+    }
     public async Task<Result> Login(Profile profile, string apiRoot)
     {
         try
         {
-            WikiSite site = await WikiClientCache.GetWikiSite(apiRoot, true);
+            WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot, true);
             await site.LoginAsync(profile.Username, profile.Password);
             return Result.Success();
         }

@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using CrossWikiEditor.Models;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
+using WikiClientLibrary.Pages;
 
 namespace CrossWikiEditor.ListProviders;
 
@@ -23,10 +25,10 @@ public class CategoryRecursive1LevelListProvider : IListProvider
     public string Param { get; set; } = string.Empty;
     public bool CanMake => !string.IsNullOrWhiteSpace(Param);
     public bool NeedsAdditionalParams => false;
-    public async Task<Result<List<string>>> MakeList()
+    public async Task<Result<List<WikiPageModel>>> MakeList()
     {
         UserPrefs userPrefs = _userPreferencesService.GetCurrentPref();
-        return await _pageService.GetPagesOfCategory(userPrefs.ApiRoot(), Param, recursive: 1);
+        return await _pageService.GetPagesOfCategory(userPrefs.UrlApi(), Param, recursive: 1);
     }
 
     public Task GetAdditionalParams()
