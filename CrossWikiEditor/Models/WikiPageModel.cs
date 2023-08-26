@@ -2,7 +2,7 @@
 
 namespace CrossWikiEditor.Models;
 
-public record WikiPageModel(string Title, int NamespaceId = 0)
+public partial record WikiPageModel(string Title, int NamespaceId)
 {
     public WikiPage? WikiPage { get; set; }
 

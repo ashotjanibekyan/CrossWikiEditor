@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace CrossWikiEditor.Utils;
 
@@ -17,5 +18,20 @@ public static class StringExtensions
         }
 
         return result.ToString();
+    }
+
+    public static bool Contains(
+        this string str, 
+        string value, 
+        bool isRegex, 
+        RegexOptions regexOptions = RegexOptions.Multiline)
+    {
+        if (!isRegex)
+        {
+            return str.Contains(value);
+        }
+
+        var r = new Regex(value, regexOptions);
+        return r.IsMatch(str);
     }
 }

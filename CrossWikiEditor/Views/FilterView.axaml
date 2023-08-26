@@ -1,0 +1,69 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:CrossWikiEditor.ViewModels"
+        Height="500" x:Name="This"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="CrossWikiEditor.Views.FilterView"
+        x:DataType="vm:FilterViewModel"
+        Title="FilterView">
+    <Design.DataContext>
+        <vm:FilterViewModel />
+    </Design.DataContext>
+    <Grid ColumnDefinitions="3*,3*,3*,*" ShowGridLines="True" >
+        <HeaderedContentControl Grid.Column="0" Header="Namespaces to keep">
+            <Grid ColumnDefinitions="1*,1*" RowDefinitions="Auto,*">
+                <CheckBox Grid.Row="0" Grid.Column="0" Content="Subject" IsChecked="{Binding IsAllSubjectChecked}" />
+                <ListBox Grid.Row="1" Grid.Column="0" SelectionMode="Multiple" Margin="3" ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                         ItemsSource="{Binding SubjectNamespaces}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="vm:WikiNamespace">
+                            <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}"></CheckBox>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                
+                <CheckBox Grid.Row="0" Grid.Column="1" Content="Talk" IsChecked="{Binding IsAllTalkChecked}" />
+                <ListBox Grid.Row="1" Grid.Column="1" SelectionMode="Multiple" Margin="3" ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                         ItemsSource="{Binding TalkNamespaces}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="vm:WikiNamespace">
+                            <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </HeaderedContentControl>
+        <StackPanel Grid.Column="1">
+            <HeaderedContentControl Header="Title">
+                <StackPanel>
+                    <CheckBox x:Name="RemoveTitlesContaining" Content="Remove titles containing:" />
+                    <TextBox Text="{Binding RemoveTitlesContaining}" IsEnabled="{Binding #RemoveTitlesContaining.IsChecked}" />
+                    
+                    <CheckBox x:Name="KeepTitlesContaining" Content="Keep titles containing: " />
+                    <TextBox Text="{Binding KeepTitlesContaining}" IsEnabled="{Binding #KeepTitlesContaining.IsChecked}" />
+                    <CheckBox IsChecked="{Binding UseRegex}" Content="Regular expressions">
+                        <CheckBox.IsEnabled>
+                            <MultiBinding Converter="{x:Static BoolConverters.Or}">
+                                <Binding Path="#RemoveTitlesContaining.IsChecked"/>
+                                <Binding Path="#KeepTitlesContaining.IsChecked"/>
+                            </MultiBinding>
+                        </CheckBox.IsEnabled>
+                    </CheckBox>
+                </StackPanel>
+            </HeaderedContentControl>
+            <HeaderedContentControl Header="Other">
+                <StackPanel>
+                    <CheckBox IsChecked="{Binding SortAlphabetically}" Content="Sort alphabetically" />
+                    <CheckBox IsChecked="{Binding RemoveDuplicates}" Content="Remove duplicate" />
+                </StackPanel>
+            </HeaderedContentControl>
+        </StackPanel>
+        <Rectangle Grid.Column="2" Fill="Blue"></Rectangle>
+        <StackPanel Grid.Column="3">
+            <Button Content="Save" Command="{Binding SaveCommand}" CommandParameter="{Binding #This}" />
+            <Button Content="Close" Command="{Binding CloseCommand}" CommandParameter="{Binding #This}" />
+        </StackPanel>
+    </Grid>
+</Window>

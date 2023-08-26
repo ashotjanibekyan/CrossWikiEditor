@@ -15,5 +15,11 @@ public static class Fakers
         .RuleFor(p => p.Notes, f => f.Random.Words())
         .RuleFor(p => p.Username, f => f.Internet.UserName());
 
+    public static Faker<WikiPageModel> WikiPageModelFaker = new Faker<WikiPageModel>()
+        .CustomInstantiator(f => new WikiPageModel("", 0))
+        .RuleFor(p => p.WikiPage, f => null)
+        .RuleFor(p => p.Title, f => f.Random.Word())
+        .RuleFor(p => p.NamespaceId, f => f.Random.Int(0, 20));
+    
     public static List<string> WordsFaker(int n) => _faker.Random.WordsArray(n).ToList();
 }

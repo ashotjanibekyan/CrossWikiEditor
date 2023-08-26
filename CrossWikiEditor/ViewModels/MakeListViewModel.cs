@@ -17,6 +17,7 @@ using CrossWikiEditor.Utils;
 using DynamicData;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using WikiClientLibrary.Pages;
 
 namespace CrossWikiEditor.ViewModels;
 
@@ -26,6 +27,7 @@ public sealed class MakeListViewModel : ViewModelBase
     private readonly IWikiClientCache _clientCache;
     private readonly IPageService _pageService;
     private readonly ISystemService _systemService;
+    private readonly IViewModelFactory _viewModelFactory;
     private readonly IFileDialogService _fileDialogService;
     private readonly IUserPreferencesService _userPreferencesService;
 
@@ -33,6 +35,7 @@ public sealed class MakeListViewModel : ViewModelBase
         IWikiClientCache clientCache,
         IPageService pageService,
         ISystemService systemService,
+        IViewModelFactory viewModelFactory,
         IFileDialogService fileDialogService,
         IUserPreferencesService userPreferencesService,
         IEnumerable<IListProvider> listProviders)
@@ -41,6 +44,7 @@ public sealed class MakeListViewModel : ViewModelBase
         _clientCache = clientCache;
         _pageService = pageService;
         _systemService = systemService;
+        _viewModelFactory = viewModelFactory;
         _fileDialogService = fileDialogService;
         _userPreferencesService = userPreferencesService;
         AddNewPageCommand = ReactiveCommand.CreateFromTask(AddNewPage);
@@ -63,7 +67,7 @@ public sealed class MakeListViewModel : ViewModelBase
         ConvertToTalkPagesCommand = ReactiveCommand.CreateFromTask(ConvertToTalkPages);
         ConvertFromTalkPagesCommand = ReactiveCommand.CreateFromTask(ConvertFromTalkPages);
         FormatPageTitlesPerDisplayTitleCommand = ReactiveCommand.Create(FormatPageTitlesPerDisplayTitle);
-        FilterCommand = ReactiveCommand.Create(Filter);
+        FilterCommand = ReactiveCommand.CreateFromTask(Filter);
         SaveListCommand = ReactiveCommand.CreateFromTask(SaveList);
         SortAlphabeticallyCommand = ReactiveCommand.Create(SortAlphabetically);
         SortReverseAlphabeticallyCommand = ReactiveCommand.Create(SortReverseAlphabetically);
@@ -78,7 +82,7 @@ public sealed class MakeListViewModel : ViewModelBase
         if (!string.IsNullOrWhiteSpace(NewPageTitle))
         {
             Result<WikiPageModel> result = await _clientCache.GetWikiPageModel(_userPreferencesService.GetCurrentPref().UrlApi(), NewPageTitle);
-            Pages.Add(result is {IsSuccessful: true, Value: not null} ? result.Value : new WikiPageModel(NewPageTitle.Trim()));
+            Pages.Add(result is {IsSuccessful: true, Value: not null} ? result.Value : new WikiPageModel(NewPageTitle.Trim(), 0));
         }
 
         NewPageTitle = string.Empty;
@@ -174,7 +178,7 @@ public sealed class MakeListViewModel : ViewModelBase
             foreach (string title in titles)
             {
                 Result<WikiPageModel> result = await _clientCache.GetWikiPageModel(urlApi, title);
-                Pages.Add(result is {IsSuccessful: true, Value: not null} ? result.Value : new WikiPageModel(title.Trim()));
+                Pages.Add(result is {IsSuccessful: true, Value: not null} ? result.Value : new WikiPageModel(title.Trim(), 0));
             }
         }
     }
@@ -262,9 +266,35 @@ public sealed class MakeListViewModel : ViewModelBase
         throw new NotImplementedException();
     }
 
-    private void Filter()
+    private async Task Filter()
     {
-        throw new NotImplementedException();
+        try
+        {
+            var result = await _dialogService.ShowDialog<Result<FilterOptions>>(await _viewModelFactory.GetFilterViewModel());
+            if (result is {IsSuccessful: true, Value: not null})
+            {
+                var filterOptions = result.Value;
+                var filteredPages = Pages.Where(page => page.ShouldKeepPer(filterOptions)).ToList();
+
+                if (filterOptions.SortAlphabetically)
+                {
+                    filteredPages = filteredPages.OrderBy(x => x.Title).ToList();
+                }
+
+                if (filterOptions.RemoveDuplicates)
+                {
+                    filteredPages = filteredPages.Distinct().ToList();
+                }
+                Pages = filteredPages.ToObservableCollection();
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+
+
+
     }
 
     private async Task SaveList()

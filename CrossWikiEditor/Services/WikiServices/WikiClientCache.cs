@@ -47,7 +47,7 @@ public class WikiClientCache : IWikiClientCache
         try
         {
             var page = new WikiPage(await GetWikiSite(apiRoot, forceNew), title);
-            return Result<WikiPageModel>.Success(new WikiPageModel(page.Title));
+            return Result<WikiPageModel>.Success(new WikiPageModel(page));
         }
         catch (Exception e)
         {

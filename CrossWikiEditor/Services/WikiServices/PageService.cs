@@ -66,6 +66,10 @@ public sealed class PageService : IPageService
 
     public async Task<Result<List<WikiPageModel>>> GetPagesOfCategory(string apiRoot, string categoryName, int recursive = 0)
     {
+        if (!categoryName.Contains(':'))
+        {
+            categoryName = $"Category:{categoryName}";
+        }
         try
         {
             List<List<WikiPage>> resultByDepth = new();

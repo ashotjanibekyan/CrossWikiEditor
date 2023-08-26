@@ -12,7 +12,7 @@ internal class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        BuildAvaloniaApp()
+            BuildAvaloniaApp()
             .StartWithClassicDesktopLifetime(args);
     }
 
