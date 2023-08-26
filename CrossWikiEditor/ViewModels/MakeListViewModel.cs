@@ -152,7 +152,7 @@ public sealed class MakeListViewModel : ViewModelBase
             return;
         }
 
-        await _systemService.SetClipboardTextAsync(string.Join('\n', SelectedPages.Select(x => x.Title)));
+        await _systemService.SetClipboardTextAsync(string.Join(Environment.NewLine, SelectedPages.Select(x => x.Title)));
         Pages.Remove(SelectedPages.ToList());
         SelectedPages = new ObservableCollection<WikiPageModel>();
     }
@@ -164,7 +164,7 @@ public sealed class MakeListViewModel : ViewModelBase
             return;
         }
 
-        await _systemService.SetClipboardTextAsync(string.Join('\n', SelectedPages.Select(x => x.Title)));
+        await _systemService.SetClipboardTextAsync(string.Join(Environment.NewLine, SelectedPages.Select(x => x.Title)));
     }
 
     private async Task Paste()
@@ -307,7 +307,7 @@ public sealed class MakeListViewModel : ViewModelBase
             Stream stream = await storageFile.OpenWriteAsync();
             foreach ((string title, int _) in Pages)
             {
-                await stream.WriteAsync(Encoding.UTF8.GetBytes($"# [[:{title}]]\n"));
+                await stream.WriteAsync(Encoding.UTF8.GetBytes($"# [[:{title}]]{Environment.NewLine}"));
             }
             stream.Close();
         }
