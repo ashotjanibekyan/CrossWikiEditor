@@ -205,7 +205,7 @@ public sealed class MakeListViewModel : ViewModelBase
 
     private void RemoveSelected()
     {
-        Pages.Remove(SelectedPages);
+        Pages.Remove(SelectedPages.ToList());
         SelectedPages.Clear();
     }
     
