@@ -140,5 +140,6 @@ public class App : Application
         builder.RegisterType<CategoryRecursive1LevelListProvider>().As<IListProvider>();
         builder.RegisterType<CategoryRecursiveUserDefinedLevelListProvider>().As<IListProvider>();
         builder.RegisterType<CategoryRecursiveListProvider>().As<IListProvider>();
+        builder.RegisterType<FilesOnPageListProvider>().As<IListProvider>();
     }
 }
