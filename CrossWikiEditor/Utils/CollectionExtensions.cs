@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace CrossWikiEditor.Utils;
 
 public static class CollectionExtensions
 {
-    private static Random _random = new Random();
+    private static readonly Random _random = new();
     public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> enumerable)
     {
         return new ObservableCollection<T>(enumerable);
@@ -25,12 +26,13 @@ public static class CollectionExtensions
         }
 
         var subset = new List<T>(count);
-
-        for (int i = 0; i < count; i++)
+        var indexHash = new HashSet<int>();
+        while (indexHash.Count < count)
         {
-            int index = _random.Next(sourceList.Count);
-            subset.Add(sourceList[index]);
+            indexHash.Add(_random.Next(sourceList.Count));
         }
+
+        subset.AddRange(indexHash.Select(index => sourceList[index]));
 
         return subset;
     }
