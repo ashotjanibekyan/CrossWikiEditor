@@ -339,7 +339,7 @@ public class ProfilesViewModelTests : BaseTest
         _sut.QuickLoginCommand.Execute(_dialog).Subscribe();
 
         // assert
-        _userService.DidNotReceiveWithAnyArgs().Login(default, default);
+        _userService.DidNotReceive().Login(Arg.Any<Profile>(), Arg.Any<string>());
     }
 
     [Test]

@@ -32,6 +32,10 @@ public class FilterViewModel : ViewModelBase
         this.WhenAnyValue(x => x.IsAllTalkChecked)
             .Subscribe((val) =>
             {
+                if (TalkNamespaces is null)
+                {
+                    return;
+                }
                 TalkNamespaces = TalkNamespaces
                     .ToList()
                     .Select(x => new WikiNamespace(x.Id, x.Name, val))
@@ -41,6 +45,10 @@ public class FilterViewModel : ViewModelBase
         this.WhenAnyValue(x => x.IsAllSubjectChecked)
             .Subscribe((val) =>
             {
+                if (SubjectNamespaces is null)
+                {
+                    return;
+                }
                 SubjectNamespaces = SubjectNamespaces
                     .ToList()
                     .Select(x => new WikiNamespace(x.Id, x.Name, val))
@@ -52,8 +60,8 @@ public class FilterViewModel : ViewModelBase
         
         SaveCommand = ReactiveCommand.Create((IDialog dialog) =>
         {
-            var arr1 = SubjectNamespaces.ToList().Where(x => x.IsChecked).Select(x => x.Id);
-            var arr2 = TalkNamespaces.ToList().Where(x => x.IsChecked).Select(x => x.Id);
+            IEnumerable<int> arr1 = SubjectNamespaces.ToList().Where(x => x.IsChecked).Select(x => x.Id);
+            IEnumerable<int> arr2 = TalkNamespaces.ToList().Where(x => x.IsChecked).Select(x => x.Id);
             dialog.Close(Result<FilterOptions>.Success(new FilterOptions(
                 arr1.Concat(arr2).ToArray(), 
                 RemoveTitlesContaining,

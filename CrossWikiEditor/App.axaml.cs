@@ -98,7 +98,7 @@ public class App : Application
         builder.RegisterInstance(storageProvider).As<IStorageProvider>();
         builder.RegisterInstance(stringEncryptionService).As<IStringEncryptionService>();
         builder.Register(c => MessageBus.Current).As<IMessageBus>();
-        builder.Register(c => TopLevel.GetTopLevel(_mainWindow).Clipboard).As<IClipboard>();
+        builder.Register(c => TopLevel.GetTopLevel(_mainWindow)?.Clipboard).As<IClipboard>();
     }
 
     private void RegisterViewModels(ContainerBuilder builder)

@@ -60,7 +60,7 @@ public sealed class StringEncryptionService : IStringEncryptionService
 
     public static (byte[] Key, byte[] IV) GenerateKeyAndIv(string passphrase)
     {
-        using var deriveBytes = new Rfc2898DeriveBytes(passphrase, Salt, 10000);
+        using var deriveBytes = new Rfc2898DeriveBytes(passphrase, Salt, 10000, HashAlgorithmName.SHA256);
         byte[]? key = deriveBytes.GetBytes(32);
         byte[]? iv = deriveBytes.GetBytes(16);
         return (key, iv);

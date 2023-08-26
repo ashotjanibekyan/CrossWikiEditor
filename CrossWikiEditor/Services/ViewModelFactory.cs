@@ -5,6 +5,7 @@ using CrossWikiEditor.Services.WikiServices;
 using CrossWikiEditor.Utils;
 using CrossWikiEditor.ViewModels;
 using ReactiveUI;
+using WikiClientLibrary.Sites;
 
 namespace CrossWikiEditor.Services;
 
@@ -54,7 +55,7 @@ public class ViewModelFactory : IViewModelFactory
 
     public async Task<FilterViewModel> GetFilterViewModel()
     {
-        var site = await _wikiClientCache.GetWikiSite(_userPreferencesService.GetCurrentPref().UrlApi());
+        WikiSite? site = await _wikiClientCache.GetWikiSite(_userPreferencesService.GetCurrentPref().UrlApi());
         WikiNamespace[] namespaces = site.Namespaces.Select(x => new WikiNamespace(x.Id, x.CustomName)).ToArray();
         
         return new FilterViewModel(

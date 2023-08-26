@@ -270,10 +270,10 @@ public sealed class MakeListViewModel : ViewModelBase
     {
         try
         {
-            var result = await _dialogService.ShowDialog<Result<FilterOptions>>(await _viewModelFactory.GetFilterViewModel());
+            Result<FilterOptions>? result = await _dialogService.ShowDialog<Result<FilterOptions>>(await _viewModelFactory.GetFilterViewModel());
             if (result is {IsSuccessful: true, Value: not null})
             {
-                var filterOptions = result.Value;
+                FilterOptions? filterOptions = result.Value;
                 var filteredPages = Pages.Where(page => page.ShouldKeepPer(filterOptions)).ToList();
 
                 if (filterOptions.SortAlphabetically)
