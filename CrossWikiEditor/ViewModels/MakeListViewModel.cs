@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -39,7 +40,7 @@ public sealed class MakeListViewModel : ViewModelBase
         OpenHistoryInBrowserCommand = ReactiveCommand.Create(OpenHistoryInBrowser);
         CutCommand = ReactiveCommand.CreateFromTask(Cut);
         CopyCommand = ReactiveCommand.CreateFromTask(Copy);
-        PasteCommand = ReactiveCommand.Create(Paste);
+        PasteCommand = ReactiveCommand.CreateFromTask(Paste);
         SelectAllCommand = ReactiveCommand.Create(SelectAll);
         SelectNoneCommand = ReactiveCommand.Create(SelectNone);
         SelectInverseCommand = ReactiveCommand.Create(SelectInverse);
@@ -139,24 +140,40 @@ public sealed class MakeListViewModel : ViewModelBase
         await _systemService.SetClipboardTextAsync(string.Join('\n', SelectedPages.Select(x => x.Title)));
     }
 
-    private void Paste()
+    private async Task Paste()
     {
-        throw new System.NotImplementedException();
+        string? clipboardText = await _systemService.GetClipboardTextAsync();
+        if (!string.IsNullOrWhiteSpace(clipboardText))
+        {
+            string[] titles = clipboardText.Split(new[] {Environment.NewLine},
+                StringSplitOptions.None);
+            string urlApi = _userPreferencesService.GetCurrentPref().UrlApi();
+            foreach (string title in titles)
+            {
+                Result<WikiPageModel> result = await _clientCache.GetWikiPageModel(urlApi, title);
+                Pages.Add(result is {IsSuccessful: true, Value: not null} ? result.Value : new WikiPageModel(title.Trim()));
+            }
+        }
     }
 
     private void SelectAll()
     {
-        throw new System.NotImplementedException();
+        foreach (WikiPageModel page in Pages)
+        {
+            SelectedPages.Add(page);
+        }
     }
 
     private void SelectNone()
     {
-        throw new System.NotImplementedException();
+        SelectedPages = new ObservableCollection<WikiPageModel>();
     }
     
     private void SelectInverse()
     {
-        throw new System.NotImplementedException();
+        var newSelection = Pages.Where(page => !SelectedPages.Contains(page)).ToList();
+
+        SelectedPages = newSelection.ToObservableCollection();
     }
 
     public ObservableCollection<IListProvider> ListProviders { get; }

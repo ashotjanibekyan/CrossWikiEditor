@@ -363,4 +363,94 @@ public class MakeListViewModelTests : BaseTest
         _sut.SelectedPages.Should().BeEquivalentTo(new List<WikiPageModel> {new("page1"), new("page2"), new("Page2")});
         _sut.Pages.Should().BeEquivalentTo(new List<WikiPageModel> {new("page1"), new("page2"), new("Page2"), new("Page3"), new("Page5")});
     }
+
+    [Test]
+    public void SelectAllCommand_ShouldSelectAllPages()
+    {
+        // arrange
+        _sut.Pages = new List<WikiPageModel> {new("page1"), new("page2"), new("Page2"), new("Page3"), new("Page5")}.ToObservableCollection();
+        _sut.SelectedPages = new ObservableCollection<WikiPageModel>();
+
+        // act
+        _sut.SelectAllCommand.Execute().Subscribe();
+
+        // assert
+        _sut.Pages.Should().HaveCount(5);
+        _sut.Pages.Should().BeEquivalentTo(_sut.SelectedPages);
+    }
+
+    [Test]
+    public void SelectNoneCommand_ShouldUnSelectAllPages()
+    {
+        // arrange
+        _sut.Pages = new List<WikiPageModel> {new("page1"), new("page2"), new("Page2"), new("Page3"), new("Page5")}.ToObservableCollection();
+        _sut.SelectedPages = new ObservableCollection<WikiPageModel>();
+
+        // act
+        _sut.SelectNoneCommand.Execute().Subscribe();
+
+        // assert
+        _sut.Pages.Should().HaveCount(5);
+        _sut.SelectedPages.Should().BeEmpty();
+    }
+
+    [Test]
+    public void SelectInverseCommand_ShouldSelectAll_WhenNonIsSelected()
+    {
+        // arrange
+        _sut.Pages = new List<WikiPageModel> {new("page1"), new("page2"), new("Page2"), new("Page3"), new("Page5")}.ToObservableCollection();
+        _sut.SelectedPages = new ObservableCollection<WikiPageModel>();
+        
+        // act
+        _sut.SelectInverseCommand.Execute().Subscribe();
+
+        // assert
+        _sut.Pages.Should().HaveCount(5);
+        _sut.Pages.Should().BeEquivalentTo(_sut.SelectedPages);
+    }
+
+    [Test]
+    public void SelectInverseCommand_ShouldUnselectAll_WhenEverythingIsSelected()
+    {
+        // arrange
+        _sut.Pages = new List<WikiPageModel> {new("page1"), new("page2"), new("Page2"), new("Page3"), new("Page5")}.ToObservableCollection();
+        _sut.SelectedPages = new List<WikiPageModel> {new("page1"), new("page2"), new("Page2"), new("Page3"), new("Page5")}.ToObservableCollection();
+        
+        // act
+        _sut.SelectInverseCommand.Execute().Subscribe();
+
+        // assert
+        _sut.Pages.Should().HaveCount(5);
+        _sut.SelectedPages.Should().BeEmpty();
+    }
+
+    [Test]
+    public void SelectInverseCommand_ShouldInverseSelection()
+    {
+        // arrange
+        _sut.Pages = new List<WikiPageModel> {new("page1"), new("page2"), new("Page2"), new("Page3"), new("Page5")}.ToObservableCollection();
+        _sut.SelectedPages = new List<WikiPageModel> {new("page1"), new("page2")}.ToObservableCollection();
+        
+        // act
+        _sut.SelectInverseCommand.Execute().Subscribe();
+
+        // assert
+        _sut.Pages.Should().HaveCount(5);
+        _sut.SelectedPages.Should().BeEquivalentTo(new List<WikiPageModel> {new("Page2"), new("Page3"), new("Page5")});
+    }
+
+    [Test]
+    public void PastCommand_ShouldSplitClipboardAndAddPages()
+    {
+        // arrange
+        _sut.Pages = new List<WikiPageModel> {new("page1"), new("page2")}.ToObservableCollection();
+        _systemService.GetClipboardTextAsync().Returns($"page3{Environment.NewLine}fewfew{Environment.NewLine}ofiewf203{Environment.NewLine} foiwej   ");
+
+        // act
+        _sut.PasteCommand.Execute().Subscribe();
+
+        // assert
+        _sut.Pages.Should().BeEquivalentTo(new List<WikiPageModel>
+            {new("page1"), new("page2"), new("page3"), new("fewfew"), new("ofiewf203"), new("foiwej")}.ToObservableCollection());
+    }
 }
