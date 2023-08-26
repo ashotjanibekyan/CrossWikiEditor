@@ -2,9 +2,12 @@
 
 namespace CrossWikiEditor.Models;
 
-public record WikiPageModel(string Title)
+public record WikiPageModel(string Title, int NamespaceId = 0)
 {
-    public WikiPageModel(WikiPage wikiPage) : this(wikiPage.Title)
+    public WikiPage? WikiPage { get; set; }
+
+    public WikiPageModel(WikiPage wikiPage) : this(wikiPage.Title, wikiPage.NamespaceId)
     {
+        WikiPage = wikiPage;
     }
 }

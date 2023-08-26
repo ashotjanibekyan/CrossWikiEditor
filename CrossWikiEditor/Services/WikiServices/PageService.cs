@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CrossWikiEditor.Models;
+using CrossWikiEditor.Utils;
 using WikiClientLibrary;
 using WikiClientLibrary.Generators;
 using WikiClientLibrary.Pages;
@@ -14,15 +15,21 @@ public interface IPageService
 {
     Task<Result<List<WikiPageModel>>> GetCategoriesOf(string apiRoot, string page, bool includeHidden = true, bool onlyHidden = false);
     Task<Result<List<WikiPageModel>>> GetPagesOfCategory(string apiRoot, string categoryName, int recursive = 0);
+    Task<Result<WikiPageModel>> ConvertToTalk(WikiPageModel page);
+    Task<Result<List<WikiPageModel>>> ConvertToTalk(List<WikiPageModel> pages);
+    Task<Result<WikiPageModel>> ConvertToSubject(WikiPageModel page);
+    Task<Result<List<WikiPageModel>>> ConvertToSubject(List<WikiPageModel> pages);
 }
 
 public sealed class PageService : IPageService
 {
     private readonly IWikiClientCache _wikiClientCache;
+    private readonly IUserPreferencesService _userPreferencesService;
 
-    public PageService(IWikiClientCache wikiClientCache)
+    public PageService(IWikiClientCache wikiClientCache, IUserPreferencesService userPreferencesService)
     {
         _wikiClientCache = wikiClientCache;
+        _userPreferencesService = userPreferencesService;
     }
     public async Task<Result<List<WikiPageModel>>> GetCategoriesOf(string apiRoot, string page, bool includeHidden = true, bool onlyHidden = false)
     {
@@ -82,5 +89,69 @@ public sealed class PageService : IPageService
         {
             return Result<List<WikiPageModel>>.Failure(e.Message);
         }
+    }
+
+    public async Task<Result<WikiPageModel>> ConvertToTalk(WikiPageModel page)
+    {
+        try
+        {
+            if (page.WikiPage is null)
+            {
+                UserPrefs userPrefs = _userPreferencesService.GetCurrentPref();
+                page.WikiPage = new WikiPage(await _wikiClientCache.GetWikiSite(userPrefs.UrlApi()), page.Title);
+            }
+            return Result<WikiPageModel>.Success(new WikiPageModel(page.WikiPage.ToTalkPage()));
+        }
+        catch (Exception e)
+        {
+            return Result<WikiPageModel>.Failure(e.Message);
+        }
+    }
+
+    public async Task<Result<List<WikiPageModel>>> ConvertToTalk(List<WikiPageModel> pages)
+    {
+        List<WikiPageModel> result = new();
+        foreach (WikiPageModel wikiPageModel in pages)
+        {
+            Result<WikiPageModel> talkPageResult = await ConvertToTalk(wikiPageModel);
+            if (talkPageResult is {IsSuccessful: true, Value: not null})
+            {
+                result.Add(talkPageResult.Value);
+            }
+        }
+
+        return Result<List<WikiPageModel>>.Success(result);
+    }
+    
+    public async Task<Result<WikiPageModel>> ConvertToSubject(WikiPageModel page)
+    {
+        try
+        {
+            if (page.WikiPage is null)
+            {
+                UserPrefs userPrefs = _userPreferencesService.GetCurrentPref();
+                page.WikiPage = new WikiPage(await _wikiClientCache.GetWikiSite(userPrefs.UrlApi()), page.Title);
+            }
+            return Result<WikiPageModel>.Success(new WikiPageModel(page.WikiPage.ToSubjectPage()));
+        }
+        catch (Exception e)
+        {
+            return Result<WikiPageModel>.Failure(e.Message);
+        }
+    }
+
+    public async Task<Result<List<WikiPageModel>>> ConvertToSubject(List<WikiPageModel> pages)
+    {
+        List<WikiPageModel> result = new();
+        foreach (WikiPageModel wikiPageModel in pages)
+        {
+            Result<WikiPageModel> subjectPageResult = await ConvertToSubject(wikiPageModel);
+            if (subjectPageResult is {IsSuccessful: true, Value: not null})
+            {
+                result.Add(subjectPageResult.Value);
+            }
+        }
+
+        return Result<List<WikiPageModel>>.Success(result);
     }
 }

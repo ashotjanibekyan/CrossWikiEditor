@@ -19,7 +19,7 @@ public class MakeListViewModelTests : BaseTest
             Substitute.For<IListProvider>(),
             Substitute.For<IListProvider>()
         };
-        _sut = new MakeListViewModel(_dialogService, _wikiClientCache, _systemService, _userPreferencesService, listProviders);
+        _sut = new MakeListViewModel(_dialogService, _wikiClientCache, _pageService, _systemService, _fileDialogService, _userPreferencesService, listProviders);
     }
 
     [Test]
@@ -452,5 +452,148 @@ public class MakeListViewModelTests : BaseTest
         // assert
         _sut.Pages.Should().BeEquivalentTo(new List<WikiPageModel>
             {new("page1"), new("page2"), new("page3"), new("fewfew"), new("ofiewf203"), new("foiwej")}.ToObservableCollection());
+    }
+
+    [Test]
+    public void RemoveSelectedCommand_ShouldDoNothing_WhenSelectedPagesIsEmpty()
+    {
+        // arrange
+        _sut.Pages = new List<WikiPageModel> {new("page1"), new("page2"), new("Page2"), new("Page3"), new("Page5")}.ToObservableCollection();
+        _sut.SelectedPages.Clear();
+
+        // act
+        _sut.RemoveSelectedCommand.Execute().Subscribe();
+
+        // assert
+        _sut.Pages.Should().BeEquivalentTo(new List<WikiPageModel> {new("page1"), new("page2"), new("Page2"), new("Page3"), new("Page5")});
+        _sut.SelectedPages.Should().BeEmpty();
+    }
+
+    [Test]
+    public void RemoveSelectedCommand_ShouldRemoveSelectedPages()
+    {
+        // arrange
+        _sut.Pages = new List<WikiPageModel> {new("page1"), new("page2"), new("Page2"), new("Page3"), new("Page5")}.ToObservableCollection();
+        _sut.SelectedPages = new List<WikiPageModel> {new("page1"), new("page2")}.ToObservableCollection();
+
+        // act
+        _sut.RemoveSelectedCommand.Execute().Subscribe();
+
+        // assert
+        _sut.Pages.Should().BeEquivalentTo(new List<WikiPageModel> {new("Page2"), new("Page3"), new("Page5")});
+        _sut.SelectedPages.Should().BeEmpty();
+    }
+
+    [Test]
+    public void RemoveAllCommand_ShouldRemoveAllPages()
+    {
+        // arrange
+        _sut.Pages = new List<WikiPageModel> {new("page1"), new("page2"), new("Page2"), new("Page3"), new("Page5")}.ToObservableCollection();
+        _sut.SelectedPages = new List<WikiPageModel> {new("page1"), new("page2")}.ToObservableCollection();
+        
+        // act
+        _sut.RemoveAllCommand.Execute().Subscribe();
+
+        // assert
+        _sut.Pages.Should().BeEmpty();
+        _sut.SelectedPages.Should().BeEmpty();
+    }
+
+    [Test]
+    public void RemoveDuplicate_ShouldRemoveDuplicatePages()
+    {
+        // arrange
+        _sut.Pages = new List<WikiPageModel> {new("page1"), new("page1"), new("page1"), new("page2"), new("Page2"), new("Page2"), new("Page2"), new("Page3"), new("Page5")}.ToObservableCollection();
+        _sut.SelectedPages = new List<WikiPageModel> {new("page1"), new("page2")}.ToObservableCollection();
+        
+        // act
+        _sut.RemoveDuplicateCommand.Execute().Subscribe();
+
+        // assert
+        _sut.Pages.Should().BeEquivalentTo(new List<WikiPageModel> {new("page1"), new("page2"), new("Page2"), new("Page3"), new("Page5")});
+        _sut.SelectedPages.Should().BeEmpty();
+    }
+
+    [Test]
+    public void RemoveNonMainSpaceCommand_ShouldRemoveNonMainSpacePages()
+    {
+        // arrange
+        _sut.Pages = new List<WikiPageModel> {new("template:page1", 9), new("category:page2", 14), new("user:Page2", 4), new("Page3"), new("Page5")}.ToObservableCollection();
+        _sut.SelectedPages = new List<WikiPageModel> {new("page1"), new("page2")}.ToObservableCollection();
+        
+        // act
+        _sut.RemoveNonMainSpaceCommand.Execute().Subscribe();
+
+        // assert
+        _sut.Pages.Should().BeEquivalentTo(new List<WikiPageModel> {new("Page3"), new("Page5")});
+        _sut.SelectedPages.Should().BeEmpty();
+    }
+
+    [Test]
+    public void MoveToTopCommand_ShouldMoveSelectedPagesToTheTop()
+    {
+        // arrange
+        _sut.Pages = new List<WikiPageModel> {new("template:page1", 9), new("category:page2", 14), new("user:Page2", 4), new("Page3"), new("Page5")}.ToObservableCollection();
+        _sut.SelectedPages = new List<WikiPageModel> {new("category:page2", 14), new("Page3")}.ToObservableCollection();
+        
+        // act
+        _sut.MoveToTopCommand.Execute().Subscribe();
+
+        // assert
+        _sut.Pages.Should()
+            .BeEquivalentTo(
+                new List<WikiPageModel> {new("category:page2", 14), new("Page3"), new("template:page1", 9), new("user:Page2", 4), new("Page5")},
+                options => options.WithStrictOrdering());
+        _sut.SelectedPages.Should().BeEmpty();
+    }
+    
+    [Test]
+    public void MoveToBottomCommand_ShouldMoveSelectedPagesToTheBottom()
+    {
+        // arrange
+        _sut.Pages = new List<WikiPageModel> {new("template:page1", 9), new("category:page2", 14), new("user:Page2", 4), new("Page3"), new("Page5")}.ToObservableCollection();
+        _sut.SelectedPages = new List<WikiPageModel> {new("category:page2", 14), new("Page3")}.ToObservableCollection();
+        
+        // act
+        _sut.MoveToBottomCommand.Execute().Subscribe();
+
+        // assert
+        _sut.Pages.Should()
+            .BeEquivalentTo(
+                new List<WikiPageModel> {new("template:page1", 9), new("user:Page2", 4), new("Page5"),new("category:page2", 14), new("Page3")},
+                options => options.WithStrictOrdering());
+        _sut.SelectedPages.Should().BeEmpty();
+    }
+
+    [Test]
+    public void SortAlphabeticallyCommand_ShouldSortAlphabetically()
+    {
+        // arrange
+        _sut.Pages = new List<WikiPageModel> {new("abc"), new("aev"), new("grw"), new("aaa"), new("23fwe")}.ToObservableCollection();
+
+        // act
+        _sut.SortAlphabeticallyCommand.Execute().Subscribe();
+
+        // assert
+        _sut.Pages.Should()
+            .BeEquivalentTo(
+                new List<WikiPageModel> {new("23fwe"), new("aaa"), new("abc"),new("aev"), new("grw")},
+                options => options.WithStrictOrdering());
+    }
+
+    [Test]
+    public void SortReverseAlphabeticallyCommand_ShouldSortReverseAlphabetically()
+    {
+        // arrange
+        _sut.Pages = new List<WikiPageModel> {new("abc"), new("aev"), new("grw"), new("aaa"), new("23fwe")}.ToObservableCollection();
+
+        // act
+        _sut.SortReverseAlphabeticallyCommand.Execute().Subscribe();
+
+        // assert
+        _sut.Pages.Should()
+            .BeEquivalentTo(
+                new List<WikiPageModel> {new("grw"), new("aev"), new("abc"), new("aaa"), new("23fwe")},
+                options => options.WithStrictOrdering());
     }
 }

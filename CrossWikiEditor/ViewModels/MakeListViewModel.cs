@@ -1,10 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Reactive;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia.Platform.Storage;
 using CrossWikiEditor.ListProviders;
 using CrossWikiEditor.Models;
 using CrossWikiEditor.Services;
@@ -20,18 +24,24 @@ public sealed class MakeListViewModel : ViewModelBase
 {
     private readonly IDialogService _dialogService;
     private readonly IWikiClientCache _clientCache;
+    private readonly IPageService _pageService;
     private readonly ISystemService _systemService;
+    private readonly IFileDialogService _fileDialogService;
     private readonly IUserPreferencesService _userPreferencesService;
 
     public MakeListViewModel(IDialogService dialogService,
         IWikiClientCache clientCache,
+        IPageService pageService,
         ISystemService systemService,
+        IFileDialogService fileDialogService,
         IUserPreferencesService userPreferencesService,
         IEnumerable<IListProvider> listProviders)
     {
         _dialogService = dialogService;
         _clientCache = clientCache;
+        _pageService = pageService;
         _systemService = systemService;
+        _fileDialogService = fileDialogService;
         _userPreferencesService = userPreferencesService;
         AddNewPageCommand = ReactiveCommand.CreateFromTask(AddNewPage);
         RemoveCommand = ReactiveCommand.Create(Remove);
@@ -44,6 +54,19 @@ public sealed class MakeListViewModel : ViewModelBase
         SelectAllCommand = ReactiveCommand.Create(SelectAll);
         SelectNoneCommand = ReactiveCommand.Create(SelectNone);
         SelectInverseCommand = ReactiveCommand.Create(SelectInverse);
+        RemoveSelectedCommand = ReactiveCommand.Create(RemoveSelected);
+        RemoveAllCommand = ReactiveCommand.Create(RemoveAll);
+        RemoveDuplicateCommand = ReactiveCommand.Create(RemoveDuplicate);
+        RemoveNonMainSpaceCommand = ReactiveCommand.Create(RemoveNonMainSpace);
+        MoveToTopCommand = ReactiveCommand.Create(MoveToTop);
+        MoveToBottomCommand = ReactiveCommand.Create(MoveToBottom);
+        ConvertToTalkPagesCommand = ReactiveCommand.CreateFromTask(ConvertToTalkPages);
+        ConvertFromTalkPagesCommand = ReactiveCommand.CreateFromTask(ConvertFromTalkPages);
+        FormatPageTitlesPerDisplayTitleCommand = ReactiveCommand.Create(FormatPageTitlesPerDisplayTitle);
+        FilterCommand = ReactiveCommand.Create(Filter);
+        SaveListCommand = ReactiveCommand.CreateFromTask(SaveList);
+        SortAlphabeticallyCommand = ReactiveCommand.Create(SortAlphabetically);
+        SortReverseAlphabeticallyCommand = ReactiveCommand.Create(SortReverseAlphabetically);
         
         ListProviders = listProviders.ToObservableCollection();
         SelectedListProvider = ListProviders[0];
@@ -176,6 +199,100 @@ public sealed class MakeListViewModel : ViewModelBase
         SelectedPages = newSelection.ToObservableCollection();
     }
 
+    private void RemoveSelected()
+    {
+        Pages.Remove(SelectedPages);
+        SelectedPages.Clear();
+    }
+    
+    private void RemoveAll()
+    {
+        Pages.Clear();
+        SelectedPages.Clear();
+    }
+
+    private void RemoveDuplicate()
+    {
+        Pages = Pages.Distinct().ToObservableCollection();
+        SelectedPages.Clear();
+    }
+
+    private void RemoveNonMainSpace()
+    {
+        Pages = Pages.Where(p => p.NamespaceId == 0).ToObservableCollection();
+        SelectedPages.Clear();
+    }
+    
+    private void MoveToTop()
+    {
+        var selectedPages = SelectedPages.ToList();
+        Pages.Remove(selectedPages);
+        Pages = selectedPages.Concat(Pages).ToObservableCollection();
+        SelectedPages.Clear();
+    }
+    
+    private void MoveToBottom()
+    {
+        var selectedPages = SelectedPages.ToList();
+        Pages.Remove(selectedPages);
+        Pages.AddRange(selectedPages);
+        SelectedPages.Clear();
+    }
+    
+    private async Task ConvertToTalkPages()
+    {
+        List<WikiPageModel>? talkPages = (await _pageService.ConvertToTalk(Pages.ToList())).Value;
+        if (talkPages is not null)
+        {
+            Pages = talkPages.ToObservableCollection();
+        }
+    }
+
+    private async Task ConvertFromTalkPages()
+    {
+        List<WikiPageModel>? subjectPages = (await _pageService.ConvertToSubject(Pages.ToList())).Value;
+        if (subjectPages is not null)
+        {
+            Pages = subjectPages.ToObservableCollection();
+        }
+    }
+
+    private void FormatPageTitlesPerDisplayTitle()
+    {
+        throw new NotImplementedException();
+    }
+
+    private void Filter()
+    {
+        throw new NotImplementedException();
+    }
+
+    private async Task SaveList()
+    {
+        var suggestedTitle =
+            $"{SelectedListProvider.Title}_{SelectedListProvider.Param}_{DateTime.Now.ToString("yyyy-MM-dd-HH-mm", CultureInfo.InvariantCulture)}.txt";
+        IStorageFile? storageFile = await _fileDialogService.SaveFilePickerAsync("Save pages", suggestedFileName: suggestedTitle.ToFilenameSafe());
+        if (storageFile is not null)
+        {
+            Stream stream = await storageFile.OpenWriteAsync();
+            foreach ((string title, int _) in Pages)
+            {
+                await stream.WriteAsync(Encoding.UTF8.GetBytes($"# [[:{title}]]\n"));
+            }
+            stream.Close();
+        }
+    }
+
+    private void SortAlphabetically()
+    {
+        Pages = Pages.OrderBy(x => x.Title).ToObservableCollection();
+    }
+
+    private void SortReverseAlphabetically()
+    {
+        Pages = Pages.OrderByDescending(x => x.Title).ToObservableCollection();
+    }
+
     public ObservableCollection<IListProvider> ListProviders { get; }
     [Reactive] public IListProvider SelectedListProvider { get; set; }
     [Reactive] public ObservableCollection<WikiPageModel> Pages { get; set; } = new();
@@ -192,4 +309,17 @@ public sealed class MakeListViewModel : ViewModelBase
     public ReactiveCommand<Unit, Unit> SelectAllCommand { get; }
     public ReactiveCommand<Unit, Unit> SelectNoneCommand { get; }
     public ReactiveCommand<Unit, Unit> SelectInverseCommand { get; }
+    public ReactiveCommand<Unit, Unit> RemoveSelectedCommand { get; }
+    public ReactiveCommand<Unit, Unit> RemoveAllCommand { get; }
+    public ReactiveCommand<Unit, Unit> RemoveDuplicateCommand { get; }
+    public ReactiveCommand<Unit, Unit> RemoveNonMainSpaceCommand { get; }
+    public ReactiveCommand<Unit, Unit> MoveToTopCommand { get; }
+    public ReactiveCommand<Unit, Unit> MoveToBottomCommand { get; }
+    public ReactiveCommand<Unit, Unit> ConvertToTalkPagesCommand { get; }
+    public ReactiveCommand<Unit, Unit> ConvertFromTalkPagesCommand { get; }
+    public ReactiveCommand<Unit, Unit> FormatPageTitlesPerDisplayTitleCommand { get; }
+    public ReactiveCommand<Unit, Unit> FilterCommand { get; }
+    public ReactiveCommand<Unit, Unit> SaveListCommand { get; }
+    public ReactiveCommand<Unit, Unit> SortAlphabeticallyCommand { get; }
+    public ReactiveCommand<Unit, Unit> SortReverseAlphabeticallyCommand { get; }
 }

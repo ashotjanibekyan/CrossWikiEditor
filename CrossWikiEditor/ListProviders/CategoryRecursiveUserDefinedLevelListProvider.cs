@@ -4,7 +4,6 @@ using CrossWikiEditor.Models;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
 using CrossWikiEditor.ViewModels;
-using WikiClientLibrary.Pages;
 
 namespace CrossWikiEditor.ListProviders;
 

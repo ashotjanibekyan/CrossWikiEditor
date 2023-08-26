@@ -33,7 +33,7 @@
             <Button Grid.Column="1" Command="{Binding AddNewPageCommand}" VerticalAlignment="Center" >+</Button>
         </Grid>
         <Grid Grid.Row="5">
-            <ListBox SelectionMode="Multiple,Toggle" Margin="3" ScrollViewer.HorizontalScrollBarVisibility="Visible"
+            <ListBox SelectionMode="Multiple" Margin="3" ScrollViewer.HorizontalScrollBarVisibility="Visible"
                      ItemsSource="{Binding Pages}" SelectedItems="{Binding SelectedPages}">
                 <ListBox.ContextMenu>
                     <ContextMenu>
@@ -50,10 +50,10 @@
                             <MenuItem Header="Inverse" Command="{Binding SelectInverseCommand}" />
                         </MenuItem>
                         <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Header="Remove">
-                            <MenuItem Header="Selected" />
-                            <MenuItem Header="All" />
-                            <MenuItem Header="Duplicate" />
-                            <MenuItem Header="Non-main space" />
+                            <MenuItem Header="Selected" Command="{Binding RemoveSelectedCommand}" />
+                            <MenuItem Header="All" Command="{Binding RemoveAllCommand}" />
+                            <MenuItem Header="Duplicate" Command="{Binding RemoveDuplicateCommand}" />
+                            <MenuItem Header="Non-main space" Command="{Binding RemoveNonMainSpaceCommand}" />
                         </MenuItem>
                         <Separator />
                         <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Header="Add selected tolist from...">
@@ -80,17 +80,17 @@
                             <MenuItem Header="temp" />
                         </MenuItem>
                         <Separator />
-                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Header="Move to top" />
-                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Header="Move to bottom" />
+                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Command="{Binding MoveToTopCommand}" Header="Move to top" />
+                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Command="{Binding MoveToBottomCommand}" Header="Move to bottom" />
                         <Separator />
-                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Header="Convert to talk pages" />
-                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Header="Convert from talk pages" />
+                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Command="{Binding ConvertToTalkPagesCommand}" Header="Convert to talk pages" />
+                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Command="{Binding ConvertFromTalkPagesCommand}" Header="Convert from talk pages" />
                         <Separator />
-                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Header="Format page titles per displaytitle" />
-                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Header="Filter" />
-                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Header="Save list" />
-                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Header="Sort alphabetically" />
-                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Header="Sort reverse alphabetically" />
+                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Command="{Binding FormatPageTitlesPerDisplayTitleCommand}" Header="Format page titles per displaytitle" />
+                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Command="{Binding FilterCommand}" Header="Filter" />
+                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Command="{Binding SaveListCommand}" Header="Save list" />
+                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Command="{Binding SortAlphabeticallyCommand}" Header="Sort alphabetically" />
+                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Command="{Binding SortReverseAlphabeticallyCommand}" Header="Sort reverse alphabetically" />
                     </ContextMenu>
                 </ListBox.ContextMenu>
                 <ListBox.ItemTemplate>

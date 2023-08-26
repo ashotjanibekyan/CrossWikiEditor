@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using Avalonia.Input.Platform;
 
@@ -9,10 +12,8 @@ public interface ISystemService
 {
     Result OpenLinkInBrowser(string url);
     Task<string?> GetClipboardTextAsync();
-
     Task SetClipboardTextAsync(string? text);
-
-    Task ClearClipboardAsync();
+    Task WriteAllLinesAsync(string path, IEnumerable<string> contents);
 }
 
 public class SystemService : ISystemService
@@ -51,8 +52,8 @@ public class SystemService : ISystemService
         await _clipboard.SetTextAsync(text);
     }
 
-    public async Task ClearClipboardAsync()
+    public async Task WriteAllLinesAsync(string path, IEnumerable<string> contents)
     {
-        await _clipboard.ClearAsync();
+        await File.WriteAllLinesAsync(path, contents, encoding: Encoding.UTF8);
     }
 }

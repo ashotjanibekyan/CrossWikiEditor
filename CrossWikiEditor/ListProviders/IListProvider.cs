@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using CrossWikiEditor.Models;
-using WikiClientLibrary.Pages;
 
 namespace CrossWikiEditor.ListProviders;
 

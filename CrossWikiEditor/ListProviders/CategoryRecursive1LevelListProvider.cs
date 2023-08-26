@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using CrossWikiEditor.Models;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
-using WikiClientLibrary.Pages;
 
 namespace CrossWikiEditor.ListProviders;
 

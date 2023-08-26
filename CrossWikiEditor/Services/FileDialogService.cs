@@ -11,6 +11,8 @@ public interface IFileDialogService
         string title,
         bool allowMultiple,
         List<FilePickerFileType> filters);
+
+    Task<IStorageFile?> SaveFilePickerAsync(string title, string? defaultExtension = null, string? suggestedFileName = null);
 }
 
 public sealed class FileDialogService : IFileDialogService
@@ -35,5 +37,16 @@ public sealed class FileDialogService : IFileDialogService
             FileTypeFilter = filters
         });
         return result.Select(f => f.Path.AbsolutePath).ToArray();
+    }
+
+    public async Task<IStorageFile?> SaveFilePickerAsync(string title, string? defaultExtension = null, string? suggestedFileName = null)
+    {
+        return await _storageProvider.SaveFilePickerAsync(new FilePickerSaveOptions()
+        {
+            Title = title,
+            ShowOverwritePrompt = true,
+            DefaultExtension = defaultExtension,
+            SuggestedFileName = suggestedFileName
+        });
     }
 }
