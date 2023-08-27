@@ -8,10 +8,6 @@
              x:DataType="vm:MakeListViewModel"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="CrossWikiEditor.Views.MakeListView">
-
-    <Design.DataContext>
-        <vm:MakeListViewModel />
-    </Design.DataContext>
     <Grid RowDefinitions="Auto,Auto,Auto,Auto,*,Auto" Margin="3">
         <Label Grid.Row="0" Margin="3" Content="Make list" HorizontalAlignment="Center" />
         <Grid Grid.Row="1" Margin="3" ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto" VerticalAlignment="Center">

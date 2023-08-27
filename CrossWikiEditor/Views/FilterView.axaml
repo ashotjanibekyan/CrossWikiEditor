@@ -10,9 +10,6 @@
         x:Class="CrossWikiEditor.Views.FilterView"
         x:DataType="vm:FilterViewModel"
         Title="FilterView">
-    <Design.DataContext>
-        <vm:FilterViewModel />
-    </Design.DataContext>
     <Grid ColumnDefinitions="5*,3*,3*,*"  Margin="0,4" >
         <HeaderedContentControl Grid.Column="0" Header="Namespaces to keep">
             <Grid ColumnDefinitions="1*,1*" RowDefinitions="Auto,*" Margin="4">

@@ -17,7 +17,6 @@ using CrossWikiEditor.Utils;
 using DynamicData;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using WikiClientLibrary.Pages;
 
 namespace CrossWikiEditor.ViewModels;
 
@@ -285,6 +284,22 @@ public sealed class MakeListViewModel : ViewModelBase
                 {
                     filteredPages = filteredPages.Distinct().ToList();
                 }
+
+                if (filterOptions.Pages.Any())
+                {
+                    var list = new HashSet<WikiPageModel>(filteredPages);
+                    switch (filterOptions.SetOperation)
+                    {
+                        case SetOperations.SymmetricDifference:
+                            list.ExceptWith(filterOptions.Pages);
+                            break;
+                        case SetOperations.Intersection:
+                            list.IntersectWith(filterOptions.Pages);
+                            break;
+                    }
+
+                    filteredPages = new List<WikiPageModel>(list);
+                }
                 Pages = filteredPages.ToObservableCollection();
             }
         }
@@ -292,9 +307,6 @@ public sealed class MakeListViewModel : ViewModelBase
         {
             Console.WriteLine(e);
         }
-
-
-
     }
 
     private async Task SaveList()

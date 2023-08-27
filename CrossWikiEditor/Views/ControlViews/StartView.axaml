@@ -6,9 +6,6 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:DataType="vm:StartViewModel"
              x:Class="CrossWikiEditor.Views.ControlViews.StartView">
-    <Design.DataContext>
-        <vm:StartViewModel />
-    </Design.DataContext>
     <Grid Margin="3" RowDefinitions="Auto,*" ColumnDefinitions="*,*">
         <Label Grid.Column="0" Grid.Row="0" VerticalAlignment="Center">Default Summary</Label>
 

@@ -1,13 +1,9 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:vm="using:CrossWikiEditor.ViewModels.ControlViewModels"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="CrossWikiEditor.Views.ControlViews.SkipView">
-    <Design.DataContext>
-        <vm:SkipViewModel />
-    </Design.DataContext>
     <Grid RowDefinitions="Auto,Auto,Auto">
         <HeaderedContentControl Margin="3" Header="Text" Background="Black" Grid.Row="0">
             <Grid Margin="3" RowDefinitions="*,*,*,*">
@@ -35,8 +31,8 @@
             <Grid Margin="3" ColumnDefinitions="*,*" RowDefinitions="*,*,*,*,*,*,*">
                 <CheckBox Grid.Row="0" Grid.Column="0">Page is in use</CheckBox>
                 <CheckBox Grid.Row="0" Grid.Column="1">Edit blocked by spam filter</CheckBox>
-                <CheckBox Grid.Row="1">Page contains no links</CheckBox>
-                <CheckBox Grid.Row="2">No changes are made</CheckBox>
+                <CheckBox Grid.Row="1" Grid.Column="0">Page contains no links</CheckBox>
+                <CheckBox Grid.Row="2" Grid.Column="0">No changes are made</CheckBox>
                 <CheckBox Grid.Row="3" Grid.Column="0" Margin="25 0 0 0">Only whitespaces</CheckBox>
                 <CheckBox Grid.Row="3" Grid.Column="1">Only casing</CheckBox>
                 <CheckBox Grid.Row="4" Grid.Column="0" Margin="25 0 0 0">Only genfixes</CheckBox>
