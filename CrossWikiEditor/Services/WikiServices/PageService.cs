@@ -17,6 +17,15 @@ public interface IPageService
     Task<Result<List<WikiPageModel>>> GetCategoriesOf(string apiRoot, string pageName, bool includeHidden = true, bool onlyHidden = false);
     Task<Result<List<WikiPageModel>>> GetPagesOfCategory(string apiRoot, string categoryName, int recursive = 0);
     Task<Result<List<WikiPageModel>>> FilesOnPage(string apiRoot, string pageName);
+    
+    /// <summary>
+    /// Gets random pages in a specific namespace
+    /// </summary>
+    /// <param name="apiRoot">The api root of the wiki, e.g. https://hy.wikipedia.org/w/api.php?</param>
+    /// <param name="numberOfPages">Number of pages to generate.</param>
+    /// <param name="namespaces">Only list pages in these namespaces. Should be null if all the namespaces are selected.</param>
+    /// <returns></returns>
+    Task<Result<List<WikiPageModel>>> GetRandomPages(string apiRoot, int numberOfPages, int[]? namespaces);
     Task<Result<WikiPageModel>> ConvertToTalk(WikiPageModel page);
     Task<Result<List<WikiPageModel>>> ConvertToTalk(List<WikiPageModel> pages);
     Task<Result<WikiPageModel>> ConvertToSubject(WikiPageModel page);
@@ -104,6 +113,25 @@ public sealed class PageService : IPageService
             WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot);
             var gen = new FilesGenerator(site, pageName);
             List<WikiPage> result = await gen.EnumPagesAsync().ToListAsync();
+            return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
+        }
+        catch (Exception e)
+        {
+            return Result<List<WikiPageModel>>.Failure(e.Message);
+        }
+    }
+
+    public async Task<Result<List<WikiPageModel>>> GetRandomPages(string apiRoot, int numberOfPages, int[]? namespaces)
+    {
+        try
+        {
+            WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot);
+            var gen = new RandomPageGenerator(site)
+            {
+                NamespaceIds = namespaces,
+                PaginationSize = numberOfPages
+            };
+            List<WikiPage> result = await gen.EnumPagesAsync().Take(numberOfPages).ToListAsync();
             return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
         }
         catch (Exception e)

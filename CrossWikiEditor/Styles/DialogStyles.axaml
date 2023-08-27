@@ -1,0 +1,7 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style Selector="Window.DialogWindow">
+        <Setter Property="WindowStartupLocation" Value="CenterOwner" />
+        <Setter Property="ShowInTaskbar" Value="False" />
+    </Style>
+</Styles>

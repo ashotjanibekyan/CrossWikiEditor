@@ -6,6 +6,7 @@
         CanResize="False"
         SizeToContent="WidthAndHeight"
         MinWidth="100"
+        Classes="DialogWindow"
         mc:Ignorable="d" d:DesignWidth="200" d:DesignHeight="450"
         x:Class="CrossWikiEditor.Views.PromptView"
         x:DataType="vm:PromptViewModel"
