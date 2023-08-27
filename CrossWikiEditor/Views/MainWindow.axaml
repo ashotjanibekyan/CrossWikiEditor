@@ -21,7 +21,14 @@
             </Grid>
             <GridSplitter Grid.Row="1" Background="Black" ResizeDirection="Rows" />
             <Grid Grid.Row="2">
-                <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,*">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" MinWidth="200" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
                     <views:MakeListView Grid.Column="0" DataContext="{Binding MakeListViewModel}" />
                     <GridSplitter Grid.Column="1" Background="Black" ResizeDirection="Columns" />
                     <Grid Column="2" Width="450">

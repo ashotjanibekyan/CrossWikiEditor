@@ -1,4 +1,12 @@
+using System.Collections.Generic;
+
 namespace CrossWikiEditor.Models;
+
+public enum SetOperations
+{
+    SymmetricDifference,
+    Intersection
+}
 
 public record FilterOptions(
     int[] NamespacesToKeep,
@@ -6,4 +14,6 @@ public record FilterOptions(
     string KeepTitlesContaining,
     bool UseRegex,
     bool SortAlphabetically,
-    bool RemoveDuplicates);
+    bool RemoveDuplicates,
+    SetOperations SetOperation,
+    List<WikiPageModel> Pages);

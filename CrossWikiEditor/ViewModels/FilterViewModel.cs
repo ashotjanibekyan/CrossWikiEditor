@@ -78,7 +78,9 @@ public class FilterViewModel : ViewModelBase
             KeepTitlesContaining,
             UseRegex,
             SortAlphabetically,
-            RemoveDuplicates)));
+            RemoveDuplicates,
+            SelectedSetOperations,
+            Pages.ToList())));
     }
 
     private async Task OpenFile()
@@ -105,7 +107,9 @@ public class FilterViewModel : ViewModelBase
 
     [Reactive] public ObservableCollection<WikiNamespace> SubjectNamespaces { get; set; }
     [Reactive] public ObservableCollection<WikiNamespace> TalkNamespaces { get; set; }
-    [Reactive] public ObservableCollection<WikiPageModel> Pages { get; set; }
+    [Reactive] public ObservableCollection<WikiPageModel> Pages { get; set; } = new();
+    public ObservableCollection<SetOperations> SetOperations { get; } =
+        new[] {Models.SetOperations.SymmetricDifference, Models.SetOperations.Intersection}.ToObservableCollection();
     [Reactive] public bool IsAllTalkChecked { get; set; }
     [Reactive] public bool IsAllSubjectChecked { get; set; }
     [Reactive] public bool UseRegex { get; set; }
@@ -113,8 +117,10 @@ public class FilterViewModel : ViewModelBase
     [Reactive] public bool RemoveDuplicates { get; set; }
     [Reactive] public string RemoveTitlesContaining { get; set; } = string.Empty;
     [Reactive] public string KeepTitlesContaining { get; set; } = string.Empty;
+    [Reactive] public SetOperations SelectedSetOperations { get; set; } = Models.SetOperations.SymmetricDifference;
     public ReactiveCommand<IDialog, Unit> SaveCommand { get; }
     public ReactiveCommand<IDialog, Unit> CloseCommand { get; }
     public ReactiveCommand<Unit, Unit> OpenFileCommand { get; }
     public ReactiveCommand<Unit, Unit> ClearCommand { get; }
+    
 }
