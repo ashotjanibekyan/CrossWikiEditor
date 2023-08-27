@@ -149,6 +149,9 @@ public class App : Application
         builder.RegisterType<RandomListProvider>().As<IListProvider>();
         builder.RegisterType<GoogleSearchListProvider>().As<IListProvider>();
         builder.RegisterType<ImageFileLinksListProvider>().As<IListProvider>();
+        builder.RegisterType<LinksOnPageListProvider>().As<IListProvider>();
+        builder.RegisterType<LinksOnPageBlueListProvider>().As<IListProvider>();
+        builder.RegisterType<LinksOnPageRedListProvider>().As<IListProvider>();
         
         builder.RegisterType<TextFileListProvider>();
     }
