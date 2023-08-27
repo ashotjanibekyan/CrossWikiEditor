@@ -14,7 +14,7 @@ public struct UserPrefs
     {
         Version = "0.0.1";
         Project = ProjectEnum.Wikipedia;
-        LanguageCode = "en";
+        LanguageCode = "hy";
         CustomProject = "";
         Protocol = "http://";
         LoginDomain = "";
@@ -36,6 +36,47 @@ public struct UserPrefs
     public string CustomProject { get; set; }
     public string Protocol { get; set; }
     public string LoginDomain { get; set; }
+
+    public string UrlBase()
+    {
+        if (!string.IsNullOrEmpty(LanguageCode) && new[]
+            {
+                ProjectEnum.Wikipedia,
+                ProjectEnum.Wiktionary,
+                ProjectEnum.Wikisource,
+                ProjectEnum.Wikiquote,
+                ProjectEnum.Wikiversity,
+                ProjectEnum.Wikivoyage,
+                ProjectEnum.Wikibooks,
+                ProjectEnum.Wikinews
+            }.Contains(Project))
+        {
+            return $"https://{LanguageCode}.{Project.ToString().ToLower()}.org";
+        }
+
+        throw new NotImplementedException();
+    }
+    
+    public string UrlBaseLong()
+    {
+        if (!string.IsNullOrEmpty(LanguageCode) && new[]
+            {
+                ProjectEnum.Wikipedia,
+                ProjectEnum.Wiktionary,
+                ProjectEnum.Wikisource,
+                ProjectEnum.Wikiquote,
+                ProjectEnum.Wikiversity,
+                ProjectEnum.Wikivoyage,
+                ProjectEnum.Wikibooks,
+                ProjectEnum.Wikinews
+            }.Contains(Project))
+        {
+            return $"https://{LanguageCode}.{Project.ToString().ToLower()}.org/w/";
+        }
+
+        throw new NotImplementedException();
+    }
+    
     public string UrlApi()
     {
         if (!string.IsNullOrEmpty(LanguageCode) && new[]

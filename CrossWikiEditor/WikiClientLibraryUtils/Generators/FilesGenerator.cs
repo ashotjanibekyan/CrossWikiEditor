@@ -3,8 +3,12 @@ using WikiClientLibrary.Generators.Primitive;
 using WikiClientLibrary.Infrastructures;
 using WikiClientLibrary.Sites;
 
-namespace CrossWikiEditor.Generators;
+namespace CrossWikiEditor.WikiClientLibraryUtils.Generators;
 
+/// <summary>
+/// This class is mostly copied from WikiClientLibrary itself. Once this class is released and is available via Nuget,
+/// We should get rid of this class.
+/// </summary>
 public class FilesGenerator : WikiPagePropertyGenerator
 {
     public FilesGenerator(WikiSite site, string pageTitle) : base(site)

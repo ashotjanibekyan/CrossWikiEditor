@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CrossWikiEditor.Generators;
 using CrossWikiEditor.Models;
 using CrossWikiEditor.Utils;
+using CrossWikiEditor.WikiClientLibraryUtils.Generators;
 using WikiClientLibrary;
 using WikiClientLibrary.Generators;
 using WikiClientLibrary.Pages;

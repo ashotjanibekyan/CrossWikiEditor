@@ -14,10 +14,6 @@ namespace CrossWikiEditor.ViewModels;
 
 public class WikiNamespace
 {
-    public WikiNamespace()
-    {
-        
-    }
     public WikiNamespace(int id, string name, bool isChecked = false)
     {
         Id = id;

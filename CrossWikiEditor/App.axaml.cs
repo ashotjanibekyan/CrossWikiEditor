@@ -11,6 +11,7 @@ using CrossWikiEditor.ListProviders;
 using CrossWikiEditor.Repositories;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
+using CrossWikiEditor.Utils;
 using CrossWikiEditor.ViewModels;
 using CrossWikiEditor.ViewModels.ControlViewModels;
 using CrossWikiEditor.ViewModels.MenuViewModels;
@@ -64,6 +65,7 @@ public class App : Application
         RegisterRepositories(builder);
         RegisterDialogs(builder);
         RegisterListProviders(builder);
+        RegisterUtils(builder);
 
         builder.Register(c => _container!).As<IContainer>();
 
@@ -145,7 +147,13 @@ public class App : Application
         builder.RegisterType<FilesOnPageListProvider>().As<IListProvider>();
         builder.RegisterType<TextFileListProvider>().As<IListProvider>();
         builder.RegisterType<RandomListProvider>().As<IListProvider>();
+        builder.RegisterType<GoogleSearchListProvider>().As<IListProvider>();
         
         builder.RegisterType<TextFileListProvider>();
+    }
+
+    private void RegisterUtils(ContainerBuilder builder)
+    {
+        builder.RegisterType<LanguageSpecificRegexes>();
     }
 }
