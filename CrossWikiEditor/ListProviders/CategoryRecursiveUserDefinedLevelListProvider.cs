@@ -37,7 +37,9 @@ public class CategoryRecursiveUserDefinedLevelListProvider : IListProvider
         }
 
         UserPrefs userPrefs = _userPreferencesService.GetCurrentPref();
-        return await _pageService.GetPagesOfCategory(userPrefs.UrlApi(), Param, recursive: (int)recursionLevel);
+        Result<List<WikiPageModel>> result = await _pageService.GetPagesOfCategory(userPrefs.UrlApi(), Param, recursive: (int)recursionLevel);
+        recursionLevel = null;
+        return result;
 
     }
 
