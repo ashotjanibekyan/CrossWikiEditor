@@ -1,3 +1,4 @@
+using CrossWikiEditor.ListProviders;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.ViewModels;
 
@@ -11,7 +12,8 @@ public class ViewModelFactoryTests : BaseTest
     public void SetUp()
     {
         SetUpServices();
-        _sut = new ViewModelFactory(_fileDialogService, _dialogService, _profileRepository, _wikiClientCache, _userService, _userPreferencesService, _messageBus);
+        _sut = new ViewModelFactory(_fileDialogService, _dialogService, _profileRepository, _wikiClientCache, _userService, _userPreferencesService,
+            _messageBus, new TextFileListProvider(_fileDialogService, _systemService, _wikiClientCache, _userPreferencesService));
     }
 
     [Test]
