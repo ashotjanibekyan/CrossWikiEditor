@@ -130,6 +130,7 @@ public class App : Application
         builder.RegisterType<ProfilesView>().Named<Window>(nameof(ProfilesViewModel));
         builder.RegisterType<PreferencesView>().Named<Window>(nameof(PreferencesViewModel));
         builder.RegisterType<AddNewProfileView>().Named<Window>(nameof(AddOrEditProfileViewModel));
+        builder.RegisterType<SelectNamespacesView>().Named<Window>(nameof(SelectNamespacesViewModel));
     }
 
     private void RegisterListProviders(ContainerBuilder builder)
@@ -143,6 +144,7 @@ public class App : Application
         builder.RegisterType<CategoryRecursiveListProvider>().As<IListProvider>();
         builder.RegisterType<FilesOnPageListProvider>().As<IListProvider>();
         builder.RegisterType<TextFileListProvider>().As<IListProvider>();
+        builder.RegisterType<RandomListProvider>().As<IListProvider>();
         
         builder.RegisterType<TextFileListProvider>();
     }

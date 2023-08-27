@@ -15,6 +15,7 @@ public interface IViewModelFactory
     ProfilesViewModel GetProfilesViewModel();
     PreferencesViewModel GetPreferencesViewModel();
     Task<FilterViewModel> GetFilterViewModel();
+    Task<SelectNamespacesViewModel> GetSelectNamespacesViewModel();
 }
 
 public class ViewModelFactory : IViewModelFactory
@@ -66,5 +67,12 @@ public class ViewModelFactory : IViewModelFactory
             subjectNamespaces: namespaces.Where(x => x.Id.IsEven()).ToList(), 
             talkNamespaces: namespaces.Where(x => x.Id.IsOdd()).ToList(),
             textFileListProvider: _textFileListProvider);
+    }
+
+    public async Task<SelectNamespacesViewModel> GetSelectNamespacesViewModel()
+    {
+        WikiSite? site = await _wikiClientCache.GetWikiSite(_userPreferencesService.GetCurrentPref().UrlApi());
+        WikiNamespace[] namespaces = site.Namespaces.Select(x => new WikiNamespace(x.Id, x.CustomName)).ToArray();
+        return new SelectNamespacesViewModel(namespaces.ToList());
     }
 }

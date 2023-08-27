@@ -6,6 +6,7 @@
         <SimpleTheme />
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Simple.xaml" />
         <StyleInclude Source="./Styles/ButtonStyles.axaml" />
+        <StyleInclude Source="./Styles/DialogStyles.axaml" />
         <Style Selector="HeaderedContentControl">
             <Setter Property="Template">
                 <Setter.Value>
