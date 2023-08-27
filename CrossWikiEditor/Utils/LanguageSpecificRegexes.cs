@@ -25,25 +25,16 @@ public class LanguageSpecificRegexes : IAsyncInitialization
         _userPreferencesService = userPreferencesService;
         _wikiClientCache = wikiClientCache;
         InitAsync = InitializeAsync();
-        messageBus.Listen<LanguageCodeChangedMessage>().Subscribe(x => UnInitializeAsync());
-        messageBus.Listen<ProjectChangedMessage>().Subscribe(x => UnInitializeAsync());
+        messageBus.Listen<LanguageCodeChangedMessage>().Subscribe(x => InitAsync = InitializeAsync());
+        messageBus.Listen<ProjectChangedMessage>().Subscribe(x => InitAsync = InitializeAsync());
     }
 
-    public bool IsInitialized { get; private set; }
-
-    private void UnInitializeAsync()
-    {
-        IsInitialized = false;
-        InitAsync = InitializeAsync();
-    }
-    
     private async Task InitializeAsync()
     {
         string apiRoot = _userPreferencesService.GetCurrentPref().UrlApi();
         _site = await _wikiClientCache.GetWikiSite(apiRoot);
         _magicWordCollection = await _site.GetMagicWords();
         MakeRegexes();
-        IsInitialized = true;
     }
 
     private void MakeRegexes()

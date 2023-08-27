@@ -26,6 +26,8 @@ public interface IPageService
     /// <param name="namespaces">Only list pages in these namespaces. Should be null if all the namespaces are selected.</param>
     /// <returns></returns>
     Task<Result<List<WikiPageModel>>> GetRandomPages(string apiRoot, int numberOfPages, int[]? namespaces);
+    Task<Result<List<WikiPageModel>>> GetPagesByFileUsage(string apiRoot, string fileName);
+    
     Task<Result<WikiPageModel>> ConvertToTalk(WikiPageModel page);
     Task<Result<List<WikiPageModel>>> ConvertToTalk(List<WikiPageModel> pages);
     Task<Result<WikiPageModel>> ConvertToSubject(WikiPageModel page);
@@ -132,6 +134,25 @@ public sealed class PageService : IPageService
                 PaginationSize = numberOfPages
             };
             List<WikiPage> result = await gen.EnumPagesAsync().Take(numberOfPages).ToListAsync();
+            return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
+        }
+        catch (Exception e)
+        {
+            return Result<List<WikiPageModel>>.Failure(e.Message);
+        }
+    }
+
+    public async Task<Result<List<WikiPageModel>>> GetPagesByFileUsage(string apiRoot, string fileName)
+    {
+        try
+        {
+            if (!fileName.Contains(':'))
+            {
+                fileName = $"File:{fileName}";
+            }
+            WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot);
+            var gen = new FileUsageGenerator(site, fileName);
+            List<WikiPage> result = await gen.EnumPagesAsync().ToListAsync();
             return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
         }
         catch (Exception e)

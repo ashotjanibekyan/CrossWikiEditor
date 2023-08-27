@@ -37,11 +37,6 @@ public partial class GoogleSearchListProvider : IListProvider
     {
         try
         {
-            if (!_languageSpecificRegexes.IsInitialized)
-            {
-                await _languageSpecificRegexes.InitAsync;
-            }
-
             var list = new List<WikiPageModel>();
 
             int intStart = 0;
@@ -63,9 +58,10 @@ public partial class GoogleSearchListProvider : IListProvider
 
                     if (searchres.Contains(@"&amp;"))
                     {
-                        searchres = searchres.Substring(0, searchres.IndexOf(@"&amp;", StringComparison.Ordinal));
+                        searchres = searchres[..searchres.IndexOf(@"&amp;", StringComparison.Ordinal)];
                     }
 
+                    await _languageSpecificRegexes.InitAsync;
                     string? title = Tools.GetTitleFromURL(searchres, _languageSpecificRegexes.ExtractTitle);
 
                     // some google results are double encoded, so WikiDecode again
