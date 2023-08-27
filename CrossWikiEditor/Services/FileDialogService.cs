@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using Avalonia.Platform.Storage;
 
 namespace CrossWikiEditor.Services;
@@ -36,7 +37,7 @@ public sealed class FileDialogService : IFileDialogService
             AllowMultiple = allowMultiple,
             FileTypeFilter = filters
         });
-        return result.Select(f => f.Path.AbsolutePath).ToArray();
+        return result.Select(f => HttpUtility.UrlDecode(f.Path.AbsolutePath)).ToArray();
     }
 
     public async Task<IStorageFile?> SaveFilePickerAsync(string title, string? defaultExtension = null, string? suggestedFileName = null)

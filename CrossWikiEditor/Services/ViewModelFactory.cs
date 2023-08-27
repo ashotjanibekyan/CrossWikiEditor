@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using CrossWikiEditor.ListProviders;
 using CrossWikiEditor.Repositories;
 using CrossWikiEditor.Services.WikiServices;
 using CrossWikiEditor.Utils;
@@ -25,6 +26,7 @@ public class ViewModelFactory : IViewModelFactory
     private readonly IUserService _userService;
     private readonly IUserPreferencesService _userPreferencesService;
     private readonly IMessageBus _messageBus;
+    private readonly TextFileListProvider _textFileListProvider;
 
     public ViewModelFactory(IFileDialogService fileDialogService,
         IDialogService dialogService,
@@ -32,7 +34,8 @@ public class ViewModelFactory : IViewModelFactory
         IWikiClientCache wikiClientCache,
         IUserService userService,
         IUserPreferencesService userPreferencesService,
-        IMessageBus messageBus)
+        IMessageBus messageBus,
+        TextFileListProvider textFileListProvider)
     {
         _fileDialogService = fileDialogService;
         _dialogService = dialogService;
@@ -41,6 +44,7 @@ public class ViewModelFactory : IViewModelFactory
         _userService = userService;
         _userPreferencesService = userPreferencesService;
         _messageBus = messageBus;
+        _textFileListProvider = textFileListProvider;
     }
 
     public ProfilesViewModel GetProfilesViewModel()
@@ -60,6 +64,7 @@ public class ViewModelFactory : IViewModelFactory
         
         return new FilterViewModel(
             subjectNamespaces: namespaces.Where(x => x.Id.IsEven()).ToList(), 
-            talkNamespaces: namespaces.Where(x => x.Id.IsOdd()).ToList());
+            talkNamespaces: namespaces.Where(x => x.Id.IsOdd()).ToList(),
+            textFileListProvider: _textFileListProvider);
     }
 }

@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:CrossWikiEditor.ViewModels"
              xmlns:models="clr-namespace:CrossWikiEditor.Models"
+             xmlns:utils="clr-namespace:CrossWikiEditor.Utils"
              x:DataType="vm:MakeListViewModel"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="CrossWikiEditor.Views.MakeListView">
@@ -23,12 +24,17 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            
-            <Label Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0"
+
+            <Label Grid.Row="1"
+                   IsVisible="{Binding SelectedListProvider.ParamTitle, Converter={x:Static utils:Converters.IsNotNullOrWhiteSpace}}"
+                   VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0"
                    Content="{Binding SelectedListProvider.ParamTitle, StringFormat='{}{0}:'}" />
-            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding SelectedListProvider.Param}" HorizontalAlignment="Stretch" />
+            <TextBox Grid.Row="1" Grid.Column="1"
+                     IsEnabled="{Binding SelectedListProvider.ParamTitle, Converter={x:Static utils:Converters.IsNotNullOrWhiteSpace}}"
+                     Text="{Binding SelectedListProvider.Param}" HorizontalAlignment="Stretch" />
         </Grid>
-        <Label Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Content="{Binding Pages.Count, StringFormat='{}{0} pages'}" />
+        <Label Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center"
+               Content="{Binding Pages.Count, StringFormat='{}{0} pages'}" />
         <Button Grid.Row="2" Margin="3" HorizontalAlignment="Center" Command="{Binding MakeListCommand}">Make list</Button>
         <Grid Grid.Row="3" Margin="3" ColumnDefinitions="*,Auto" VerticalAlignment="Center">
             <TextBox Grid.Column="0" Text="{Binding NewPageTitle}" HorizontalAlignment="Stretch" />

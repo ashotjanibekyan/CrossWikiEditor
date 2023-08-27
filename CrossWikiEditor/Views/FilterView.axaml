@@ -3,18 +3,19 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:CrossWikiEditor.ViewModels"
-        Height="500" x:Name="This"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        xmlns:models="clr-namespace:CrossWikiEditor.Models"
+        Height="400" x:Name="This"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="300"
         x:Class="CrossWikiEditor.Views.FilterView"
         x:DataType="vm:FilterViewModel"
         Title="FilterView">
     <Design.DataContext>
         <vm:FilterViewModel />
     </Design.DataContext>
-    <Grid ColumnDefinitions="3*,3*,3*,*" ShowGridLines="True" >
+    <Grid ColumnDefinitions="5*,3*,3*,*"  Margin="0,4" >
         <HeaderedContentControl Grid.Column="0" Header="Namespaces to keep">
-            <Grid ColumnDefinitions="1*,1*" RowDefinitions="Auto,*">
-                <CheckBox Grid.Row="0" Grid.Column="0" Content="Subject" IsChecked="{Binding IsAllSubjectChecked}" />
+            <Grid ColumnDefinitions="1*,1*" RowDefinitions="Auto,*" Margin="4">
+                <CheckBox Grid.Row="0" Grid.Column="0" Content="Subject" IsChecked="{Binding IsAllSubjectChecked}" Margin="4" />
                 <ListBox Grid.Row="1" Grid.Column="0" SelectionMode="Multiple" Margin="3" ScrollViewer.HorizontalScrollBarVisibility="Visible"
                          ItemsSource="{Binding SubjectNamespaces}">
                     <ListBox.ItemTemplate>
@@ -24,7 +25,7 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
                 
-                <CheckBox Grid.Row="0" Grid.Column="1" Content="Talk" IsChecked="{Binding IsAllTalkChecked}" />
+                <CheckBox Grid.Row="0" Grid.Column="1" Content="Talk" IsChecked="{Binding IsAllTalkChecked}" Margin="4" />
                 <ListBox Grid.Row="1" Grid.Column="1" SelectionMode="Multiple" Margin="3" ScrollViewer.HorizontalScrollBarVisibility="Visible"
                          ItemsSource="{Binding TalkNamespaces}">
                     <ListBox.ItemTemplate>
@@ -37,13 +38,13 @@
         </HeaderedContentControl>
         <StackPanel Grid.Column="1">
             <HeaderedContentControl Header="Title">
-                <StackPanel>
-                    <CheckBox x:Name="RemoveTitlesContaining" Content="Remove titles containing:" />
-                    <TextBox Text="{Binding RemoveTitlesContaining}" IsEnabled="{Binding #RemoveTitlesContaining.IsChecked}" />
+                <StackPanel Margin="4">
+                    <CheckBox x:Name="RemoveTitlesContaining" Content="Remove titles containing:" Margin="4" />
+                    <TextBox Text="{Binding RemoveTitlesContaining}" IsEnabled="{Binding #RemoveTitlesContaining.IsChecked}" Margin="4,0" />
                     
-                    <CheckBox x:Name="KeepTitlesContaining" Content="Keep titles containing: " />
-                    <TextBox Text="{Binding KeepTitlesContaining}" IsEnabled="{Binding #KeepTitlesContaining.IsChecked}" />
-                    <CheckBox IsChecked="{Binding UseRegex}" Content="Regular expressions">
+                    <CheckBox x:Name="KeepTitlesContaining" Content="Keep titles containing: " Margin="4" />
+                    <TextBox Text="{Binding KeepTitlesContaining}" IsEnabled="{Binding #KeepTitlesContaining.IsChecked}"  Margin="4,0" />
+                    <CheckBox IsChecked="{Binding UseRegex}" Content="Regular expressions" Margin="4">
                         <CheckBox.IsEnabled>
                             <MultiBinding Converter="{x:Static BoolConverters.Or}">
                                 <Binding Path="#RemoveTitlesContaining.IsChecked"/>
@@ -54,15 +55,41 @@
                 </StackPanel>
             </HeaderedContentControl>
             <HeaderedContentControl Header="Other">
-                <StackPanel>
-                    <CheckBox IsChecked="{Binding SortAlphabetically}" Content="Sort alphabetically" />
-                    <CheckBox IsChecked="{Binding RemoveDuplicates}" Content="Remove duplicate" />
+                <StackPanel Margin="4">
+                    <CheckBox IsChecked="{Binding SortAlphabetically}" Content="Sort alphabetically" Margin="4" />
+                    <CheckBox IsChecked="{Binding RemoveDuplicates}" Content="Remove duplicate" Margin="4" />
                 </StackPanel>
             </HeaderedContentControl>
         </StackPanel>
-        <Rectangle Grid.Column="2" Fill="Blue"></Rectangle>
-        <StackPanel Grid.Column="3">
-            <Button Content="Save" Command="{Binding SaveCommand}" CommandParameter="{Binding #This}" />
+        <HeaderedContentControl Grid.Column="2" Header="Set operations">
+            <Grid RowDefinitions="Auto,*,Auto" Margin="4">
+                <ComboBox Grid.Row="0" SelectedIndex="0" Margin="4">
+                    <ComboBox.Items>
+                        <ComboBoxItem>Symmetric difference</ComboBoxItem>
+                        <ComboBoxItem>Intersection</ComboBoxItem>
+                    </ComboBox.Items>
+                </ComboBox>
+                <ListBox Grid.Row="1" Margin="4" ItemsSource="{Binding Pages}" ScrollViewer.HorizontalScrollBarVisibility="Visible">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="models:WikiPageModel">
+                            <TextBlock Text="{Binding Title}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <Grid Grid.Row="2" ColumnDefinitions="*,*">
+                    <Button Grid.Column="0" x:Name="OpenFileButton" HorizontalContentAlignment="Center"
+                            HorizontalAlignment="Center" Command="{Binding OpenFileCommand}">
+                        Open file
+                    </Button>
+                    <Button Grid.Column="1" HorizontalContentAlignment="Center" HorizontalAlignment="Center"
+                            Width="{Binding #OpenFileButton.Bounds.Width}" Command="{Binding ClearCommand}">
+                        Clear
+                    </Button>
+                </Grid>
+            </Grid>
+        </HeaderedContentControl>
+        <StackPanel Grid.Column="3" Margin="0 0 8 0">
+            <Button Content="Save" Command="{Binding SaveCommand}" CommandParameter="{Binding #This}" Margin="0 0 0 4" />
             <Button Content="Close" Command="{Binding CloseCommand}" CommandParameter="{Binding #This}" />
         </StackPanel>
     </Grid>

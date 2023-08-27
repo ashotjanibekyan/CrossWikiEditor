@@ -14,6 +14,7 @@ public interface ISystemService
     Task<string?> GetClipboardTextAsync();
     Task SetClipboardTextAsync(string? text);
     Task WriteAllLinesAsync(string path, IEnumerable<string> contents);
+    Task<string> ReadAllTextAsync(string path, Encoding encoding);
 }
 
 public class SystemService : ISystemService
@@ -55,5 +56,10 @@ public class SystemService : ISystemService
     public async Task WriteAllLinesAsync(string path, IEnumerable<string> contents)
     {
         await File.WriteAllLinesAsync(path, contents, encoding: Encoding.UTF8);
+    }
+
+    public async Task<string> ReadAllTextAsync(string path, Encoding encoding)
+    {
+        return await File.ReadAllTextAsync(path, encoding);
     }
 }
