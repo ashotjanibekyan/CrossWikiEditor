@@ -17,22 +17,9 @@
     <Grid RowDefinitions="Auto,*,Auto" Margin="1">
         <views:MenuView Grid.Row="0" Grid.Column="0" DataContext="{Binding MenuViewModel}" />
         <Grid Grid.Row="1" RowDefinitions="*,1,*">
-            <Grid Grid.Row="0" x:Name="Grid">
-                <DataGrid Grid.Row="0" IsReadOnly="True" Width="{Binding #Grid.Bounds.Width}" ItemsSource="{Binding Diffs}" BorderThickness="2" SelectionMode="Single"
-                          BorderBrush="Gray">
-                    <DataGrid.Styles>
-                        <Style Selector="TextBlock">
-                            <Setter Property="TextWrapping" Value="WrapWithOverflow" />
-                        </Style>
-                    </DataGrid.Styles>
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Content1" Binding="{Binding First, Converter={x:Static utils:Converters.DiffRowNodeToText}}" />
-                        <DataGridTextColumn Header="Content2" Width="850" Binding="{Binding Second, Converter={x:Static utils:Converters.DiffRowNodeToText}}" />
-                        <DataGridTextColumn Header="Content3" Binding="{Binding Third, Converter={x:Static utils:Converters.DiffRowNodeToText}}" />
-                        <DataGridTextColumn Header="Content4" Width="850" Binding="{Binding Forth, Converter={x:Static utils:Converters.DiffRowNodeToText}}" />
-                    </DataGrid.Columns>
-                </DataGrid>
-            </Grid>
+            <ScrollViewer Grid.Row="0">
+                <Grid Margin="16" x:Name="MyGrid" />
+            </ScrollViewer>
             <GridSplitter Grid.Row="1" Background="Black" ResizeDirection="Rows" />
             <Grid Grid.Row="2">
                 <Grid>

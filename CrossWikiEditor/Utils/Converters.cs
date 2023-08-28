@@ -7,17 +7,6 @@ public static class Converters
 {
     public static readonly IValueConverter IsNullOrWhiteSpace =
         new FuncValueConverter<string?, bool>(string.IsNullOrWhiteSpace);
-    
-    public static readonly IValueConverter DiffRowNodeToText =
-        new FuncValueConverter<DiffRowNode, string>(node =>
-        {
-            if (!string.IsNullOrWhiteSpace(node?.Content))
-            {
-                return node.Content;
-            }
-
-            return node.Marker;
-        });
 
     public static readonly IValueConverter IsNotNullOrWhiteSpace =
         new FuncValueConverter<string?, bool>(x => !string.IsNullOrWhiteSpace(x));

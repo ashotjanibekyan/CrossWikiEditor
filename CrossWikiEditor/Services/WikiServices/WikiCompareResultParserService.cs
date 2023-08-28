@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 using CrossWikiEditor.Models;
 using HtmlAgilityPack;
 
@@ -29,14 +31,35 @@ public class WikiCompareResultParserService
                     Console.WriteLine();
                 }
                 var diffNodeRow = new DiffRowNode();
-                diffNodeRow.Content = td.InnerHtml;
+                diffNodeRow.HtmlClasses = td.GetClasses().ToList();
+                foreach (var child in td.ChildNodes)
+                {
+                    if (child.Name == "div")
+                    {
+                        foreach (HtmlNode? dicChild in child.ChildNodes)
+                        {
+                            diffNodeRow.ContentNodes.Add(new ContentNode()
+                            {
+                                Value = HttpUtility.HtmlDecode(dicChild.InnerHtml),
+                                Classes = dicChild.GetClasses().ToList(),
+                                Name = dicChild.Name
+                            });
+                        }
+                    }
+                    else
+                    {
+                        diffNodeRow.ContentNodes.Add(new ContentNode()
+                        {
+                            Value = child.InnerText,
+                            Classes = child.GetClasses().ToList(),
+                            Name = child.Name
+                        });
+                    }
+                }
                 foreach (HtmlAttribute attribute in td.Attributes)
                 {
                     switch (attribute.Name)
                     {
-                        case "class":
-                            diffNodeRow.HtmlClasses.Add(attribute.Value);
-                            break;
                         case "colspan":
                             diffNodeRow.ColSpan = Convert.ToInt32(attribute.Value);
                             break;
