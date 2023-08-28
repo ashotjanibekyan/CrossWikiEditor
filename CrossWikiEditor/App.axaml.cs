@@ -161,6 +161,7 @@ public class App : Application
         builder.RegisterType<RandomListProvider>().As<IListProvider>();
         // todo: Special pages
         builder.RegisterType<TextFileListProvider>().As<IListProvider>();
+        builder.RegisterType<TransclusionsOnPageListProvider>().As<IListProvider>();
         // todo: transclusions on page
         // todo: user contrib
         // todo: user contrib (user defined number)
