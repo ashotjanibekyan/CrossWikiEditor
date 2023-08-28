@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.Messaging;
 using CrossWikiEditor.ListProviders;
 using CrossWikiEditor.Repositories;
 using CrossWikiEditor.Services.WikiServices;
 using CrossWikiEditor.Utils;
 using CrossWikiEditor.ViewModels;
-using ReactiveUI;
 using WikiClientLibrary.Sites;
 
 namespace CrossWikiEditor.Services;
@@ -24,18 +24,18 @@ public class ViewModelFactory(IFileDialogService fileDialogService,
         IWikiClientCache wikiClientCache,
         IUserService userService,
         IUserPreferencesService userPreferencesService,
-        IMessageBus messageBus,
+        IMessenger messenger,
         TextFileListProvider textFileListProvider)
     : IViewModelFactory
 {
     public ProfilesViewModel GetProfilesViewModel()
     {
-        return new ProfilesViewModel(fileDialogService, dialogService, profileRepository, userService, userPreferencesService, messageBus);
+        return new ProfilesViewModel(fileDialogService, dialogService, profileRepository, userService, userPreferencesService, messenger);
     }
 
     public PreferencesViewModel GetPreferencesViewModel()
     {
-        return new PreferencesViewModel(userPreferencesService, messageBus);
+        return new PreferencesViewModel(userPreferencesService, messenger);
     }
 
     public async Task<FilterViewModel> GetFilterViewModel()

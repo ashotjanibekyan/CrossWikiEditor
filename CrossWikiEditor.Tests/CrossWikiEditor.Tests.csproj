@@ -29,9 +29,5 @@
 
     <ItemGroup>
         <ProjectReference Include="..\CrossWikiEditor\CrossWikiEditor.csproj"/>
-
-
     </ItemGroup>
-
-
 </Project>

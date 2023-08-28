@@ -37,4 +37,20 @@ public static class CollectionExtensions
 
         return subset;
     }
+
+    public static void Remove<T>(this ObservableCollection<T> obj, IEnumerable<T> items)
+    {
+        foreach (T item in items)
+        {
+            obj.Remove(item);
+        }
+    }
+
+    public static void AddRange<T>(this ObservableCollection<T> obj, IEnumerable<T> items)
+    {
+        foreach (T item in items)
+        {
+            obj.Add(item);
+        }
+    }
 }

@@ -9,10 +9,10 @@ using CrossWikiEditor.Services;
 namespace CrossWikiEditor.ViewModels.MenuViewModels;
 
 public sealed partial class FileMenuViewModel(
-    Window mainWindow, 
-    IViewModelFactory viewModelFactory, 
+    Window mainWindow,
+    IViewModelFactory viewModelFactory,
     IFileDialogService fileDialogService,
-    IUserPreferencesService userPreferencesService, 
+    IUserPreferencesService userPreferencesService,
     IDialogService dialogService)
 {
     [RelayCommand]

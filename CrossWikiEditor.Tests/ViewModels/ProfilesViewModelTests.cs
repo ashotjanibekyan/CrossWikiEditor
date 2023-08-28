@@ -2,6 +2,7 @@ using CrossWikiEditor.Messages;
 using CrossWikiEditor.Models;
 using CrossWikiEditor.Utils;
 using CrossWikiEditor.ViewModels;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace CrossWikiEditor.Tests.ViewModels;
 
@@ -14,7 +15,7 @@ public class ProfilesViewModelTests : BaseTest
     {
         SetUpServices();
         _profileRepository.GetAll().Returns(new List<Profile>());
-        _sut = new ProfilesViewModel(_fileDialogService, _dialogService, _profileRepository, _userService, _userPreferencesService, _messageBus);
+        _sut = new ProfilesViewModel(_fileDialogService, _dialogService, _profileRepository, _userService, _userPreferencesService, _messenger);
         _profileRepository.ClearReceivedCalls();
     }
 
@@ -29,7 +30,6 @@ public class ProfilesViewModelTests : BaseTest
 
         // assert
         _userPreferencesService.Received(0).GetCurrentPref();
-        _messageBus.Received(0).SendMessage(Arg.Any<object>());
         _userService.Received(0).Login(Arg.Any<Profile>(), Arg.Any<string>());
     }
 
@@ -56,7 +56,6 @@ public class ProfilesViewModelTests : BaseTest
         // assert
         _userService.Received(1).Login(Arg.Is<Profile>(p => p.Username == profile.Username && p.Password == profile.Password),
             "https://hy.wikipedia.org/w/api.php?");
-        _messageBus.Received(1).SendMessage(Arg.Any<NewAccountLoggedInMessage>());
         _dialogService.Received(0).Alert(Arg.Any<string>(), Arg.Any<string>());
         _dialog.Received(1).Close(true);
     }
@@ -88,7 +87,6 @@ public class ProfilesViewModelTests : BaseTest
             .SetCurrentPref(userPrefs);
         _userService.Received(1).Login(Arg.Is<Profile>(p => p.Username == profile.Username && p.Password == profile.Password),
             "https://hy.wikipedia.org/w/api.php?");
-        _messageBus.Received(1).SendMessage(Arg.Any<NewAccountLoggedInMessage>());
         _dialogService.Received(0).Alert(Arg.Any<string>(), Arg.Any<string>());
         _dialog.Received(1).Close(true);
     }
@@ -116,7 +114,6 @@ public class ProfilesViewModelTests : BaseTest
         // assert
         _userService.Received(1).Login(Arg.Is<Profile>(p => p.Username == profile.Username && p.Password == profile.Password),
             "https://hy.wikipedia.org/w/api.php?");
-        _messageBus.Received(0).SendMessage(Arg.Any<NewAccountLoggedInMessage>());
         _dialogService.Received(1).Alert("Login Attempt Unsuccessful",
             "Login Attempt Unsuccessful: Please ensure an active internet connection and verify the accuracy of your provided username and password.");
     }
@@ -144,7 +141,6 @@ public class ProfilesViewModelTests : BaseTest
         // assert
         _userService.Received(1).Login(Arg.Is<Profile>(p => p.Username == profile.Username && p.Password == profile.Password),
             "https://hy.wikipedia.org/w/api.php?");
-        _messageBus.Received(0).SendMessage(Arg.Any<NewAccountLoggedInMessage>());
         _dialogService.Received(1).Alert("Login Attempt Unsuccessful", "this is an error message");
     }
 
@@ -350,7 +346,6 @@ public class ProfilesViewModelTests : BaseTest
         _sut.QuickLoginCommand.Execute(_dialog);
 
         // assert
-        _messageBus.Received(1).SendMessage(Arg.Any<NewAccountLoggedInMessage>());
         _dialogService.DidNotReceive().Alert(Arg.Any<string>(), Arg.Any<string>());
         _dialog.Received(1).Close(true);
     }

@@ -3,4 +3,5 @@
 namespace CrossWikiEditor.ViewModels;
 
 public class ViewModelBase : ObservableObject
-{}
+{
+}

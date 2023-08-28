@@ -7,6 +7,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input.Platform;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
+using CommunityToolkit.Mvvm.Messaging;
 using CrossWikiEditor.ListProviders;
 using CrossWikiEditor.Repositories;
 using CrossWikiEditor.Services;
@@ -17,7 +18,6 @@ using CrossWikiEditor.ViewModels.ControlViewModels;
 using CrossWikiEditor.ViewModels.MenuViewModels;
 using CrossWikiEditor.ViewModels.ReportViewModels;
 using CrossWikiEditor.Views;
-using ReactiveUI;
 
 namespace CrossWikiEditor;
 
@@ -99,8 +99,8 @@ public class App : Application
             .WithParameter(new TypedParameter(typeof(Window), _mainWindow)).SingleInstance();
         builder.RegisterInstance(storageProvider).As<IStorageProvider>();
         builder.RegisterInstance(stringEncryptionService).As<IStringEncryptionService>();
-        builder.Register(c => MessageBus.Current).As<IMessageBus>();
         builder.Register(c => TopLevel.GetTopLevel(_mainWindow)?.Clipboard).As<IClipboard>();
+        builder.Register(c => WeakReferenceMessenger.Default).As<IMessenger>();
     }
 
     private void RegisterViewModels(ContainerBuilder builder)

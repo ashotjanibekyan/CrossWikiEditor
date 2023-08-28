@@ -83,5 +83,8 @@ public sealed partial class AddOrEditProfileViewModel(IFileDialogService fileDia
     }
 
     [RelayCommand]
-    private void Cancel(IDialog dialog) => dialog.Close(false);
+    private void Cancel(IDialog dialog)
+    {
+        dialog.Close(false);
+    }
 }

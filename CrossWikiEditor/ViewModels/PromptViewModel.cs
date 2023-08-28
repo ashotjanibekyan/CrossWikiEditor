@@ -10,8 +10,14 @@ public sealed partial class PromptViewModel(string title, string text) : ViewMod
     public int Value { get; set; }
 
     [RelayCommand]
-    private void Ok(IDialog dialog) => dialog.Close(Value);
+    private void Ok(IDialog dialog)
+    {
+        dialog.Close(Value);
+    }
 
     [RelayCommand]
-    private void Cancel(IDialog dialog) => dialog.Close(-1);
+    private void Cancel(IDialog dialog)
+    {
+        dialog.Close(-1);
+    }
 }

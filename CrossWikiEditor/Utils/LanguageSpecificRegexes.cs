@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.Messaging;
 using CrossWikiEditor.Messages;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
 using CrossWikiEditor.WikiClientLibraryUtils;
-using ReactiveUI;
 using WikiClientLibrary.Sites;
 
 namespace CrossWikiEditor.Utils;
@@ -20,13 +20,13 @@ public class LanguageSpecificRegexes : IAsyncInitialization
     public LanguageSpecificRegexes(
         IUserPreferencesService userPreferencesService,
         IWikiClientCache wikiClientCache,
-        IMessageBus messageBus)
+        IMessenger messenger)
     {
         _userPreferencesService = userPreferencesService;
         _wikiClientCache = wikiClientCache;
         InitAsync = InitializeAsync();
-        messageBus.Listen<LanguageCodeChangedMessage>().Subscribe(x => InitAsync = InitializeAsync());
-        messageBus.Listen<ProjectChangedMessage>().Subscribe(x => InitAsync = InitializeAsync());
+        messenger.Register<LanguageCodeChangedMessage>(this, (_, _) => InitAsync = InitializeAsync());
+        messenger.Register<ProjectChangedMessage>(this, (_, _) => InitAsync = InitializeAsync());
     }
 
     private async Task InitializeAsync()

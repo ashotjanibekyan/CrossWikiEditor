@@ -3,21 +3,21 @@ using System.Collections.ObjectModel;
 using System;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using CrossWikiEditor.Messages;
 using CrossWikiEditor.Services;
-using ReactiveUI;
 
 namespace CrossWikiEditor.ViewModels;
 
 public sealed partial class PreferencesViewModel : ViewModelBase
 {
     private readonly IUserPreferencesService _userPreferencesService;
-    private readonly IMessageBus _messageBus;
+    private readonly IMessenger _messenger;
 
-    public PreferencesViewModel(IUserPreferencesService userPreferencesService, IMessageBus messageBus)
+    public PreferencesViewModel(IUserPreferencesService userPreferencesService, IMessenger messenger)
     {
         _userPreferencesService = userPreferencesService;
-        _messageBus = messageBus;
+        _messenger = messenger;
         Alerts = new Alerts
         {
             AmbiguousCitationDates = true,
@@ -38,8 +38,9 @@ public sealed partial class PreferencesViewModel : ViewModelBase
     [ObservableProperty] private bool _previewDiffInBotMode;
     [ObservableProperty] private bool _enableLogging;
     [ObservableProperty] private ProjectEnum _selectedProject = ProjectEnum.Wikipedia;
-    [ObservableProperty] private ObservableCollection<ProjectEnum> _projects  = new(Enum.GetValues<ProjectEnum>());
+    [ObservableProperty] private ObservableCollection<ProjectEnum> _projects = new(Enum.GetValues<ProjectEnum>());
     [ObservableProperty] private string _selectedLanguage = "en";
+
     [ObservableProperty] private ObservableCollection<string> _languages = new(new List<string>
     {
         "en",
@@ -48,6 +49,7 @@ public sealed partial class PreferencesViewModel : ViewModelBase
         "es",
         "ru"
     });
+
     [ObservableProperty] private bool _suppressUsingAwb;
     [ObservableProperty] private bool _ignoreNoBots;
     [ObservableProperty] private bool _emptyPageListOnProjectChange;
@@ -56,12 +58,16 @@ public sealed partial class PreferencesViewModel : ViewModelBase
     [RelayCommand]
     private void Save(IDialog dialog)
     {
-        _messageBus.SendMessage(new ProjectChangedMessage(SelectedProject));
-        _messageBus.SendMessage(new LanguageCodeChangedMessage(SelectedLanguage));
+        _messenger.Send(new ProjectChangedMessage(SelectedProject));
+        _messenger.Send(new LanguageCodeChangedMessage(SelectedLanguage));
         dialog.Close(true);
     }
 
-    [RelayCommand] private void Cancel(IDialog dialog) => dialog.Close(false);
+    [RelayCommand]
+    private void Cancel(IDialog dialog)
+    {
+        dialog.Close(false);
+    }
 }
 
 public partial class Alerts : ObservableObject

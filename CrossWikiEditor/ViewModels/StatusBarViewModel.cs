@@ -2,9 +2,9 @@ using System;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using CrossWikiEditor.Messages;
 using CrossWikiEditor.Services;
-using ReactiveUI;
 
 namespace CrossWikiEditor.ViewModels;
 
@@ -17,30 +17,25 @@ public sealed partial class StatusBarViewModel : ViewModelBase
     public StatusBarViewModel(IViewModelFactory viewModelFactory,
         IDialogService dialogService,
         IUserPreferencesService userPreferencesService,
-        IMessageBus messageBus)
+        IMessenger messenger)
     {
         _viewModelFactory = viewModelFactory;
         _dialogService = dialogService;
         _userPreferencesService = userPreferencesService;
-        messageBus.Listen<NewAccountLoggedInMessage>()
-            .Subscribe((message) => { Username = message.Profile.Username; });
-        messageBus.Listen<ProjectChangedMessage>()
-            .Subscribe(message => { Project = message.Project.ToString(); });
-        messageBus.Listen<LanguageCodeChangedMessage>()
-            .Subscribe(message => { LanguageCode = message.LanguageCode; });
+        messenger.Register<NewAccountLoggedInMessage>(this, (_, m) => Username = m.Value.Username);
+        messenger.Register<ProjectChangedMessage>(this, (_, m) => Project = m.Value.ToString());
+        messenger.Register<LanguageCodeChangedMessage>(this, (_, m) => LanguageCode = m.Value);
         UserPrefs currentPref = userPreferencesService.GetCurrentPref();
         Project = currentPref.Project.ToString();
         LanguageCode = currentPref.LanguageCode;
     }
-    
+
     public string CurrentWiki => $"{LanguageCode}:{Project}";
 
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(CurrentWiki))]
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(CurrentWiki))]
     private string _username = "User: ";
-    
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(CurrentWiki))]
+
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(CurrentWiki))]
     private string _languageCode;
 
     [ObservableProperty] private string _project;

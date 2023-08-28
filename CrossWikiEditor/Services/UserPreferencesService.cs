@@ -3,8 +3,8 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
+using CommunityToolkit.Mvvm.Messaging;
 using CrossWikiEditor.Messages;
-using ReactiveUI;
 
 namespace CrossWikiEditor.Services;
 
@@ -19,14 +19,11 @@ public sealed class UserPreferencesService : IUserPreferencesService
 {
     private UserPrefs _currentPref;
 
-    public UserPreferencesService(IMessageBus messageBus)
+    public UserPreferencesService(IMessenger messenger)
     {
         _currentPref = new UserPrefs();
-
-        messageBus.Listen<LanguageCodeChangedMessage>()
-            .Subscribe(m => _currentPref.LanguageCode = m.LanguageCode);
-        messageBus.Listen<ProjectChangedMessage>()
-            .Subscribe(m => _currentPref.Project = m.Project);
+        messenger.Register<LanguageCodeChangedMessage>(this, (r, m) => _currentPref.LanguageCode = m.Value);
+        messenger.Register<ProjectChangedMessage>(this, (r, m) => _currentPref.Project = m.Value);
     }
 
     public UserPrefs GetUserPref(string path)

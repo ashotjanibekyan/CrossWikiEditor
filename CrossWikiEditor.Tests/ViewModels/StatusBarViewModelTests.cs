@@ -11,10 +11,7 @@ public class StatusBarViewModelTests : BaseTest
     public void SetUp()
     {
         SetUpServices();
-        _messageBus.Listen<NewAccountLoggedInMessage>().Returns(Substitute.For<IObservable<NewAccountLoggedInMessage>>());
-        _messageBus.Listen<ProjectChangedMessage>().Returns(Substitute.For<IObservable<ProjectChangedMessage>>());
-        _messageBus.Listen<LanguageCodeChangedMessage>().Returns(Substitute.For<IObservable<LanguageCodeChangedMessage>>());
-        _sut = new StatusBarViewModel(_viewModelFactory, _dialogService, _userPreferencesService, _messageBus);
+        _sut = new StatusBarViewModel(_viewModelFactory, _dialogService, _userPreferencesService, _messenger);
     }
 
     [Test]
@@ -28,7 +25,7 @@ public class StatusBarViewModelTests : BaseTest
         });
 
         // act
-        _sut = new StatusBarViewModel(_viewModelFactory, _dialogService, _userPreferencesService, _messageBus);
+        _sut = new StatusBarViewModel(_viewModelFactory, _dialogService, _userPreferencesService, _messenger);
 
         // assert
         _sut.CurrentWiki.Should().Be($"hyw:Wikipedia");
@@ -38,7 +35,7 @@ public class StatusBarViewModelTests : BaseTest
     public void CurrentWikiClickedCommand_ShouldOpenPreferencesView()
     {
         // arrange
-        var preferencesViewModel = new PreferencesViewModel(_userPreferencesService, _messageBus);
+        var preferencesViewModel = new PreferencesViewModel(_userPreferencesService, _messenger);
         _dialogService.ShowDialog<bool>(Arg.Any<PreferencesViewModel>()).Returns(true);
         _viewModelFactory.GetPreferencesViewModel().Returns(preferencesViewModel);
 
@@ -59,7 +56,7 @@ public class StatusBarViewModelTests : BaseTest
     {
         // arrange
         var profilesViewModel = new ProfilesViewModel(_fileDialogService, _dialogService, _profileRepository, _userService, _userPreferencesService,
-            _messageBus);
+            _messenger);
         _dialogService.ShowDialog<bool>(Arg.Any<PreferencesViewModel>()).Returns(true);
         _viewModelFactory.GetProfilesViewModel().Returns(profilesViewModel);
 

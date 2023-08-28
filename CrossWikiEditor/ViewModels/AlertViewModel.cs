@@ -8,5 +8,8 @@ public sealed partial class AlertViewModel(string title, string contentText) : V
     public string Title { get; } = title;
 
     [RelayCommand]
-    private void Ok(IDialog dialog) => dialog.Close(false);
+    private void Ok(IDialog dialog)
+    {
+        dialog.Close(false);
+    }
 }

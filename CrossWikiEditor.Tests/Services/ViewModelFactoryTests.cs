@@ -13,7 +13,7 @@ public class ViewModelFactoryTests : BaseTest
     {
         SetUpServices();
         _sut = new ViewModelFactory(_fileDialogService, _dialogService, _profileRepository, _wikiClientCache, _userService, _userPreferencesService,
-            _messageBus, new TextFileListProvider(_fileDialogService, _systemService, _wikiClientCache, _userPreferencesService));
+            _messenger, new TextFileListProvider(_fileDialogService, _systemService, _wikiClientCache, _userPreferencesService));
     }
 
     [Test]

@@ -3,12 +3,12 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using CrossWikiEditor.Messages;
 using CrossWikiEditor.Models;
 using CrossWikiEditor.Repositories;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
-using ReactiveUI;
 
 namespace CrossWikiEditor.ViewModels;
 
@@ -19,21 +19,21 @@ public sealed partial class ProfilesViewModel : ViewModelBase
     private readonly IProfileRepository _profileRepository;
     private readonly IUserService _userService;
     private readonly IUserPreferencesService _userPreferencesService;
-    private readonly IMessageBus _messageBus;
+    private readonly IMessenger _messenger;
 
     public ProfilesViewModel(IFileDialogService fileDialogService,
         IDialogService dialogService,
         IProfileRepository profileRepository,
         IUserService userService,
         IUserPreferencesService userPreferencesService,
-        IMessageBus messageBus)
+        IMessenger messenger)
     {
         _fileDialogService = fileDialogService;
         _dialogService = dialogService;
         _profileRepository = profileRepository;
         _userService = userService;
         _userPreferencesService = userPreferencesService;
-        _messageBus = messageBus;
+        _messenger = messenger;
         Profiles = new ObservableCollection<Profile>(_profileRepository.GetAll() ?? new List<Profile>());
     }
 
@@ -99,7 +99,7 @@ public sealed partial class ProfilesViewModel : ViewModelBase
         SelectedProfile = null;
         Profiles = new ObservableCollection<Profile>(_profileRepository.GetAll());
     }
-    
+
     [RelayCommand]
     private async Task QuickLogin(IDialog dialog)
     {
@@ -115,7 +115,7 @@ public sealed partial class ProfilesViewModel : ViewModelBase
         };
         await Login(profile, dialog);
     }
-    
+
     private async Task Login(Profile profile, IDialog dialog)
     {
         UserPrefs currentUserPref = string.IsNullOrEmpty(profile.DefaultSettingsPath)
@@ -125,7 +125,7 @@ public sealed partial class ProfilesViewModel : ViewModelBase
         Result loginResult = await _userService.Login(profile, currentUserPref.UrlApi());
         if (loginResult is {IsSuccessful: true})
         {
-            _messageBus.SendMessage(new NewAccountLoggedInMessage(profile));
+            _messenger.Send(new NewAccountLoggedInMessage(profile));
             if (!string.IsNullOrEmpty(profile.DefaultSettingsPath))
             {
                 _userPreferencesService.SetCurrentPref(currentUserPref);

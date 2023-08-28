@@ -15,7 +15,6 @@ using CrossWikiEditor.Models;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
 using CrossWikiEditor.Utils;
-using DynamicData;
 
 namespace CrossWikiEditor.ViewModels;
 
