@@ -133,6 +133,7 @@ public class App : Application
         builder.RegisterType<PreferencesView>().Named<Window>(nameof(PreferencesViewModel));
         builder.RegisterType<AddNewProfileView>().Named<Window>(nameof(AddOrEditProfileViewModel));
         builder.RegisterType<SelectNamespacesView>().Named<Window>(nameof(SelectNamespacesViewModel));
+        builder.RegisterType<WhatLinksHereOptionsView>().Named<Window>(nameof(WhatLinksHereOptionsViewModel));
     }
 
     private void RegisterListProviders(ContainerBuilder builder)
@@ -162,16 +163,9 @@ public class App : Application
         // todo: Special pages
         builder.RegisterType<TextFileListProvider>().As<IListProvider>();
         builder.RegisterType<TransclusionsOnPageListProvider>().As<IListProvider>();
-        // todo: transclusions on page
-        // todo: user contrib
+        //builder.RegisterType<UserContribsListProvider>().As<IListProvider>();
         // todo: user contrib (user defined number)
-        // todo: what links here
-        // todo: what links here (all NS)
-        // todo: what links here (all NS) (and to redirect)
-        // todo: what links here (and to redirect)
-        // todo: what links here direct
-        // todo: what redirects here
-        // todo: what redirects here (all NS)
+        builder.RegisterType<WhatLinksHereListProvider>().As<IListProvider>();
         // todo: what transcludes here
         // todo: what transcludes here (all NS)
         // todo: Wiki search (text)

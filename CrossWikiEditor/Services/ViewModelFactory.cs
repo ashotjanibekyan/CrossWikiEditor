@@ -16,6 +16,7 @@ public interface IViewModelFactory
     PreferencesViewModel GetPreferencesViewModel();
     Task<FilterViewModel> GetFilterViewModel();
     Task<SelectNamespacesViewModel> GetSelectNamespacesViewModel();
+    Task<WhatLinksHereOptionsViewModel> GetWhatLinksHereOptionsViewModel();
 }
 
 public class ViewModelFactory(IFileDialogService fileDialogService,
@@ -51,8 +52,15 @@ public class ViewModelFactory(IFileDialogService fileDialogService,
 
     public async Task<SelectNamespacesViewModel> GetSelectNamespacesViewModel()
     {
-        WikiSite? site = await wikiClientCache.GetWikiSite(userPreferencesService.GetCurrentPref().UrlApi());
+        WikiSite site = await wikiClientCache.GetWikiSite(userPreferencesService.GetCurrentPref().UrlApi());
         WikiNamespace[] namespaces = site.Namespaces.Select(x => new WikiNamespace(x.Id, x.CustomName)).ToArray();
         return new SelectNamespacesViewModel(namespaces.ToList());
+    }
+
+    public async Task<WhatLinksHereOptionsViewModel> GetWhatLinksHereOptionsViewModel()
+    {
+        WikiSite site = await wikiClientCache.GetWikiSite(userPreferencesService.GetCurrentPref().UrlApi());
+        WikiNamespace[] namespaces = site.Namespaces.Select(x => new WikiNamespace(x.Id, x.CustomName)).ToArray();
+        return new WhatLinksHereOptionsViewModel(namespaces.ToList());
     }
 }

@@ -7,13 +7,13 @@ namespace CrossWikiEditor.Services;
 
 public interface IDialogService
 {
-    Task<TResult> ShowDialog<TResult>(ViewModelBase viewModel);
+    Task<TResult?> ShowDialog<TResult>(ViewModelBase viewModel);
     Task Alert(string title, string content);
 }
 
 public sealed class DialogService(IContainer container, Window mainWindow) : IDialogService
 {
-    public async Task<TResult> ShowDialog<TResult>(ViewModelBase viewModel)
+    public async Task<TResult?> ShowDialog<TResult>(ViewModelBase viewModel)
     {
         Window dialog = container.ResolveNamed<Window>(viewModel.GetType().Name);
         dialog.DataContext = viewModel;

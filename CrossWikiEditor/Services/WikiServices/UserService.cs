@@ -13,6 +13,7 @@ public interface IUserService
 {
     Task<Result> Login(Profile profile, string apiRoot);
     Task<Result<List<WikiPageModel>>> GetWatchlistPages();
+    Task<Result<List<WikiPageModel>>> GetUserContribsPages(string apiRoot, string username);
 }
 
 public sealed class UserService(IWikiClientCache wikiClientCache, IUserPreferencesService userPreferencesService)
@@ -37,14 +38,23 @@ public sealed class UserService(IWikiClientCache wikiClientCache, IUserPreferenc
         try
         {
             WikiSite site = await wikiClientCache.GetWikiSite(userPreferencesService.GetCurrentPref().UrlApi());
-            if (site.AccountInfo is null)
-            {
-                return Result<List<WikiPageModel>>.Failure("Please log in to get your watchlist pages.");
-            }
-
             var gen = new MyWatchlistGenerator(site);
             List<WikiPage> result = await gen.EnumPagesAsync().ToListAsync();
             return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
+        }
+        catch (Exception e)
+        {
+            return Result<List<WikiPageModel>>.Failure(e.Message);
+        }
+    }
+
+    public async Task<Result<List<WikiPageModel>>> GetUserContribsPages(string apiRoot, string username)
+    {
+        try
+        {
+            // TODO: the library doesn't provide an easy way to retrieve this information.
+            // fix the library to implement this part without it
+            throw new NotImplementedException();
         }
         catch (Exception e)
         {
