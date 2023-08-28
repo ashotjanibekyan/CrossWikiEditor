@@ -39,16 +39,16 @@ public class LanguageSpecificRegexes : IAsyncInitialization
 
     private void MakeRegexes()
     {
-        var url = _userPreferencesService.GetCurrentPref().UrlBase();
-        var urlLong = _userPreferencesService.GetCurrentPref().UrlBaseLong();
-        
+        string? url = _userPreferencesService.GetCurrentPref().UrlBase();
+        string? urlLong = _userPreferencesService.GetCurrentPref().UrlBaseLong();
+
         int pos = Tools.FirstDifference(url, urlLong);
         string s = Regex.Escape(urlLong[..pos]).Replace(@"https://", @"https?://");
         s += "(?:" + Regex.Escape(urlLong[pos..]) + @"index\.php(?:\?title=|/)|"
              + Regex.Escape(url[pos..]) + "/wiki/" + ")";
         ExtractTitle = new Regex("^" + s + "([^?&]*)$");
     }
-    
+
     public Regex ExtractTitle { get; private set; }
     public Task InitAsync { get; private set; }
 }

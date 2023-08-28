@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
+        <LangVersion>preview</LangVersion>
         <Nullable>enable</Nullable>
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
         <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -18,18 +19,18 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Autofac" Version="7.1.0" />
-        <PackageReference Include="Avalonia" Version="11.0.4" />
-        <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.0.4" />
-        <PackageReference Include="Avalonia.Desktop" Version="11.0.4" />
+        <PackageReference Include="Autofac" Version="7.1.0"/>
+        <PackageReference Include="Avalonia" Version="11.0.4"/>
+        <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.0.4"/>
+        <PackageReference Include="Avalonia.Desktop" Version="11.0.4"/>
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.4" />
-        <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.4" />
-        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.4" />
-        <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.4" />
-        <PackageReference Include="CXuesong.MW.WikiClientLibrary" Version="0.7.5" />
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.4"/>
+        <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.4"/>
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.4"/>
+        <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.4"/>
+        <PackageReference Include="CXuesong.MW.WikiClientLibrary" Version="0.7.5"/>
         <PackageReference Include="ReactiveUI.Fody" Version="19.4.1"/>
-        <PackageReference Include="Realm" Version="11.4.0" />
+        <PackageReference Include="Realm" Version="11.4.0"/>
     </ItemGroup>
 
     <ItemGroup>

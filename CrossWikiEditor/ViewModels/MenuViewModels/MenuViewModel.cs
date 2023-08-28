@@ -1,11 +1,6 @@
 namespace CrossWikiEditor.ViewModels.MenuViewModels;
 
-public class MenuViewModel : ViewModelBase
+public class MenuViewModel(FileMenuViewModel fileMenuViewModel) : ViewModelBase
 {
-    public MenuViewModel(FileMenuViewModel fileMenuViewModel)
-    {
-        FileMenuViewModel = fileMenuViewModel;
-    }
-
-    public FileMenuViewModel FileMenuViewModel { get; }
+    public FileMenuViewModel FileMenuViewModel { get; } = fileMenuViewModel;
 }

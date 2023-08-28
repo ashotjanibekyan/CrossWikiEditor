@@ -11,21 +11,11 @@ using CrossWikiEditor.Utils;
 
 namespace CrossWikiEditor.ListProviders;
 
-public partial class GoogleSearchListProvider : IListProvider
-{
-    private readonly IUserPreferencesService _userPreferencesService;
-    private readonly IWikiClientCache _wikiClientCache;
-    private readonly LanguageSpecificRegexes _languageSpecificRegexes;
-
-    public GoogleSearchListProvider(LanguageSpecificRegexes languageSpecificRegexes,
+public partial class GoogleSearchListProvider(LanguageSpecificRegexes languageSpecificRegexes,
         IUserPreferencesService userPreferencesService,
         IWikiClientCache wikiClientCache)
-    {
-        _userPreferencesService = userPreferencesService;
-        _wikiClientCache = wikiClientCache;
-        _languageSpecificRegexes = languageSpecificRegexes;
-    }
-
+    : IListProvider
+{
     private static readonly Regex _regexGoogle = RegexGoogle();
     public string Title => "Google search";
     public string ParamTitle => "Google search";
@@ -46,7 +36,7 @@ public partial class GoogleSearchListProvider : IListProvider
             do
             {
                 string url =
-                    $"https://www.google.com/search?q={google}+site:{_userPreferencesService.GetCurrentPref().UrlBase()}&num=100&hl=en&lr=&start={intStart}&sa=N&filter=0";
+                    $"https://www.google.com/search?q={google}+site:{userPreferencesService.GetCurrentPref().UrlBase()}&num=100&hl=en&lr=&start={intStart}&sa=N&filter=0";
                 HttpResponseMessage response = await client.GetAsync(url);
                 response.EnsureSuccessStatusCode(); // Throw an exception if HTTP response is not successful
 
@@ -61,15 +51,15 @@ public partial class GoogleSearchListProvider : IListProvider
                         searchres = searchres[..searchres.IndexOf(@"&amp;", StringComparison.Ordinal)];
                     }
 
-                    await _languageSpecificRegexes.InitAsync;
-                    string? title = Tools.GetTitleFromURL(searchres, _languageSpecificRegexes.ExtractTitle);
+                    await languageSpecificRegexes.InitAsync;
+                    string? title = Tools.GetTitleFromURL(searchres, languageSpecificRegexes.ExtractTitle);
 
                     // some google results are double encoded, so WikiDecode again
                     if (!string.IsNullOrEmpty(title))
                     {
                         title = Regex.Replace(Tools.WikiDecode(title), @"\?\w+=.*", "");
                         Result<WikiPageModel> result =
-                            await _wikiClientCache.GetWikiPageModel(_userPreferencesService.GetCurrentPref().UrlApi(), title);
+                            await wikiClientCache.GetWikiPageModel(userPreferencesService.GetCurrentPref().UrlApi(), title);
                         list.Add(result is {IsSuccessful: true, Value: not null} ? result.Value : new WikiPageModel(title, 0));
                     }
                 }

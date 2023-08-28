@@ -21,9 +21,9 @@ public static class StringExtensions
     }
 
     public static bool Contains(
-        this string str, 
-        string value, 
-        bool isRegex, 
+        this string str,
+        string value,
+        bool isRegex,
         RegexOptions regexOptions = RegexOptions.Multiline)
     {
         if (!isRegex)

@@ -18,9 +18,9 @@ public static class WikiSiteExtensions
             meta = "siteinfo",
             siprop = "magicwords"
         }), true, CancellationToken.None);
-        return new MagicWordCollection((JArray)result["query"]["magicwords"]);
+        return new MagicWordCollection((JArray) result["query"]["magicwords"]);
     }
-    
+
     public static string? ToString(this PropertyFilterOption value,
         string? withValue, string? withoutValue, string? allValue = "all")
     {
@@ -32,4 +32,4 @@ public static class WikiSiteExtensions
             _ => throw new ArgumentOutOfRangeException(nameof(value), value, null)
         };
     }
-} 
+}

@@ -16,22 +16,14 @@ public interface IFileDialogService
     Task<IStorageFile?> SaveFilePickerAsync(string title, string? defaultExtension = null, string? suggestedFileName = null);
 }
 
-public sealed class FileDialogService : IFileDialogService
+public sealed class FileDialogService(IStorageProvider storageProvider) : IFileDialogService
 {
-    private readonly IStorageProvider _storageProvider;
-
-    public FileDialogService(IStorageProvider storageProvider)
-    {
-        _storageProvider = storageProvider;
-    }
-
-
     public async Task<string[]?> OpenFilePickerAsync(
         string title,
         bool allowMultiple,
         List<FilePickerFileType> filters)
     {
-        IReadOnlyList<IStorageFile> result = await _storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+        IReadOnlyList<IStorageFile> result = await storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
         {
             Title = title,
             AllowMultiple = allowMultiple,
@@ -42,7 +34,7 @@ public sealed class FileDialogService : IFileDialogService
 
     public async Task<IStorageFile?> SaveFilePickerAsync(string title, string? defaultExtension = null, string? suggestedFileName = null)
     {
-        return await _storageProvider.SaveFilePickerAsync(new FilePickerSaveOptions()
+        return await storageProvider.SaveFilePickerAsync(new FilePickerSaveOptions()
         {
             Title = title,
             ShowOverwritePrompt = true,

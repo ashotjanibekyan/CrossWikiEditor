@@ -7,14 +7,10 @@ using CrossWikiEditor.Services.WikiServices;
 
 namespace CrossWikiEditor.ListProviders;
 
-public class LinksOnPageRedListProvider : LinksOnPageListProvider
+public class LinksOnPageRedListProvider(
+    IUserPreferencesService userPreferencesService,
+    IPageService pageService) : LinksOnPageListProvider(userPreferencesService, pageService)
 {
-    public LinksOnPageRedListProvider(
-        IUserPreferencesService userPreferencesService, 
-        IPageService pageService) : base(userPreferencesService, pageService)
-    {
-    }
-
     public override string Title => "Links on page (only bluelinks)";
 
     public override async Task<Result<List<WikiPageModel>>> MakeList()

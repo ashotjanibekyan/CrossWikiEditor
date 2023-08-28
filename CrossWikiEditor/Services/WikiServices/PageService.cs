@@ -17,7 +17,7 @@ public interface IPageService
     Task<Result<List<WikiPageModel>>> GetCategoriesOf(string apiRoot, string pageName, bool includeHidden = true, bool onlyHidden = false);
     Task<Result<List<WikiPageModel>>> GetPagesOfCategory(string apiRoot, string categoryName, int recursive = 0);
     Task<Result<List<WikiPageModel>>> FilesOnPage(string apiRoot, string pageName);
-    
+
     /// <summary>
     /// Gets random pages in a specific namespace
     /// </summary>
@@ -26,27 +26,22 @@ public interface IPageService
     /// <param name="namespaces">Only list pages in these namespaces. Should be null if all the namespaces are selected.</param>
     /// <returns></returns>
     Task<Result<List<WikiPageModel>>> GetRandomPages(string apiRoot, int numberOfPages, int[]? namespaces);
+
     Task<Result<List<WikiPageModel>>> GetPagesByFileUsage(string apiRoot, string fileName);
     Task<Result<List<WikiPageModel>>> LinksOnPage(string apiRoot, string pageName);
     Task<Result<List<WikiPageModel>>> GetNewPages(string apiRoot);
-    
+
     Task<Result<WikiPageModel>> ConvertToTalk(WikiPageModel page);
     Task<Result<List<WikiPageModel>>> ConvertToTalk(List<WikiPageModel> pages);
     Task<Result<WikiPageModel>> ConvertToSubject(WikiPageModel page);
     Task<Result<List<WikiPageModel>>> ConvertToSubject(List<WikiPageModel> pages);
 }
 
-public sealed class PageService : IPageService
+public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferencesService userPreferencesService)
+    : IPageService
 {
-    private readonly IWikiClientCache _wikiClientCache;
-    private readonly IUserPreferencesService _userPreferencesService;
-
-    public PageService(IWikiClientCache wikiClientCache, IUserPreferencesService userPreferencesService)
-    {
-        _wikiClientCache = wikiClientCache;
-        _userPreferencesService = userPreferencesService;
-    }
-    public async Task<Result<List<WikiPageModel>>> GetCategoriesOf(string apiRoot, string pageName, bool includeHidden = true, bool onlyHidden = false)
+    public async Task<Result<List<WikiPageModel>>> GetCategoriesOf(string apiRoot, string pageName, bool includeHidden = true,
+        bool onlyHidden = false)
     {
         try
         {
@@ -54,7 +49,8 @@ public sealed class PageService : IPageService
             {
                 return Result<List<WikiPageModel>>.Success(new List<WikiPageModel>());
             }
-            WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot);
+
+            WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
             var catGen = new CategoriesGenerator(site, pageName)
             {
                 HiddenCategoryFilter = PropertyFilterOption.Disable
@@ -63,6 +59,7 @@ public sealed class PageService : IPageService
             {
                 catGen.HiddenCategoryFilter = PropertyFilterOption.WithoutProperty;
             }
+
             if (onlyHidden)
             {
                 catGen.HiddenCategoryFilter = PropertyFilterOption.WithProperty;
@@ -83,10 +80,11 @@ public sealed class PageService : IPageService
         {
             categoryName = $"Category:{categoryName}";
         }
+
         try
         {
             List<List<WikiPage>> resultByDepth = new();
-            WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot);
+            WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
             var catGen = new CategoryMembersGenerator(new WikiPage(site, categoryName));
             resultByDepth.Add(await catGen.EnumPagesAsync().ToListAsync());
 
@@ -99,9 +97,10 @@ public sealed class PageService : IPageService
                     catGen = new CategoryMembersGenerator(new WikiPage(site, subCat.Title));
                     temp.AddRange(await catGen.EnumPagesAsync().ToListAsync());
                 }
+
                 resultByDepth.Add(temp);
             }
-            
+
             return Result<List<WikiPageModel>>.Success(resultByDepth.SelectMany(list => list).Select(x => new WikiPageModel(x)).ToList());
         }
         catch (Exception e)
@@ -114,7 +113,7 @@ public sealed class PageService : IPageService
     {
         try
         {
-            WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot);
+            WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
             var gen = new FilesGenerator(site, pageName);
             List<WikiPage> result = await gen.EnumPagesAsync().ToListAsync();
             return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
@@ -129,7 +128,7 @@ public sealed class PageService : IPageService
     {
         try
         {
-            WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot);
+            WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
             var gen = new RandomPageGenerator(site)
             {
                 NamespaceIds = namespaces,
@@ -152,7 +151,8 @@ public sealed class PageService : IPageService
             {
                 fileName = $"File:{fileName}";
             }
-            WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot);
+
+            WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
             var gen = new FileUsageGenerator(site, fileName);
             List<WikiPage> result = await gen.EnumPagesAsync().ToListAsync();
             return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
@@ -167,7 +167,7 @@ public sealed class PageService : IPageService
     {
         try
         {
-            WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot);
+            WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
             var gen = new LinksGenerator(site, pageName);
             List<WikiPage> result = await gen.EnumPagesAsync().ToListAsync();
             return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
@@ -182,7 +182,7 @@ public sealed class PageService : IPageService
     {
         try
         {
-            WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot);
+            WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
             var gen = new RecentChangesGenerator(site)
             {
                 TypeFilters = RecentChangesFilterTypes.Create,
@@ -204,9 +204,10 @@ public sealed class PageService : IPageService
         {
             if (page.WikiPage is null)
             {
-                UserPrefs userPrefs = _userPreferencesService.GetCurrentPref();
-                page.WikiPage = new WikiPage(await _wikiClientCache.GetWikiSite(userPrefs.UrlApi()), page.Title);
+                UserPrefs userPrefs = userPreferencesService.GetCurrentPref();
+                page.WikiPage = new WikiPage(await wikiClientCache.GetWikiSite(userPrefs.UrlApi()), page.Title);
             }
+
             return Result<WikiPageModel>.Success(new WikiPageModel(page.WikiPage.ToTalkPage()));
         }
         catch (Exception e)
@@ -229,16 +230,17 @@ public sealed class PageService : IPageService
 
         return Result<List<WikiPageModel>>.Success(result);
     }
-    
+
     public async Task<Result<WikiPageModel>> ConvertToSubject(WikiPageModel page)
     {
         try
         {
             if (page.WikiPage is null)
             {
-                UserPrefs userPrefs = _userPreferencesService.GetCurrentPref();
-                page.WikiPage = new WikiPage(await _wikiClientCache.GetWikiSite(userPrefs.UrlApi()), page.Title);
+                UserPrefs userPrefs = userPreferencesService.GetCurrentPref();
+                page.WikiPage = new WikiPage(await wikiClientCache.GetWikiSite(userPrefs.UrlApi()), page.Title);
             }
+
             return Result<WikiPageModel>.Success(new WikiPageModel(page.WikiPage.ToSubjectPage()));
         }
         catch (Exception e)

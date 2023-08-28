@@ -1,11 +1,6 @@
 ﻿namespace CrossWikiEditor.Messages;
 
-public sealed class LanguageCodeChangedMessage : BaseMessage
+public sealed class LanguageCodeChangedMessage(string languageCode) : BaseMessage
 {
-    public LanguageCodeChangedMessage(string languageCode)
-    {
-        LanguageCode = languageCode;
-    }
-
-    public string LanguageCode { get; }
+    public string LanguageCode { get; } = languageCode;
 }

@@ -7,28 +7,19 @@ using CrossWikiEditor.ViewModels;
 
 namespace CrossWikiEditor.ListProviders;
 
-public class CategoryRecursiveUserDefinedLevelListProvider : IListProvider
-{
-    private readonly IPageService _pageService;
-    private readonly IUserPreferencesService _userPreferencesService;
-    private readonly IDialogService _dialogService;
-    private int? recursionLevel;
-    
-    public CategoryRecursiveUserDefinedLevelListProvider(
-        IPageService pageService,
+public class CategoryRecursiveUserDefinedLevelListProvider(IPageService pageService,
         IUserPreferencesService userPreferencesService,
         IDialogService dialogService)
-    {
-        _pageService = pageService;
-        _userPreferencesService = userPreferencesService;
-        _dialogService = dialogService;
-    }
-    
+    : IListProvider
+{
+    private int? recursionLevel;
+
     public string Title => "Category (recursive user defined level)";
     public string ParamTitle => "Category";
     public string Param { get; set; } = string.Empty;
     public bool CanMake => recursionLevel is not null && !string.IsNullOrWhiteSpace(Param);
     public bool NeedsAdditionalParams => true;
+
     public async Task<Result<List<WikiPageModel>>> MakeList()
     {
         if (recursionLevel is null)
@@ -36,16 +27,15 @@ public class CategoryRecursiveUserDefinedLevelListProvider : IListProvider
             return Result<List<WikiPageModel>>.Failure("Please select recursive level.");
         }
 
-        UserPrefs userPrefs = _userPreferencesService.GetCurrentPref();
-        Result<List<WikiPageModel>> result = await _pageService.GetPagesOfCategory(userPrefs.UrlApi(), Param, recursive: (int)recursionLevel);
+        UserPrefs userPrefs = userPreferencesService.GetCurrentPref();
+        Result<List<WikiPageModel>> result = await pageService.GetPagesOfCategory(userPrefs.UrlApi(), Param, (int) recursionLevel);
         recursionLevel = null;
         return result;
-
     }
 
     public async Task GetAdditionalParams()
     {
-        var result = await _dialogService.ShowDialog<int>(new PromptViewModel("Number", "Recursion depth: ")
+        int result = await dialogService.ShowDialog<int>(new PromptViewModel("Number", "Recursion depth: ")
         {
             IsNumeric = true,
             Value = recursionLevel ?? 1

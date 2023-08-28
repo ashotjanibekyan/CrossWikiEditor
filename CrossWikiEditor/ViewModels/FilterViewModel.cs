@@ -12,24 +12,17 @@ using ReactiveUI.Fody.Helpers;
 
 namespace CrossWikiEditor.ViewModels;
 
-public class WikiNamespace
+public class WikiNamespace(int id, string name, bool isChecked = false)
 {
-    public WikiNamespace(int id, string name, bool isChecked = false)
-    {
-        Id = id;
-        Name = name;
-        IsChecked = isChecked;
-    }
-
-    public int Id { get; init; }
-    public string Name { get; init; }
-    public bool IsChecked { get; set; }
+    public int Id { get; init; } = id;
+    public string Name { get; init; } = name;
+    public bool IsChecked { get; set; } = isChecked;
 }
 
 public class FilterViewModel : ViewModelBase
 {
     private readonly TextFileListProvider _textFileListProvider;
-    
+
     public FilterViewModel(List<WikiNamespace> subjectNamespaces, List<WikiNamespace> talkNamespaces, TextFileListProvider textFileListProvider)
     {
         _textFileListProvider = textFileListProvider;
@@ -40,12 +33,13 @@ public class FilterViewModel : ViewModelBase
                 {
                     return;
                 }
+
                 TalkNamespaces = TalkNamespaces
                     .ToList()
                     .Select(x => new WikiNamespace(x.Id, x.Name, val))
                     .ToObservableCollection();
             });
-        
+
         this.WhenAnyValue(x => x.IsAllSubjectChecked)
             .Subscribe((val) =>
             {
@@ -53,15 +47,16 @@ public class FilterViewModel : ViewModelBase
                 {
                     return;
                 }
+
                 SubjectNamespaces = SubjectNamespaces
                     .ToList()
                     .Select(x => new WikiNamespace(x.Id, x.Name, val))
                     .ToObservableCollection();
             });
-        
+
         SubjectNamespaces = subjectNamespaces.ToObservableCollection();
         TalkNamespaces = talkNamespaces.ToObservableCollection();
-        
+
         SaveCommand = ReactiveCommand.Create<IDialog>(Save);
         CloseCommand = ReactiveCommand.Create((IDialog dialog) => dialog.Close(Result<FilterOptions>.Failure("Closed without selecting any value")));
         OpenFileCommand = ReactiveCommand.CreateFromTask(OpenFile);
@@ -73,7 +68,7 @@ public class FilterViewModel : ViewModelBase
         IEnumerable<int> arr1 = SubjectNamespaces.ToList().Where(x => x.IsChecked).Select(x => x.Id);
         IEnumerable<int> arr2 = TalkNamespaces.ToList().Where(x => x.IsChecked).Select(x => x.Id);
         dialog.Close(Result<FilterOptions>.Success(new FilterOptions(
-            arr1.Concat(arr2).ToArray(), 
+            arr1.Concat(arr2).ToArray(),
             RemoveTitlesContaining,
             KeepTitlesContaining,
             UseRegex,
@@ -99,7 +94,7 @@ public class FilterViewModel : ViewModelBase
             }
         }
     }
-    
+
     private void Clear()
     {
         Pages.Clear();
@@ -108,8 +103,10 @@ public class FilterViewModel : ViewModelBase
     [Reactive] public ObservableCollection<WikiNamespace> SubjectNamespaces { get; set; }
     [Reactive] public ObservableCollection<WikiNamespace> TalkNamespaces { get; set; }
     [Reactive] public ObservableCollection<WikiPageModel> Pages { get; set; } = new();
+
     public ObservableCollection<SetOperations> SetOperations { get; } =
         new[] {Models.SetOperations.SymmetricDifference, Models.SetOperations.Intersection}.ToObservableCollection();
+
     [Reactive] public bool IsAllTalkChecked { get; set; }
     [Reactive] public bool IsAllSubjectChecked { get; set; }
     [Reactive] public bool UseRegex { get; set; }
@@ -122,5 +119,4 @@ public class FilterViewModel : ViewModelBase
     public ReactiveCommand<IDialog, Unit> CloseCommand { get; }
     public ReactiveCommand<Unit, Unit> OpenFileCommand { get; }
     public ReactiveCommand<Unit, Unit> ClearCommand { get; }
-    
 }

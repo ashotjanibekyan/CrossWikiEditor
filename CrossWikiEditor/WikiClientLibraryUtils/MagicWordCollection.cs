@@ -32,8 +32,8 @@ public class MagicWordCollection : ReadOnlyCollection<MagicWordInfo>
                 {
                     new WikiBooleanJsonConverter(),
                     new WikiStringEnumJsonConverter(),
-                    new WikiDateTimeJsonConverter(),
-                },
+                    new WikiDateTimeJsonConverter()
+                }
             };
         return JsonSerializer.CreateDefault(settings);
     }
@@ -49,7 +49,7 @@ public class MagicWordCollection : ReadOnlyCollection<MagicWordInfo>
             .SelectMany(i => i.Aliases.Select(a => (Alias: a, Item: i)))
             .ToLookup(p => p.Alias, p => p.Item, StringComparer.InvariantCultureIgnoreCase);
     }
-    
+
     public MagicWordInfo this[string name]
     {
         get
@@ -63,10 +63,16 @@ public class MagicWordCollection : ReadOnlyCollection<MagicWordInfo>
             return match;
         }
     }
-    
-    public bool ContainsName(string name) => TryGet(name) != null;
 
-    public bool ContainsAlias(string alias) => TryGetByAlias(alias) != null;
+    public bool ContainsName(string name)
+    {
+        return TryGet(name) != null;
+    }
+
+    public bool ContainsAlias(string alias)
+    {
+        return TryGetByAlias(alias) != null;
+    }
 
     private MagicWordInfo? TryGet(string name)
     {

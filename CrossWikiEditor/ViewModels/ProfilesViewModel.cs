@@ -137,6 +137,7 @@ public sealed class ProfilesViewModel : ViewModelBase
             {
                 _userPreferencesService.SetCurrentPref(currentUserPref);
             }
+
             dialog.Close(true);
         }
         else

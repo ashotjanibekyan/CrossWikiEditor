@@ -20,6 +20,7 @@ public class FileUsageGenerator : WikiPageGenerator
     {
         TargetTitle = targetTitle;
     }
+
     public string TargetTitle { get; set; } = "";
     public IEnumerable<int>? NamespaceIds { get; set; }
     public PropertyFilterOption RedirectsFilter { get; set; }

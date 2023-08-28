@@ -15,21 +15,14 @@ public interface IUserService
     Task<Result<List<WikiPageModel>>> GetWatchlistPages();
 }
 
-public sealed class UserService : IUserService
+public sealed class UserService(IWikiClientCache wikiClientCache, IUserPreferencesService userPreferencesService)
+    : IUserService
 {
-    private readonly IWikiClientCache _wikiClientCache;
-    private readonly IUserPreferencesService _userPreferencesService;
-
-    public UserService(IWikiClientCache wikiClientCache, IUserPreferencesService userPreferencesService)
-    {
-        _wikiClientCache = wikiClientCache;
-        _userPreferencesService = userPreferencesService;
-    }
     public async Task<Result> Login(Profile profile, string apiRoot)
     {
         try
         {
-            WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot, true);
+            WikiSite site = await wikiClientCache.GetWikiSite(apiRoot, true);
             await site.LoginAsync(profile.Username, profile.Password);
             return Result.Success();
         }
@@ -43,7 +36,7 @@ public sealed class UserService : IUserService
     {
         try
         {
-            WikiSite site = await _wikiClientCache.GetWikiSite(_userPreferencesService.GetCurrentPref().UrlApi());
+            WikiSite site = await wikiClientCache.GetWikiSite(userPreferencesService.GetCurrentPref().UrlApi());
             if (site.AccountInfo is null)
             {
                 return Result<List<WikiPageModel>>.Failure("Please log in to get your watchlist pages.");

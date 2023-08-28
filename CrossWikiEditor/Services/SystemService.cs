@@ -17,14 +17,8 @@ public interface ISystemService
     Task<string> ReadAllTextAsync(string path, Encoding encoding);
 }
 
-public class SystemService : ISystemService
+public class SystemService(IClipboard clipboard) : ISystemService
 {
-    private readonly IClipboard _clipboard;
-
-    public SystemService(IClipboard clipboard)
-    {
-        _clipboard = clipboard;
-    }
     public Result OpenLinkInBrowser(string url)
     {
         try
@@ -44,18 +38,18 @@ public class SystemService : ISystemService
     }
 
     public async Task<string?> GetClipboardTextAsync()
-    { 
-        return await _clipboard.GetTextAsync();
+    {
+        return await clipboard.GetTextAsync();
     }
 
     public async Task SetClipboardTextAsync(string? text)
     {
-        await _clipboard.SetTextAsync(text);
+        await clipboard.SetTextAsync(text);
     }
 
     public async Task WriteAllLinesAsync(string path, IEnumerable<string> contents)
     {
-        await File.WriteAllLinesAsync(path, contents, encoding: Encoding.UTF8);
+        await File.WriteAllLinesAsync(path, contents, Encoding.UTF8);
     }
 
     public async Task<string> ReadAllTextAsync(string path, Encoding encoding)

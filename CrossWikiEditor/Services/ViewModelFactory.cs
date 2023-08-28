@@ -62,11 +62,11 @@ public class ViewModelFactory : IViewModelFactory
     {
         WikiSite? site = await _wikiClientCache.GetWikiSite(_userPreferencesService.GetCurrentPref().UrlApi());
         WikiNamespace[] namespaces = site.Namespaces.Select(x => new WikiNamespace(x.Id, x.CustomName)).ToArray();
-        
+
         return new FilterViewModel(
-            subjectNamespaces: namespaces.Where(x => x.Id.IsEven()).ToList(), 
-            talkNamespaces: namespaces.Where(x => x.Id.IsOdd()).ToList(),
-            textFileListProvider: _textFileListProvider);
+            namespaces.Where(x => x.Id.IsEven()).ToList(),
+            namespaces.Where(x => x.Id.IsOdd()).ToList(),
+            _textFileListProvider);
     }
 
     public async Task<SelectNamespacesViewModel> GetSelectNamespacesViewModel()

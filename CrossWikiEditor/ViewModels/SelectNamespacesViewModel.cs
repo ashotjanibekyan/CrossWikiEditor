@@ -15,7 +15,7 @@ public class SelectNamespacesViewModel : ViewModelBase
     {
         Namespaces = namespaces.Where(x => x.Id >= 0).ToObservableCollection();
         SelectCommand = ReactiveCommand.Create<IDialog>(Select);
-        
+
         this.WhenAnyValue(x => x.IsAllSelected)
             .Subscribe((val) =>
             {
@@ -30,7 +30,7 @@ public class SelectNamespacesViewModel : ViewModelBase
     {
         dialog.Close(Result<int[]>.Success(Namespaces.Where(n => n.IsChecked).Select(n => n.Id).ToArray()));
     }
-    
+
     [Reactive] public ObservableCollection<WikiNamespace> Namespaces { get; set; }
     [Reactive] public bool IsAllSelected { get; set; }
     public ReactiveCommand<IDialog, Unit> SelectCommand { get; }

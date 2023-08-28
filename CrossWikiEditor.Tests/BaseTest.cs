@@ -17,11 +17,11 @@ public abstract class BaseTest
     protected IDialog _dialog;
     protected IMessageBus _messageBus;
     protected IClipboard _clipboard;
-    
+
     protected IUserService _userService;
     protected IPageService _pageService;
     protected IWikiClientCache _wikiClientCache;
-    
+
 
     protected void SetUpServices()
     {
@@ -34,7 +34,7 @@ public abstract class BaseTest
         _dialog = Substitute.For<IDialog>();
         _messageBus = Substitute.For<IMessageBus>();
         _clipboard = Substitute.For<IClipboard>();
-        
+
         _userService = Substitute.For<IUserService>();
         _pageService = Substitute.For<IPageService>();
         _wikiClientCache = Substitute.For<IWikiClientCache>();

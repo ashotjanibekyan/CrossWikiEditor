@@ -19,18 +19,19 @@ public class FilesGenerator : WikiPagePropertyGenerator
     public override string PropertyName => "images";
     public IEnumerable<string>? MatchingTitles { get; set; }
     public bool OrderDescending { get; set; }
-    
+
     public override IEnumerable<KeyValuePair<string, object>> EnumListParameters()
     {
         var dict = new Dictionary<string, object>
         {
-            {"imlimit", PaginationSize}, 
+            {"imlimit", PaginationSize},
             {"imdir", OrderDescending ? "descending" : "ascending"}
         };
         if (MatchingTitles is not null)
         {
             dict["imtitles"] = MediaWikiHelper.JoinValues(MatchingTitles);
         }
+
         return dict;
     }
 }

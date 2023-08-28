@@ -6,18 +6,8 @@ using CrossWikiEditor.Services.WikiServices;
 
 namespace CrossWikiEditor.ListProviders;
 
-public class CategoriesOnPageListProvider : IListProvider
+public class CategoriesOnPageListProvider(IPageService pageService, IUserPreferencesService userPreferencesService) : IListProvider
 {
-    protected readonly IPageService _pageService;
-    protected readonly IUserPreferencesService _userPreferencesService;
-
-    public CategoriesOnPageListProvider(
-        IPageService pageService,
-        IUserPreferencesService userPreferencesService)
-    {
-        _pageService = pageService;
-        _userPreferencesService = userPreferencesService;
-    }
     public virtual string Title => "Categories on page";
     public string ParamTitle => "Page";
     public string Param { get; set; } = string.Empty;
@@ -26,8 +16,8 @@ public class CategoriesOnPageListProvider : IListProvider
 
     public virtual async Task<Result<List<WikiPageModel>>> MakeList()
     {
-        UserPrefs userPrefs = _userPreferencesService.GetCurrentPref();
-        return await _pageService.GetCategoriesOf(userPrefs.UrlApi(), Param);
+        UserPrefs userPrefs = userPreferencesService.GetCurrentPref();
+        return await pageService.GetCategoriesOf(userPrefs.UrlApi(), Param);
     }
 
     public Task GetAdditionalParams()

@@ -18,23 +18,15 @@ internal class RealmProfile : RealmObject
     public string Notes { get; set; }
 }
 
-public sealed class RealmProfileRepository : IProfileRepository
+public sealed class RealmProfileRepository(string appData, IStringEncryptionService stringEncryptionService) : IProfileRepository
 {
-    private readonly IStringEncryptionService _stringEncryptionService;
-    private readonly RealmConfigurationBase _realmConfiguration;
-
-    public RealmProfileRepository(string appData, IStringEncryptionService stringEncryptionService)
+    private readonly RealmConfigurationBase _realmConfiguration = new RealmConfiguration(Path.Combine(appData, "profiles.realm"))
     {
-        _stringEncryptionService = stringEncryptionService;
-
-        _realmConfiguration = new RealmConfiguration(Path.Combine(appData, "profiles.realm"))
+        Schema = new RealmSchema.Builder
         {
-            Schema = new RealmSchema.Builder
-            {
-                new ObjectSchema.Builder(typeof(RealmProfile))
-            }
-        };
-    }
+            new ObjectSchema.Builder(typeof(RealmProfile))
+        }
+    };
 
     public Profile? Get(int id)
     {
@@ -88,7 +80,7 @@ public sealed class RealmProfileRepository : IProfileRepository
             DefaultSettingsPath = profile.DefaultSettingsPath,
             IsPasswordSaved = profile.IsPasswordSaved,
             Notes = profile.Notes,
-            Password = _stringEncryptionService.EncryptStringToBytes(profile.Password),
+            Password = stringEncryptionService.EncryptStringToBytes(profile.Password),
             Username = profile.Username
         };
     }
@@ -100,7 +92,7 @@ public sealed class RealmProfileRepository : IProfileRepository
             Id = realmProfile.Id,
             DefaultSettingsPath = realmProfile.DefaultSettingsPath,
             IsPasswordSaved = realmProfile.IsPasswordSaved,
-            Password = _stringEncryptionService.DecryptStringFromBytes(realmProfile.Password),
+            Password = stringEncryptionService.DecryptStringFromBytes(realmProfile.Password),
             Notes = realmProfile.Notes,
             Username = realmProfile.Username
         };

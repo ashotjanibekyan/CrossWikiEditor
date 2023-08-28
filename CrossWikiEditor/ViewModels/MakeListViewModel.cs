@@ -70,7 +70,7 @@ public sealed class MakeListViewModel : ViewModelBase
         SaveListCommand = ReactiveCommand.CreateFromTask(SaveList);
         SortAlphabeticallyCommand = ReactiveCommand.Create(SortAlphabetically);
         SortReverseAlphabeticallyCommand = ReactiveCommand.Create(SortReverseAlphabetically);
-        
+
         ListProviders = listProviders.ToObservableCollection();
         SelectedListProvider = ListProviders[0];
     }
@@ -103,7 +103,7 @@ public sealed class MakeListViewModel : ViewModelBase
         {
             await SelectedListProvider.GetAdditionalParams();
         }
-        
+
         if (!SelectedListProvider.CanMake)
         {
             return;
@@ -116,7 +116,8 @@ public sealed class MakeListViewModel : ViewModelBase
         }
         else
         {
-            await _dialogService.Alert("Failed to get the list", result.Error ?? "Failed to get the list. Please make sure you have internet access.");
+            await _dialogService.Alert("Failed to get the list",
+                result.Error ?? "Failed to get the list. Please make sure you have internet access.");
         }
     }
 
@@ -126,6 +127,7 @@ public sealed class MakeListViewModel : ViewModelBase
         {
             return;
         }
+
         foreach (WikiPageModel selectedPage in SelectedPages)
         {
             _systemService.OpenLinkInBrowser($"{_userPreferencesService.GetCurrentPref().UrlIndex()}title={selectedPage.Title}");
@@ -138,6 +140,7 @@ public sealed class MakeListViewModel : ViewModelBase
         {
             return;
         }
+
         foreach (WikiPageModel selectedPage in SelectedPages)
         {
             _systemService.OpenLinkInBrowser($"{_userPreferencesService.GetCurrentPref().UrlIndex()}title={selectedPage.Title}&action=history");
@@ -194,7 +197,7 @@ public sealed class MakeListViewModel : ViewModelBase
     {
         SelectedPages = new ObservableCollection<WikiPageModel>();
     }
-    
+
     private void SelectInverse()
     {
         var newSelection = Pages.Where(page => !SelectedPages.Contains(page)).ToList();
@@ -207,7 +210,7 @@ public sealed class MakeListViewModel : ViewModelBase
         Pages.Remove(SelectedPages.ToList());
         SelectedPages.Clear();
     }
-    
+
     private void RemoveAll()
     {
         Pages.Clear();
@@ -225,7 +228,7 @@ public sealed class MakeListViewModel : ViewModelBase
         Pages = Pages.Where(p => p.NamespaceId == 0).ToObservableCollection();
         SelectedPages.Clear();
     }
-    
+
     private void MoveToTop()
     {
         var selectedPages = SelectedPages.ToList();
@@ -233,7 +236,7 @@ public sealed class MakeListViewModel : ViewModelBase
         Pages = selectedPages.Concat(Pages).ToObservableCollection();
         SelectedPages.Clear();
     }
-    
+
     private void MoveToBottom()
     {
         var selectedPages = SelectedPages.ToList();
@@ -241,7 +244,7 @@ public sealed class MakeListViewModel : ViewModelBase
         Pages.AddRange(selectedPages);
         SelectedPages.Clear();
     }
-    
+
     private async Task ConvertToTalkPages()
     {
         List<WikiPageModel>? talkPages = (await _pageService.ConvertToTalk(Pages.ToList())).Value;
@@ -300,6 +303,7 @@ public sealed class MakeListViewModel : ViewModelBase
 
                     filteredPages = new List<WikiPageModel>(list);
                 }
+
                 Pages = filteredPages.ToObservableCollection();
             }
         }
@@ -311,7 +315,7 @@ public sealed class MakeListViewModel : ViewModelBase
 
     private async Task SaveList()
     {
-        var suggestedTitle =
+        string? suggestedTitle =
             $"{SelectedListProvider.Title}_{SelectedListProvider.Param}_{DateTime.Now.ToString("yyyy-MM-dd-HH-mm", CultureInfo.InvariantCulture)}.txt";
         IStorageFile? storageFile = await _fileDialogService.SaveFilePickerAsync("Save pages", suggestedFileName: suggestedTitle.ToFilenameSafe());
         if (storageFile is not null)
@@ -321,6 +325,7 @@ public sealed class MakeListViewModel : ViewModelBase
             {
                 await stream.WriteAsync(Encoding.UTF8.GetBytes($"# [[:{title}]]{Environment.NewLine}"));
             }
+
             stream.Close();
         }
     }

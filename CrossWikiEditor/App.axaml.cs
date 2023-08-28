@@ -89,11 +89,11 @@ public class App : Application
         builder.RegisterType<FileDialogService>().As<IFileDialogService>().SingleInstance();
         builder.RegisterType<SystemService>().As<ISystemService>().SingleInstance();
         builder.RegisterType<UserPreferencesService>().As<IUserPreferencesService>().SingleInstance();
-        
+
         builder.RegisterType<UserService>().As<IUserService>().SingleInstance();
         builder.RegisterType<PageService>().As<IPageService>().SingleInstance();
         builder.RegisterType<WikiClientCache>().As<IWikiClientCache>().SingleInstance();
-        
+
         builder.RegisterType<DialogService>()
             .As<IDialogService>()
             .WithParameter(new TypedParameter(typeof(Window), _mainWindow)).SingleInstance();
@@ -177,7 +177,7 @@ public class App : Application
         // todo: Wiki search (text) (all NS)
         // todo: Wiki search (title)
         // todo: Wiki search (title) (all NS)
-        
+
         builder.RegisterType<TextFileListProvider>();
     }
 

@@ -8,11 +8,12 @@ namespace CrossWikiEditor.Utils;
 public static class CollectionExtensions
 {
     private static readonly Random _random = new();
+
     public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> enumerable)
     {
         return new ObservableCollection<T>(enumerable);
     }
-    
+
     public static List<T> RandomSubset<T>(this List<T> sourceList, int count)
     {
         if (sourceList == null)

@@ -6,19 +6,14 @@ using CrossWikiEditor.Services.WikiServices;
 
 namespace CrossWikiEditor.ListProviders;
 
-public class CategoriesOnPageOnlyHiddenCategoriesListProvider : CategoriesOnPageListProvider
+public class CategoriesOnPageOnlyHiddenCategoriesListProvider(IPageService pageService, IUserPreferencesService userPreferencesService)
+    : CategoriesOnPageListProvider(pageService, userPreferencesService)
 {
-    public CategoriesOnPageOnlyHiddenCategoriesListProvider(
-        IPageService pageService,
-        IUserPreferencesService userPreferencesService) : base(pageService, userPreferencesService)
-    {
-    }
-
     public override string Title => "Categories on page (only hidden categories)";
 
     public override async Task<Result<List<WikiPageModel>>> MakeList()
     {
-        UserPrefs userPrefs = _userPreferencesService.GetCurrentPref();
-        return await _pageService.GetCategoriesOf(userPrefs.UrlApi(), Param, onlyHidden: true);
+        UserPrefs userPrefs = userPreferencesService.GetCurrentPref();
+        return await pageService.GetCategoriesOf(userPrefs.UrlApi(), Param, onlyHidden: true);
     }
 }

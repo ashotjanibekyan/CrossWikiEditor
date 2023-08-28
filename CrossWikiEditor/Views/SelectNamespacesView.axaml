@@ -5,7 +5,7 @@
         xmlns:vm="clr-namespace:CrossWikiEditor.ViewModels"
         SizeToContent="WidthAndHeight"
         Classes="DialogWindow"
-        mc:Ignorable="d" 
+        mc:Ignorable="d"
         x:Class="CrossWikiEditor.Views.SelectNamespacesView"
         x:DataType="vm:SelectNamespacesViewModel"
         x:Name="This"
@@ -16,7 +16,7 @@
                  ItemsSource="{Binding Namespaces}">
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="vm:WikiNamespace">
-                    <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}"></CheckBox>
+                    <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

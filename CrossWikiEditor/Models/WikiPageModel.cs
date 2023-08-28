@@ -3,21 +3,15 @@ using WikiClientLibrary.Pages;
 
 namespace CrossWikiEditor.Models;
 
-public class WikiPageModel : IEquatable<WikiPageModel>, IComparable<WikiPageModel>
+public class WikiPageModel(string title, int namespaceId) : IEquatable<WikiPageModel>, IComparable<WikiPageModel>
 {
     public WikiPage? WikiPage { get; set; }
-    public string Title { get; init; }
-    public int NamespaceId { get; init; }
+    public string Title { get; init; } = title;
+    public int NamespaceId { get; init; } = namespaceId;
 
     public WikiPageModel(WikiPage wikiPage) : this(wikiPage.Title, wikiPage.NamespaceId)
     {
         WikiPage = wikiPage;
-    }
-
-    public WikiPageModel(string title, int namespaceId)
-    {
-        Title = title;
-        NamespaceId = namespaceId;
     }
 
     public void Deconstruct(out string title, out int namespaceId)
@@ -37,6 +31,7 @@ public class WikiPageModel : IEquatable<WikiPageModel>, IComparable<WikiPageMode
         {
             return this == wikiPageModel;
         }
+
         return false;
     }
 

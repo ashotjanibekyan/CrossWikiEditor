@@ -10,7 +10,7 @@ public interface IStringEncryptionService
     string DecryptStringFromBytes(byte[] encryptedBytes);
 }
 
-public sealed class StringEncryptionService : IStringEncryptionService
+public sealed class StringEncryptionService(byte[] key, byte[] iv) : IStringEncryptionService
 {
     private static readonly byte[] Salt =
     {
@@ -18,20 +18,11 @@ public sealed class StringEncryptionService : IStringEncryptionService
         226, 97
     };
 
-    private readonly byte[] _key;
-    private readonly byte[] _iv;
-
-    public StringEncryptionService(byte[] key, byte[] iv)
-    {
-        _key = key;
-        _iv = iv;
-    }
-
     public byte[] EncryptStringToBytes(string plainText)
     {
         using var aes = Aes.Create();
-        aes.Key = _key;
-        aes.IV = _iv;
+        aes.Key = key;
+        aes.IV = iv;
 
         using ICryptoTransform encryptor = aes.CreateEncryptor();
         using var ms = new MemoryStream();
@@ -48,8 +39,8 @@ public sealed class StringEncryptionService : IStringEncryptionService
     public string DecryptStringFromBytes(byte[] encryptedBytes)
     {
         using var aes = Aes.Create();
-        aes.Key = _key;
-        aes.IV = _iv;
+        aes.Key = key;
+        aes.IV = iv;
 
         using ICryptoTransform decryptor = aes.CreateDecryptor();
         using var ms = new MemoryStream(encryptedBytes);

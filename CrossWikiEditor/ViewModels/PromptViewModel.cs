@@ -9,7 +9,7 @@ public class PromptViewModel : ViewModelBase
     {
         Title = title;
         Text = text;
-        
+
         OkCommand = ReactiveCommand.Create((IDialog dialog) => dialog.Close(Value));
         CancelCommand = ReactiveCommand.Create((IDialog dialog) => dialog.Close(-1));
     }

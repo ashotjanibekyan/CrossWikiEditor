@@ -6,36 +6,20 @@ namespace CrossWikiEditor;
 
 [Serializable]
 [XmlRoot("AutoWikiBrowserPreferences")]
-public struct UserPrefs
+public struct UserPrefs(string version, ProjectEnum project, string languageCode, string customProject, string protocol, string loginDomain)
 {
     [XmlAttribute("xml:space")] public string SpacePreserve = "preserve";
 
-    public UserPrefs()
+    public UserPrefs() : this("0.0.1", ProjectEnum.Wikipedia, "hy", "", "http://", "")
     {
-        Version = "0.0.1";
-        Project = ProjectEnum.Wikipedia;
-        LanguageCode = "hy";
-        CustomProject = "";
-        Protocol = "http://";
-        LoginDomain = "";
     }
 
-    public UserPrefs(string version, ProjectEnum project, string languageCode, string customProject, string protocol, string loginDomain)
-    {
-        Version = version;
-        Project = project;
-        LanguageCode = languageCode;
-        CustomProject = customProject;
-        Protocol = protocol;
-        LoginDomain = loginDomain;
-    }
-
-    [XmlAttribute] public string Version { get; set; }
-    public ProjectEnum Project { get; set; }
-    public string LanguageCode { get; set; }
-    public string CustomProject { get; set; }
-    public string Protocol { get; set; }
-    public string LoginDomain { get; set; }
+    [XmlAttribute] public string Version { get; set; } = version;
+    public ProjectEnum Project { get; set; } = project;
+    public string LanguageCode { get; set; } = languageCode;
+    public string CustomProject { get; set; } = customProject;
+    public string Protocol { get; set; } = protocol;
+    public string LoginDomain { get; set; } = loginDomain;
 
     public string UrlBase()
     {
@@ -56,7 +40,7 @@ public struct UserPrefs
 
         throw new NotImplementedException();
     }
-    
+
     public string UrlBaseLong()
     {
         if (!string.IsNullOrEmpty(LanguageCode) && new[]
@@ -76,7 +60,7 @@ public struct UserPrefs
 
         throw new NotImplementedException();
     }
-    
+
     public string UrlApi()
     {
         if (!string.IsNullOrEmpty(LanguageCode) && new[]

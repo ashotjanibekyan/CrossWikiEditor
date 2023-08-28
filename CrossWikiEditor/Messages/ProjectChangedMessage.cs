@@ -1,11 +1,6 @@
 ﻿namespace CrossWikiEditor.Messages;
 
-public sealed class ProjectChangedMessage : BaseMessage
+public sealed class ProjectChangedMessage(ProjectEnum project) : BaseMessage
 {
-    public ProjectChangedMessage(ProjectEnum project)
-    {
-        Project = project;
-    }
-
-    public ProjectEnum Project { get; }
+    public ProjectEnum Project { get; } = project;
 }
