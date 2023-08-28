@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Reactive;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CrossWikiEditor.Messages;
 using CrossWikiEditor.Models;
@@ -9,7 +9,6 @@ using CrossWikiEditor.Repositories;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
 
 namespace CrossWikiEditor.ViewModels;
 
@@ -39,9 +38,8 @@ public sealed partial class ProfilesViewModel : ViewModelBase
     }
 
 
-    [Reactive] public Profile? SelectedProfile { get; set; }
-
-    [Reactive] public ObservableCollection<Profile> Profiles { get; set; }
+    [ObservableProperty] private Profile? _selectedProfile;
+    [ObservableProperty] private ObservableCollection<Profile> _profiles;
 
     public string Username { get; set; } = "";
     public string Password { get; set; } = "";

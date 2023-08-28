@@ -1,12 +1,10 @@
 using System;
-using System.Reactive;
-using System.Reactive.Linq;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CrossWikiEditor.Messages;
 using CrossWikiEditor.Services;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
 
 namespace CrossWikiEditor.ViewModels;
 
@@ -15,8 +13,6 @@ public sealed partial class StatusBarViewModel : ViewModelBase
     private readonly IViewModelFactory _viewModelFactory;
     private readonly IDialogService _dialogService;
     private readonly IUserPreferencesService _userPreferencesService;
-    private ObservableAsPropertyHelper<string> _languageCode;
-    private ObservableAsPropertyHelper<string> _project;
 
     public StatusBarViewModel(IViewModelFactory viewModelFactory,
         IDialogService dialogService,
@@ -26,12 +22,6 @@ public sealed partial class StatusBarViewModel : ViewModelBase
         _viewModelFactory = viewModelFactory;
         _dialogService = dialogService;
         _userPreferencesService = userPreferencesService;
-        _languageCode = this.WhenAnyValue(x => x.LanguageCode)
-            .Select(x => x)
-            .ToProperty(this, x => x.CurrentWiki);
-        _project = this.WhenAnyValue(x => x.Project)
-            .Select(x => x)
-            .ToProperty(this, x => x.CurrentWiki);
         messageBus.Listen<NewAccountLoggedInMessage>()
             .Subscribe((message) => { Username = message.Profile.Username; });
         messageBus.Listen<ProjectChangedMessage>()
@@ -42,11 +32,18 @@ public sealed partial class StatusBarViewModel : ViewModelBase
         Project = currentPref.Project.ToString();
         LanguageCode = currentPref.LanguageCode;
     }
+    
+    public string CurrentWiki => $"{LanguageCode}:{Project}";
 
-    [Reactive] public string Username { get; set; } = "User: ";
-    public string CurrentWiki => $"{_languageCode.Value}:{_project.Value}";
-    [Reactive] private string LanguageCode { get; set; }
-    [Reactive] private string Project { get; set; }
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CurrentWiki))]
+    private string _username = "User: ";
+    
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CurrentWiki))]
+    private string _languageCode;
+
+    [ObservableProperty] private string _project;
 
     [RelayCommand]
     private async Task UsernameClicked()

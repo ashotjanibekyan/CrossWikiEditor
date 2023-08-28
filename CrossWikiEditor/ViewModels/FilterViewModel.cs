@@ -1,14 +1,12 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CrossWikiEditor.ListProviders;
 using CrossWikiEditor.Models;
 using CrossWikiEditor.Utils;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
 
 namespace CrossWikiEditor.ViewModels;
 
@@ -19,45 +17,10 @@ public class WikiNamespace(int id, string name, bool isChecked = false)
     public bool IsChecked { get; set; } = isChecked;
 }
 
-public partial class FilterViewModel : ViewModelBase
+public partial class FilterViewModel(List<WikiNamespace> subjectNamespaces, List<WikiNamespace> talkNamespaces,
+        TextFileListProvider textFileListProvider)
+    : ViewModelBase
 {
-    private readonly TextFileListProvider _textFileListProvider;
-
-    public FilterViewModel(List<WikiNamespace> subjectNamespaces, List<WikiNamespace> talkNamespaces, TextFileListProvider textFileListProvider)
-    {
-        _textFileListProvider = textFileListProvider;
-        this.WhenAnyValue(x => x.IsAllTalkChecked)
-            .Subscribe((val) =>
-            {
-                if (TalkNamespaces is null)
-                {
-                    return;
-                }
-
-                TalkNamespaces = TalkNamespaces
-                    .ToList()
-                    .Select(x => new WikiNamespace(x.Id, x.Name, val))
-                    .ToObservableCollection();
-            });
-
-        this.WhenAnyValue(x => x.IsAllSubjectChecked)
-            .Subscribe((val) =>
-            {
-                if (SubjectNamespaces is null)
-                {
-                    return;
-                }
-
-                SubjectNamespaces = SubjectNamespaces
-                    .ToList()
-                    .Select(x => new WikiNamespace(x.Id, x.Name, val))
-                    .ToObservableCollection();
-            });
-
-        SubjectNamespaces = subjectNamespaces.ToObservableCollection();
-        TalkNamespaces = talkNamespaces.ToObservableCollection();
-    }
-    
     [RelayCommand]
     private void Save(IDialog dialog)
     {
@@ -75,19 +38,22 @@ public partial class FilterViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void Close(IDialog dialog) => dialog.Close(Result<FilterOptions>.Failure("Closed without selecting any value"));
+    private void Close(IDialog dialog)
+    {
+        dialog.Close(Result<FilterOptions>.Failure("Closed without selecting any value"));
+    }
 
     [RelayCommand]
     private async Task OpenFile()
     {
-        if (_textFileListProvider.NeedsAdditionalParams)
+        if (textFileListProvider.NeedsAdditionalParams)
         {
-            await _textFileListProvider.GetAdditionalParams();
+            await textFileListProvider.GetAdditionalParams();
         }
 
-        if (_textFileListProvider.CanMake)
+        if (textFileListProvider.CanMake)
         {
-            Result<List<WikiPageModel>> result = await _textFileListProvider.MakeList();
+            Result<List<WikiPageModel>> result = await textFileListProvider.MakeList();
             if (result is {IsSuccessful: true, Value: not null})
             {
                 Pages = result.Value.ToObservableCollection();
@@ -101,19 +67,33 @@ public partial class FilterViewModel : ViewModelBase
         Pages.Clear();
     }
 
-    [Reactive] public ObservableCollection<WikiNamespace> SubjectNamespaces { get; set; }
-    [Reactive] public ObservableCollection<WikiNamespace> TalkNamespaces { get; set; }
-    [Reactive] public ObservableCollection<WikiPageModel> Pages { get; set; } = new();
+    partial void OnIsAllTalkCheckedChanged(bool value)
+    {
+        TalkNamespaces = TalkNamespaces
+            .ToList()
+            .Select(x => new WikiNamespace(x.Id, x.Name, value))
+            .ToObservableCollection();
+    }
 
-    public ObservableCollection<SetOperations> SetOperations { get; } =
+    partial void OnIsAllSubjectCheckedChanged(bool value)
+    {
+        SubjectNamespaces = SubjectNamespaces
+            .ToList()
+            .Select(x => new WikiNamespace(x.Id, x.Name, value))
+            .ToObservableCollection();
+    }
+
+    [ObservableProperty] private ObservableCollection<WikiNamespace> _subjectNamespaces = subjectNamespaces.ToObservableCollection();
+    [ObservableProperty] private ObservableCollection<WikiNamespace> _talkNamespaces = talkNamespaces.ToObservableCollection();
+    [ObservableProperty] private ObservableCollection<WikiPageModel> _pages = new();
+    [ObservableProperty] private ObservableCollection<SetOperations> _setOperations =
         new[] {Models.SetOperations.SymmetricDifference, Models.SetOperations.Intersection}.ToObservableCollection();
-
-    [Reactive] public bool IsAllTalkChecked { get; set; }
-    [Reactive] public bool IsAllSubjectChecked { get; set; }
-    [Reactive] public bool UseRegex { get; set; }
-    [Reactive] public bool SortAlphabetically { get; set; }
-    [Reactive] public bool RemoveDuplicates { get; set; }
-    [Reactive] public string RemoveTitlesContaining { get; set; } = string.Empty;
-    [Reactive] public string KeepTitlesContaining { get; set; } = string.Empty;
-    [Reactive] public SetOperations SelectedSetOperations { get; set; } = Models.SetOperations.SymmetricDifference;
+    [ObservableProperty] private bool _isAllTalkChecked;
+    [ObservableProperty] private bool _isAllSubjectChecked;
+    [ObservableProperty] private bool _useRegex;
+    [ObservableProperty] private bool _sortAlphabetically;
+    [ObservableProperty] private bool _removeDuplicates;
+    [ObservableProperty] private string _removeTitlesContaining = string.Empty;
+    [ObservableProperty] private string _keepTitlesContaining = string.Empty;
+    [ObservableProperty] private SetOperations _selectedSetOperations = Models.SetOperations.SymmetricDifference;
 }

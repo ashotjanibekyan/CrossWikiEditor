@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reactive;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.Input;
 using CrossWikiEditor.Services;
-using ReactiveUI;
 
 namespace CrossWikiEditor.ViewModels.MenuViewModels;
 

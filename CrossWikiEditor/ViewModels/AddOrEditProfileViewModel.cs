@@ -1,14 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Reactive;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CrossWikiEditor.Models;
 using CrossWikiEditor.Repositories;
 using CrossWikiEditor.Services;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
 
 namespace CrossWikiEditor.ViewModels;
 
@@ -19,17 +16,12 @@ public sealed partial class AddOrEditProfileViewModel(IFileDialogService fileDia
 {
     public bool IsEdit => id != -1;
 
-    [Reactive] public string Username { get; set; } = string.Empty;
-
-    [Reactive] public string Password { get; set; } = string.Empty;
-
-    [Reactive] public string DefaultSettingsPath { get; set; } = string.Empty;
-
-    [Reactive] public bool ShouldSavePassword { get; set; }
-
-    [Reactive] public bool ShouldSelectDefaultSettings { get; set; }
-
-    [Reactive] public string Notes { get; set; } = string.Empty;
+    [ObservableProperty] private string _username = string.Empty;
+    [ObservableProperty] private string _password = string.Empty;
+    [ObservableProperty] private string _defaultSettingsPath = string.Empty;
+    [ObservableProperty] private bool _shouldSavePassword;
+    [ObservableProperty] private bool _shouldSelectDefaultSettings;
+    [ObservableProperty] private string _notes = string.Empty;
 
     [RelayCommand]
     private async Task Browse()

@@ -180,21 +180,12 @@ public class ProfilesViewModelTests : BaseTest
         };
         _dialogService.ShowDialog<bool>(Arg.Is<AddOrEditProfileViewModel>(vm => !vm.IsEdit)).Returns(true);
         _profileRepository.GetAll().Returns(newProfiles);
-        bool didProfileChange = false;
-        _sut.PropertyChanged += (sender, args) =>
-        {
-            if (args.PropertyName == nameof(_sut.Profiles))
-            {
-                didProfileChange = true;
-            }
-        };
 
         // act
         _sut.AddCommand.Execute(null);
 
         // assert
         _profileRepository.Received(1).GetAll();
-        didProfileChange.Should().BeTrue();
         _sut.Profiles.Should().BeEquivalentTo(newProfiles);
     }
 

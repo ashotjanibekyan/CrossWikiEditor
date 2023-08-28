@@ -4,11 +4,11 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reactive;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CrossWikiEditor.ListProviders;
 using CrossWikiEditor.Models;
@@ -16,8 +16,6 @@ using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
 using CrossWikiEditor.Utils;
 using DynamicData;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
 
 namespace CrossWikiEditor.ViewModels;
 
@@ -340,9 +338,9 @@ public sealed partial class MakeListViewModel : ViewModelBase
         Pages = Pages.OrderByDescending(x => x.Title).ToObservableCollection();
     }
 
-    public ObservableCollection<IListProvider> ListProviders { get; }
-    [Reactive] public IListProvider SelectedListProvider { get; set; }
-    [Reactive] public ObservableCollection<WikiPageModel> Pages { get; set; } = new();
-    [Reactive] public ObservableCollection<WikiPageModel> SelectedPages { get; set; } = new();
-    [Reactive] public string NewPageTitle { get; set; } = string.Empty;
+    [ObservableProperty] private ObservableCollection<IListProvider> _listProviders;
+    [ObservableProperty] private IListProvider _selectedListProvider;
+    [ObservableProperty] private ObservableCollection<WikiPageModel> _pages = new();
+    [ObservableProperty] private ObservableCollection<WikiPageModel> _selectedPages = new();
+    [ObservableProperty] private string _newPageTitle = string.Empty;
 }

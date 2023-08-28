@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System;
-using System.Reactive;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CrossWikiEditor.Messages;
 using CrossWikiEditor.Services;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
 
 namespace CrossWikiEditor.ViewModels;
 
@@ -32,26 +31,16 @@ public sealed partial class PreferencesViewModel : ViewModelBase
         SelectedProject = userPreferencesService.GetCurrentPref().Project;
     }
 
-    [Reactive] public bool MinimizeToSystray { get; set; }
-
-    [Reactive] public bool WarnOnExit { get; set; }
-
-    [Reactive] public bool SavePageListWithSettings { get; set; }
-
-    [Reactive] public bool LowThreadPriority { get; set; }
-
-    [Reactive] public bool PreviewDiffInBotMode { get; set; }
-
-    [Reactive] public bool EnableLogging { get; set; }
-
-    [Reactive] public ProjectEnum SelectedProject { get; set; } = ProjectEnum.Wikipedia;
-
-    [Reactive] public ObservableCollection<ProjectEnum> Projects { get; set; } = new(Enum.GetValues<ProjectEnum>());
-
-    [Reactive] public string SelectedLanguage { get; set; } = "en";
-
-    [Reactive]
-    public ObservableCollection<string> Languages { get; set; } = new(new List<string>
+    [ObservableProperty] private bool _minimizeToSystray;
+    [ObservableProperty] private bool _warnOnExit;
+    [ObservableProperty] private bool _savePageListWithSettings;
+    [ObservableProperty] private bool _lowThreadPriority;
+    [ObservableProperty] private bool _previewDiffInBotMode;
+    [ObservableProperty] private bool _enableLogging;
+    [ObservableProperty] private ProjectEnum _selectedProject = ProjectEnum.Wikipedia;
+    [ObservableProperty] private ObservableCollection<ProjectEnum> _projects  = new(Enum.GetValues<ProjectEnum>());
+    [ObservableProperty] private string _selectedLanguage = "en";
+    [ObservableProperty] private ObservableCollection<string> _languages = new(new List<string>
     {
         "en",
         "hy",
@@ -59,14 +48,10 @@ public sealed partial class PreferencesViewModel : ViewModelBase
         "es",
         "ru"
     });
-
-    [Reactive] public bool SuppressUsingAwb { get; set; }
-
-    [Reactive] public bool IgnoreNoBots { get; set; }
-
-    [Reactive] public bool EmptyPageListOnProjectChange { get; set; }
-
-    [Reactive] public Alerts Alerts { get; set; }
+    [ObservableProperty] private bool _suppressUsingAwb;
+    [ObservableProperty] private bool _ignoreNoBots;
+    [ObservableProperty] private bool _emptyPageListOnProjectChange;
+    [ObservableProperty] private Alerts _alerts;
 
     [RelayCommand]
     private void Save(IDialog dialog)
@@ -79,49 +64,28 @@ public sealed partial class PreferencesViewModel : ViewModelBase
     [RelayCommand] private void Cancel(IDialog dialog) => dialog.Close(false);
 }
 
-public class Alerts
+public partial class Alerts : ObservableObject
 {
-    [Reactive] public bool AmbiguousCitationDates { get; set; }
-
-    [Reactive] public bool ContainsSicTag { get; set; }
-
-    [Reactive] public bool DabPageWithRef { get; set; }
-
-    [Reactive] public bool DeadLinks { get; set; }
-
-    [Reactive] public bool DuplicateParametersInWpBannerShell { get; set; }
-
-    [Reactive] public bool HasRefAfterReferences { get; set; }
-
-    [Reactive] public bool HasFootnotesTemplate { get; set; }
-
-    [Reactive] public bool HeadersWithWikilinks { get; set; }
-
-    [Reactive] public bool InvalidCitationParameters { get; set; }
-
-    [Reactive] public bool LinksWithDoublePipes { get; set; }
-
-    [Reactive] public bool LinksWithNoTarget { get; set; }
-
-    [Reactive] public bool LongArticleWithStubTag { get; set; }
-
-    [Reactive] public bool MultipleDefaultSort { get; set; }
-
-    [Reactive] public bool NoCategory { get; set; }
-
-    [Reactive] public bool SeeAlsoOutOfPlace { get; set; }
-
-    [Reactive] public bool StartsWithHeading { get; set; }
-
-    [Reactive] public bool UnbalancedBrackets { get; set; }
-
-    [Reactive] public bool UnclosedTags { get; set; }
-
-    [Reactive] public bool UnformattedReferences { get; set; }
-
-    [Reactive] public bool UnknownParametersInMultipleIssues { get; set; }
-
-    [Reactive] public bool UnknownParametersInWpBannerShell { get; set; }
-
-    [Reactive] public bool EditorsSignatureOrLink { get; set; }
+    [ObservableProperty] private bool _ambiguousCitationDates;
+    [ObservableProperty] private bool _containsSicTag;
+    [ObservableProperty] private bool _dabPageWithRef;
+    [ObservableProperty] private bool _deadLinks;
+    [ObservableProperty] private bool _duplicateParametersInWpBannerShell;
+    [ObservableProperty] private bool _hasRefAfterReferences;
+    [ObservableProperty] private bool _hasFootnotesTemplate;
+    [ObservableProperty] private bool _headersWithWikilinks;
+    [ObservableProperty] private bool _invalidCitationParameters;
+    [ObservableProperty] private bool _linksWithDoublePipes;
+    [ObservableProperty] private bool _linksWithNoTarget;
+    [ObservableProperty] private bool _longArticleWithStubTag;
+    [ObservableProperty] private bool _multipleDefaultSort;
+    [ObservableProperty] private bool _noCategory;
+    [ObservableProperty] private bool _seeAlsoOutOfPlace;
+    [ObservableProperty] private bool _startsWithHeading;
+    [ObservableProperty] private bool _unbalancedBrackets;
+    [ObservableProperty] private bool _unclosedTags;
+    [ObservableProperty] private bool _unformattedReferences;
+    [ObservableProperty] private bool _unknownParametersInMultipleIssues;
+    [ObservableProperty] private bool _unknownParametersInWpBannerShell;
+    [ObservableProperty] private bool _editorsSignatureOrLink;
 }
