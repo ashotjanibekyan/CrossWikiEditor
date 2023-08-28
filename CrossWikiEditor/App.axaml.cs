@@ -18,6 +18,7 @@ using CrossWikiEditor.ViewModels.ControlViewModels;
 using CrossWikiEditor.ViewModels.MenuViewModels;
 using CrossWikiEditor.ViewModels.ReportViewModels;
 using CrossWikiEditor.Views;
+using CrossWikiEditor.Views.ControlViews;
 
 namespace CrossWikiEditor;
 
@@ -134,6 +135,7 @@ public class App : Application
         builder.RegisterType<AddNewProfileView>().Named<Window>(nameof(AddOrEditProfileViewModel));
         builder.RegisterType<SelectNamespacesView>().Named<Window>(nameof(SelectNamespacesViewModel));
         builder.RegisterType<WhatLinksHereOptionsView>().Named<Window>(nameof(WhatLinksHereOptionsViewModel));
+        builder.RegisterType<FindAndReplaceView>().Named<Window>(nameof(FindAndReplaceViewModel));
     }
 
     private void RegisterListProviders(ContainerBuilder builder)
