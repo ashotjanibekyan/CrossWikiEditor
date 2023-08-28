@@ -32,7 +32,7 @@ public class MakeListViewModelTests : BaseTest
         _sut.Pages = originalPages.ToObservableCollection();
 
         // act
-        _sut.AddNewPageCommand.Execute().Subscribe();
+        _sut.AddNewPageCommand.Execute(null);
 
         // assert
         _sut.Pages.Should().BeEquivalentTo(originalPages);
@@ -47,7 +47,7 @@ public class MakeListViewModelTests : BaseTest
         _sut.Pages = originalPages.ToObservableCollection();
 
         // act
-        _sut.AddNewPageCommand.Execute().Subscribe();
+        _sut.AddNewPageCommand.Execute(null);
 
         // assert
         _sut.Pages.Should().BeEquivalentTo(originalPages.Concat(new[] {new WikiPageModel("new page", 0)}));
@@ -60,7 +60,7 @@ public class MakeListViewModelTests : BaseTest
         _sut.NewPageTitle = newPageTitle;
 
         // act
-        _sut.AddNewPageCommand.Execute().Subscribe();
+        _sut.AddNewPageCommand.Execute(null);
 
         // assert
         _sut.NewPageTitle.Should().BeEmpty();
@@ -73,7 +73,7 @@ public class MakeListViewModelTests : BaseTest
         _sut.NewPageTitle = "    new page title   ";
 
         // act
-        _sut.AddNewPageCommand.Execute().Subscribe();
+        _sut.AddNewPageCommand.Execute(null);
 
         // assert
         _sut.Pages.Should().BeEquivalentTo(new List<WikiPageModel> {new("new page title", 0)});
@@ -88,7 +88,7 @@ public class MakeListViewModelTests : BaseTest
         _sut.SelectedPages = new ObservableCollection<WikiPageModel>();
 
         // act
-        _sut.RemoveCommand.Execute().Subscribe();
+        _sut.RemoveCommand.Execute(null);
 
         // assert
         _sut.Pages.Should().BeEquivalentTo(randomPages);
@@ -106,7 +106,7 @@ public class MakeListViewModelTests : BaseTest
         randomPages.RemoveAt(4);
 
         // act
-        _sut.RemoveCommand.Execute().Subscribe();
+        _sut.RemoveCommand.Execute(null);
 
         // assert
         _sut.Pages.Should().BeEquivalentTo(randomPages);
@@ -120,7 +120,7 @@ public class MakeListViewModelTests : BaseTest
         _sut.SelectedPages = Fakers.WikiPageModelFaker.Generate(2).ToObservableCollection();
 
         // act
-        _sut.RemoveCommand.Execute().Subscribe();
+        _sut.RemoveCommand.Execute(null);
 
         // assert
         _sut.Pages.Should().BeEquivalentTo(randomPages);
@@ -134,7 +134,7 @@ public class MakeListViewModelTests : BaseTest
         _sut.SelectedPages = Fakers.WikiPageModelFaker.Generate(3).ToObservableCollection();
 
         // act
-        _sut.RemoveCommand.Execute().Subscribe();
+        _sut.RemoveCommand.Execute(null);
 
         // assert
         _sut.SelectedPages.Should().BeEmpty();
@@ -149,7 +149,7 @@ public class MakeListViewModelTests : BaseTest
         listProvider.CanMake.Returns(false);
 
         // act
-        _sut.MakeListCommand.Execute().Subscribe();
+        _sut.MakeListCommand.Execute(null);
 
         // assert
         listProvider.Received(0).MakeList();
@@ -172,7 +172,7 @@ public class MakeListViewModelTests : BaseTest
         listProvider.MakeList().Returns(Result<List<WikiPageModel>>.Success(newPages));
 
         // act
-        _sut.MakeListCommand.Execute().Subscribe();
+        _sut.MakeListCommand.Execute(null);
 
         // assert
         _sut.Pages.Should().BeEquivalentTo(existingPages.Concat(newPages));
@@ -190,7 +190,7 @@ public class MakeListViewModelTests : BaseTest
         _sut.Pages = existingPages.ToObservableCollection();
 
         // act
-        _sut.MakeListCommand.Execute().Subscribe();
+        _sut.MakeListCommand.Execute(null);
 
         // assert
         _dialogService.Received(1).Alert("Failed to get the list", "error message");
@@ -206,7 +206,7 @@ public class MakeListViewModelTests : BaseTest
         listProvider.NeedsAdditionalParams.Returns(true);
 
         // act
-        _sut.MakeListCommand.Execute().Subscribe();
+        _sut.MakeListCommand.Execute(null);
 
         // assert
         listProvider.Received(1).GetAdditionalParams();
@@ -221,7 +221,7 @@ public class MakeListViewModelTests : BaseTest
         listProvider.NeedsAdditionalParams.Returns(false);
 
         // act
-        _sut.MakeListCommand.Execute().Subscribe();
+        _sut.MakeListCommand.Execute(null);
 
         // assert
         listProvider.Received(0).GetAdditionalParams();
@@ -234,7 +234,7 @@ public class MakeListViewModelTests : BaseTest
         _sut.SelectedPages = new ObservableCollection<WikiPageModel>();
 
         // act
-        _sut.OpenInBrowserCommand.Execute().Subscribe();
+        _sut.OpenInBrowserCommand.Execute(null);
 
         // assert
         _systemService.Received(0).OpenLinkInBrowser(Arg.Any<string>());
@@ -253,7 +253,7 @@ public class MakeListViewModelTests : BaseTest
         _systemService.OpenLinkInBrowser(Arg.Any<string>()).Returns(Result.Success());
 
         // act
-        _sut.OpenInBrowserCommand.Execute().Subscribe();
+        _sut.OpenInBrowserCommand.Execute(null);
 
         // assert
         Received.InOrder(() =>
@@ -273,7 +273,7 @@ public class MakeListViewModelTests : BaseTest
         _sut.SelectedPages = new ObservableCollection<WikiPageModel>();
 
         // act
-        _sut.OpenHistoryInBrowserCommand.Execute().Subscribe();
+        _sut.OpenHistoryInBrowserCommand.Execute(null);
 
         // assert
         _systemService.Received(0).OpenLinkInBrowser(Arg.Any<string>());
@@ -292,7 +292,7 @@ public class MakeListViewModelTests : BaseTest
         _systemService.OpenLinkInBrowser(Arg.Any<string>()).Returns(Result.Success());
 
         // act
-        _sut.OpenHistoryInBrowserCommand.Execute().Subscribe();
+        _sut.OpenHistoryInBrowserCommand.Execute(null);
 
         // assert
         Received.InOrder(() =>
@@ -311,7 +311,7 @@ public class MakeListViewModelTests : BaseTest
         _sut.SelectedPages = new ObservableCollection<WikiPageModel>();
 
         // act
-        _sut.CutCommand.Execute().Subscribe();
+        _sut.CutCommand.Execute(null);
 
         // assert
         _systemService.DidNotReceive().SetClipboardTextAsync(Arg.Any<string>());
@@ -326,7 +326,7 @@ public class MakeListViewModelTests : BaseTest
         _sut.SelectedPages = new List<WikiPageModel> {_sut.Pages[2], _sut.Pages[4], _sut.Pages[1]}.ToObservableCollection();
 
         // act
-        _sut.CutCommand.Execute().Subscribe();
+        _sut.CutCommand.Execute(null);
 
         // assert
         _systemService.Received(1)
@@ -343,7 +343,7 @@ public class MakeListViewModelTests : BaseTest
         _sut.SelectedPages = new ObservableCollection<WikiPageModel>();
 
         // act
-        _sut.CopyCommand.Execute().Subscribe();
+        _sut.CopyCommand.Execute(null);
 
         // assert
         _clipboard.DidNotReceive().SetTextAsync(Arg.Any<string>());
@@ -359,7 +359,7 @@ public class MakeListViewModelTests : BaseTest
         _sut.Pages = pages.ToObservableCollection();
 
         // act
-        _sut.CopyCommand.Execute().Subscribe();
+        _sut.CopyCommand.Execute(null);
 
         // assert
         _systemService.Received(1)
@@ -377,7 +377,7 @@ public class MakeListViewModelTests : BaseTest
         _sut.SelectedPages = new ObservableCollection<WikiPageModel>();
 
         // act
-        _sut.SelectAllCommand.Execute().Subscribe();
+        _sut.SelectAllCommand.Execute(null);
 
         // assert
         _sut.Pages.Should().HaveCount(5);
@@ -392,7 +392,7 @@ public class MakeListViewModelTests : BaseTest
         _sut.SelectedPages = new ObservableCollection<WikiPageModel>();
 
         // act
-        _sut.SelectNoneCommand.Execute().Subscribe();
+        _sut.SelectNoneCommand.Execute(null);
 
         // assert
         _sut.Pages.Should().HaveCount(5);
@@ -407,7 +407,7 @@ public class MakeListViewModelTests : BaseTest
         _sut.SelectedPages = new ObservableCollection<WikiPageModel>();
 
         // act
-        _sut.SelectInverseCommand.Execute().Subscribe();
+        _sut.SelectInverseCommand.Execute(null);
 
         // assert
         _sut.Pages.Should().HaveCount(5);
@@ -423,7 +423,7 @@ public class MakeListViewModelTests : BaseTest
         _sut.SelectedPages = pages.ToObservableCollection();
 
         // act
-        _sut.SelectInverseCommand.Execute().Subscribe();
+        _sut.SelectInverseCommand.Execute(null);
 
         // assert
         _sut.Pages.Should().HaveCount(5);
@@ -440,7 +440,7 @@ public class MakeListViewModelTests : BaseTest
         _sut.SelectedPages = selectedPages.ToObservableCollection();
 
         // act
-        _sut.SelectInverseCommand.Execute().Subscribe();
+        _sut.SelectInverseCommand.Execute(null);
 
         // assert
         _sut.Pages.Should().HaveCount(5);
@@ -456,7 +456,7 @@ public class MakeListViewModelTests : BaseTest
             .Returns($"page3{Environment.NewLine}fewfew{Environment.NewLine}ofiewf203{Environment.NewLine} foiwej   ");
 
         // act
-        _sut.PasteCommand.Execute().Subscribe();
+        _sut.PasteCommand.Execute(null);
 
         // assert
         _sut.Pages.Should().BeEquivalentTo(new List<WikiPageModel>
@@ -472,7 +472,7 @@ public class MakeListViewModelTests : BaseTest
         _sut.SelectedPages.Clear();
 
         // act
-        _sut.RemoveSelectedCommand.Execute().Subscribe();
+        _sut.RemoveSelectedCommand.Execute(null);
 
         // assert
         _sut.Pages.Should().BeEquivalentTo(pages);
@@ -490,7 +490,7 @@ public class MakeListViewModelTests : BaseTest
         _sut.SelectedPages = selectedPages.ToObservableCollection();
 
         // act
-        _sut.RemoveSelectedCommand.Execute().Subscribe();
+        _sut.RemoveSelectedCommand.Execute(null);
 
         // assert
         _sut.Pages.Should().BeEquivalentTo(notSelectedPages);
@@ -507,7 +507,7 @@ public class MakeListViewModelTests : BaseTest
         _sut.SelectedPages = selectedPages.ToObservableCollection();
 
         // act
-        _sut.RemoveAllCommand.Execute().Subscribe();
+        _sut.RemoveAllCommand.Execute(null);
 
         // assert
         _sut.Pages.Should().BeEmpty();
@@ -524,7 +524,7 @@ public class MakeListViewModelTests : BaseTest
         _sut.SelectedPages = pages.RandomSubset(2).ToObservableCollection();
 
         // act
-        _sut.RemoveDuplicateCommand.Execute().Subscribe();
+        _sut.RemoveDuplicateCommand.Execute(null);
 
         // assert
         _sut.Pages.Should().BeEquivalentTo(pages.Distinct());
@@ -540,7 +540,7 @@ public class MakeListViewModelTests : BaseTest
         _sut.SelectedPages = new List<WikiPageModel> {new("page1", 0), new("page2", 0)}.ToObservableCollection();
 
         // act
-        _sut.RemoveNonMainSpaceCommand.Execute().Subscribe();
+        _sut.RemoveNonMainSpaceCommand.Execute(null);
 
         // assert
         _sut.Pages.Should().BeEquivalentTo(new List<WikiPageModel> {new("Page3", 0), new("Page5", 0)});
@@ -556,7 +556,7 @@ public class MakeListViewModelTests : BaseTest
         _sut.SelectedPages = new List<WikiPageModel> {new("category:page2", 14), new("Page3", 0)}.ToObservableCollection();
 
         // act
-        _sut.MoveToTopCommand.Execute().Subscribe();
+        _sut.MoveToTopCommand.Execute(null);
 
         // assert
         _sut.Pages.Should()
@@ -575,7 +575,7 @@ public class MakeListViewModelTests : BaseTest
         _sut.SelectedPages = new List<WikiPageModel> {new("category:page2", 14), new("Page3", 0)}.ToObservableCollection();
 
         // act
-        _sut.MoveToBottomCommand.Execute().Subscribe();
+        _sut.MoveToBottomCommand.Execute(null);
 
         // assert
         _sut.Pages.Should()
@@ -592,7 +592,7 @@ public class MakeListViewModelTests : BaseTest
         _sut.Pages = Fakers.WikiPageModelFaker.Generate(10).ToObservableCollection();
 
         // act
-        _sut.SortAlphabeticallyCommand.Execute().Subscribe();
+        _sut.SortAlphabeticallyCommand.Execute(null);
 
         // assert
         _sut.Pages.Should()
@@ -608,7 +608,7 @@ public class MakeListViewModelTests : BaseTest
         _sut.Pages = Fakers.WikiPageModelFaker.Generate(10).ToObservableCollection();
 
         // act
-        _sut.SortReverseAlphabeticallyCommand.Execute().Subscribe();
+        _sut.SortReverseAlphabeticallyCommand.Execute(null);
 
         // assert
         _sut.Pages.Should()

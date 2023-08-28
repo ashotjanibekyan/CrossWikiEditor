@@ -32,7 +32,7 @@ public class AlertViewModelTests : BaseTest
         // arrange
 
         // act
-        _sut.OkCommand.Execute(_dialog).Subscribe();
+        _sut.OkCommand.Execute(_dialog);
 
         // assert
         _dialog.Received(1).Close(false);

@@ -1,23 +1,17 @@
-﻿using System.Reactive;
-using ReactiveUI;
+﻿using CommunityToolkit.Mvvm.Input;
 
 namespace CrossWikiEditor.ViewModels;
 
-public class PromptViewModel : ViewModelBase
+public sealed partial class PromptViewModel(string title, string text) : ViewModelBase
 {
-    public PromptViewModel(string title, string text)
-    {
-        Title = title;
-        Text = text;
-
-        OkCommand = ReactiveCommand.Create((IDialog dialog) => dialog.Close(Value));
-        CancelCommand = ReactiveCommand.Create((IDialog dialog) => dialog.Close(-1));
-    }
-
     public bool IsNumeric { get; set; }
-    public string Title { get; set; }
-    public string Text { get; set; }
+    public string Title { get; set; } = title;
+    public string Text { get; set; } = text;
     public int Value { get; set; }
-    public ReactiveCommand<IDialog, Unit> OkCommand { get; }
-    public ReactiveCommand<IDialog, Unit> CancelCommand { get; }
+
+    [RelayCommand]
+    private void Ok(IDialog dialog) => dialog.Close(Value);
+
+    [RelayCommand]
+    private void Cancel(IDialog dialog) => dialog.Close(-1);
 }

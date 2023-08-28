@@ -2,19 +2,18 @@
 using System.Collections.ObjectModel;
 using System;
 using System.Linq;
-using System.Reactive;
+using CommunityToolkit.Mvvm.Input;
 using CrossWikiEditor.Utils;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
 namespace CrossWikiEditor.ViewModels;
 
-public class SelectNamespacesViewModel : ViewModelBase
+public sealed partial class SelectNamespacesViewModel : ViewModelBase
 {
     public SelectNamespacesViewModel(List<WikiNamespace> namespaces)
     {
         Namespaces = namespaces.Where(x => x.Id >= 0).ToObservableCollection();
-        SelectCommand = ReactiveCommand.Create<IDialog>(Select);
 
         this.WhenAnyValue(x => x.IsAllSelected)
             .Subscribe((val) =>
@@ -26,6 +25,7 @@ public class SelectNamespacesViewModel : ViewModelBase
             });
     }
 
+    [RelayCommand]
     private void Select(IDialog dialog)
     {
         dialog.Close(Result<int[]>.Success(Namespaces.Where(n => n.IsChecked).Select(n => n.Id).ToArray()));
@@ -33,5 +33,4 @@ public class SelectNamespacesViewModel : ViewModelBase
 
     [Reactive] public ObservableCollection<WikiNamespace> Namespaces { get; set; }
     [Reactive] public bool IsAllSelected { get; set; }
-    public ReactiveCommand<IDialog, Unit> SelectCommand { get; }
 }

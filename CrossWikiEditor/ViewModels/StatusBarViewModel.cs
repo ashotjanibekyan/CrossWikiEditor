@@ -2,6 +2,7 @@ using System;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.Input;
 using CrossWikiEditor.Messages;
 using CrossWikiEditor.Services;
 using ReactiveUI;
@@ -9,7 +10,7 @@ using ReactiveUI.Fody.Helpers;
 
 namespace CrossWikiEditor.ViewModels;
 
-public sealed class StatusBarViewModel : ViewModelBase
+public sealed partial class StatusBarViewModel : ViewModelBase
 {
     private readonly IViewModelFactory _viewModelFactory;
     private readonly IDialogService _dialogService;
@@ -37,8 +38,6 @@ public sealed class StatusBarViewModel : ViewModelBase
             .Subscribe(message => { Project = message.Project.ToString(); });
         messageBus.Listen<LanguageCodeChangedMessage>()
             .Subscribe(message => { LanguageCode = message.LanguageCode; });
-        UsernameClickedCommand = ReactiveCommand.CreateFromTask(UsernameClicked);
-        CurrentWikiClickedCommand = ReactiveCommand.CreateFromTask(CurrentWikiClicked);
         UserPrefs currentPref = userPreferencesService.GetCurrentPref();
         Project = currentPref.Project.ToString();
         LanguageCode = currentPref.LanguageCode;
@@ -48,14 +47,14 @@ public sealed class StatusBarViewModel : ViewModelBase
     public string CurrentWiki => $"{_languageCode.Value}:{_project.Value}";
     [Reactive] private string LanguageCode { get; set; }
     [Reactive] private string Project { get; set; }
-    public ReactiveCommand<Unit, Unit> UsernameClickedCommand { get; }
-    public ReactiveCommand<Unit, Unit> CurrentWikiClickedCommand { get; }
 
+    [RelayCommand]
     private async Task UsernameClicked()
     {
         await _dialogService.ShowDialog<bool>(_viewModelFactory.GetProfilesViewModel());
     }
 
+    [RelayCommand]
     private async Task CurrentWikiClicked()
     {
         await _dialogService.ShowDialog<bool>(_viewModelFactory.GetPreferencesViewModel());

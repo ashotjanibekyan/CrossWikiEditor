@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.Input;
 using CrossWikiEditor.Messages;
 using CrossWikiEditor.Models;
 using CrossWikiEditor.Repositories;
@@ -12,7 +13,7 @@ using ReactiveUI.Fody.Helpers;
 
 namespace CrossWikiEditor.ViewModels;
 
-public sealed class ProfilesViewModel : ViewModelBase
+public sealed partial class ProfilesViewModel : ViewModelBase
 {
     private readonly IFileDialogService _fileDialogService;
     private readonly IDialogService _dialogService;
@@ -34,11 +35,6 @@ public sealed class ProfilesViewModel : ViewModelBase
         _userService = userService;
         _userPreferencesService = userPreferencesService;
         _messageBus = messageBus;
-        LoginCommand = ReactiveCommand.CreateFromTask<IDialog>(Login);
-        AddCommand = ReactiveCommand.CreateFromTask(Add);
-        EditCommand = ReactiveCommand.CreateFromTask(Edit);
-        DeleteCommand = ReactiveCommand.Create(Delete);
-        QuickLoginCommand = ReactiveCommand.CreateFromTask<IDialog>(QuickLogin);
         Profiles = new ObservableCollection<Profile>(_profileRepository.GetAll() ?? new List<Profile>());
     }
 
@@ -47,15 +43,10 @@ public sealed class ProfilesViewModel : ViewModelBase
 
     [Reactive] public ObservableCollection<Profile> Profiles { get; set; }
 
-    public ReactiveCommand<IDialog, Unit> LoginCommand { get; }
-    public ReactiveCommand<Unit, Unit> AddCommand { get; }
-    public ReactiveCommand<Unit, Unit> EditCommand { get; }
-    public ReactiveCommand<Unit, Unit> DeleteCommand { get; }
-    public ReactiveCommand<IDialog, Unit> QuickLoginCommand { get; }
-
     public string Username { get; set; } = "";
     public string Password { get; set; } = "";
 
+    [RelayCommand]
     private async Task Login(IDialog dialog)
     {
         if (SelectedProfile == null)
@@ -66,6 +57,7 @@ public sealed class ProfilesViewModel : ViewModelBase
         await Login(SelectedProfile, dialog);
     }
 
+    [RelayCommand]
     private async Task Add()
     {
         if (await _dialogService.ShowDialog<bool>(new AddOrEditProfileViewModel(_fileDialogService, _profileRepository, -1)))
@@ -74,6 +66,7 @@ public sealed class ProfilesViewModel : ViewModelBase
         }
     }
 
+    [RelayCommand]
     private async Task Edit()
     {
         if (SelectedProfile is null)
@@ -96,6 +89,7 @@ public sealed class ProfilesViewModel : ViewModelBase
         }
     }
 
+    [RelayCommand]
     private void Delete()
     {
         if (SelectedProfile is null)
@@ -107,7 +101,8 @@ public sealed class ProfilesViewModel : ViewModelBase
         SelectedProfile = null;
         Profiles = new ObservableCollection<Profile>(_profileRepository.GetAll());
     }
-
+    
+    [RelayCommand]
     private async Task QuickLogin(IDialog dialog)
     {
         if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
@@ -122,7 +117,7 @@ public sealed class ProfilesViewModel : ViewModelBase
         };
         await Login(profile, dialog);
     }
-
+    
     private async Task Login(Profile profile, IDialog dialog)
     {
         UserPrefs currentUserPref = string.IsNullOrEmpty(profile.DefaultSettingsPath)

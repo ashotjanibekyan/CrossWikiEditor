@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System;
 using System.Reactive;
+using CommunityToolkit.Mvvm.Input;
 using CrossWikiEditor.Messages;
 using CrossWikiEditor.Services;
 using ReactiveUI;
@@ -9,7 +10,7 @@ using ReactiveUI.Fody.Helpers;
 
 namespace CrossWikiEditor.ViewModels;
 
-public sealed class PreferencesViewModel : ViewModelBase
+public sealed partial class PreferencesViewModel : ViewModelBase
 {
     private readonly IUserPreferencesService _userPreferencesService;
     private readonly IMessageBus _messageBus;
@@ -29,13 +30,7 @@ public sealed class PreferencesViewModel : ViewModelBase
 
         SelectedLanguage = userPreferencesService.GetCurrentPref().LanguageCode;
         SelectedProject = userPreferencesService.GetCurrentPref().Project;
-
-        SaveCommand = ReactiveCommand.Create<IDialog>(Save);
-        CancelCommand = ReactiveCommand.Create((IDialog dialog) => dialog.Close(false));
     }
-
-    public ReactiveCommand<IDialog, Unit> SaveCommand { get; }
-    public ReactiveCommand<IDialog, Unit> CancelCommand { get; }
 
     [Reactive] public bool MinimizeToSystray { get; set; }
 
@@ -73,12 +68,15 @@ public sealed class PreferencesViewModel : ViewModelBase
 
     [Reactive] public Alerts Alerts { get; set; }
 
+    [RelayCommand]
     private void Save(IDialog dialog)
     {
         _messageBus.SendMessage(new ProjectChangedMessage(SelectedProject));
         _messageBus.SendMessage(new LanguageCodeChangedMessage(SelectedLanguage));
         dialog.Close(true);
     }
+
+    [RelayCommand] private void Cancel(IDialog dialog) => dialog.Close(false);
 }
 
 public class Alerts

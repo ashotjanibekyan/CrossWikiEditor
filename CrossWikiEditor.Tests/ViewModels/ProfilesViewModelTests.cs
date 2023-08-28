@@ -25,7 +25,7 @@ public class ProfilesViewModelTests : BaseTest
         _sut.SelectedProfile = null;
 
         // act
-        _sut.LoginCommand.Execute().Subscribe();
+        _sut.LoginCommand.Execute(null);
 
         // assert
         _userPreferencesService.Received(0).GetCurrentPref();
@@ -51,7 +51,7 @@ public class ProfilesViewModelTests : BaseTest
         _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Result.Success());
 
         // act
-        _sut.LoginCommand.Execute(_dialog).Subscribe();
+        _sut.LoginCommand.Execute(_dialog);
 
         // assert
         _userService.Received(1).Login(Arg.Is<Profile>(p => p.Username == profile.Username && p.Password == profile.Password),
@@ -81,7 +81,7 @@ public class ProfilesViewModelTests : BaseTest
         _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Result.Success());
 
         // act
-        _sut.LoginCommand.Execute(_dialog).Subscribe();
+        _sut.LoginCommand.Execute(_dialog);
 
         // assert
         _userPreferencesService.Received(1)
@@ -111,7 +111,7 @@ public class ProfilesViewModelTests : BaseTest
         _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Result.Failure(string.Empty));
 
         // act
-        _sut.LoginCommand.Execute(_dialog).Subscribe();
+        _sut.LoginCommand.Execute(_dialog);
 
         // assert
         _userService.Received(1).Login(Arg.Is<Profile>(p => p.Username == profile.Username && p.Password == profile.Password),
@@ -139,7 +139,7 @@ public class ProfilesViewModelTests : BaseTest
         _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Result.Failure("this is an error message"));
 
         // act
-        _sut.LoginCommand.Execute(_dialog).Subscribe();
+        _sut.LoginCommand.Execute(_dialog);
 
         // assert
         _userService.Received(1).Login(Arg.Is<Profile>(p => p.Username == profile.Username && p.Password == profile.Password),
@@ -154,7 +154,7 @@ public class ProfilesViewModelTests : BaseTest
         // arrange
 
         // act
-        _sut.AddCommand.Execute().Subscribe();
+        _sut.AddCommand.Execute(null);
 
         // assert
         _dialogService.Received(1)
@@ -190,7 +190,7 @@ public class ProfilesViewModelTests : BaseTest
         };
 
         // act
-        _sut.AddCommand.Execute().Subscribe();
+        _sut.AddCommand.Execute(null);
 
         // assert
         _profileRepository.Received(1).GetAll();
@@ -205,7 +205,7 @@ public class ProfilesViewModelTests : BaseTest
         _sut.SelectedProfile = null;
 
         // act
-        _sut.EditCommand.Execute().Subscribe();
+        _sut.EditCommand.Execute(null);
 
         // assert
         _dialogService.DidNotReceive().ShowDialog<bool>(Arg.Any<AddOrEditProfileViewModel>());
@@ -220,7 +220,7 @@ public class ProfilesViewModelTests : BaseTest
         _sut.SelectedProfile = profile;
 
         // act
-        _sut.EditCommand.Execute().Subscribe();
+        _sut.EditCommand.Execute(null);
 
         // assert
         _dialogService.Received(1).ShowDialog<bool>(Arg.Is<AddOrEditProfileViewModel>(vm =>
@@ -239,7 +239,7 @@ public class ProfilesViewModelTests : BaseTest
         _profileRepository.GetAll().Returns(profiles);
 
         // act
-        _sut.EditCommand.Execute().Subscribe();
+        _sut.EditCommand.Execute(null);
 
         // assert
         _sut.Profiles.Should().BeEquivalentTo(profiles);
@@ -255,7 +255,7 @@ public class ProfilesViewModelTests : BaseTest
         _profileRepository.GetAll().Returns(profiles);
 
         // act
-        _sut.EditCommand.Execute().Subscribe();
+        _sut.EditCommand.Execute(null);
 
         // assert
         _sut.Profiles.Should().NotBeEquivalentTo(profiles);
@@ -270,7 +270,7 @@ public class ProfilesViewModelTests : BaseTest
         _sut.Profiles = profiles.ToObservableCollection();
 
         // act
-        _sut.DeleteCommand.Execute().Subscribe();
+        _sut.DeleteCommand.Execute(null);
 
         // assert
         _profileRepository.DidNotReceive().Delete(Arg.Any<int>());
@@ -287,7 +287,7 @@ public class ProfilesViewModelTests : BaseTest
         _profileRepository.GetAll().Returns(profiles);
 
         // act
-        _sut.DeleteCommand.Execute().Subscribe();
+        _sut.DeleteCommand.Execute(null);
 
         // assert
         Received.InOrder(() =>
@@ -312,7 +312,7 @@ public class ProfilesViewModelTests : BaseTest
         _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Result.Success());
 
         // act
-        _sut.QuickLoginCommand.Execute(_dialog).Subscribe();
+        _sut.QuickLoginCommand.Execute(_dialog);
 
         // assert
         _userService.Received(1).Login(Arg.Is<Profile>(p => p.Username == "username" && p.Password == "Qwer1234"),
@@ -336,7 +336,7 @@ public class ProfilesViewModelTests : BaseTest
         _sut.Password = password;
 
         // act
-        _sut.QuickLoginCommand.Execute(_dialog).Subscribe();
+        _sut.QuickLoginCommand.Execute(_dialog);
 
         // assert
         _userService.DidNotReceive().Login(Arg.Any<Profile>(), Arg.Any<string>());
@@ -356,7 +356,7 @@ public class ProfilesViewModelTests : BaseTest
         _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Result.Success());
 
         // act
-        _sut.QuickLoginCommand.Execute(_dialog).Subscribe();
+        _sut.QuickLoginCommand.Execute(_dialog);
 
         // assert
         _messageBus.Received(1).SendMessage(Arg.Any<NewAccountLoggedInMessage>());
@@ -378,7 +378,7 @@ public class ProfilesViewModelTests : BaseTest
         _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Result.Failure("Password is wrong"));
 
         // act
-        _sut.QuickLoginCommand.Execute(_dialog).Subscribe();
+        _sut.QuickLoginCommand.Execute(_dialog);
 
         // assert
         _dialogService.Received(1).Alert("Login Attempt Unsuccessful", "Password is wrong");
@@ -400,7 +400,7 @@ public class ProfilesViewModelTests : BaseTest
         _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Result.Failure(errorMessage));
 
         // act
-        _sut.QuickLoginCommand.Execute(_dialog).Subscribe();
+        _sut.QuickLoginCommand.Execute(_dialog);
 
         // assert
         _dialogService.Received(1).Alert("Login Attempt Unsuccessful",

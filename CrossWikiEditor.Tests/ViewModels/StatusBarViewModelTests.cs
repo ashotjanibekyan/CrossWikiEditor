@@ -43,7 +43,7 @@ public class StatusBarViewModelTests : BaseTest
         _viewModelFactory.GetPreferencesViewModel().Returns(preferencesViewModel);
 
         // act
-        _sut.CurrentWikiClickedCommand.Execute().Subscribe();
+        _sut.CurrentWikiClickedCommand.Execute(null);
 
         // assert
         Received.InOrder(() =>
@@ -64,7 +64,7 @@ public class StatusBarViewModelTests : BaseTest
         _viewModelFactory.GetProfilesViewModel().Returns(profilesViewModel);
 
         // act
-        _sut.UsernameClickedCommand.Execute().Subscribe();
+        _sut.UsernameClickedCommand.Execute(null);
 
         // assert
         Received.InOrder(() =>

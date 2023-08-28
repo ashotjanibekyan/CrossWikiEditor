@@ -26,7 +26,7 @@ public class AddOrEditProfileViewModelTests : BaseTest
             .Returns(new[] {"some/valid/file.xml"});
 
         // act
-        _sut.BrowseCommand.Execute().Subscribe();
+        _sut.BrowseCommand.Execute(null);
 
         // assert
         _sut.DefaultSettingsPath.Should().Be("some/valid/file.xml");
@@ -44,7 +44,7 @@ public class AddOrEditProfileViewModelTests : BaseTest
         string? initialDefaultSettingsPath = _sut.DefaultSettingsPath;
 
         // act
-        _sut.BrowseCommand.Execute().Subscribe();
+        _sut.BrowseCommand.Execute(null);
 
         // assert
         _sut.DefaultSettingsPath.Should().Be(initialDefaultSettingsPath);
@@ -62,7 +62,7 @@ public class AddOrEditProfileViewModelTests : BaseTest
         string? initialDefaultSettingsPath = _sut.DefaultSettingsPath;
 
         // act
-        _sut.BrowseCommand.Execute().Subscribe();
+        _sut.BrowseCommand.Execute(null);
 
         // assert
         _sut.DefaultSettingsPath.Should().Be(initialDefaultSettingsPath);
@@ -79,7 +79,7 @@ public class AddOrEditProfileViewModelTests : BaseTest
         _sut.Password = "Qwer1234";
 
         // act
-        _sut.SaveCommand.Execute(_dialog).Subscribe();
+        _sut.SaveCommand.Execute(_dialog);
 
         // assert
         _dialog.Received(1).Close(false);
@@ -97,7 +97,7 @@ public class AddOrEditProfileViewModelTests : BaseTest
         _sut.DefaultSettingsPath = "some/path/file.xml";
 
         // act
-        _sut.SaveCommand.Execute(_dialog).Subscribe();
+        _sut.SaveCommand.Execute(_dialog);
 
         // assert
         _dialog.Received(1).Close(false);
@@ -116,7 +116,7 @@ public class AddOrEditProfileViewModelTests : BaseTest
         _sut.Username = "username";
 
         // act
-        _sut.SaveCommand.Execute(_dialog).Subscribe();
+        _sut.SaveCommand.Execute(_dialog);
 
         // assert
         _dialog.Received(1).Close(false);
@@ -145,7 +145,7 @@ public class AddOrEditProfileViewModelTests : BaseTest
         };
 
         // act
-        _sut.SaveCommand.Execute(_dialog).Subscribe();
+        _sut.SaveCommand.Execute(_dialog);
 
         // assert
         _profileRepository.Received(1).Insert(Arg.Is<Profile>(p =>
@@ -181,7 +181,7 @@ public class AddOrEditProfileViewModelTests : BaseTest
         };
 
         // act
-        _sut.SaveCommand.Execute(_dialog).Subscribe();
+        _sut.SaveCommand.Execute(_dialog);
 
         // assert
         _profileRepository.Received(1).Update(Arg.Is<Profile>(p =>
@@ -197,7 +197,7 @@ public class AddOrEditProfileViewModelTests : BaseTest
         // arrange
 
         // act
-        _sut.CancelCommand.Execute(_dialog).Subscribe();
+        _sut.CancelCommand.Execute(_dialog);
 
         // assert
         _dialog.Received(1).Close(false);

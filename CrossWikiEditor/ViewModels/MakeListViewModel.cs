@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
+using CommunityToolkit.Mvvm.Input;
 using CrossWikiEditor.ListProviders;
 using CrossWikiEditor.Models;
 using CrossWikiEditor.Services;
@@ -20,7 +21,7 @@ using ReactiveUI.Fody.Helpers;
 
 namespace CrossWikiEditor.ViewModels;
 
-public sealed class MakeListViewModel : ViewModelBase
+public sealed partial class MakeListViewModel : ViewModelBase
 {
     private readonly IDialogService _dialogService;
     private readonly IWikiClientCache _clientCache;
@@ -46,36 +47,12 @@ public sealed class MakeListViewModel : ViewModelBase
         _viewModelFactory = viewModelFactory;
         _fileDialogService = fileDialogService;
         _userPreferencesService = userPreferencesService;
-        AddNewPageCommand = ReactiveCommand.CreateFromTask(AddNewPage);
-        RemoveCommand = ReactiveCommand.Create(Remove);
-        MakeListCommand = ReactiveCommand.CreateFromTask(MakeList);
-        OpenInBrowserCommand = ReactiveCommand.Create(OpenInBrowser);
-        OpenHistoryInBrowserCommand = ReactiveCommand.Create(OpenHistoryInBrowser);
-        CutCommand = ReactiveCommand.CreateFromTask(Cut);
-        CopyCommand = ReactiveCommand.CreateFromTask(Copy);
-        PasteCommand = ReactiveCommand.CreateFromTask(Paste);
-        SelectAllCommand = ReactiveCommand.Create(SelectAll);
-        SelectNoneCommand = ReactiveCommand.Create(SelectNone);
-        SelectInverseCommand = ReactiveCommand.Create(SelectInverse);
-        RemoveSelectedCommand = ReactiveCommand.Create(RemoveSelected);
-        RemoveAllCommand = ReactiveCommand.Create(RemoveAll);
-        RemoveDuplicateCommand = ReactiveCommand.Create(RemoveDuplicate);
-        RemoveNonMainSpaceCommand = ReactiveCommand.Create(RemoveNonMainSpace);
-        MoveToTopCommand = ReactiveCommand.Create(MoveToTop);
-        MoveToBottomCommand = ReactiveCommand.Create(MoveToBottom);
-        ConvertToTalkPagesCommand = ReactiveCommand.CreateFromTask(ConvertToTalkPages);
-        ConvertFromTalkPagesCommand = ReactiveCommand.CreateFromTask(ConvertFromTalkPages);
-        FormatPageTitlesPerDisplayTitleCommand = ReactiveCommand.Create(FormatPageTitlesPerDisplayTitle);
-        FilterCommand = ReactiveCommand.CreateFromTask(Filter);
-        SaveListCommand = ReactiveCommand.CreateFromTask(SaveList);
-        SortAlphabeticallyCommand = ReactiveCommand.Create(SortAlphabetically);
-        SortReverseAlphabeticallyCommand = ReactiveCommand.Create(SortReverseAlphabetically);
 
         ListProviders = listProviders.ToObservableCollection();
         SelectedListProvider = ListProviders[0];
     }
 
-
+    [RelayCommand]
     private async Task AddNewPage()
     {
         if (!string.IsNullOrWhiteSpace(NewPageTitle))
@@ -87,6 +64,7 @@ public sealed class MakeListViewModel : ViewModelBase
         NewPageTitle = string.Empty;
     }
 
+    [RelayCommand]
     private void Remove()
     {
         if (SelectedPages.Any())
@@ -97,6 +75,7 @@ public sealed class MakeListViewModel : ViewModelBase
         SelectedPages = new ObservableCollection<WikiPageModel>();
     }
 
+    [RelayCommand]
     private async Task MakeList(CancellationToken arg)
     {
         if (SelectedListProvider.NeedsAdditionalParams)
@@ -121,6 +100,7 @@ public sealed class MakeListViewModel : ViewModelBase
         }
     }
 
+    [RelayCommand]
     private void OpenInBrowser()
     {
         if (!SelectedPages.Any())
@@ -134,6 +114,7 @@ public sealed class MakeListViewModel : ViewModelBase
         }
     }
 
+    [RelayCommand]
     private void OpenHistoryInBrowser()
     {
         if (!SelectedPages.Any())
@@ -147,6 +128,7 @@ public sealed class MakeListViewModel : ViewModelBase
         }
     }
 
+    [RelayCommand]
     private async Task Cut()
     {
         if (!SelectedPages.Any())
@@ -159,6 +141,7 @@ public sealed class MakeListViewModel : ViewModelBase
         SelectedPages = new ObservableCollection<WikiPageModel>();
     }
 
+    [RelayCommand]
     private async Task Copy()
     {
         if (!SelectedPages.Any())
@@ -169,6 +152,7 @@ public sealed class MakeListViewModel : ViewModelBase
         await _systemService.SetClipboardTextAsync(string.Join(Environment.NewLine, SelectedPages.Select(x => x.Title)));
     }
 
+    [RelayCommand]
     private async Task Paste()
     {
         string? clipboardText = await _systemService.GetClipboardTextAsync();
@@ -185,6 +169,7 @@ public sealed class MakeListViewModel : ViewModelBase
         }
     }
 
+    [RelayCommand]
     private void SelectAll()
     {
         foreach (WikiPageModel page in Pages)
@@ -193,11 +178,13 @@ public sealed class MakeListViewModel : ViewModelBase
         }
     }
 
+    [RelayCommand]
     private void SelectNone()
     {
         SelectedPages = new ObservableCollection<WikiPageModel>();
     }
 
+    [RelayCommand]
     private void SelectInverse()
     {
         var newSelection = Pages.Where(page => !SelectedPages.Contains(page)).ToList();
@@ -205,30 +192,35 @@ public sealed class MakeListViewModel : ViewModelBase
         SelectedPages = newSelection.ToObservableCollection();
     }
 
+    [RelayCommand]
     private void RemoveSelected()
     {
         Pages.Remove(SelectedPages.ToList());
         SelectedPages.Clear();
     }
 
+    [RelayCommand]
     private void RemoveAll()
     {
         Pages.Clear();
         SelectedPages.Clear();
     }
 
+    [RelayCommand]
     private void RemoveDuplicate()
     {
         Pages = Pages.Distinct().ToObservableCollection();
         SelectedPages.Clear();
     }
 
+    [RelayCommand]
     private void RemoveNonMainSpace()
     {
         Pages = Pages.Where(p => p.NamespaceId == 0).ToObservableCollection();
         SelectedPages.Clear();
     }
 
+    [RelayCommand]
     private void MoveToTop()
     {
         var selectedPages = SelectedPages.ToList();
@@ -237,6 +229,7 @@ public sealed class MakeListViewModel : ViewModelBase
         SelectedPages.Clear();
     }
 
+    [RelayCommand]
     private void MoveToBottom()
     {
         var selectedPages = SelectedPages.ToList();
@@ -245,6 +238,7 @@ public sealed class MakeListViewModel : ViewModelBase
         SelectedPages.Clear();
     }
 
+    [RelayCommand]
     private async Task ConvertToTalkPages()
     {
         List<WikiPageModel>? talkPages = (await _pageService.ConvertToTalk(Pages.ToList())).Value;
@@ -254,6 +248,7 @@ public sealed class MakeListViewModel : ViewModelBase
         }
     }
 
+    [RelayCommand]
     private async Task ConvertFromTalkPages()
     {
         List<WikiPageModel>? subjectPages = (await _pageService.ConvertToSubject(Pages.ToList())).Value;
@@ -263,11 +258,13 @@ public sealed class MakeListViewModel : ViewModelBase
         }
     }
 
+    [RelayCommand]
     private void FormatPageTitlesPerDisplayTitle()
     {
         throw new NotImplementedException();
     }
 
+    [RelayCommand]
     private async Task Filter()
     {
         try
@@ -313,6 +310,7 @@ public sealed class MakeListViewModel : ViewModelBase
         }
     }
 
+    [RelayCommand]
     private async Task SaveList()
     {
         string? suggestedTitle =
@@ -330,11 +328,13 @@ public sealed class MakeListViewModel : ViewModelBase
         }
     }
 
+    [RelayCommand]
     private void SortAlphabetically()
     {
         Pages = Pages.OrderBy(x => x.Title).ToObservableCollection();
     }
 
+    [RelayCommand]
     private void SortReverseAlphabetically()
     {
         Pages = Pages.OrderByDescending(x => x.Title).ToObservableCollection();
@@ -345,28 +345,4 @@ public sealed class MakeListViewModel : ViewModelBase
     [Reactive] public ObservableCollection<WikiPageModel> Pages { get; set; } = new();
     [Reactive] public ObservableCollection<WikiPageModel> SelectedPages { get; set; } = new();
     [Reactive] public string NewPageTitle { get; set; } = string.Empty;
-    public ReactiveCommand<Unit, Unit> AddNewPageCommand { get; }
-    public ReactiveCommand<Unit, Unit> RemoveCommand { get; }
-    public ReactiveCommand<Unit, Unit> MakeListCommand { get; }
-    public ReactiveCommand<Unit, Unit> OpenInBrowserCommand { get; }
-    public ReactiveCommand<Unit, Unit> OpenHistoryInBrowserCommand { get; }
-    public ReactiveCommand<Unit, Unit> CutCommand { get; }
-    public ReactiveCommand<Unit, Unit> CopyCommand { get; }
-    public ReactiveCommand<Unit, Unit> PasteCommand { get; }
-    public ReactiveCommand<Unit, Unit> SelectAllCommand { get; }
-    public ReactiveCommand<Unit, Unit> SelectNoneCommand { get; }
-    public ReactiveCommand<Unit, Unit> SelectInverseCommand { get; }
-    public ReactiveCommand<Unit, Unit> RemoveSelectedCommand { get; }
-    public ReactiveCommand<Unit, Unit> RemoveAllCommand { get; }
-    public ReactiveCommand<Unit, Unit> RemoveDuplicateCommand { get; }
-    public ReactiveCommand<Unit, Unit> RemoveNonMainSpaceCommand { get; }
-    public ReactiveCommand<Unit, Unit> MoveToTopCommand { get; }
-    public ReactiveCommand<Unit, Unit> MoveToBottomCommand { get; }
-    public ReactiveCommand<Unit, Unit> ConvertToTalkPagesCommand { get; }
-    public ReactiveCommand<Unit, Unit> ConvertFromTalkPagesCommand { get; }
-    public ReactiveCommand<Unit, Unit> FormatPageTitlesPerDisplayTitleCommand { get; }
-    public ReactiveCommand<Unit, Unit> FilterCommand { get; }
-    public ReactiveCommand<Unit, Unit> SaveListCommand { get; }
-    public ReactiveCommand<Unit, Unit> SortAlphabeticallyCommand { get; }
-    public ReactiveCommand<Unit, Unit> SortReverseAlphabeticallyCommand { get; }
 }

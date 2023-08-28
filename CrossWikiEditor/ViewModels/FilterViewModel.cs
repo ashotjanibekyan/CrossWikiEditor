@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Reactive;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.Input;
 using CrossWikiEditor.ListProviders;
 using CrossWikiEditor.Models;
 using CrossWikiEditor.Utils;
@@ -19,7 +19,7 @@ public class WikiNamespace(int id, string name, bool isChecked = false)
     public bool IsChecked { get; set; } = isChecked;
 }
 
-public class FilterViewModel : ViewModelBase
+public partial class FilterViewModel : ViewModelBase
 {
     private readonly TextFileListProvider _textFileListProvider;
 
@@ -56,13 +56,9 @@ public class FilterViewModel : ViewModelBase
 
         SubjectNamespaces = subjectNamespaces.ToObservableCollection();
         TalkNamespaces = talkNamespaces.ToObservableCollection();
-
-        SaveCommand = ReactiveCommand.Create<IDialog>(Save);
-        CloseCommand = ReactiveCommand.Create((IDialog dialog) => dialog.Close(Result<FilterOptions>.Failure("Closed without selecting any value")));
-        OpenFileCommand = ReactiveCommand.CreateFromTask(OpenFile);
-        ClearCommand = ReactiveCommand.Create(Clear);
     }
-
+    
+    [RelayCommand]
     private void Save(IDialog dialog)
     {
         IEnumerable<int> arr1 = SubjectNamespaces.ToList().Where(x => x.IsChecked).Select(x => x.Id);
@@ -78,6 +74,10 @@ public class FilterViewModel : ViewModelBase
             Pages.ToList())));
     }
 
+    [RelayCommand]
+    private void Close(IDialog dialog) => dialog.Close(Result<FilterOptions>.Failure("Closed without selecting any value"));
+
+    [RelayCommand]
     private async Task OpenFile()
     {
         if (_textFileListProvider.NeedsAdditionalParams)
@@ -95,6 +95,7 @@ public class FilterViewModel : ViewModelBase
         }
     }
 
+    [RelayCommand]
     private void Clear()
     {
         Pages.Clear();
@@ -115,8 +116,4 @@ public class FilterViewModel : ViewModelBase
     [Reactive] public string RemoveTitlesContaining { get; set; } = string.Empty;
     [Reactive] public string KeepTitlesContaining { get; set; } = string.Empty;
     [Reactive] public SetOperations SelectedSetOperations { get; set; } = Models.SetOperations.SymmetricDifference;
-    public ReactiveCommand<IDialog, Unit> SaveCommand { get; }
-    public ReactiveCommand<IDialog, Unit> CloseCommand { get; }
-    public ReactiveCommand<Unit, Unit> OpenFileCommand { get; }
-    public ReactiveCommand<Unit, Unit> ClearCommand { get; }
 }

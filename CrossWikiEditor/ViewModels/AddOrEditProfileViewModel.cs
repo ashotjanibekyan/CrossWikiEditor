@@ -2,33 +2,22 @@
 using System.Reactive;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
+using CommunityToolkit.Mvvm.Input;
 using CrossWikiEditor.Models;
 using CrossWikiEditor.Repositories;
 using CrossWikiEditor.Services;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
 namespace CrossWikiEditor.ViewModels;
 
-public sealed class AddOrEditProfileViewModel : ViewModelBase
-{
-    private readonly IFileDialogService _fileDialogService;
-    private readonly IProfileRepository _profileRepository;
-    private readonly int _id;
-
-    public AddOrEditProfileViewModel(IFileDialogService fileDialogService,
+public sealed partial class AddOrEditProfileViewModel(IFileDialogService fileDialogService,
         IProfileRepository profileRepository,
         int id)
-    {
-        _fileDialogService = fileDialogService;
-        _profileRepository = profileRepository;
-        _id = id;
-        BrowseCommand = ReactiveCommand.CreateFromTask(Browse);
-        SaveCommand = ReactiveCommand.Create<IDialog>(Save);
-        CancelCommand = ReactiveCommand.Create((IDialog dialog) => dialog.Close(false));
-    }
-
-    public bool IsEdit => _id != -1;
+    : ViewModelBase
+{
+    public bool IsEdit => id != -1;
 
     [Reactive] public string Username { get; set; } = string.Empty;
 
@@ -42,14 +31,10 @@ public sealed class AddOrEditProfileViewModel : ViewModelBase
 
     [Reactive] public string Notes { get; set; } = string.Empty;
 
-    public ReactiveCommand<Unit, Unit> BrowseCommand { get; }
-    public ReactiveCommand<IDialog, Unit> SaveCommand { get; }
-    public ReactiveCommand<IDialog, Unit> CancelCommand { get; }
-
-
+    [RelayCommand]
     private async Task Browse()
     {
-        string[]? result = await _fileDialogService.OpenFilePickerAsync("Select settings file", false, new List<FilePickerFileType>
+        string[]? result = await fileDialogService.OpenFilePickerAsync("Select settings file", false, new List<FilePickerFileType>
         {
             new(null)
             {
@@ -62,6 +47,7 @@ public sealed class AddOrEditProfileViewModel : ViewModelBase
         }
     }
 
+    [RelayCommand]
     private void Save(IDialog dialog)
     {
         if (string.IsNullOrWhiteSpace(Username))
@@ -93,14 +79,17 @@ public sealed class AddOrEditProfileViewModel : ViewModelBase
 
         if (IsEdit)
         {
-            profile.Id = _id;
-            _profileRepository.Update(profile);
+            profile.Id = id;
+            profileRepository.Update(profile);
         }
         else
         {
-            _profileRepository.Insert(profile);
+            profileRepository.Insert(profile);
         }
 
         dialog.Close(true);
     }
+
+    [RelayCommand]
+    private void Cancel(IDialog dialog) => dialog.Close(false);
 }
