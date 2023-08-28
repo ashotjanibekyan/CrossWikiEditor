@@ -20,7 +20,7 @@ public class MakeListViewModelTests : BaseTest
             Substitute.For<IListProvider>(),
             Substitute.For<IListProvider>()
         };
-        _sut = new MakeListViewModel(_dialogService, _wikiClientCache, _pageService, _systemService, _viewModelFactory, _fileDialogService,
+        _sut = new MakeListViewModel(_messenger, _dialogService, _wikiClientCache, _pageService, _systemService, _viewModelFactory, _fileDialogService,
             _userPreferencesService, listProviders);
     }
 

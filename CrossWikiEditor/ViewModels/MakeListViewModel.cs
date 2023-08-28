@@ -10,7 +10,9 @@ using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using CrossWikiEditor.ListProviders;
+using CrossWikiEditor.Messages;
 using CrossWikiEditor.Models;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
@@ -28,7 +30,9 @@ public sealed partial class MakeListViewModel : ViewModelBase
     private readonly IFileDialogService _fileDialogService;
     private readonly IUserPreferencesService _userPreferencesService;
 
-    public MakeListViewModel(IDialogService dialogService,
+    public MakeListViewModel(
+        IMessenger messenger,
+        IDialogService dialogService,
         IWikiClientCache clientCache,
         IPageService pageService,
         ISystemService systemService,
@@ -47,6 +51,11 @@ public sealed partial class MakeListViewModel : ViewModelBase
 
         ListProviders = listProviders.ToObservableCollection();
         SelectedListProvider = ListProviders[0];
+        
+        messenger.Register<PageUpdatedMessage>(this, (recipient, message) =>
+        {
+            Pages.Remove(message.Page);
+        });
     }
 
     [RelayCommand]
