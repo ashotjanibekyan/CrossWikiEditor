@@ -144,14 +144,39 @@ public class App : Application
         builder.RegisterType<CategoryRecursive1LevelListProvider>().As<IListProvider>();
         builder.RegisterType<CategoryRecursiveUserDefinedLevelListProvider>().As<IListProvider>();
         builder.RegisterType<CategoryRecursiveListProvider>().As<IListProvider>();
+        // TODO: CheckWiki error
+        // TODO: CheckWiki error (number)
+        // TODO: Database dump
         builder.RegisterType<FilesOnPageListProvider>().As<IListProvider>();
-        builder.RegisterType<TextFileListProvider>().As<IListProvider>();
-        builder.RegisterType<RandomListProvider>().As<IListProvider>();
         builder.RegisterType<GoogleSearchListProvider>().As<IListProvider>();
+        // todo: HTML Scraper
+        // todo: HTML Scraper (advanced regex)
         builder.RegisterType<ImageFileLinksListProvider>().As<IListProvider>();
         builder.RegisterType<LinksOnPageListProvider>().As<IListProvider>();
         builder.RegisterType<LinksOnPageBlueListProvider>().As<IListProvider>();
         builder.RegisterType<LinksOnPageRedListProvider>().As<IListProvider>();
+        builder.RegisterType<MyWatchlistListProvider>().As<IListProvider>();
+        // todo: New pages
+        // todo: pages with a page property
+        builder.RegisterType<RandomListProvider>().As<IListProvider>();
+        // todo: Special pages
+        builder.RegisterType<TextFileListProvider>().As<IListProvider>();
+        // todo: transclusions on page
+        // todo: user contrib
+        // todo: user contrib (user defined number)
+        // todo: what links here
+        // todo: what links here (all NS)
+        // todo: what links here (all NS) (and to redirect)
+        // todo: what links here (and to redirect)
+        // todo: what links here direct
+        // todo: what redirects here
+        // todo: what redirects here (all NS)
+        // todo: what transcludes here
+        // todo: what transcludes here (all NS)
+        // todo: Wiki search (text)
+        // todo: Wiki search (text) (all NS)
+        // todo: Wiki search (title)
+        // todo: Wiki search (title) (all NS)
         
         builder.RegisterType<TextFileListProvider>();
     }
