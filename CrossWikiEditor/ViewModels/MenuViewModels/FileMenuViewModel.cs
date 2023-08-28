@@ -5,6 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.Input;
 using CrossWikiEditor.Services;
+using CrossWikiEditor.Settings;
 
 namespace CrossWikiEditor.ViewModels.MenuViewModels;
 

@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using CommunityToolkit.Mvvm.Messaging;
 using CrossWikiEditor.Messages;
+using CrossWikiEditor.Settings;
 
 namespace CrossWikiEditor.Services;
 

@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+using CrossWikiEditor.Settings;
 
 namespace CrossWikiEditor.Messages;
 

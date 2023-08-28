@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Xml.Serialization;
 
-namespace CrossWikiEditor;
+namespace CrossWikiEditor.Settings;
 
 [Serializable]
 [XmlRoot("AutoWikiBrowserPreferences")]

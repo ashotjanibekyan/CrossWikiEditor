@@ -1,8 +1,7 @@
-using CrossWikiEditor.Messages;
 using CrossWikiEditor.Models;
 using CrossWikiEditor.Utils;
 using CrossWikiEditor.ViewModels;
-using CommunityToolkit.Mvvm.Messaging;
+using CrossWikiEditor.Settings;
 
 namespace CrossWikiEditor.Tests.ViewModels;
 

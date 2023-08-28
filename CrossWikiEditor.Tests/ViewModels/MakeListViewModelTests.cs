@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using CrossWikiEditor.ListProviders;
 using CrossWikiEditor.Models;
+using CrossWikiEditor.Settings;
 using CrossWikiEditor.Utils;
 using CrossWikiEditor.ViewModels;
 

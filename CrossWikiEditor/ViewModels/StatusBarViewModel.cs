@@ -1,10 +1,10 @@
-using System;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CrossWikiEditor.Messages;
 using CrossWikiEditor.Services;
+using CrossWikiEditor.Settings;
 
 namespace CrossWikiEditor.ViewModels;
 

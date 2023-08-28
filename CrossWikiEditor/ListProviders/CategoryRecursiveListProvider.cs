@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using CrossWikiEditor.Models;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
+using CrossWikiEditor.Settings;
 
 namespace CrossWikiEditor.ListProviders;
 

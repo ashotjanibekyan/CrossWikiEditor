@@ -9,6 +9,7 @@ using CrossWikiEditor.Models;
 using CrossWikiEditor.Repositories;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
+using CrossWikiEditor.Settings;
 
 namespace CrossWikiEditor.ViewModels;
 

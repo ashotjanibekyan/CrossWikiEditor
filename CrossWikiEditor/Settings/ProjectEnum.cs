@@ -1,4 +1,4 @@
-﻿namespace CrossWikiEditor;
+﻿namespace CrossWikiEditor.Settings;
 
 public enum ProjectEnum
 {
