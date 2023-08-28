@@ -54,8 +54,8 @@
         <!-- Right column-->
         <Grid Margin="3" Grid.Column="1" Grid.Row="1">
             <StackPanel>
-                <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Start</Button>
-                <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Stop</Button>
+                <Button Command="{Binding StartCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Start</Button>
+                <Button Command="{Binding StopCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Stop</Button>
                 <Grid ColumnDefinitions="*,*">
                     <Button Grid.Column="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Preview</Button>
                     <Button Grid.Column="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Diff</Button>

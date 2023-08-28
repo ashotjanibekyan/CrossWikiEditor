@@ -1,27 +1,25 @@
 ﻿using System.Collections.Generic;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using CrossWikiEditor.Messages;
 
 namespace CrossWikiEditor.ViewModels.ControlViewModels;
 
-public sealed class StartViewModel : ViewModelBase
+public sealed partial class StartViewModel(IMessenger messenger) : ViewModelBase
 {
-    public StartViewModel()
+    public IEnumerable<string> Summaries { get; set; } = new List<string>
     {
-        Summaries = new List<string>
-        {
-            "Summary 1",
-            "Summary 2",
-            "Summary 3",
-            "Summary 4",
-            "Summary 5",
-            "Summary 6",
-            "Summary 7",
-            "Summary 8",
-            "Summary 9",
-            "Summary 10"
-        };
-    }
-
-    public IEnumerable<string> Summaries { get; set; }
+        "Summary 1",
+        "Summary 2",
+        "Summary 3",
+        "Summary 4",
+        "Summary 5",
+        "Summary 6",
+        "Summary 7",
+        "Summary 8",
+        "Summary 9",
+        "Summary 10"
+    };
 
     public int WordsStats { get; set; }
     public int LinksStats { get; set; }
@@ -29,4 +27,16 @@ public sealed class StartViewModel : ViewModelBase
     public int CategoriesStats { get; set; }
     public int InterwikiLinksStats { get; set; }
     public int DatesStats { get; set; }
+
+    [RelayCommand]
+    private void Start()
+    {
+        messenger.Send(new StartBotMessage());
+    }
+
+    [RelayCommand]
+    private void Stop()
+    {
+        messenger.Send(new StopBotMessage());
+    }
 }
