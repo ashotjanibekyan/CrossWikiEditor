@@ -28,6 +28,7 @@ public interface IPageService
     Task<Result<List<WikiPageModel>>> GetRandomPages(string apiRoot, int numberOfPages, int[]? namespaces);
     Task<Result<List<WikiPageModel>>> GetPagesByFileUsage(string apiRoot, string fileName);
     Task<Result<List<WikiPageModel>>> LinksOnPage(string apiRoot, string pageName);
+    Task<Result<List<WikiPageModel>>> GetNewPages(string apiRoot);
     
     Task<Result<WikiPageModel>> ConvertToTalk(WikiPageModel page);
     Task<Result<List<WikiPageModel>>> ConvertToTalk(List<WikiPageModel> pages);
@@ -168,6 +169,26 @@ public sealed class PageService : IPageService
         {
             WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot);
             var gen = new LinksGenerator(site, pageName);
+            List<WikiPage> result = await gen.EnumPagesAsync().ToListAsync();
+            return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
+        }
+        catch (Exception e)
+        {
+            return Result<List<WikiPageModel>>.Failure(e.Message);
+        }
+    }
+
+    public async Task<Result<List<WikiPageModel>>> GetNewPages(string apiRoot)
+    {
+        try
+        {
+            WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot);
+            var gen = new RecentChangesGenerator(site)
+            {
+                TypeFilters = RecentChangesFilterTypes.Create,
+                RedirectsFilter = PropertyFilterOption.WithoutProperty,
+                NamespaceIds = new[] {0}
+            };
             List<WikiPage> result = await gen.EnumPagesAsync().ToListAsync();
             return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
         }

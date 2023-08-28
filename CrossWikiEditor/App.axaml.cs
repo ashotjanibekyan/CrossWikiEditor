@@ -156,7 +156,7 @@ public class App : Application
         builder.RegisterType<LinksOnPageBlueListProvider>().As<IListProvider>();
         builder.RegisterType<LinksOnPageRedListProvider>().As<IListProvider>();
         builder.RegisterType<MyWatchlistListProvider>().As<IListProvider>();
-        // todo: New pages
+        builder.RegisterType<NewPagesListProvider>().As<IListProvider>();
         // todo: pages with a page property
         builder.RegisterType<RandomListProvider>().As<IListProvider>();
         // todo: Special pages
