@@ -12,10 +12,10 @@ public class WikiSearchInTextListProvider(IUserPreferencesService userPreference
     public string ParamTitle => "Wiki search";
     public string Param { get; set; } = string.Empty;
     public bool CanMake => !string.IsNullOrWhiteSpace(Param);
-    
+
     public async Task<Result<List<WikiPageModel>>> MakeList()
     {
         string apiRoot = userPreferencesService.GetCurrentPref().UrlApi();
-        return await pageService.WikiSearch(apiRoot, Param, new []{0});
+        return await pageService.WikiSearch(apiRoot, Param, new[] { 0 });
     }
 }

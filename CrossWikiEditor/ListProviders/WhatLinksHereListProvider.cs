@@ -7,7 +7,7 @@ using CrossWikiEditor.Services.WikiServices;
 namespace CrossWikiEditor.ListProviders;
 
 public class WhatLinksHereListProvider(
-    IUserPreferencesService userPreferencesService, 
+    IUserPreferencesService userPreferencesService,
     IViewModelFactory viewModelFactory,
     IDialogService dialogService,
     IPageService pageService) : INeedAdditionalParamsListProvider
@@ -17,13 +17,13 @@ public class WhatLinksHereListProvider(
     public string ParamTitle => "What links to";
     public string Param { get; set; } = string.Empty;
     public bool CanMake => !string.IsNullOrWhiteSpace(Param) && _options is not null;
-    
+
     public async Task<Result<List<WikiPageModel>>> MakeList()
     {
         return await pageService.GetPagesLinkedTo(
-            apiRoot: userPreferencesService.GetCurrentPref().UrlApi(), 
-            title: Param, 
-            namespaces: _options!.Namespaces, 
+            apiRoot: userPreferencesService.GetCurrentPref().UrlApi(),
+            title: Param,
+            namespaces: _options!.Namespaces,
             filterRedirects: _options.RedirectFilter switch
             {
                 RedirectFilter.All => null,

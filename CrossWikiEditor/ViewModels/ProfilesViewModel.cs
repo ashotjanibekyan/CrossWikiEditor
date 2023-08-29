@@ -124,7 +124,7 @@ public sealed partial class ProfilesViewModel : ViewModelBase
             : _userPreferencesService.GetUserPref(profile.DefaultSettingsPath);
 
         Result loginResult = await _userService.Login(profile, currentUserPref.UrlApi());
-        if (loginResult is {IsSuccessful: true})
+        if (loginResult is { IsSuccessful: true })
         {
             _messenger.Send(new NewAccountLoggedInMessage(profile));
             if (!string.IsNullOrEmpty(profile.DefaultSettingsPath))

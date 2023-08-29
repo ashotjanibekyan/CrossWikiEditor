@@ -36,7 +36,7 @@ public class PageListProcessor
             await ProcessPage(page);
         }
     }
-    
+
     private async Task ProcessPage(WikiPageModel page)
     {
         if (page.WikiPage is null)
@@ -74,6 +74,6 @@ public class PageListProcessor
         {
             Console.WriteLine(e);
         }
-        
+
     }
 }

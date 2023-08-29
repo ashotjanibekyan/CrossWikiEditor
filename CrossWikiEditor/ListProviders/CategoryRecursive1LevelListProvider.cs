@@ -15,7 +15,7 @@ public class CategoryRecursive1LevelListProvider(IPageService pageService,
     public string ParamTitle => "Category";
     public string Param { get; set; } = string.Empty;
     public bool CanMake => !string.IsNullOrWhiteSpace(Param);
-    
+
     public async Task<Result<List<WikiPageModel>>> MakeList()
     {
         UserPrefs userPrefs = userPreferencesService.GetCurrentPref();

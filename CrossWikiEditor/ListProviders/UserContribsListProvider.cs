@@ -11,7 +11,7 @@ public sealed class UserContribsListProvider(IUserPreferencesService userPrefere
     public string ParamTitle => "User";
     public string Param { get; set; } = string.Empty;
     public bool CanMake => !string.IsNullOrWhiteSpace(ParamTitle);
-    
+
     public async Task<Result<List<WikiPageModel>>> MakeList()
     {
         return await userService.GetUserContribsPages(userPreferencesService.GetCurrentPref().UrlApi(), Param);

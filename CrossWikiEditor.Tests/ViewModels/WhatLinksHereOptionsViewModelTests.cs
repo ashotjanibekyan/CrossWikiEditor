@@ -10,7 +10,7 @@ public class WhatLinksHereOptionsViewModelTests : BaseTest
     {
         SetUpServices();
     }
-    
+
     [TestCase(true)]
     [TestCase(false)]
     public void ChangingIsAllNamespacesChecked_SetAllValues(bool newValue)

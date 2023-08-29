@@ -7,8 +7,8 @@ namespace CrossWikiEditor.ViewModels.ControlViewModels;
 
 public sealed partial class OptionsViewModel(IDialogService dialogService) : ViewModelBase
 {
-    public NormalFindAndReplaceRules NormalFindAndReplaceRules { get; private set; }= new();
- 
+    public NormalFindAndReplaceRules NormalFindAndReplaceRules { get; private set; } = new();
+
     [RelayCommand]
     private async Task OpenNormalFindAndReplaceDialog()
     {

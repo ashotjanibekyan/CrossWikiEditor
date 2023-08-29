@@ -13,7 +13,7 @@ public partial class FindAndReplaceViewModel : ViewModelBase
 {
     public FindAndReplaceViewModel()
     {
-        var list = new List<NormalFindAndReplaceRule> {new()};
+        var list = new List<NormalFindAndReplaceRule> { new() };
         NormalFindAndReplaceRules = list.ToObservableCollection();
         foreach (NormalFindAndReplaceRule model in NormalFindAndReplaceRules)
         {
@@ -35,8 +35,8 @@ public partial class FindAndReplaceViewModel : ViewModelBase
             IgnoreMore = IgnoreMore,
             AddToSummary = AddToSummary
         };
-        
-        dialog.Close(rules);        
+
+        dialog.Close(rules);
     }
 
     [ObservableProperty] private ObservableCollection<NormalFindAndReplaceRule> _normalFindAndReplaceRules;
@@ -46,7 +46,7 @@ public partial class FindAndReplaceViewModel : ViewModelBase
 
     private void OnModelPropertyChanged(object? sender, PropertyChangedEventArgs args)
     {
-        if (NormalFindAndReplaceRules.LastOrDefault() is not {IsEmpty: false})
+        if (NormalFindAndReplaceRules.LastOrDefault() is not { IsEmpty: false })
         {
             return;
         }

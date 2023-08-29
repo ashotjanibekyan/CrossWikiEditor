@@ -32,7 +32,7 @@ public sealed partial class FileMenuViewModel(
                 Patterns = new List<string> {"*.xml"}.AsReadOnly()
             }
         });
-        if (result is {Length: 1})
+        if (result is { Length: 1 })
         {
             string newSettingsPath = result[0];
             try

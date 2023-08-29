@@ -8,12 +8,12 @@ public sealed class Result
 
     public static Result Failure(string failureMessage)
     {
-        return new Result {IsSuccessful = false, Error = failureMessage};
+        return new Result { IsSuccessful = false, Error = failureMessage };
     }
 
     public static Result Success()
     {
-        return new Result {IsSuccessful = true};
+        return new Result { IsSuccessful = true };
     }
 
     public bool IsSuccessful { get; private init; } = true;

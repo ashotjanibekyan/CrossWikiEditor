@@ -6,7 +6,7 @@ namespace CrossWikiEditor.Utils;
 
 public static partial class Tools
 {
-    private static readonly char[] InvalidChars = {'[', ']', '{', '}', '|', '<', '>', '#'};
+    private static readonly char[] InvalidChars = { '[', ']', '{', '}', '|', '<', '>', '#' };
 
     /// <summary>
     /// Removes underscores and wiki syntax from links

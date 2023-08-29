@@ -32,10 +32,12 @@ public sealed partial class StatusBarViewModel : ViewModelBase
 
     public string CurrentWiki => $"{LanguageCode}:{Project}";
 
-    [ObservableProperty] [NotifyPropertyChangedFor(nameof(CurrentWiki))]
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CurrentWiki))]
     private string _username = "User: ";
 
-    [ObservableProperty] [NotifyPropertyChangedFor(nameof(CurrentWiki))]
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CurrentWiki))]
     private string _languageCode;
 
     [ObservableProperty] private string _project;

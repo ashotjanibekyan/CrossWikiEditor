@@ -193,7 +193,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
             {
                 TypeFilters = RecentChangesFilterTypes.Create,
                 RedirectsFilter = PropertyFilterOption.WithoutProperty,
-                NamespaceIds = new[] {0}
+                NamespaceIds = new[] { 0 }
             };
             List<WikiPage> result = await gen.EnumPagesAsync().ToListAsync();
             return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
@@ -313,7 +313,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
         foreach (WikiPageModel wikiPageModel in pages)
         {
             Result<WikiPageModel> talkPageResult = await ConvertToTalk(wikiPageModel);
-            if (talkPageResult is {IsSuccessful: true, Value: not null})
+            if (talkPageResult is { IsSuccessful: true, Value: not null })
             {
                 result.Add(talkPageResult.Value);
             }
@@ -346,7 +346,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
         foreach (WikiPageModel wikiPageModel in pages)
         {
             Result<WikiPageModel> subjectPageResult = await ConvertToSubject(wikiPageModel);
-            if (subjectPageResult is {IsSuccessful: true, Value: not null})
+            if (subjectPageResult is { IsSuccessful: true, Value: not null })
             {
                 result.Add(subjectPageResult.Value);
             }

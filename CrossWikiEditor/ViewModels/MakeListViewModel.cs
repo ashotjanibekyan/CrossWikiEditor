@@ -51,7 +51,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
 
         ListProviders = listProviders.ToObservableCollection();
         SelectedListProvider = ListProviders[0];
-        
+
         messenger.Register<PageUpdatedMessage>(this, (recipient, message) =>
         {
             Pages.Remove(message.Page);
@@ -64,7 +64,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
         if (!string.IsNullOrWhiteSpace(NewPageTitle))
         {
             Result<WikiPageModel> result = await _clientCache.GetWikiPageModel(_userPreferencesService.GetCurrentPref().UrlApi(), NewPageTitle);
-            Pages.Add(result is {IsSuccessful: true, Value: not null} ? result.Value : new WikiPageModel(NewPageTitle.Trim(), 0));
+            Pages.Add(result is { IsSuccessful: true, Value: not null } ? result.Value : new WikiPageModel(NewPageTitle.Trim(), 0));
         }
 
         NewPageTitle = string.Empty;
@@ -95,7 +95,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
         }
 
         Result<List<WikiPageModel>> result = await SelectedListProvider.MakeList();
-        if (result is {IsSuccessful: true, Value: not null})
+        if (result is { IsSuccessful: true, Value: not null })
         {
             Pages.AddRange(result.Value);
         }
@@ -164,13 +164,13 @@ public sealed partial class MakeListViewModel : ViewModelBase
         string? clipboardText = await _systemService.GetClipboardTextAsync();
         if (!string.IsNullOrWhiteSpace(clipboardText))
         {
-            string[] titles = clipboardText.Split(new[] {Environment.NewLine},
+            string[] titles = clipboardText.Split(new[] { Environment.NewLine },
                 StringSplitOptions.None);
             string urlApi = _userPreferencesService.GetCurrentPref().UrlApi();
             foreach (string title in titles)
             {
                 Result<WikiPageModel> result = await _clientCache.GetWikiPageModel(urlApi, title);
-                Pages.Add(result is {IsSuccessful: true, Value: not null} ? result.Value : new WikiPageModel(title.Trim(), 0));
+                Pages.Add(result is { IsSuccessful: true, Value: not null } ? result.Value : new WikiPageModel(title.Trim(), 0));
             }
         }
     }

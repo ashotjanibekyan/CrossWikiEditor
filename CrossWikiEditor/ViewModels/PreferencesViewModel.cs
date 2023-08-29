@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -42,7 +42,8 @@ public sealed partial class PreferencesViewModel : ViewModelBase
     [ObservableProperty] private ObservableCollection<ProjectEnum> _projects = new(Enum.GetValues<ProjectEnum>());
     [ObservableProperty] private string _selectedLanguage = "en";
 
-    [ObservableProperty] private ObservableCollection<string> _languages = new(new List<string>
+    [ObservableProperty]
+    private ObservableCollection<string> _languages = new(new List<string>
     {
         "en",
         "hy",

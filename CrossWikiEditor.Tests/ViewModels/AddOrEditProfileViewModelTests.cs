@@ -23,7 +23,7 @@ public class AddOrEditProfileViewModelTests : BaseTest
             .OpenFilePickerAsync("Select settings file", false,
                 Arg.Is<List<FilePickerFileType>>(
                     x => x.Count == 1 && x[0].Patterns != null && x[0].Patterns.Count == 1 && x[0].Patterns[0] == "*.xml"))
-            .Returns(new[] {"some/valid/file.xml"});
+            .Returns(new[] { "some/valid/file.xml" });
 
         // act
         _sut.BrowseCommand.Execute(null);

@@ -12,7 +12,7 @@ public class WikiSearchInTitleAllNsListProvider(IUserPreferencesService userPref
     public string ParamTitle => "Wiki search";
     public string Param { get; set; } = string.Empty;
     public bool CanMake => !string.IsNullOrWhiteSpace(Param);
-    
+
     public async Task<Result<List<WikiPageModel>>> MakeList()
     {
         string apiRoot = userPreferencesService.GetCurrentPref().UrlApi();

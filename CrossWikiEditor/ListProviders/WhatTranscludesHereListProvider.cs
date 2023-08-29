@@ -12,10 +12,10 @@ public class WhatTranscludesHereListProvider(IUserPreferencesService userPrefere
     public string ParamTitle => "What embeds";
     public string Param { get; set; } = string.Empty;
     public bool CanMake => !string.IsNullOrWhiteSpace(Param);
-    
+
     public async Task<Result<List<WikiPageModel>>> MakeList()
     {
         string apiRoot = userPreferencesService.GetCurrentPref().UrlApi();
-        return await pageService.GetTransclusionsOf(apiRoot, Param, new []{0});
+        return await pageService.GetTransclusionsOf(apiRoot, Param, new[] { 0 });
     }
 }

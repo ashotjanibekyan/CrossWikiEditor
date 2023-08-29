@@ -51,7 +51,7 @@ public partial class FilterViewModel(List<WikiNamespace> subjectNamespaces, List
         if (textFileListProvider.CanMake)
         {
             Result<List<WikiPageModel>> result = await textFileListProvider.MakeList();
-            if (result is {IsSuccessful: true, Value: not null})
+            if (result is { IsSuccessful: true, Value: not null })
             {
                 Pages = result.Value.ToObservableCollection();
             }
@@ -84,8 +84,9 @@ public partial class FilterViewModel(List<WikiNamespace> subjectNamespaces, List
     [ObservableProperty] private ObservableCollection<WikiNamespace> _talkNamespaces = talkNamespaces.ToObservableCollection();
     [ObservableProperty] private ObservableCollection<WikiPageModel> _pages = new();
 
-    [ObservableProperty] private ObservableCollection<SetOperations> _setOperations =
-        new[] {Models.SetOperations.SymmetricDifference, Models.SetOperations.Intersection}.ToObservableCollection();
+    [ObservableProperty]
+    private ObservableCollection<SetOperations> _setOperations =
+        new[] { Models.SetOperations.SymmetricDifference, Models.SetOperations.Intersection }.ToObservableCollection();
 
     [ObservableProperty] private bool _isAllTalkChecked;
     [ObservableProperty] private bool _isAllSubjectChecked;

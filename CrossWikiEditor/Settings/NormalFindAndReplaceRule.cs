@@ -16,7 +16,7 @@ public partial class NormalFindAndReplaceRule(string find,
     public NormalFindAndReplaceRule() : this("", "", false, false, false, false, false, false, false, "")
     {
     }
-    
+
     [ObservableProperty] private string _find = find;
     [ObservableProperty] private string _replaceWith = replaceWith;
     [ObservableProperty] private bool _caseSensitive = caseSensitive;

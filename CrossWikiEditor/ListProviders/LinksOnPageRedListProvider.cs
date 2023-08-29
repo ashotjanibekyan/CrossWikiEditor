@@ -16,7 +16,7 @@ public class LinksOnPageRedListProvider(
     public override async Task<Result<List<WikiPageModel>>> MakeList()
     {
         Result<List<WikiPageModel>> result = await base.MakeList();
-        if (result is {IsSuccessful: true, Value: not null})
+        if (result is { IsSuccessful: true, Value: not null })
         {
             return Result<List<WikiPageModel>>.Success(result.Value.Where(x => x.WikiPage is not null && !x.WikiPage.Exists).ToList());
         }

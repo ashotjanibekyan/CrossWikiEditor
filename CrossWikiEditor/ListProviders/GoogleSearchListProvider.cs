@@ -21,7 +21,7 @@ public partial class GoogleSearchListProvider(LanguageSpecificRegexes languageSp
     public string ParamTitle => "Google search";
     public string Param { get; set; } = string.Empty;
     public bool CanMake => !string.IsNullOrWhiteSpace(Param);
-    
+
     public async Task<Result<List<WikiPageModel>>> MakeList()
     {
         try
@@ -59,7 +59,7 @@ public partial class GoogleSearchListProvider(LanguageSpecificRegexes languageSp
                         title = Regex.Replace(Tools.WikiDecode(title), @"\?\w+=.*", "");
                         Result<WikiPageModel> result =
                             await wikiClientCache.GetWikiPageModel(userPreferencesService.GetCurrentPref().UrlApi(), title);
-                        list.Add(result is {IsSuccessful: true, Value: not null} ? result.Value : new WikiPageModel(title, 0));
+                        list.Add(result is { IsSuccessful: true, Value: not null } ? result.Value : new WikiPageModel(title, 0));
                     }
                 }
 

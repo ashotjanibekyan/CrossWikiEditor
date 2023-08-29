@@ -44,7 +44,7 @@ public class TextFileListProvider(IFileDialogService fileDialogService,
             }
             else
             {
-                titles.AddRange(pageText.Split(new[] {"\r\n", "\n"}, StringSplitOptions.RemoveEmptyEntries)
+                titles.AddRange(pageText.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries)
                     .Where(s => s.Trim().Length != 0)
                     .Select(Tools.RemoveSyntax));
             }
