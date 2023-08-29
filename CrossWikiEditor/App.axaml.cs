@@ -152,8 +152,7 @@ public class App : Application
         // TODO: Database dump
         builder.RegisterType<FilesOnPageListProvider>().As<IListProvider>();
         builder.RegisterType<GoogleSearchListProvider>().As<IListProvider>();
-        // todo: HTML Scraper
-        // todo: HTML Scraper (advanced regex)
+        builder.RegisterType<HtmlScraperListProvider>().As<IListProvider>();
         builder.RegisterType<ImageFileLinksListProvider>().As<IListProvider>();
         builder.RegisterType<LinksOnPageListProvider>().As<IListProvider>();
         builder.RegisterType<LinksOnPageBlueListProvider>().As<IListProvider>();

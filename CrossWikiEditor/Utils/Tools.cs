@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.Text.RegularExpressions;
 using System.Web;
 
@@ -39,13 +40,6 @@ public static partial class Tools
         return text.TrimStart(':');
     }
 
-    public static string? GetTitleFromURL(string link, Regex extractTitle)
-    {
-        link = extractTitle.Match(link).Groups[1].Value;
-
-        return string.IsNullOrEmpty(link) ? null : WikiDecode(link);
-    }
-
     /// <summary>
     /// Decodes URL-encoded page titles into a normal string
     /// </summary>
@@ -71,6 +65,43 @@ public static partial class Tools
         }
 
         return Math.Min(a.Length, b.Length);
+    }
+    
+    public static string GetPageTitleFromUrl(string url)
+    {
+        var uri = new Uri(url);
+
+        if (uri.Segments.Length > 2 && uri.Segments[1] == "w/")
+        {
+            NameValueCollection queryParameters = HttpUtility.ParseQueryString(uri.Query);
+            string? pageTitle = queryParameters["title"];
+
+            if (!string.IsNullOrEmpty(pageTitle))
+            {
+                pageTitle = UnescapeDataStringRec(pageTitle);
+                return pageTitle.Replace("_", " ");
+            }
+        }
+
+        // If the URL structure is not as expected, attempt to extract from the path
+        string path =  UnescapeDataStringRec(uri.AbsolutePath);
+        var extractedTitle = path[(path.LastIndexOf('/') + 1)..];
+
+        return extractedTitle.Replace("_", " ");
+    }
+
+    private static string UnescapeDataStringRec(string url)
+    {
+        string result = url;
+        string unescapedResult = Uri.UnescapeDataString(result);
+
+        while (result != unescapedResult)
+        {
+            result = unescapedResult;
+            unescapedResult = Uri.UnescapeDataString(result);
+        }
+
+        return result;
     }
 
     [GeneratedRegex("\\[\\[:?([^\\|[\\]]+)(?:\\]\\]|\\|)", RegexOptions.Compiled)]

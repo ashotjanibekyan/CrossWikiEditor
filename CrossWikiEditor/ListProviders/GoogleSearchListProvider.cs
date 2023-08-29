@@ -11,8 +11,7 @@ using CrossWikiEditor.Utils;
 
 namespace CrossWikiEditor.ListProviders;
 
-public partial class GoogleSearchListProvider(LanguageSpecificRegexes languageSpecificRegexes,
-        IUserPreferencesService userPreferencesService,
+public partial class GoogleSearchListProvider(IUserPreferencesService userPreferencesService,
         IWikiClientCache wikiClientCache)
     : IListProvider
 {
@@ -50,8 +49,7 @@ public partial class GoogleSearchListProvider(LanguageSpecificRegexes languageSp
                         searchres = searchres[..searchres.IndexOf(@"&amp;", StringComparison.Ordinal)];
                     }
 
-                    await languageSpecificRegexes.InitAsync;
-                    string? title = Tools.GetTitleFromURL(searchres, languageSpecificRegexes.ExtractTitle);
+                    string? title = Tools.GetPageTitleFromUrl(searchres);
 
                     // some google results are double encoded, so WikiDecode again
                     if (!string.IsNullOrEmpty(title))

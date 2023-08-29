@@ -30,6 +30,7 @@
         <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.4"/>
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1"/>
         <PackageReference Include="CXuesong.MW.WikiClientLibrary" Version="0.7.5"/>
+        <PackageReference Include="HtmlAgilityPack" Version="1.11.52" />
         <PackageReference Include="Realm" Version="11.4.0"/>
     </ItemGroup>
 
