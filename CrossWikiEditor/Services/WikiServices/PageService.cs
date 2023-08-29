@@ -33,16 +33,14 @@ public interface IPageService
     Task<Result<List<WikiPageModel>>> GetNewPages(string apiRoot);
     Task<Result<List<WikiPageModel>>> GetTransclusionsOn(string apiRoot, string pageName);
     Task<Result<List<WikiPageModel>>> GetTransclusionsOf(string apiRoot, string pageName, int[]? namespaces);
+
     Task<Result<List<WikiPageModel>>> GetPagesLinkedTo(string apiRoot, string title, int[]? namespaces, bool allowRedirectLinks,
         bool? filterRedirects);
 
     Task<Result<List<WikiPageModel>>> WikiSearch(string apiRoot, string keyword, int[]? namespaces);
 
-    Task<Result<WikiPageModel>> ConvertToTalk(WikiPageModel page);
     Task<Result<List<WikiPageModel>>> ConvertToTalk(List<WikiPageModel> pages);
-    Task<Result<WikiPageModel>> ConvertToSubject(WikiPageModel page);
     Task<Result<List<WikiPageModel>>> ConvertToSubject(List<WikiPageModel> pages);
-
 }
 
 public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferencesService userPreferencesService)
@@ -291,7 +289,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
         }
     }
 
-    public async Task<Result<WikiPageModel>> ConvertToTalk(WikiPageModel page)
+    private async Task<Result<WikiPageModel>> ConvertToTalk(WikiPageModel page)
     {
         try
         {
@@ -324,7 +322,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
         return Result<List<WikiPageModel>>.Success(result);
     }
 
-    public async Task<Result<WikiPageModel>> ConvertToSubject(WikiPageModel page)
+    private async Task<Result<WikiPageModel>> ConvertToSubject(WikiPageModel page)
     {
         try
         {
