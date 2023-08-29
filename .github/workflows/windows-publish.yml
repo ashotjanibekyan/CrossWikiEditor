@@ -50,4 +50,4 @@ jobs:
                   credentials: ${{ secrets.GOOGLEDRIVEUPLOAD }}
                   parent_folder_id: '1c4CnqaQQFjeTcd6ydpBPLAsVQ-YgPNYa'
                   name: 'CrossWikiEditor-Win.exe'
-    
+                  override: true
