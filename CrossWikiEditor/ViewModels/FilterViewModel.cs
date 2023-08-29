@@ -12,7 +12,7 @@ namespace CrossWikiEditor.ViewModels;
 
 public class WikiNamespace(int id, string name, bool isChecked = false)
 {
-    public int Id { get; init; } = id;
+    public int Id { get; } = id;
     public string Name { get; init; } = name;
     public bool IsChecked { get; set; } = isChecked;
 }

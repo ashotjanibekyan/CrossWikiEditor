@@ -25,7 +25,7 @@ namespace CrossWikiEditor;
 public class App : Application
 {
     private IContainer? _container;
-    private Window? _mainWindow;
+    private MainWindow? _mainWindow;
     private string _appData;
 
     public App()
@@ -97,7 +97,7 @@ public class App : Application
 
         builder.RegisterType<DialogService>()
             .As<IDialogService>()
-            .WithParameter(new TypedParameter(typeof(Window), _mainWindow)).SingleInstance();
+            .WithParameter(new TypedParameter(typeof(IOwner), _mainWindow)).SingleInstance();
         builder.RegisterInstance(storageProvider).As<IStorageProvider>();
         builder.RegisterInstance(stringEncryptionService).As<IStringEncryptionService>();
         builder.Register(c => TopLevel.GetTopLevel(_mainWindow)?.Clipboard).As<IClipboard>();
@@ -127,15 +127,15 @@ public class App : Application
 
     private void RegisterDialogs(ContainerBuilder builder)
     {
-        builder.RegisterType<AlertView>().Named<Window>(nameof(AlertViewModel));
-        builder.RegisterType<PromptView>().Named<Window>(nameof(PromptViewModel));
-        builder.RegisterType<FilterView>().Named<Window>(nameof(FilterViewModel));
-        builder.RegisterType<ProfilesView>().Named<Window>(nameof(ProfilesViewModel));
-        builder.RegisterType<PreferencesView>().Named<Window>(nameof(PreferencesViewModel));
-        builder.RegisterType<AddNewProfileView>().Named<Window>(nameof(AddOrEditProfileViewModel));
-        builder.RegisterType<SelectNamespacesView>().Named<Window>(nameof(SelectNamespacesViewModel));
-        builder.RegisterType<WhatLinksHereOptionsView>().Named<Window>(nameof(WhatLinksHereOptionsViewModel));
-        builder.RegisterType<FindAndReplaceView>().Named<Window>(nameof(FindAndReplaceViewModel));
+        builder.RegisterType<AlertView>().Named<IDialog>(nameof(AlertViewModel));
+        builder.RegisterType<PromptView>().Named<IDialog>(nameof(PromptViewModel));
+        builder.RegisterType<FilterView>().Named<IDialog>(nameof(FilterViewModel));
+        builder.RegisterType<ProfilesView>().Named<IDialog>(nameof(ProfilesViewModel));
+        builder.RegisterType<PreferencesView>().Named<IDialog>(nameof(PreferencesViewModel));
+        builder.RegisterType<AddNewProfileView>().Named<IDialog>(nameof(AddOrEditProfileViewModel));
+        builder.RegisterType<SelectNamespacesView>().Named<IDialog>(nameof(SelectNamespacesViewModel));
+        builder.RegisterType<WhatLinksHereOptionsView>().Named<IDialog>(nameof(WhatLinksHereOptionsViewModel));
+        builder.RegisterType<FindAndReplaceView>().Named<IDialog>(nameof(FindAndReplaceViewModel));
     }
 
     private void RegisterListProviders(ContainerBuilder builder)

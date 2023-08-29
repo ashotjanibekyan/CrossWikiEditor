@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using Autofac;
-using Avalonia.Controls;
 using CrossWikiEditor.ViewModels;
 
 namespace CrossWikiEditor.Services;
@@ -11,11 +10,11 @@ public interface IDialogService
     Task Alert(string title, string content);
 }
 
-public sealed class DialogService(IContainer container, Window mainWindow) : IDialogService
+public sealed class DialogService(IContainer container, IOwner mainWindow) : IDialogService
 {
     public async Task<TResult?> ShowDialog<TResult>(ViewModelBase viewModel)
     {
-        Window dialog = container.ResolveNamed<Window>(viewModel.GetType().Name);
+        IDialog dialog = container.ResolveNamed<IDialog>(viewModel.GetType().Name);
         dialog.DataContext = viewModel;
         return await dialog.ShowDialog<TResult>(mainWindow);
     }
@@ -23,7 +22,7 @@ public sealed class DialogService(IContainer container, Window mainWindow) : IDi
     public async Task Alert(string title, string content)
     {
         var viewModel = new AlertViewModel(title, content);
-        Window dialog = container.ResolveNamed<Window>(nameof(AlertViewModel));
+        IDialog dialog = container.ResolveNamed<IDialog>(nameof(AlertViewModel));
         dialog.DataContext = viewModel;
         await dialog.ShowDialog(mainWindow);
     }
