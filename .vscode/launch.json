@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/CrossWikiEditor/bin/Debug/net6.0/CrossWikiEditor.dll",
+            "program": "${workspaceFolder}/CrossWikiEditor/bin/Debug/net8.0/CrossWikiEditor.dll",
             "args": [],
             "cwd": "${workspaceFolder}",
             "console": "internalConsole",
