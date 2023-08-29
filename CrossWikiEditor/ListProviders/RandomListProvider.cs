@@ -10,7 +10,7 @@ public class RandomListProvider(IPageService pageService,
         IDialogService dialogService,
         IViewModelFactory viewModelFactory,
         IUserPreferencesService userPreferencesService)
-    : IListProvider
+    : INeedAdditionalParamsListProvider
 {
     private int[]? _namespaces;
 
@@ -18,7 +18,6 @@ public class RandomListProvider(IPageService pageService,
     public string ParamTitle => string.Empty;
     public string Param { get; set; } = string.Empty;
     public bool CanMake => _namespaces is not null;
-    public bool NeedsAdditionalParams => true;
 
     public async Task<Result<List<WikiPageModel>>> MakeList()
     {

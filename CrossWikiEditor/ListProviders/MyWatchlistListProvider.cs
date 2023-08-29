@@ -11,15 +11,9 @@ public class MyWatchlistListProvider(IUserService userService) : IListProvider
     public string ParamTitle => string.Empty;
     public string Param { get; set; } = string.Empty;
     public bool CanMake => true;
-    public bool NeedsAdditionalParams => false;
 
     public async Task<Result<List<WikiPageModel>>> MakeList()
     {
         return await userService.GetWatchlistPages();
-    }
-
-    public Task GetAdditionalParams()
-    {
-        return Task.CompletedTask;
     }
 }

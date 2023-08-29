@@ -12,15 +12,9 @@ public class LinksOnPageListProvider(IUserPreferencesService userPreferencesServ
     public string ParamTitle => "Links on";
     public string Param { get; set; } = string.Empty;
     public bool CanMake => !string.IsNullOrWhiteSpace(Param);
-    public bool NeedsAdditionalParams => false;
 
     public virtual async Task<Result<List<WikiPageModel>>> MakeList()
     {
         return await pageService.LinksOnPage(userPreferencesService.GetCurrentPref().UrlApi(), Param);
-    }
-
-    public Task GetAdditionalParams()
-    {
-        return Task.CompletedTask;
     }
 }

@@ -17,7 +17,7 @@ public class TextFileListProvider(IFileDialogService fileDialogService,
         ISystemService systemService,
         IWikiClientCache wikiClientCache,
         IUserPreferencesService userPreferencesService)
-    : IListProvider
+    : INeedAdditionalParamsListProvider
 {
     private readonly List<string> _textFiles = new();
 
@@ -25,7 +25,6 @@ public class TextFileListProvider(IFileDialogService fileDialogService,
     public string ParamTitle => string.Empty;
     public string Param { get; set; } = string.Empty;
     public bool CanMake => _textFiles.Any();
-    public bool NeedsAdditionalParams { get; set; } = true;
 
     public async Task<Result<List<WikiPageModel>>> MakeList()
     {

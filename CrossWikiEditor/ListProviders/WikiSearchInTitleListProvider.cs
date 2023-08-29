@@ -3,22 +3,19 @@ using System.Threading.Tasks;
 using CrossWikiEditor.Models;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
-using CrossWikiEditor.Settings;
 
 namespace CrossWikiEditor.ListProviders;
 
-public class CategoryListProvider(IPageService pageService,
-        IUserPreferencesService userPreferencesService)
-    : IListProvider
+public class WikiSearchInTitleListProvider(IUserPreferencesService userPreferencesService, IPageService pageService) : IListProvider
 {
-    public string Title => "Category";
-    public string ParamTitle => "Category";
+    public string Title => "Wiki search (title)";
+    public string ParamTitle => "Wiki search";
     public string Param { get; set; } = string.Empty;
     public bool CanMake => !string.IsNullOrWhiteSpace(Param);
     
     public async Task<Result<List<WikiPageModel>>> MakeList()
     {
-        UserPrefs userPrefs = userPreferencesService.GetCurrentPref();
-        return await pageService.GetPagesOfCategory(userPrefs.UrlApi(), Param);
+        string apiRoot = userPreferencesService.GetCurrentPref().UrlApi();
+        return await pageService.WikiSearch(apiRoot, $"intitle:{Param}", new []{0});
     }
 }

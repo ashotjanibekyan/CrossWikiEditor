@@ -13,16 +13,10 @@ public class CategoriesOnPageListProvider(IPageService pageService, IUserPrefere
     public string ParamTitle => "Page";
     public string Param { get; set; } = string.Empty;
     public bool CanMake => !string.IsNullOrWhiteSpace(Param);
-    public bool NeedsAdditionalParams => false;
-
+    
     public virtual async Task<Result<List<WikiPageModel>>> MakeList()
     {
         UserPrefs userPrefs = userPreferencesService.GetCurrentPref();
         return await pageService.GetCategoriesOf(userPrefs.UrlApi(), Param);
-    }
-
-    public Task GetAdditionalParams()
-    {
-        return Task.CompletedTask;
     }
 }

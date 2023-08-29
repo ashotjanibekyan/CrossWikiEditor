@@ -46,10 +46,7 @@ public partial class FilterViewModel(List<WikiNamespace> subjectNamespaces, List
     [RelayCommand]
     private async Task OpenFile()
     {
-        if (textFileListProvider.NeedsAdditionalParams)
-        {
-            await textFileListProvider.GetAdditionalParams();
-        }
+        await textFileListProvider.GetAdditionalParams();
 
         if (textFileListProvider.CanMake)
         {

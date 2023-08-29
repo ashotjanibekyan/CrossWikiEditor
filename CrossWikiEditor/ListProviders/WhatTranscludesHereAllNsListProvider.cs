@@ -3,22 +3,19 @@ using System.Threading.Tasks;
 using CrossWikiEditor.Models;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
-using CrossWikiEditor.Settings;
 
 namespace CrossWikiEditor.ListProviders;
 
-public class CategoryListProvider(IPageService pageService,
-        IUserPreferencesService userPreferencesService)
-    : IListProvider
+public class WhatTranscludesHereAllNsListProvider(IUserPreferencesService userPreferencesService, IPageService pageService) : IListProvider
 {
-    public string Title => "Category";
-    public string ParamTitle => "Category";
+    public string Title => "What transcludes page (all NS)";
+    public string ParamTitle => "What embeds";
     public string Param { get; set; } = string.Empty;
     public bool CanMake => !string.IsNullOrWhiteSpace(Param);
-    
+
     public async Task<Result<List<WikiPageModel>>> MakeList()
     {
-        UserPrefs userPrefs = userPreferencesService.GetCurrentPref();
-        return await pageService.GetPagesOfCategory(userPrefs.UrlApi(), Param);
+        string apiRoot = userPreferencesService.GetCurrentPref().UrlApi();
+        return await pageService.GetTransclusionsOf(apiRoot, Param, null);
     }
 }

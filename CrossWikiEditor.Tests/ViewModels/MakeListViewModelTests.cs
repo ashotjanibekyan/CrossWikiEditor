@@ -202,9 +202,8 @@ public class MakeListViewModelTests : BaseTest
     public void MakeListCommand_ShouldRequestAdditionalParams_WhenNeedsAdditionalParamsIsTrue()
     {
         // arrange
-        IListProvider listProvider = Substitute.For<IListProvider>();
+        INeedAdditionalParamsListProvider listProvider = Substitute.For<INeedAdditionalParamsListProvider>();
         _sut.SelectedListProvider = listProvider;
-        listProvider.NeedsAdditionalParams.Returns(true);
 
         // act
         _sut.MakeListCommand.Execute(null);
@@ -217,9 +216,8 @@ public class MakeListViewModelTests : BaseTest
     public void MakeListCommand_ShouldNotRequestAdditionalParams_WhenNeedsAdditionalParamsIsFalse()
     {
         // arrange
-        IListProvider listProvider = Substitute.For<IListProvider>();
+        INeedAdditionalParamsListProvider listProvider = Substitute.For<INeedAdditionalParamsListProvider>();
         _sut.SelectedListProvider = listProvider;
-        listProvider.NeedsAdditionalParams.Returns(false);
 
         // act
         _sut.MakeListCommand.Execute(null);

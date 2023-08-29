@@ -32,14 +32,17 @@ public interface IPageService
     Task<Result<List<WikiPageModel>>> LinksOnPage(string apiRoot, string pageName);
     Task<Result<List<WikiPageModel>>> GetNewPages(string apiRoot);
     Task<Result<List<WikiPageModel>>> GetTransclusionsOn(string apiRoot, string pageName);
+    Task<Result<List<WikiPageModel>>> GetTransclusionsOf(string apiRoot, string pageName, int[]? namespaces);
     Task<Result<List<WikiPageModel>>> GetPagesLinkedTo(string apiRoot, string title, int[]? namespaces, bool allowRedirectLinks,
         bool? filterRedirects);
+
+    Task<Result<List<WikiPageModel>>> WikiSearch(string apiRoot, string keyword, int[]? namespaces);
 
     Task<Result<WikiPageModel>> ConvertToTalk(WikiPageModel page);
     Task<Result<List<WikiPageModel>>> ConvertToTalk(List<WikiPageModel> pages);
     Task<Result<WikiPageModel>> ConvertToSubject(WikiPageModel page);
     Task<Result<List<WikiPageModel>>> ConvertToSubject(List<WikiPageModel> pages);
-    
+
 }
 
 public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferencesService userPreferencesService)
@@ -221,6 +224,25 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
         }
     }
 
+    public async Task<Result<List<WikiPageModel>>> GetTransclusionsOf(string apiRoot, string pageName, int[]? namespaces)
+    {
+        try
+        {
+            WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
+            var gen = new TranscludedInGenerator(site, pageName)
+            {
+                PaginationSize = 500,
+                NamespaceIds = namespaces
+            };
+            List<WikiPage> result = await gen.EnumPagesAsync().ToListAsync();
+            return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
+        }
+        catch (Exception e)
+        {
+            return Result<List<WikiPageModel>>.Failure(e.Message);
+        }
+    }
+
     public async Task<Result<List<WikiPageModel>>> GetPagesLinkedTo(string apiRoot,
         string title,
         int[]? namespaces,
@@ -241,6 +263,24 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
                     null => PropertyFilterOption.Disable
                 },
                 AllowRedirectedLinks = allowRedirectLinks
+            };
+            List<WikiPage> result = await gen.EnumPagesAsync().ToListAsync();
+            return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
+        }
+        catch (Exception e)
+        {
+            return Result<List<WikiPageModel>>.Failure(e.Message);
+        }
+    }
+
+    public async Task<Result<List<WikiPageModel>>> WikiSearch(string apiRoot, string keyword, int[]? namespaces)
+    {
+        try
+        {
+            WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
+            var gen = new SearchGenerator(site, keyword)
+            {
+                NamespaceIds = namespaces
             };
             List<WikiPage> result = await gen.EnumPagesAsync().ToListAsync();
             return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());

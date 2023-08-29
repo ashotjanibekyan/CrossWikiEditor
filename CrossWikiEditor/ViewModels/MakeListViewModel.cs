@@ -84,9 +84,9 @@ public sealed partial class MakeListViewModel : ViewModelBase
     [RelayCommand]
     private async Task MakeList(CancellationToken arg)
     {
-        if (SelectedListProvider.NeedsAdditionalParams)
+        if (SelectedListProvider is INeedAdditionalParamsListProvider needAdditionalParamsListProvider)
         {
-            await SelectedListProvider.GetAdditionalParams();
+            await needAdditionalParamsListProvider.GetAdditionalParams();
         }
 
         if (!SelectedListProvider.CanMake)

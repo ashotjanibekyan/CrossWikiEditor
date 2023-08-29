@@ -11,7 +11,7 @@ namespace CrossWikiEditor.ListProviders;
 public class CategoryRecursiveUserDefinedLevelListProvider(IPageService pageService,
         IUserPreferencesService userPreferencesService,
         IDialogService dialogService)
-    : IListProvider
+    : INeedAdditionalParamsListProvider
 {
     private int? recursionLevel;
 
@@ -19,7 +19,6 @@ public class CategoryRecursiveUserDefinedLevelListProvider(IPageService pageServ
     public string ParamTitle => "Category";
     public string Param { get; set; } = string.Empty;
     public bool CanMake => recursionLevel is not null && !string.IsNullOrWhiteSpace(Param);
-    public bool NeedsAdditionalParams => true;
 
     public async Task<Result<List<WikiPageModel>>> MakeList()
     {

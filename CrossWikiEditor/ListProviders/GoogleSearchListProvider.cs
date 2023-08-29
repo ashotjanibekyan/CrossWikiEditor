@@ -19,10 +19,9 @@ public partial class GoogleSearchListProvider(LanguageSpecificRegexes languageSp
     private static readonly Regex _regexGoogle = RegexGoogle();
     public string Title => "Google search";
     public string ParamTitle => "Google search";
-    public string Param { get; set; }
+    public string Param { get; set; } = string.Empty;
     public bool CanMake => !string.IsNullOrWhiteSpace(Param);
-    public bool NeedsAdditionalParams => false;
-
+    
     public async Task<Result<List<WikiPageModel>>> MakeList()
     {
         try
@@ -78,11 +77,6 @@ public partial class GoogleSearchListProvider(LanguageSpecificRegexes languageSp
         {
             return Result<List<WikiPageModel>>.Failure(e.Message);
         }
-    }
-
-    public Task GetAdditionalParams()
-    {
-        return Task.CompletedTask;
     }
 
     [GeneratedRegex("href\\s*=\\s*(?:\"(?:/url\\?q=)?(?<title>[^\"]*)\"|(?<title>\\S+) class=l)", RegexOptions.IgnoreCase | RegexOptions.Compiled,

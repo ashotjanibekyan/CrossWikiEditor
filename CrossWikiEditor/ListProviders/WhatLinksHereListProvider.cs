@@ -10,14 +10,14 @@ public class WhatLinksHereListProvider(
     IUserPreferencesService userPreferencesService, 
     IViewModelFactory viewModelFactory,
     IDialogService dialogService,
-    IPageService pageService) : IListProvider
+    IPageService pageService) : INeedAdditionalParamsListProvider
 {
     private WhatLinksHereOptions? _options;
     public string Title => "What links here";
     public string ParamTitle => "What links to";
     public string Param { get; set; } = string.Empty;
     public bool CanMake => !string.IsNullOrWhiteSpace(Param) && _options is not null;
-    public bool NeedsAdditionalParams => true;
+    
     public async Task<Result<List<WikiPageModel>>> MakeList()
     {
         return await pageService.GetPagesLinkedTo(
@@ -42,6 +42,5 @@ public class WhatLinksHereListProvider(
         {
             _options = result;
         }
-
     }
 }

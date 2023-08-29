@@ -168,12 +168,12 @@ public class App : Application
         //builder.RegisterType<UserContribsListProvider>().As<IListProvider>();
         // todo: user contrib (user defined number)
         builder.RegisterType<WhatLinksHereListProvider>().As<IListProvider>();
-        // todo: what transcludes here
-        // todo: what transcludes here (all NS)
-        // todo: Wiki search (text)
-        // todo: Wiki search (text) (all NS)
-        // todo: Wiki search (title)
-        // todo: Wiki search (title) (all NS)
+        builder.RegisterType<WhatTranscludesHereListProvider>().As<IListProvider>();
+        builder.RegisterType<WhatTranscludesHereAllNsListProvider>().As<IListProvider>();
+        builder.RegisterType<WikiSearchInTitleListProvider>().As<IListProvider>();
+        builder.RegisterType<WikiSearchInTitleAllNsListProvider>().As<IListProvider>();
+        builder.RegisterType<WikiSearchInTextListProvider>().As<IListProvider>();
+        builder.RegisterType<WikiSearchInTextAllNsListProvider>().As<IListProvider>();
 
         builder.RegisterType<TextFileListProvider>();
     }

@@ -10,7 +10,5 @@ public interface IListProvider
     string ParamTitle { get; }
     string Param { get; set; }
     bool CanMake { get; }
-    bool NeedsAdditionalParams { get; }
     Task<Result<List<WikiPageModel>>> MakeList();
-    Task GetAdditionalParams();
 }

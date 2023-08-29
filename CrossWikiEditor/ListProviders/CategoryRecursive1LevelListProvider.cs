@@ -15,16 +15,10 @@ public class CategoryRecursive1LevelListProvider(IPageService pageService,
     public string ParamTitle => "Category";
     public string Param { get; set; } = string.Empty;
     public bool CanMake => !string.IsNullOrWhiteSpace(Param);
-    public bool NeedsAdditionalParams => false;
-
+    
     public async Task<Result<List<WikiPageModel>>> MakeList()
     {
         UserPrefs userPrefs = userPreferencesService.GetCurrentPref();
         return await pageService.GetPagesOfCategory(userPrefs.UrlApi(), Param, 1);
-    }
-
-    public Task GetAdditionalParams()
-    {
-        return Task.CompletedTask;
     }
 }
