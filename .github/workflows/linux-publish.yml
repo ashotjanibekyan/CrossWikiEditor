@@ -16,8 +16,8 @@ jobs:
         env:
             Solution_Name: CrossWikiEditor.sln
             Project_Directory: CrossWikiEditor
-            Project_Path: CrossWikiEditor\CrossWikiEditor.csproj
-            Publish_Profile_Path: CrossWikiEditor\Properties\PublishProfiles\Linux64.pubxml
+            Project_Path: CrossWikiEditor/CrossWikiEditor.csproj
+            Publish_Profile_Path: CrossWikiEditor/Properties/PublishProfiles/Linux64.pubxml
         
         steps:
             - name: Checkout
@@ -34,7 +34,7 @@ jobs:
             
             # Create the app exe
             - name: Create the app exe
-              run: dotnet publish $env:Project_Path -p:PublishProfile=$env:Publish_Profile_Path
+              run: dotnet publish ${{ env.Project_Path }} -p:PublishProfile=${{ env.Publish_Profile_Path }}
             
             # Upload the app: https://github.com/marketplace/actions/upload-a-build-artifact
             - name: Upload build artifacts
