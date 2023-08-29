@@ -275,32 +275,31 @@ public sealed partial class MakeListViewModel : ViewModelBase
     {
         try
         {
-            Result<FilterOptions>? result = await _dialogService.ShowDialog<Result<FilterOptions>>(await _viewModelFactory.GetFilterViewModel());
-            if (result is {IsSuccessful: true, Value: not null})
+            FilterOptions? result = await _dialogService.ShowDialog<FilterOptions>(await _viewModelFactory.GetFilterViewModel());
+            if (result != null)
             {
-                FilterOptions? filterOptions = result.Value;
-                var filteredPages = Pages.Where(page => page.ShouldKeepPer(filterOptions)).ToList();
+                var filteredPages = Pages.Where(page => page.ShouldKeepPer(result)).ToList();
 
-                if (filterOptions.SortAlphabetically)
+                if (result.SortAlphabetically)
                 {
                     filteredPages = filteredPages.OrderBy(x => x.Title).ToList();
                 }
 
-                if (filterOptions.RemoveDuplicates)
+                if (result.RemoveDuplicates)
                 {
                     filteredPages = filteredPages.Distinct().ToList();
                 }
 
-                if (filterOptions.Pages.Any())
+                if (result.Pages.Count != 0)
                 {
                     var list = new HashSet<WikiPageModel>(filteredPages);
-                    switch (filterOptions.SetOperation)
+                    switch (result.SetOperation)
                     {
                         case SetOperations.SymmetricDifference:
-                            list.ExceptWith(filterOptions.Pages);
+                            list.ExceptWith(result.Pages);
                             break;
                         case SetOperations.Intersection:
-                            list.IntersectWith(filterOptions.Pages);
+                            list.IntersectWith(result.Pages);
                             break;
                     }
 

@@ -26,7 +26,7 @@ public partial class FilterViewModel(List<WikiNamespace> subjectNamespaces, List
     {
         IEnumerable<int> arr1 = SubjectNamespaces.ToList().Where(x => x.IsChecked).Select(x => x.Id);
         IEnumerable<int> arr2 = TalkNamespaces.ToList().Where(x => x.IsChecked).Select(x => x.Id);
-        dialog.Close(Result<FilterOptions>.Success(new FilterOptions(
+        dialog.Close(new FilterOptions(
             arr1.Concat(arr2).ToArray(),
             RemoveTitlesContaining,
             KeepTitlesContaining,
@@ -34,13 +34,13 @@ public partial class FilterViewModel(List<WikiNamespace> subjectNamespaces, List
             SortAlphabetically,
             RemoveDuplicates,
             SelectedSetOperations,
-            Pages.ToList())));
+            Pages.ToList()));
     }
 
     [RelayCommand]
     private void Close(IDialog dialog)
     {
-        dialog.Close(Result<FilterOptions>.Failure("Closed without selecting any value"));
+        dialog.Close(null);
     }
 
     [RelayCommand]

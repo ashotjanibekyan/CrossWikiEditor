@@ -12,7 +12,7 @@ public sealed partial class SelectNamespacesViewModel(List<WikiNamespace> namesp
     [RelayCommand]
     private void Select(IDialog dialog)
     {
-        dialog.Close(Result<int[]>.Success(Namespaces.Where(n => n.IsChecked).Select(n => n.Id).ToArray()));
+        dialog.Close(Namespaces.Where(n => n.IsChecked).Select(n => n.Id).ToArray());
     }
 
     partial void OnIsAllSelectedChanged(bool value)

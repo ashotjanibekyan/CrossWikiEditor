@@ -28,10 +28,10 @@ public class RandomListProvider(IPageService pageService,
 
     public async Task GetAdditionalParams()
     {
-        Result<int[]> result = await dialogService.ShowDialog<Result<int[]>>(await viewModelFactory.GetSelectNamespacesViewModel());
-        if (result is {IsSuccessful: true, Value: not null})
+        int[]? result = await dialogService.ShowDialog<int[]>(await viewModelFactory.GetSelectNamespacesViewModel());
+        if (result is not null)
         {
-            _namespaces = result.Value;
+            _namespaces = result;
         }
     }
 }
