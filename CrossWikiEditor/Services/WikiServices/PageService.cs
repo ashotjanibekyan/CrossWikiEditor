@@ -6,6 +6,7 @@ using CrossWikiEditor.Models;
 using CrossWikiEditor.Settings;
 using CrossWikiEditor.Utils;
 using CrossWikiEditor.WikiClientLibraryUtils.Generators;
+using Serilog;
 using WikiClientLibrary;
 using WikiClientLibrary.Generators;
 using WikiClientLibrary.Pages;
@@ -43,7 +44,7 @@ public interface IPageService
     Task<Result<List<WikiPageModel>>> ConvertToSubject(List<WikiPageModel> pages);
 }
 
-public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferencesService userPreferencesService)
+public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferencesService userPreferencesService, ILogger logger)
     : IPageService
 {
     public async Task<Result<List<WikiPageModel>>> GetCategoriesOf(string apiRoot, string pageName, bool includeHidden = true,
@@ -76,6 +77,8 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
         }
         catch (Exception e)
         {
+            logger.Fatal(e, "Failed to get pages. Site: {Site}, page: {Page}, includeHidden: {IncludeHidden}, onlyHidden: {OnlyHidden}", 
+                apiRoot, pageName, includeHidden, onlyHidden);
             return Result<List<WikiPageModel>>.Failure(e.Message);
         }
     }
@@ -111,6 +114,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
         }
         catch (Exception e)
         {
+            logger.Fatal(e, "Failed to get pages. Category: {CategoryName}, recursive: {Recursive}", categoryName, recursive);
             return Result<List<WikiPageModel>>.Failure(e.Message);
         }
     }
@@ -126,6 +130,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
         }
         catch (Exception e)
         {
+            logger.Fatal(e, "Failed to get pages. Site {Site}, page: {Page}", apiRoot, pageName);
             return Result<List<WikiPageModel>>.Failure(e.Message);
         }
     }
@@ -145,6 +150,8 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
         }
         catch (Exception e)
         {
+            logger.Fatal(e, "Failed to get pages. Site {Root}, numberOfPages: {NumberOfPages}, namespaces: {Namespaces}", apiRoot, numberOfPages,
+                namespaces);
             return Result<List<WikiPageModel>>.Failure(e.Message);
         }
     }
@@ -165,6 +172,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
         }
         catch (Exception e)
         {
+            logger.Fatal(e, "Failed to get pages. Site {Site}, file: {File}", apiRoot, fileName);
             return Result<List<WikiPageModel>>.Failure(e.Message);
         }
     }
@@ -180,6 +188,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
         }
         catch (Exception e)
         {
+            logger.Fatal(e, "Failed to get pages. Site {Site}, page: {Page}", apiRoot, pageName);
             return Result<List<WikiPageModel>>.Failure(e.Message);
         }
     }
@@ -200,6 +209,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
         }
         catch (Exception e)
         {
+            logger.Fatal(e, "Failed to get pages. Site {Site}", apiRoot);
             return Result<List<WikiPageModel>>.Failure(e.Message);
         }
     }
@@ -218,6 +228,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
         }
         catch (Exception e)
         {
+            logger.Fatal(e, "Failed to get pages. Site {Site}, page: {Page}", apiRoot, pageName);
             return Result<List<WikiPageModel>>.Failure(e.Message);
         }
     }
@@ -237,6 +248,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
         }
         catch (Exception e)
         {
+            logger.Fatal(e, "Failed to get pages. Site {Site}, page: {Page}, namespaces: {Namespaces}", apiRoot, pageName, namespaces);
             return Result<List<WikiPageModel>>.Failure(e.Message);
         }
     }
@@ -267,6 +279,8 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
         }
         catch (Exception e)
         {
+            logger.Fatal(e, "Failed to get pages. Site {Site}, title: {Title}, namespaces: {Namespaces}, allowRedirectLinks: {AllowRedirectLinks}, filterRedirects: {FilterRedirects}", 
+                apiRoot, title, namespaces, allowRedirectLinks, filterRedirects);
             return Result<List<WikiPageModel>>.Failure(e.Message);
         }
     }
@@ -285,6 +299,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
         }
         catch (Exception e)
         {
+            logger.Fatal(e, "Failed to get pages. Site {Site}, keyword: {Keyword}, namespaces: {Namespaces}", apiRoot, keyword, namespaces);
             return Result<List<WikiPageModel>>.Failure(e.Message);
         }
     }
@@ -303,6 +318,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
         }
         catch (Exception e)
         {
+            logger.Fatal(e, "Failed to get pages. {WikiPageModel}", page);
             return Result<WikiPageModel>.Failure(e.Message);
         }
     }
@@ -336,6 +352,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
         }
         catch (Exception e)
         {
+            logger.Fatal(e, "Failed to get pages. {WikiPageModel}", page);
             return Result<WikiPageModel>.Failure(e.Message);
         }
     }

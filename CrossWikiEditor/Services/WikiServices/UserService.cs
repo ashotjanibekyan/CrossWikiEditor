@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CrossWikiEditor.Models;
 using CrossWikiEditor.WikiClientLibraryUtils.Generators;
+using Serilog;
 using WikiClientLibrary.Pages;
 using WikiClientLibrary.Sites;
 
@@ -16,7 +17,7 @@ public interface IUserService
     Task<Result<List<WikiPageModel>>> GetUserContribsPages(string apiRoot, string username);
 }
 
-public sealed class UserService(IWikiClientCache wikiClientCache, IUserPreferencesService userPreferencesService)
+public sealed class UserService(IWikiClientCache wikiClientCache, IUserPreferencesService userPreferencesService, ILogger logger)
     : IUserService
 {
     public async Task<Result> Login(Profile profile, string apiRoot)
@@ -29,6 +30,7 @@ public sealed class UserService(IWikiClientCache wikiClientCache, IUserPreferenc
         }
         catch (Exception e)
         {
+            logger.Information(e, "Failed to login");
             return Result.Failure(e.Message);
         }
     }
@@ -44,6 +46,7 @@ public sealed class UserService(IWikiClientCache wikiClientCache, IUserPreferenc
         }
         catch (Exception e)
         {
+            logger.Fatal(e, "Failed to get watchlist pages");
             return Result<List<WikiPageModel>>.Failure(e.Message);
         }
     }
@@ -58,6 +61,7 @@ public sealed class UserService(IWikiClientCache wikiClientCache, IUserPreferenc
         }
         catch (Exception e)
         {
+            logger.Fatal(e, "Failed to get user contrib pages");
             return Result<List<WikiPageModel>>.Failure(e.Message);
         }
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CrossWikiEditor.Models;
+using Serilog;
 using WikiClientLibrary.Client;
 using WikiClientLibrary.Pages;
 using WikiClientLibrary.Sites;
@@ -15,7 +16,7 @@ public interface IWikiClientCache
     Task<Result<WikiPageModel>> GetWikiPageModel(string apiRoot, string title, bool forceNew = false);
 }
 
-public class WikiClientCache : IWikiClientCache
+public class WikiClientCache(ILogger logger) : IWikiClientCache
 {
     private Dictionary<string, WikiClient> _wikiClients = new();
     private Dictionary<string, WikiSite> _wikiSites = new();
@@ -51,6 +52,7 @@ public class WikiClientCache : IWikiClientCache
         }
         catch (Exception e)
         {
+            logger.Information(e, "Failed to create WikiPage for {} on {}", title, apiRoot);
             return Result<WikiPageModel>.Failure(e.Message);
         }
     }

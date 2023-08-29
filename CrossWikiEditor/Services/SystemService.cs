@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Avalonia.Input.Platform;
+using Serilog;
 
 namespace CrossWikiEditor.Services;
 
@@ -17,7 +18,7 @@ public interface ISystemService
     Task<string> ReadAllTextAsync(string path, Encoding encoding);
 }
 
-public class SystemService(IClipboard clipboard) : ISystemService
+public class SystemService(IClipboard clipboard, ILogger logger) : ISystemService
 {
     public Result OpenLinkInBrowser(string url)
     {
@@ -33,6 +34,7 @@ public class SystemService(IClipboard clipboard) : ISystemService
         }
         catch (Exception e)
         {
+            logger.Fatal(e, "Failed to open link in browser");
             return Result.Failure(e.Message);
         }
     }

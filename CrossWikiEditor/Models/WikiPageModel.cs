@@ -40,6 +40,11 @@ public class WikiPageModel(string title, int namespaceId) : IEquatable<WikiPageM
         return HashCode.Combine(Title);
     }
 
+    public override string ToString()
+    {
+        return $"WikiPageModel {{ Title = {Title}, Namespace: {NamespaceId}, WikiPage: {WikiPage} }} ";
+    }
+
     public static bool operator ==(WikiPageModel? left, WikiPageModel? right)
     {
         if (ReferenceEquals(left, right))

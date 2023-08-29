@@ -19,6 +19,8 @@ using CrossWikiEditor.ViewModels.MenuViewModels;
 using CrossWikiEditor.ViewModels.ReportViewModels;
 using CrossWikiEditor.Views;
 using CrossWikiEditor.Views.ControlViews;
+using Serilog;
+using Serilog.Core;
 
 namespace CrossWikiEditor;
 
@@ -86,6 +88,15 @@ public class App : Application
         (byte[] key, byte[] iv) = StringEncryptionService.GenerateKeyAndIv("SHOULD IMPLEMENT THIS LATER");
         IStringEncryptionService stringEncryptionService = new StringEncryptionService(key, iv);
 
+        Logger logger = new LoggerConfiguration()
+            .WriteTo.Async(a => a.File("log.txt"))
+#if DEBUG
+            .MinimumLevel.Verbose()
+#else
+            .MinimumLevel.Information()
+#endif
+            .CreateLogger();
+        
         builder.RegisterType<ViewModelFactory>().As<IViewModelFactory>().SingleInstance();
         builder.RegisterType<FileDialogService>().As<IFileDialogService>().SingleInstance();
         builder.RegisterType<SystemService>().As<ISystemService>().SingleInstance();
@@ -100,6 +111,7 @@ public class App : Application
             .WithParameter(new TypedParameter(typeof(IOwner), _mainWindow)).SingleInstance();
         builder.RegisterInstance(storageProvider).As<IStorageProvider>();
         builder.RegisterInstance(stringEncryptionService).As<IStringEncryptionService>();
+        builder.RegisterInstance(logger).As<ILogger>();
         builder.Register(c => TopLevel.GetTopLevel(_mainWindow)?.Clipboard).As<IClipboard>();
         builder.Register(c => WeakReferenceMessenger.Default).As<IMessenger>();
     }

@@ -17,11 +17,13 @@ using CrossWikiEditor.Models;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
 using CrossWikiEditor.Utils;
+using Serilog;
 
 namespace CrossWikiEditor.ViewModels;
 
 public sealed partial class MakeListViewModel : ViewModelBase
 {
+    private readonly ILogger _logger;
     private readonly IDialogService _dialogService;
     private readonly IWikiClientCache _clientCache;
     private readonly IPageService _pageService;
@@ -32,6 +34,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
 
     public MakeListViewModel(
         IMessenger messenger,
+        ILogger logger,
         IDialogService dialogService,
         IWikiClientCache clientCache,
         IPageService pageService,
@@ -41,6 +44,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
         IUserPreferencesService userPreferencesService,
         IEnumerable<IListProvider> listProviders)
     {
+        _logger = logger;
         _dialogService = dialogService;
         _clientCache = clientCache;
         _pageService = pageService;
@@ -311,7 +315,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            _logger.Fatal(e, "Failed to filter the list");
         }
     }
 

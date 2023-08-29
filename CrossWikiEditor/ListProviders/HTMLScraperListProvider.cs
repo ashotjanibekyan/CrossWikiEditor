@@ -8,6 +8,7 @@ using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
 using CrossWikiEditor.Utils;
 using HtmlAgilityPack;
+using Serilog;
 using WikiClientLibrary.Pages;
 using WikiClientLibrary.Sites;
 
@@ -16,7 +17,7 @@ namespace CrossWikiEditor.ListProviders;
 public class HtmlScraperListProvider(
     IUserPreferencesService userPreferencesService, 
     IWikiClientCache wikiClientCache,
-    LanguageSpecificRegexes languageSpecificRegexes) : IListProvider
+    ILogger logger) : IListProvider
 {
     public string Title => "HTML Scraper";
     public string ParamTitle => "URL";
@@ -38,11 +39,12 @@ public class HtmlScraperListProvider(
         }
         catch (Exception e)
         {
+            logger.Fatal(e, $"{nameof(HtmlScraperListProvider)} failed to make a list");
             return Result<List<WikiPageModel>>.Failure(e.Message);
         }
     }
 
-    private static List<WikiPageModel> TerminationCharsBasedParser(string html, string baseUrl, WikiSite site)
+    private List<WikiPageModel> TerminationCharsBasedParser(string html, string baseUrl, WikiSite site)
     {
         var terminationChars = new[] {' ', '\t', '\n', '"', '<', '>', '{', '}', '&'};
             
@@ -64,10 +66,9 @@ public class HtmlScraperListProvider(
 
             try
             {
-                WikiPageModel page;
                 if (url.Last() == '\'' || url.Last() == '\"')
                 {
-                    page = new WikiPageModel(new WikiPage(site, Tools.GetPageTitleFromUrl(baseUrl + url[..^1])));
+                    var page = new WikiPageModel(new WikiPage(site, Tools.GetPageTitleFromUrl(baseUrl + url[..^1])));
                     wikiPageModels.Add(page.WikiPage is {Exists: true}
                         ? page
                         : new WikiPageModel(new WikiPage(site, Tools.GetPageTitleFromUrl(baseUrl + url))));
@@ -78,16 +79,16 @@ public class HtmlScraperListProvider(
                 }
                 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // ignored
+                logger.Debug(ex, $"{nameof(TerminationCharsBasedParser)} failed to parse a URL");
             }
         }
 
         return wikiPageModels;
     }
 
-    private static List<WikiPageModel> HtmlAgilityPackBasedParser(string html, string baseUrl, WikiSite site)
+    private List<WikiPageModel> HtmlAgilityPackBasedParser(string html, string baseUrl, WikiSite site)
     {
         var doc = new HtmlDocument();
         doc.LoadHtml(html);
@@ -106,9 +107,9 @@ public class HtmlScraperListProvider(
                         Tools.GetPageTitleFromUrl(hrefValue[hrefValue.IndexOf(baseUrl, StringComparison.Ordinal)..]))));
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // ignored
+                logger.Debug(ex, $"{nameof(HtmlAgilityPackBasedParser)} failed to parse a URL");
             }
         }
 

@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using CrossWikiEditor.Repositories;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
+using Serilog;
 
 namespace CrossWikiEditor.Tests;
 
@@ -17,6 +18,7 @@ public abstract class BaseTest
     protected IDialog _dialog;
     protected IMessenger _messenger;
     protected IClipboard _clipboard;
+    protected ILogger _logger;
 
     protected IUserService _userService;
     protected IPageService _pageService;
@@ -34,6 +36,7 @@ public abstract class BaseTest
         _dialog = Substitute.For<IDialog>();
         _messenger = Substitute.For<IMessenger>();
         _clipboard = Substitute.For<IClipboard>();
+        _logger = Substitute.For<ILogger>();
 
         _userService = Substitute.For<IUserService>();
         _pageService = Substitute.For<IPageService>();
