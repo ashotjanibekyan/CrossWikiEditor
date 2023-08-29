@@ -1,5 +1,6 @@
 ﻿using Bogus;
 using CrossWikiEditor.Models;
+using CrossWikiEditor.ViewModels;
 
 namespace CrossWikiEditor.Tests;
 
@@ -21,8 +22,6 @@ public static class Fakers
         .RuleFor(p => p.Title, f => f.Random.Word())
         .RuleFor(p => p.NamespaceId, f => f.Random.Int(0, 20));
 
-    public static List<string> WordsFaker(int n)
-    {
-        return _faker.Random.WordsArray(n).ToList();
-    }
+    public static Faker<WikiNamespace> WikiNamespaceFaker = new Faker<WikiNamespace>()
+        .CustomInstantiator(f => new WikiNamespace(f.UniqueIndex, f.Random.Word(), false));
 }

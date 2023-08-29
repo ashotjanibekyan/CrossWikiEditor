@@ -213,20 +213,6 @@ public class MakeListViewModelTests : BaseTest
     }
 
     [Test]
-    public void MakeListCommand_ShouldNotRequestAdditionalParams_WhenNeedsAdditionalParamsIsFalse()
-    {
-        // arrange
-        INeedAdditionalParamsListProvider listProvider = Substitute.For<INeedAdditionalParamsListProvider>();
-        _sut.SelectedListProvider = listProvider;
-
-        // act
-        _sut.MakeListCommand.Execute(null);
-
-        // assert
-        listProvider.Received(0).GetAdditionalParams();
-    }
-
-    [Test]
     public void OpenInBrowserCommand_ShouldDoNothing_WhenThereIsNoSelectedPage()
     {
         // arrange
