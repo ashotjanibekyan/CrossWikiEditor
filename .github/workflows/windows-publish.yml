@@ -41,4 +41,4 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: Windows x64
-        path: ${{ env.Wap_Project_Directory }}\bin\publish\win-x64\CrossWikiEditor.exe
+        path: ${{ env.Project_Path }}\bin\publish\win-x64\CrossWikiEditor.exe
