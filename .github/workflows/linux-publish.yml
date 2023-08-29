@@ -1,0 +1,53 @@
+﻿name: CrossWikiEditor-Linux-latest
+
+on:
+    push:
+        branches: [ "master" ]
+    pull_request:
+        branches: [ "master" ]
+
+jobs:
+    
+    build:
+        
+        runs-on: ubuntu-latest  # For a list of available runner types, refer to
+        # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+        
+        env:
+            Solution_Name: CrossWikiEditor.sln
+            Project_Directory: CrossWikiEditor
+            Project_Path: CrossWikiEditor/CrossWikiEditor.csproj
+            Publish_Profile_Path: CrossWikiEditor/Properties/PublishProfiles/Linux64.pubxml
+        
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
+            
+            # Install the .NET Core workload
+            - name: Install .NET Core
+              uses: actions/setup-dotnet@v3
+              with:
+                  dotnet-version: 8.0.x
+                  dotnet-quality: 'preview'
+            
+            # Create the app exe
+            - name: Create the app exe
+              run: dotnet publish $env:Project_Path -p:PublishProfile=$env:Publish_Profile_Path
+            
+            # Upload the app: https://github.com/marketplace/actions/upload-a-build-artifact
+            - name: Upload build artifacts
+              uses: actions/upload-artifact@v3
+              with:
+                  name: Linux x64
+                  path: ${{ env.Project_Directory }}/bin/publish/linux-x64/CrossWikiEditor
+
+            - name: Upload Artifacts TO Google Drive
+              uses: Jumbo810/Upload_Github_Artifacts_TO_GDrive@v1.1.1
+              with:
+                  target: ${{ env.Project_Directory }}/bin/publish/linux-x64/CrossWikiEditor.exe
+                  credentials: ${{ secrets.GOOGLEDRIVEUPLOAD }}
+                  parent_folder_id: '1c4CnqaQQFjeTcd6ydpBPLAsVQ-YgPNYa'
+                  name: 'CrossWikiEditor-Linux'
+    
