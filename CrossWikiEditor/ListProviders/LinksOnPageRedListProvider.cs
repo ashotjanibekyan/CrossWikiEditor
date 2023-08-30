@@ -16,11 +16,13 @@ public class LinksOnPageRedListProvider(
     public override async Task<Result<List<WikiPageModel>>> MakeList()
     {
         Result<List<WikiPageModel>> result = await base.MakeList();
-        if (result is { IsSuccessful: true, Value: not null })
+        if (result is not {IsSuccessful: true, Value: not null})
         {
-            return Result<List<WikiPageModel>>.Success(result.Value.Where(x => x.WikiPage is not null && !x.WikiPage.Exists).ToList());
+            return result;
         }
 
-        return result;
+        var existsTable = await Task.WhenAll(result.Value.Select(p => p.Exists()));
+        return Result<List<WikiPageModel>>.Success(result.Value.Where((_, index) => !existsTable[index]).ToList());
+
     }
 }

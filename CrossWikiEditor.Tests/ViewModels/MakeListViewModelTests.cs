@@ -4,12 +4,16 @@ using CrossWikiEditor.Models;
 using CrossWikiEditor.Settings;
 using CrossWikiEditor.Utils;
 using CrossWikiEditor.ViewModels;
+using WikiClientLibrary.Client;
+using WikiClientLibrary.Sites;
 
 namespace CrossWikiEditor.Tests.ViewModels;
 
 public class MakeListViewModelTests : BaseTest
 {
     private MakeListViewModel _sut;
+    private const string ApiRoot = "https://hy.wikipedia.org/w/api.php?";
+    private WikiClient _wikiClient = new WikiClient();
 
     [SetUp]
     public void SetUp()
@@ -22,6 +26,12 @@ public class MakeListViewModelTests : BaseTest
         };
         _sut = new MakeListViewModel(_messenger, _logger, _dialogService, _wikiClientCache, _pageService, _systemService, _viewModelFactory,
             _fileDialogService, _userPreferencesService, listProviders);
+        _userPreferencesService.GetCurrentPref().Returns(new UserPrefs()
+        {
+            LanguageCode = "hy",
+            Project = ProjectEnum.Wikipedia
+        });
+        _wikiClientCache.GetWikiSite(Arg.Any<string>()).Returns(new WikiSite(_wikiClient, ApiRoot));
     }
 
     [Test]
@@ -29,7 +39,7 @@ public class MakeListViewModelTests : BaseTest
     {
         // arrange
         _sut.NewPageTitle = newPageTitle;
-        var originalPages = new List<WikiPageModel> { new("Page1", 0), new("Page2", 0), new("Page3", 0) };
+        var originalPages = new List<WikiPageModel> { new("Page1", ApiRoot, _wikiClientCache), new("Page2", ApiRoot, _wikiClientCache), new("Page3", ApiRoot, _wikiClientCache) };
         _sut.Pages = originalPages.ToObservableCollection();
 
         // act
@@ -44,14 +54,16 @@ public class MakeListViewModelTests : BaseTest
     {
         // arrange
         _sut.NewPageTitle = "new page";
-        List<WikiPageModel>? originalPages = Fakers.WikiPageModelFaker.Generate(3);
+        List<WikiPageModel>? originalPages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(3);
         _sut.Pages = originalPages.ToObservableCollection();
+        _wikiClientCache.GetWikiPageModel(ApiRoot, "new page", false)
+            .Returns(args => Result<WikiPageModel>.Success(new WikiPageModel("new page", ApiRoot, _wikiClientCache)));
 
         // act
         _sut.AddNewPageCommand.Execute(null);
-
+        
         // assert
-        _sut.Pages.Should().BeEquivalentTo(originalPages.Concat(new[] { new WikiPageModel("new page", 0) }));
+        _sut.Pages.Should().BeEquivalentTo(originalPages.Concat(new[] { new WikiPageModel("new page", ApiRoot, _wikiClientCache) }));
     }
 
     [Test]
@@ -72,19 +84,21 @@ public class MakeListViewModelTests : BaseTest
     {
         // arrange
         _sut.NewPageTitle = "    new page title   ";
-
+        _wikiClientCache.GetWikiPageModel(ApiRoot, Arg.Any<string>(), false)
+            .Returns(args => Result<WikiPageModel>.Success(new WikiPageModel("new page title", ApiRoot, _wikiClientCache)));
+        
         // act
         _sut.AddNewPageCommand.Execute(null);
 
         // assert
-        _sut.Pages.Should().BeEquivalentTo(new List<WikiPageModel> { new("new page title", 0) });
+        _sut.Pages.Should().BeEquivalentTo(new List<WikiPageModel> { new("new page title", ApiRoot, _wikiClientCache) });
     }
 
     [Test]
     public void RemoveCommand_ShouldDoNothing_WhenThereIsNoSelectedPage()
     {
         // arrange
-        List<WikiPageModel>? randomPages = Fakers.WikiPageModelFaker.Generate(10);
+        List<WikiPageModel>? randomPages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(10);
         _sut.Pages = randomPages.ToObservableCollection();
         _sut.SelectedPages = new ObservableCollection<WikiPageModel>();
 
@@ -99,7 +113,7 @@ public class MakeListViewModelTests : BaseTest
     public void RemoveCommand_ShouldRemoveSelectedPages_WhenSelectedPageIsInPages()
     {
         // arrange
-        List<WikiPageModel>? randomPages = Fakers.WikiPageModelFaker.Generate(10);
+        List<WikiPageModel>? randomPages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(10);
         _sut.Pages = randomPages.ToObservableCollection();
         _sut.SelectedPages = new[] { _sut.Pages[3], _sut.Pages[6], _sut.Pages[1] }.ToObservableCollection();
         randomPages.RemoveAt(1);
@@ -116,10 +130,10 @@ public class MakeListViewModelTests : BaseTest
     [Test]
     public void RemoveCommand_ShouldDoNothing_WhenSelectedPageIsNotInPages()
     {
-        List<WikiPageModel>? randomPages = Fakers.WikiPageModelFaker.Generate(10);
+        List<WikiPageModel>? randomPages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(10);
         _sut.Pages = randomPages.ToObservableCollection();
-        _sut.SelectedPages = Fakers.WikiPageModelFaker.Generate(2)
-            .Select(x => new WikiPageModel(x.Title + Guid.NewGuid(), x.NamespaceId))
+        _sut.SelectedPages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(2)
+            .Select(x => new WikiPageModel(x.Title + Guid.NewGuid(), ApiRoot, _wikiClientCache))
             .ToObservableCollection();
 
         // act
@@ -134,7 +148,7 @@ public class MakeListViewModelTests : BaseTest
     public void RemoveCommand_ShouldClearSelectedPage()
     {
         // arrange
-        _sut.SelectedPages = Fakers.WikiPageModelFaker.Generate(3).ToObservableCollection();
+        _sut.SelectedPages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(3).ToObservableCollection();
 
         // act
         _sut.RemoveCommand.Execute(null);
@@ -166,12 +180,12 @@ public class MakeListViewModelTests : BaseTest
         IListProvider listProvider = Substitute.For<IListProvider>();
         _sut.SelectedListProvider = listProvider;
 
-        List<WikiPageModel>? existingPages = Fakers.WikiPageModelFaker.Generate(10);
+        List<WikiPageModel>? existingPages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(10);
         _sut.Pages = existingPages.ToObservableCollection();
 
         listProvider.CanMake.Returns(true);
 
-        List<WikiPageModel>? newPages = Fakers.WikiPageModelFaker.Generate(10);
+        List<WikiPageModel>? newPages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(10);
         listProvider.MakeList().Returns(Result<List<WikiPageModel>>.Success(newPages));
 
         // act
@@ -189,7 +203,7 @@ public class MakeListViewModelTests : BaseTest
         _sut.SelectedListProvider = listProvider;
         listProvider.CanMake.Returns(true);
         listProvider.MakeList().Returns(Result<List<WikiPageModel>>.Failure("error message"));
-        List<WikiPageModel>? existingPages = Fakers.WikiPageModelFaker.Generate(10);
+        List<WikiPageModel>? existingPages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(10);
         _sut.Pages = existingPages.ToObservableCollection();
 
         // act
@@ -231,7 +245,7 @@ public class MakeListViewModelTests : BaseTest
     public void OpenInBrowserCommand_ShouldOpenAllSelectedPages_WhenThereAreSelectedPages()
     {
         // arrange
-        _sut.SelectedPages = Fakers.WikiPageModelFaker.Generate(4).ToObservableCollection();
+        _sut.SelectedPages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(4).ToObservableCollection();
         _userPreferencesService.GetCurrentPref().Returns(new UserPrefs
         {
             LanguageCode = "hy",
@@ -270,7 +284,7 @@ public class MakeListViewModelTests : BaseTest
     public void OpenHistoryInBrowserCommand_ShouldOpenAllSelectedPages_WhenThereAreSelectedPages()
     {
         // arrange
-        _sut.SelectedPages = Fakers.WikiPageModelFaker.Generate(4).ToObservableCollection();
+        _sut.SelectedPages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(4).ToObservableCollection();
         _userPreferencesService.GetCurrentPref().Returns(new UserPrefs
         {
             LanguageCode = "hy",
@@ -308,7 +322,7 @@ public class MakeListViewModelTests : BaseTest
     public void CutCommand_ShouldCutSelectedPageTitlesAndRemoveThem()
     {
         // arrange
-        List<WikiPageModel>? pages = Fakers.WikiPageModelFaker.Generate(5);
+        List<WikiPageModel>? pages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(5);
         _sut.Pages = pages.ToObservableCollection();
         _sut.SelectedPages = new List<WikiPageModel> { _sut.Pages[2], _sut.Pages[4], _sut.Pages[1] }.ToObservableCollection();
 
@@ -340,7 +354,7 @@ public class MakeListViewModelTests : BaseTest
     public void CopyCommand_ShouldCopySelectedPageTitles()
     {
         // arrange
-        List<WikiPageModel>? pages = Fakers.WikiPageModelFaker.Generate(10);
+        List<WikiPageModel>? pages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(10);
         List<WikiPageModel>? selectedPages = pages.RandomSubset(3);
         _sut.SelectedPages = selectedPages.ToObservableCollection();
         _sut.Pages = pages.ToObservableCollection();
@@ -360,7 +374,7 @@ public class MakeListViewModelTests : BaseTest
     public void SelectAllCommand_ShouldSelectAllPages()
     {
         // arrange
-        _sut.Pages = Fakers.WikiPageModelFaker.Generate(5).ToObservableCollection();
+        _sut.Pages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(5).ToObservableCollection();
         _sut.SelectedPages = new ObservableCollection<WikiPageModel>();
 
         // act
@@ -375,7 +389,7 @@ public class MakeListViewModelTests : BaseTest
     public void SelectNoneCommand_ShouldUnSelectAllPages()
     {
         // arrange
-        _sut.Pages = Fakers.WikiPageModelFaker.Generate(5).ToObservableCollection();
+        _sut.Pages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(5).ToObservableCollection();
         _sut.SelectedPages = new ObservableCollection<WikiPageModel>();
 
         // act
@@ -390,7 +404,7 @@ public class MakeListViewModelTests : BaseTest
     public void SelectInverseCommand_ShouldSelectAll_WhenNonIsSelected()
     {
         // arrange
-        _sut.Pages = Fakers.WikiPageModelFaker.Generate(5).ToObservableCollection();
+        _sut.Pages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(5).ToObservableCollection();
         _sut.SelectedPages = new ObservableCollection<WikiPageModel>();
 
         // act
@@ -405,7 +419,7 @@ public class MakeListViewModelTests : BaseTest
     public void SelectInverseCommand_ShouldUnselectAll_WhenEverythingIsSelected()
     {
         // arrange
-        List<WikiPageModel>? pages = Fakers.WikiPageModelFaker.Generate(5);
+        List<WikiPageModel>? pages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(5);
         _sut.Pages = pages.ToObservableCollection();
         _sut.SelectedPages = pages.ToObservableCollection();
 
@@ -421,7 +435,7 @@ public class MakeListViewModelTests : BaseTest
     public void SelectInverseCommand_ShouldInverseSelection()
     {
         // arrange
-        List<WikiPageModel>? pages = Fakers.WikiPageModelFaker.Generate(5);
+        List<WikiPageModel>? pages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(5);
         List<WikiPageModel>? selectedPages = pages.RandomSubset(2);
         _sut.Pages = pages.ToObservableCollection();
         _sut.SelectedPages = selectedPages.ToObservableCollection();
@@ -438,23 +452,28 @@ public class MakeListViewModelTests : BaseTest
     public void PastCommand_ShouldSplitClipboardAndAddPages()
     {
         // arrange
-        _sut.Pages = new List<WikiPageModel> { new("page1", 0), new("page2", 0) }.ToObservableCollection();
+        _sut.Pages = new List<WikiPageModel> { new("page1", ApiRoot, _wikiClientCache), new("page2", ApiRoot, _wikiClientCache) }.ToObservableCollection();
         _systemService.GetClipboardTextAsync()
             .Returns($"page3{Environment.NewLine}fewfew{Environment.NewLine}ofiewf203{Environment.NewLine} foiwej   ");
-
+        _wikiClientCache.GetWikiPageModel(ApiRoot, Arg.Any<string>(), false)
+            .Returns(args => Result<WikiPageModel>.Success(new WikiPageModel(((string) args[1]).Trim(), ApiRoot, _wikiClientCache)));
+        
         // act
         _sut.PasteCommand.Execute(null);
 
         // assert
         _sut.Pages.Should().BeEquivalentTo(new List<WikiPageModel>
-            {new("page1", 0), new("page2", 0), new("page3", 0), new("fewfew", 0), new("ofiewf203", 0), new("foiwej", 0)}.ToObservableCollection());
+        {
+            new("page1", ApiRoot, _wikiClientCache), new("page2", ApiRoot, _wikiClientCache), new("page3", ApiRoot, _wikiClientCache),
+            new("fewfew", ApiRoot, _wikiClientCache), new("ofiewf203", ApiRoot, _wikiClientCache), new("foiwej", ApiRoot, _wikiClientCache)
+        }.ToObservableCollection());
     }
 
     [Test]
     public void RemoveSelectedCommand_ShouldDoNothing_WhenSelectedPagesIsEmpty()
     {
         // arrange
-        List<WikiPageModel>? pages = Fakers.WikiPageModelFaker.Generate(10);
+        List<WikiPageModel>? pages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(10);
         _sut.Pages = pages.ToObservableCollection();
         _sut.SelectedPages.Clear();
 
@@ -470,7 +489,7 @@ public class MakeListViewModelTests : BaseTest
     public void RemoveSelectedCommand_ShouldRemoveSelectedPages()
     {
         // arrange
-        List<WikiPageModel>? pages = Fakers.WikiPageModelFaker.Generate(10);
+        List<WikiPageModel>? pages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(10);
         List<WikiPageModel>? selectedPages = pages.RandomSubset(4);
         IEnumerable<WikiPageModel>? notSelectedPages = pages.Where(p => !selectedPages.Contains(p));
         _sut.Pages = pages.ToObservableCollection();
@@ -488,7 +507,7 @@ public class MakeListViewModelTests : BaseTest
     public void RemoveAllCommand_ShouldRemoveAllPages()
     {
         // arrange
-        List<WikiPageModel>? pages = Fakers.WikiPageModelFaker.Generate(10);
+        List<WikiPageModel>? pages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(10);
         List<WikiPageModel>? selectedPages = pages.RandomSubset(4);
         _sut.Pages = pages.ToObservableCollection();
         _sut.SelectedPages = selectedPages.ToObservableCollection();
@@ -505,7 +524,7 @@ public class MakeListViewModelTests : BaseTest
     public void RemoveDuplicate_ShouldRemoveDuplicatePages()
     {
         // arrange
-        List<WikiPageModel>? pages = Fakers.WikiPageModelFaker.Generate(10);
+        List<WikiPageModel>? pages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(10);
         pages = pages.Concat(pages.RandomSubset(4)).ToList();
         _sut.Pages = pages.ToObservableCollection();
         _sut.SelectedPages = pages.RandomSubset(2).ToObservableCollection();
@@ -522,15 +541,20 @@ public class MakeListViewModelTests : BaseTest
     public void RemoveNonMainSpaceCommand_ShouldRemoveNonMainSpacePages()
     {
         // arrange
-        _sut.Pages = new List<WikiPageModel>
-            {new("template:page1", 9), new("category:page2", 14), new("user:Page2", 4), new("Page3", 0), new("Page5", 0)}.ToObservableCollection();
-        _sut.SelectedPages = new List<WikiPageModel> { new("page1", 0), new("page2", 0) }.ToObservableCollection();
+        _sut.Pages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(5).ToObservableCollection();
+        _sut.SelectedPages = _sut.Pages.ToList().RandomSubset(3).ToObservableCollection();
+        _sut.Pages[0].NamespaceId = 0;
+        _sut.Pages[1].NamespaceId = 2;
+        _sut.Pages[2].NamespaceId = 0;
+        _sut.Pages[3].NamespaceId = 12;
+        _sut.Pages[4].NamespaceId = 13;
+        var nonSelected = new List<WikiPageModel> {_sut.Pages[0], _sut.Pages[2]};
 
         // act
         _sut.RemoveNonMainSpaceCommand.Execute(null);
 
         // assert
-        _sut.Pages.Should().BeEquivalentTo(new List<WikiPageModel> { new("Page3", 0), new("Page5", 0) });
+        _sut.Pages.Should().BeEquivalentTo(nonSelected);
         _sut.SelectedPages.Should().BeEmpty();
     }
 
@@ -539,8 +563,8 @@ public class MakeListViewModelTests : BaseTest
     {
         // arrange
         _sut.Pages = new List<WikiPageModel>
-            {new("template:page1", 9), new("category:page2", 14), new("user:Page2", 4), new("Page3", 0), new("Page5", 0)}.ToObservableCollection();
-        _sut.SelectedPages = new List<WikiPageModel> { new("category:page2", 14), new("Page3", 0) }.ToObservableCollection();
+            {new("template:page1", ApiRoot, _wikiClientCache), new("category:page2", ApiRoot, _wikiClientCache), new("user:Page2", ApiRoot, _wikiClientCache), new("Page3", ApiRoot, _wikiClientCache), new("Page5", ApiRoot, _wikiClientCache)}.ToObservableCollection();
+        _sut.SelectedPages = new List<WikiPageModel> { new("category:page2", ApiRoot, _wikiClientCache), new("Page3", ApiRoot, _wikiClientCache) }.ToObservableCollection();
 
         // act
         _sut.MoveToTopCommand.Execute(null);
@@ -548,7 +572,7 @@ public class MakeListViewModelTests : BaseTest
         // assert
         _sut.Pages.Should()
             .BeEquivalentTo(
-                new List<WikiPageModel> { new("category:page2", 14), new("Page3", 0), new("template:page1", 9), new("user:Page2", 4), new("Page5", 0) },
+                new List<WikiPageModel> { new("category:page2", ApiRoot, _wikiClientCache), new("Page3", ApiRoot, _wikiClientCache), new("template:page1", ApiRoot, _wikiClientCache), new("user:Page2", ApiRoot, _wikiClientCache), new("Page5", ApiRoot, _wikiClientCache) },
                 options => options.WithStrictOrdering());
         _sut.SelectedPages.Should().BeEmpty();
     }
@@ -558,8 +582,8 @@ public class MakeListViewModelTests : BaseTest
     {
         // arrange
         _sut.Pages = new List<WikiPageModel>
-            {new("template:page1", 9), new("category:page2", 14), new("user:Page2", 4), new("Page3", 0), new("Page5", 0)}.ToObservableCollection();
-        _sut.SelectedPages = new List<WikiPageModel> { new("category:page2", 14), new("Page3", 0) }.ToObservableCollection();
+            {new("template:page1", ApiRoot, _wikiClientCache), new("category:page2", ApiRoot, _wikiClientCache), new("user:Page2", ApiRoot, _wikiClientCache), new("Page3", ApiRoot, _wikiClientCache), new("Page5", ApiRoot, _wikiClientCache)}.ToObservableCollection();
+        _sut.SelectedPages = new List<WikiPageModel> { new("category:page2", ApiRoot, _wikiClientCache), new("Page3", ApiRoot, _wikiClientCache) }.ToObservableCollection();
 
         // act
         _sut.MoveToBottomCommand.Execute(null);
@@ -567,7 +591,7 @@ public class MakeListViewModelTests : BaseTest
         // assert
         _sut.Pages.Should()
             .BeEquivalentTo(
-                new List<WikiPageModel> { new("template:page1", 9), new("user:Page2", 4), new("Page5", 0), new("category:page2", 14), new("Page3", 0) },
+                new List<WikiPageModel> { new("template:page1", ApiRoot, _wikiClientCache), new("user:Page2", ApiRoot, _wikiClientCache), new("Page5", ApiRoot, _wikiClientCache), new("category:page2", ApiRoot, _wikiClientCache), new("Page3", ApiRoot, _wikiClientCache) },
                 options => options.WithStrictOrdering());
         _sut.SelectedPages.Should().BeEmpty();
     }
@@ -576,7 +600,7 @@ public class MakeListViewModelTests : BaseTest
     public void SortAlphabeticallyCommand_ShouldSortAlphabetically()
     {
         // arrange
-        _sut.Pages = Fakers.WikiPageModelFaker.Generate(10).ToObservableCollection();
+        _sut.Pages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(10).ToObservableCollection();
 
         // act
         _sut.SortAlphabeticallyCommand.Execute(null);
@@ -592,7 +616,7 @@ public class MakeListViewModelTests : BaseTest
     public void SortReverseAlphabeticallyCommand_ShouldSortReverseAlphabetically()
     {
         // arrange
-        _sut.Pages = Fakers.WikiPageModelFaker.Generate(10).ToObservableCollection();
+        _sut.Pages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(10).ToObservableCollection();
 
         // act
         _sut.SortReverseAlphabeticallyCommand.Execute(null);

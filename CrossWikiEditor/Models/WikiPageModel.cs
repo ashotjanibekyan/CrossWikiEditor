@@ -1,17 +1,75 @@
 ﻿using System;
+using System.Threading.Tasks;
+using CrossWikiEditor.Services.WikiServices;
+using CrossWikiEditor.Utils;
 using WikiClientLibrary.Pages;
+using WikiClientLibrary.Sites;
 
 namespace CrossWikiEditor.Models;
 
-public class WikiPageModel(string title, int namespaceId) : IEquatable<WikiPageModel>, IComparable<WikiPageModel>
+public class WikiPageModel : IEquatable<WikiPageModel>, IComparable<WikiPageModel>, IAsyncInitialization
 {
-    public WikiPage? WikiPage { get; set; }
-    public string Title { get; init; } = title;
-    public int NamespaceId { get; init; } = namespaceId;
+    private WikiPage? _wikiPage;
 
-    public WikiPageModel(WikiPage wikiPage) : this(wikiPage.Title, wikiPage.NamespaceId)
+    public WikiPageModel(WikiPage wikiPage)
     {
-        WikiPage = wikiPage;
+        _wikiPage = wikiPage;
+        Title = wikiPage.Title;
+        NamespaceId = wikiPage.NamespaceId;
+        InitAsync = Task.CompletedTask;
+    }
+
+    public WikiPageModel(string title, string apiRoot, IWikiClientCache wikiClientCache)
+    {
+        Title = title;
+        InitAsync = InitializeAsync(title, apiRoot, wikiClientCache);
+    }
+    
+    private async Task InitializeAsync(string title, string apiRoot, IWikiClientCache wikiClientCache)
+    {
+        WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
+        await site.Initialization;
+        _wikiPage = new WikiPage(site, title);
+        NamespaceId = _wikiPage.NamespaceId;
+    }
+    
+    public Task InitAsync { get; }
+
+    public string Title { get; }
+
+    public int NamespaceId { get; set; } = 0;
+    
+    public async Task<string> GetContent()
+    {
+        await InitAsync;
+        return _wikiPage!.Content;
+    }
+
+    public async Task SetContent(string content)
+    {
+        await InitAsync;
+        _wikiPage!.Content = content;
+    }
+
+    public async Task<bool> Exists()
+    {
+        await InitAsync;
+        return _wikiPage!.Exists;
+    }
+
+    public async Task RefreshAsync(PageQueryOptions fetchContent)
+    {
+        await _wikiPage!.RefreshAsync(fetchContent);
+    }
+
+    public WikiPageModel ToTalkPage()
+    {
+        return new WikiPageModel(_wikiPage!.ToTalkPage());
+    }
+
+    public WikiPageModel ToSubjectPage()
+    {
+        return new WikiPageModel(_wikiPage!.ToSubjectPage());
     }
 
     public void Deconstruct(out string title, out int namespaceId)
@@ -42,7 +100,7 @@ public class WikiPageModel(string title, int namespaceId) : IEquatable<WikiPageM
 
     public override string ToString()
     {
-        return $"WikiPageModel {{ Title = {Title}, Namespace: {NamespaceId}, WikiPage: {WikiPage} }} ";
+        return $"WikiPageModel {{ Title = {Title}, Namespace: {NamespaceId}, WikiPage: {_wikiPage} }} ";
     }
 
     public static bool operator ==(WikiPageModel? left, WikiPageModel? right)

@@ -57,7 +57,10 @@ public partial class GoogleSearchListProvider(IUserPreferencesService userPrefer
                         title = Regex.Replace(Tools.WikiDecode(title), @"\?\w+=.*", "");
                         Result<WikiPageModel> result =
                             await wikiClientCache.GetWikiPageModel(userPreferencesService.GetCurrentPref().UrlApi(), title);
-                        list.Add(result is { IsSuccessful: true, Value: not null } ? result.Value : new WikiPageModel(title, 0));
+                        if (result is {IsSuccessful: true, Value: not null})
+                        {
+                            list.Add(result.Value);
+                        }
                     }
                 }
 

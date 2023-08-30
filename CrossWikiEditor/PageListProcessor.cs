@@ -39,17 +39,12 @@ public class PageListProcessor
 
     private async Task ProcessPage(WikiPageModel page)
     {
-        if (page.WikiPage is null)
+        if (string.IsNullOrEmpty(await page.GetContent()))
         {
-            return;
+            await page.RefreshAsync(PageQueryOptions.FetchContent);
         }
-
-        if (string.IsNullOrEmpty(page.WikiPage.Content))
-        {
-            await page.WikiPage.RefreshAsync(PageQueryOptions.FetchContent);
-        }
-        string initialContent = page.WikiPage.Content;
-        string newContent = page.WikiPage.Content;
+        string initialContent = await page.GetContent();
+        string newContent = await page.GetContent();
         foreach (NormalFindAndReplaceRule normalFindAndReplaceRule in _normalFindAndReplaceRules)
         {
             if (!normalFindAndReplaceRule.Regex)
@@ -63,7 +58,7 @@ public class PageListProcessor
             }
         }
 
-        page.WikiPage.Content = newContent;
+        await page.SetContent(newContent);
         try
         {
             await Task.Delay(1000);

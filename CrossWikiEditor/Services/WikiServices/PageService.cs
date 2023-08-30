@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CrossWikiEditor.Models;
-using CrossWikiEditor.Settings;
-using CrossWikiEditor.Utils;
 using CrossWikiEditor.WikiClientLibraryUtils.Generators;
 using Serilog;
 using WikiClientLibrary;
@@ -40,8 +38,8 @@ public interface IPageService
 
     Task<Result<List<WikiPageModel>>> WikiSearch(string apiRoot, string keyword, int[]? namespaces);
 
-    Task<Result<List<WikiPageModel>>> ConvertToTalk(List<WikiPageModel> pages);
-    Task<Result<List<WikiPageModel>>> ConvertToSubject(List<WikiPageModel> pages);
+    Result<List<WikiPageModel>> ConvertToTalk(List<WikiPageModel> pages);
+    Result<List<WikiPageModel>> ConvertToSubject(List<WikiPageModel> pages);
 }
 
 public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferencesService userPreferencesService, ILogger logger)
@@ -304,17 +302,11 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
         }
     }
 
-    private async Task<Result<WikiPageModel>> ConvertToTalk(WikiPageModel page)
+    private Result<WikiPageModel> ConvertToTalk(WikiPageModel page)
     {
         try
-        {
-            if (page.WikiPage is null)
-            {
-                UserPrefs userPrefs = userPreferencesService.GetCurrentPref();
-                page.WikiPage = new WikiPage(await wikiClientCache.GetWikiSite(userPrefs.UrlApi()), page.Title);
-            }
-
-            return Result<WikiPageModel>.Success(new WikiPageModel(page.WikiPage.ToTalkPage()));
+        { 
+            return Result<WikiPageModel>.Success(page.ToTalkPage());
         }
         catch (Exception e)
         {
@@ -323,12 +315,12 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
         }
     }
 
-    public async Task<Result<List<WikiPageModel>>> ConvertToTalk(List<WikiPageModel> pages)
+    public Result<List<WikiPageModel>> ConvertToTalk(List<WikiPageModel> pages)
     {
         List<WikiPageModel> result = new();
         foreach (WikiPageModel wikiPageModel in pages)
         {
-            Result<WikiPageModel> talkPageResult = await ConvertToTalk(wikiPageModel);
+            Result<WikiPageModel> talkPageResult = ConvertToTalk(wikiPageModel);
             if (talkPageResult is { IsSuccessful: true, Value: not null })
             {
                 result.Add(talkPageResult.Value);
@@ -338,17 +330,11 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
         return Result<List<WikiPageModel>>.Success(result);
     }
 
-    private async Task<Result<WikiPageModel>> ConvertToSubject(WikiPageModel page)
+    private Result<WikiPageModel> ConvertToSubject(WikiPageModel page)
     {
         try
         {
-            if (page.WikiPage is null)
-            {
-                UserPrefs userPrefs = userPreferencesService.GetCurrentPref();
-                page.WikiPage = new WikiPage(await wikiClientCache.GetWikiSite(userPrefs.UrlApi()), page.Title);
-            }
-
-            return Result<WikiPageModel>.Success(new WikiPageModel(page.WikiPage.ToSubjectPage()));
+            return Result<WikiPageModel>.Success(page.ToSubjectPage());
         }
         catch (Exception e)
         {
@@ -357,17 +343,13 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
         }
     }
 
-    public async Task<Result<List<WikiPageModel>>> ConvertToSubject(List<WikiPageModel> pages)
+    public Result<List<WikiPageModel>> ConvertToSubject(List<WikiPageModel> pages)
     {
-        List<WikiPageModel> result = new();
-        foreach (WikiPageModel wikiPageModel in pages)
-        {
-            Result<WikiPageModel> subjectPageResult = await ConvertToSubject(wikiPageModel);
-            if (subjectPageResult is { IsSuccessful: true, Value: not null })
-            {
-                result.Add(subjectPageResult.Value);
-            }
-        }
+        List<WikiPageModel> result = (from wikiPageModel in pages
+            select ConvertToSubject(wikiPageModel)
+            into subjectPageResult
+            where subjectPageResult is {IsSuccessful: true, Value: not null}
+            select subjectPageResult.Value).ToList();
 
         return Result<List<WikiPageModel>>.Success(result);
     }

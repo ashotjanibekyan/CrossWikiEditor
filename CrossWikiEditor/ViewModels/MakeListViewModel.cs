@@ -68,7 +68,10 @@ public sealed partial class MakeListViewModel : ViewModelBase
         if (!string.IsNullOrWhiteSpace(NewPageTitle))
         {
             Result<WikiPageModel> result = await _clientCache.GetWikiPageModel(_userPreferencesService.GetCurrentPref().UrlApi(), NewPageTitle);
-            Pages.Add(result is { IsSuccessful: true, Value: not null } ? result.Value : new WikiPageModel(NewPageTitle.Trim(), 0));
+            if (result is {IsSuccessful: true, Value: not null})
+            {
+                Pages.Add(result.Value);
+            }
         }
 
         NewPageTitle = string.Empty;
@@ -174,7 +177,10 @@ public sealed partial class MakeListViewModel : ViewModelBase
             foreach (string title in titles)
             {
                 Result<WikiPageModel> result = await _clientCache.GetWikiPageModel(urlApi, title);
-                Pages.Add(result is { IsSuccessful: true, Value: not null } ? result.Value : new WikiPageModel(title.Trim(), 0));
+                if (result is {IsSuccessful: true, Value: not null})
+                {
+                    Pages.Add(result.Value);
+                }
             }
         }
     }
@@ -249,9 +255,9 @@ public sealed partial class MakeListViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private async Task ConvertToTalkPages()
+    private void ConvertToTalkPages()
     {
-        List<WikiPageModel>? talkPages = (await _pageService.ConvertToTalk(Pages.ToList())).Value;
+        List<WikiPageModel>? talkPages = _pageService.ConvertToTalk(Pages.ToList()).Value;
         if (talkPages is not null)
         {
             Pages = talkPages.ToObservableCollection();
@@ -259,9 +265,9 @@ public sealed partial class MakeListViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private async Task ConvertFromTalkPages()
+    private void ConvertFromTalkPages()
     {
-        List<WikiPageModel>? subjectPages = (await _pageService.ConvertToSubject(Pages.ToList())).Value;
+        List<WikiPageModel>? subjectPages = _pageService.ConvertToSubject(Pages.ToList()).Value;
         if (subjectPages is not null)
         {
             Pages = subjectPages.ToObservableCollection();

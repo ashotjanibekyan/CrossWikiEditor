@@ -33,7 +33,7 @@ public class HtmlScraperListProvider(
             var html = await httpClient.GetStringAsync(Param);
 
             var urls = new List<WikiPageModel>();
-            urls.AddRange(TerminationCharsBasedParser(html, baseUrl, site));
+            urls.AddRange(await TerminationCharsBasedParser(html, baseUrl, site));
             urls.AddRange(HtmlAgilityPackBasedParser(html, baseUrl, site));
             return Result<List<WikiPageModel>>.Success(urls.Distinct().ToList());
         }
@@ -44,7 +44,7 @@ public class HtmlScraperListProvider(
         }
     }
 
-    private List<WikiPageModel> TerminationCharsBasedParser(string html, string baseUrl, WikiSite site)
+    private async Task<List<WikiPageModel>> TerminationCharsBasedParser(string html, string baseUrl, WikiSite site)
     {
         var terminationChars = new[] {' ', '\t', '\n', '"', '<', '>', '{', '}', '&'};
             
@@ -69,9 +69,14 @@ public class HtmlScraperListProvider(
                 if (url.Last() == '\'' || url.Last() == '\"')
                 {
                     var page = new WikiPageModel(new WikiPage(site, Tools.GetPageTitleFromUrl(baseUrl + url[..^1])));
-                    wikiPageModels.Add(page.WikiPage is {Exists: true}
-                        ? page
-                        : new WikiPageModel(new WikiPage(site, Tools.GetPageTitleFromUrl(baseUrl + url))));
+                    if (await page.Exists())
+                    {
+                        wikiPageModels.Add(page);
+                    }
+                    else
+                    {
+                        wikiPageModels.Add(new WikiPageModel(new WikiPage(site, Tools.GetPageTitleFromUrl(baseUrl + url))));
+                    }
                 }
                 else
                 {
