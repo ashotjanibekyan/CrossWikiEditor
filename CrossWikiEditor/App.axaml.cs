@@ -21,6 +21,7 @@ using CrossWikiEditor.Views;
 using CrossWikiEditor.Views.ControlViews;
 using Serilog;
 using Serilog.Core;
+using Serilog.Formatting.Json;
 
 namespace CrossWikiEditor;
 
@@ -89,14 +90,14 @@ public class App : Application
         IStringEncryptionService stringEncryptionService = new StringEncryptionService(key, iv);
 
         Logger logger = new LoggerConfiguration()
-            .WriteTo.Async(a => a.File("log.txt"))
+            .WriteTo.Async(a => a.File(new JsonFormatter(), "log.json"))
 #if DEBUG
             .MinimumLevel.Verbose()
 #else
             .MinimumLevel.Information()
 #endif
             .CreateLogger();
-        
+
         builder.RegisterType<ViewModelFactory>().As<IViewModelFactory>().SingleInstance();
         builder.RegisterType<FileDialogService>().As<IFileDialogService>().SingleInstance();
         builder.RegisterType<SystemService>().As<ISystemService>().SingleInstance();
