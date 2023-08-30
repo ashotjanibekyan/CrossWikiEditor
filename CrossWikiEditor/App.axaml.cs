@@ -78,9 +78,7 @@ public class App : Application
 
     private void RegisterRepositories(ContainerBuilder builder)
     {
-        builder.RegisterType<RealmProfileRepository>()
-            .As<IProfileRepository>()
-            .WithParameter(new PositionalParameter(0, _appData)).SingleInstance();
+        builder.RegisterType<SimpleJsonProfileRepository>().As<IProfileRepository>();
     }
 
     private void RegisterServices(ContainerBuilder builder)

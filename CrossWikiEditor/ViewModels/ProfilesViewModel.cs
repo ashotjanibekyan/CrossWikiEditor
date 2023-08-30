@@ -13,34 +13,16 @@ using CrossWikiEditor.Settings;
 
 namespace CrossWikiEditor.ViewModels;
 
-public sealed partial class ProfilesViewModel : ViewModelBase
-{
-    private readonly IFileDialogService _fileDialogService;
-    private readonly IDialogService _dialogService;
-    private readonly IProfileRepository _profileRepository;
-    private readonly IUserService _userService;
-    private readonly IUserPreferencesService _userPreferencesService;
-    private readonly IMessenger _messenger;
-
-    public ProfilesViewModel(IFileDialogService fileDialogService,
+public sealed partial class ProfilesViewModel(IFileDialogService fileDialogService,
         IDialogService dialogService,
         IProfileRepository profileRepository,
         IUserService userService,
         IUserPreferencesService userPreferencesService,
         IMessenger messenger)
-    {
-        _fileDialogService = fileDialogService;
-        _dialogService = dialogService;
-        _profileRepository = profileRepository;
-        _userService = userService;
-        _userPreferencesService = userPreferencesService;
-        _messenger = messenger;
-        Profiles = new ObservableCollection<Profile>(_profileRepository.GetAll() ?? new List<Profile>());
-    }
-
-
+    : ViewModelBase
+{
     [ObservableProperty] private Profile? _selectedProfile;
-    [ObservableProperty] private ObservableCollection<Profile> _profiles;
+    [ObservableProperty] private ObservableCollection<Profile> _profiles = new(profileRepository.GetAll() ?? new List<Profile>());
 
     public string Username { get; set; } = "";
     public string Password { get; set; } = "";
@@ -59,9 +41,9 @@ public sealed partial class ProfilesViewModel : ViewModelBase
     [RelayCommand]
     private async Task Add()
     {
-        if (await _dialogService.ShowDialog<bool>(new AddOrEditProfileViewModel(_fileDialogService, _profileRepository, -1)))
+        if (await dialogService.ShowDialog<bool>(new AddOrEditProfileViewModel(fileDialogService, profileRepository, -1)))
         {
-            Profiles = new ObservableCollection<Profile>(_profileRepository.GetAll());
+            Profiles = new ObservableCollection<Profile>(profileRepository.GetAll());
         }
     }
 
@@ -73,7 +55,7 @@ public sealed partial class ProfilesViewModel : ViewModelBase
             return;
         }
 
-        var vm = new AddOrEditProfileViewModel(_fileDialogService, _profileRepository, SelectedProfile.Id)
+        var vm = new AddOrEditProfileViewModel(fileDialogService, profileRepository, SelectedProfile.Id)
         {
             Username = SelectedProfile.Username,
             DefaultSettingsPath = SelectedProfile.DefaultSettingsPath,
@@ -82,9 +64,9 @@ public sealed partial class ProfilesViewModel : ViewModelBase
             ShouldSavePassword = SelectedProfile.IsPasswordSaved,
             ShouldSelectDefaultSettings = !string.IsNullOrEmpty(SelectedProfile.DefaultSettingsPath)
         };
-        if (await _dialogService.ShowDialog<bool>(vm))
+        if (await dialogService.ShowDialog<bool>(vm))
         {
-            Profiles = new ObservableCollection<Profile>(_profileRepository.GetAll());
+            Profiles = new ObservableCollection<Profile>(profileRepository.GetAll());
         }
     }
 
@@ -96,9 +78,9 @@ public sealed partial class ProfilesViewModel : ViewModelBase
             return;
         }
 
-        _profileRepository.Delete(SelectedProfile.Id);
+        profileRepository.Delete(SelectedProfile.Id);
         SelectedProfile = null;
-        Profiles = new ObservableCollection<Profile>(_profileRepository.GetAll());
+        Profiles = new ObservableCollection<Profile>(profileRepository.GetAll());
     }
 
     [RelayCommand]
@@ -120,16 +102,16 @@ public sealed partial class ProfilesViewModel : ViewModelBase
     private async Task Login(Profile profile, IDialog dialog)
     {
         UserPrefs currentUserPref = string.IsNullOrEmpty(profile.DefaultSettingsPath)
-            ? _userPreferencesService.GetCurrentPref()
-            : _userPreferencesService.GetUserPref(profile.DefaultSettingsPath);
+            ? userPreferencesService.GetCurrentPref()
+            : userPreferencesService.GetUserPref(profile.DefaultSettingsPath);
 
-        Result loginResult = await _userService.Login(profile, currentUserPref.UrlApi());
+        Result loginResult = await userService.Login(profile, currentUserPref.UrlApi());
         if (loginResult is { IsSuccessful: true })
         {
-            _messenger.Send(new NewAccountLoggedInMessage(profile));
+            messenger.Send(new NewAccountLoggedInMessage(profile));
             if (!string.IsNullOrEmpty(profile.DefaultSettingsPath))
             {
-                _userPreferencesService.SetCurrentPref(currentUserPref);
+                userPreferencesService.SetCurrentPref(currentUserPref);
             }
 
             dialog.Close(true);
@@ -138,11 +120,11 @@ public sealed partial class ProfilesViewModel : ViewModelBase
         {
             if (!string.IsNullOrWhiteSpace(loginResult?.Error))
             {
-                await _dialogService.Alert("Login Attempt Unsuccessful", loginResult.Error);
+                await dialogService.Alert("Login Attempt Unsuccessful", loginResult.Error);
             }
             else
             {
-                await _dialogService.Alert("Login Attempt Unsuccessful",
+                await dialogService.Alert("Login Attempt Unsuccessful",
                     "Login Attempt Unsuccessful: Please ensure an active internet connection and verify the accuracy of your provided username and password.");
             }
         }
