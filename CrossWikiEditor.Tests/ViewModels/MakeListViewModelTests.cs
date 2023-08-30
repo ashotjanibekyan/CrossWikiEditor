@@ -118,7 +118,9 @@ public class MakeListViewModelTests : BaseTest
     {
         List<WikiPageModel>? randomPages = Fakers.WikiPageModelFaker.Generate(10);
         _sut.Pages = randomPages.ToObservableCollection();
-        _sut.SelectedPages = Fakers.WikiPageModelFaker.Generate(2).ToObservableCollection();
+        _sut.SelectedPages = Fakers.WikiPageModelFaker.Generate(2)
+            .Select(x => new WikiPageModel(x.Title + Guid.NewGuid(), x.NamespaceId))
+            .ToObservableCollection();
 
         // act
         _sut.RemoveCommand.Execute(null);
