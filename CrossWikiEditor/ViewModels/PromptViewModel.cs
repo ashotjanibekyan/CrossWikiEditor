@@ -18,6 +18,6 @@ public sealed partial class PromptViewModel(string title, string text) : ViewMod
     [RelayCommand]
     private void Cancel(IDialog dialog)
     {
-        dialog.Close(-1);
+        dialog.Close(null);
     }
 }

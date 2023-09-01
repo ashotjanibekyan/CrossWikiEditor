@@ -1,0 +1,41 @@
+﻿using CrossWikiEditor.ViewModels;
+
+namespace CrossWikiEditor.Tests.ViewModels;
+
+public class PromptViewModelTests
+{
+    private PromptViewModel _sut;
+    [SetUp]
+    public void SetUp()
+    {
+        _sut = new PromptViewModel("title", "text");
+    }
+    
+    [Test]
+    public void OkCommand_ClosesDialogWithValue([Values(42, 1, 3, 74, 0, -1)] int value)
+    {
+        // arrange
+        _sut.Value = value;
+        IDialog dialog = Substitute.For<IDialog>();
+
+        // act
+        _sut.OkCommand.Execute(dialog);
+
+        // assert
+        dialog.Received(1).Close(value);
+    }
+    
+    [Test]
+    public void CancelCommand_ClosesDialogWithNullValue([Values(42, 1, 3, 74, 0, -1)] int value)
+    {
+        // arrange
+        _sut.Value = value;
+        IDialog dialog = Substitute.For<IDialog>();
+
+        // act
+        _sut.CancelCommand.Execute(dialog);
+
+        // assert
+        dialog.Received(1).Close(null);
+    }
+}

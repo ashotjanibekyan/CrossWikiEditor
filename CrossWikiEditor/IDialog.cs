@@ -5,7 +5,7 @@ namespace CrossWikiEditor;
 
 public interface IDialog
 {
-    void Close(object dialogResult);
+    void Close(object? dialogResult);
     object? DataContext { get; set; }
 }
 

@@ -36,12 +36,12 @@ public class CategoryRecursiveUserDefinedLevelListProvider(IPageService pageServ
 
     public async Task GetAdditionalParams()
     {
-        int result = await dialogService.ShowDialog<int>(new PromptViewModel("Number", "Recursion depth: ")
+        int? result = await dialogService.ShowDialog<int?>(new PromptViewModel("Number", "Recursion depth: ")
         {
             IsNumeric = true,
             Value = recursionLevel ?? 1
         });
-        if (result != -1)
+        if (result is not null)
         {
             recursionLevel = result;
         }
