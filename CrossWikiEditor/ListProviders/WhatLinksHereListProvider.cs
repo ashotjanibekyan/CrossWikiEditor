@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using CrossWikiEditor.ListProviders.BaseListProviders;
 using CrossWikiEditor.Models;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
@@ -11,20 +12,19 @@ public class WhatLinksHereListProvider(
     IUserPreferencesService userPreferencesService,
     IViewModelFactory viewModelFactory,
     IDialogService dialogService,
-    IPageService pageService) : INeedAdditionalParamsListProvider
+    IPageService pageService) : LimitedListProviderBase(dialogService), INeedAdditionalParamsListProvider
 {
     private WhatLinksHereOptions? _options;
-    public string Title => "What links here";
-    public string ParamTitle => "What links to";
-    public string Param { get; set; } = string.Empty;
-    public bool CanMake => !string.IsNullOrWhiteSpace(Param) && _options is not null;
+    public override string Title => "What links here";
+    public override string ParamTitle => "What links to";
+    public override bool CanMake => !string.IsNullOrWhiteSpace(Param) && _options is not null;
 
-    public async Task<Result<List<WikiPageModel>>> MakeList()
+    public override async Task<Result<List<WikiPageModel>>> MakeList(int limit)
     {
         return await pageService.GetPagesLinkedTo(
-            apiRoot: userPreferencesService.GetCurrentPref().UrlApi(),
-            title: Param,
-            namespaces: _options!.Namespaces,
+            userPreferencesService.GetCurrentPref().UrlApi(),
+            Param,
+            _options!.Namespaces,
             filterRedirects: _options.RedirectFilter switch
             {
                 RedirectFilter.All => null,
@@ -32,7 +32,8 @@ public class WhatLinksHereListProvider(
                 RedirectFilter.NoRedirects => false,
                 _ => null
             },
-            allowRedirectLinks: _options.IncludeRedirects);
+            allowRedirectLinks: _options.IncludeRedirects,
+            limit: limit);
     }
 
     public async Task GetAdditionalParams()

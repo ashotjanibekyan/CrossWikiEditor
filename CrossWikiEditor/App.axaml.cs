@@ -9,6 +9,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.Messaging;
 using CrossWikiEditor.ListProviders;
+using CrossWikiEditor.ListProviders.BaseListProviders;
 using CrossWikiEditor.Repositories;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
@@ -156,7 +157,7 @@ public class App : Application
         builder.RegisterType<CategoriesOnPageOnlyHiddenCategoriesListProvider>().As<IListProvider>();
         builder.RegisterType<CategoryListProvider>().As<IListProvider>();
         builder.RegisterType<CategoryRecursive1LevelListProvider>().As<IListProvider>();
-        builder.RegisterType<CategoryRecursiveUserDefinedLevelListProvider>().As<IListProvider>();
+        builder.RegisterType<CategoryRecursiveUserDefinedLevelListProviderBase>().As<IListProvider>();
         builder.RegisterType<CategoryRecursiveListProvider>().As<IListProvider>();
         // TODO: CheckWiki error
         // TODO: CheckWiki error (number)

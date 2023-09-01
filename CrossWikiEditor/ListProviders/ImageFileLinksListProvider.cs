@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using CrossWikiEditor.ListProviders.BaseListProviders;
 using CrossWikiEditor.Models;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
@@ -7,17 +8,16 @@ using CrossWikiEditor.Utils;
 
 namespace CrossWikiEditor.ListProviders;
 
-public class ImageFileLinksListProvider(IPageService pageService,
-        IUserPreferencesService userPreferencesService)
-    : IListProvider
+public class ImageFileLinksListProvider(
+    IPageService pageService,
+    IUserPreferencesService userPreferencesService,
+    IDialogService dialogService) : LimitedListProviderBase(dialogService)
 {
-    public string Title => "Image file links";
-    public string ParamTitle => "File";
-    public string Param { get; set; }
-    public bool CanMake => !string.IsNullOrWhiteSpace(Param);
+    public override string Title => "Image file links";
+    public override string ParamTitle => "File";
 
-    public async Task<Result<List<WikiPageModel>>> MakeList()
+    public override async Task<Result<List<WikiPageModel>>> MakeList(int limit)
     {
-        return await pageService.GetPagesByFileUsage(userPreferencesService.GetCurrentPref().UrlApi(), Param);
+        return await pageService.GetPagesByFileUsage(userPreferencesService.GetCurrentPref().UrlApi(), Param, limit);
     }
 }

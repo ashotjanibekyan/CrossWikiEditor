@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using CrossWikiEditor.ListProviders.BaseListProviders;
 using CrossWikiEditor.Models;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
@@ -11,18 +12,17 @@ public class RandomListProvider(IPageService pageService,
         IDialogService dialogService,
         IViewModelFactory viewModelFactory,
         IUserPreferencesService userPreferencesService)
-    : INeedAdditionalParamsListProvider
+    : LimitedListProviderBase(dialogService), INeedAdditionalParamsListProvider
 {
     private int[]? _namespaces;
 
-    public string Title => "Random pages";
-    public string ParamTitle => string.Empty;
-    public string Param { get; set; } = string.Empty;
-    public bool CanMake => _namespaces is not null;
+    public override string Title => "Random pages";
+    public override string ParamTitle => string.Empty;
+    public override bool CanMake => _namespaces is not null;
 
-    public async Task<Result<List<WikiPageModel>>> MakeList()
+    public override async Task<Result<List<WikiPageModel>>> MakeList(int limit)
     {
-        Result<List<WikiPageModel>> result = await pageService.GetRandomPages(userPreferencesService.GetCurrentPref().UrlApi(), 500, _namespaces);
+        Result<List<WikiPageModel>> result = await pageService.GetRandomPages(userPreferencesService.GetCurrentPref().UrlApi(), _namespaces, limit);
         _namespaces = null;
         return result;
     }

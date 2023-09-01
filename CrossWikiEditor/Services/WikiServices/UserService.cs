@@ -14,8 +14,8 @@ namespace CrossWikiEditor.Services.WikiServices;
 public interface IUserService
 {
     Task<Result> Login(Profile profile, string apiRoot);
-    Task<Result<List<WikiPageModel>>> GetWatchlistPages();
-    Task<Result<List<WikiPageModel>>> GetUserContribsPages(string apiRoot, string username);
+    Task<Result<List<WikiPageModel>>> GetWatchlistPages(int limit);
+    Task<Result<List<WikiPageModel>>> GetUserContribsPages(string apiRoot, string username, int limit);
 }
 
 public sealed class UserService(IWikiClientCache wikiClientCache, IUserPreferencesService userPreferencesService, ILogger logger)
@@ -36,13 +36,13 @@ public sealed class UserService(IWikiClientCache wikiClientCache, IUserPreferenc
         }
     }
 
-    public async Task<Result<List<WikiPageModel>>> GetWatchlistPages()
+    public async Task<Result<List<WikiPageModel>>> GetWatchlistPages(int limit)
     {
         try
         {
             WikiSite site = await wikiClientCache.GetWikiSite(userPreferencesService.GetCurrentPref().UrlApi());
             var gen = new MyWatchlistGenerator(site);
-            List<WikiPage> result = await gen.EnumPagesAsync().ToListAsync();
+            List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
             return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
         }
         catch (Exception e)
@@ -52,7 +52,7 @@ public sealed class UserService(IWikiClientCache wikiClientCache, IUserPreferenc
         }
     }
 
-    public async Task<Result<List<WikiPageModel>>> GetUserContribsPages(string apiRoot, string username)
+    public async Task<Result<List<WikiPageModel>>> GetUserContribsPages(string apiRoot, string username, int limit)
     {
         try
         {

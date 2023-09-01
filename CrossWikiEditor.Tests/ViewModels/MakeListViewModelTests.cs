@@ -1,5 +1,5 @@
 ﻿using System.Collections.ObjectModel;
-using CrossWikiEditor.ListProviders;
+using CrossWikiEditor.ListProviders.BaseListProviders;
 using CrossWikiEditor.Models;
 using CrossWikiEditor.Settings;
 using CrossWikiEditor.Utils;
@@ -161,7 +161,7 @@ public class MakeListViewModelTests : BaseTest
     public void MakeListCommand_ShouldDoNothing_WhenSelectedProviderCanNotMake()
     {
         // arrange
-        IListProvider listProvider = Substitute.For<IListProvider>();
+        IUnlimitedListProvider listProvider = Substitute.For<IUnlimitedListProvider>();
         _sut.SelectedListProvider = listProvider;
         listProvider.CanMake.Returns(false);
 
@@ -177,7 +177,7 @@ public class MakeListViewModelTests : BaseTest
     public void MakeListCommand_ShouldUpdatePages_WhenMakeListReturnsNewList()
     {
         // arrange
-        IListProvider listProvider = Substitute.For<IListProvider>();
+        IUnlimitedListProvider listProvider = Substitute.For<IUnlimitedListProvider>();
         _sut.SelectedListProvider = listProvider;
 
         List<WikiPageModel>? existingPages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(10);
@@ -199,7 +199,7 @@ public class MakeListViewModelTests : BaseTest
     public void MakeListCommand_ShouldAlertUser_WhenMakeListReturnsFailure()
     {
         // arrange
-        IListProvider listProvider = Substitute.For<IListProvider>();
+        IUnlimitedListProvider listProvider = Substitute.For<IUnlimitedListProvider>();
         _sut.SelectedListProvider = listProvider;
         listProvider.CanMake.Returns(true);
         listProvider.MakeList().Returns(Result<List<WikiPageModel>>.Failure("error message"));

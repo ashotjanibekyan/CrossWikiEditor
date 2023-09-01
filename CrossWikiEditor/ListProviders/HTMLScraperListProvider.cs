@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using CrossWikiEditor.ListProviders.BaseListProviders;
 using CrossWikiEditor.Models;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
@@ -15,22 +16,21 @@ using WikiClientLibrary.Sites;
 namespace CrossWikiEditor.ListProviders;
 
 public class HtmlScraperListProvider(
-    IUserPreferencesService userPreferencesService, 
+    IUserPreferencesService userPreferencesService,
     IWikiClientCache wikiClientCache,
-    ILogger logger) : IListProvider
+    ILogger logger) : UnlimitedListProviderBase
 {
-    public string Title => "HTML Scraper";
-    public string ParamTitle => "URL";
-    public string Param { get; set; } = string.Empty;
-    public bool CanMake => !string.IsNullOrWhiteSpace(Param);
-    public async Task<Result<List<WikiPageModel>>> MakeList()
+    public override string Title => "HTML Scraper";
+    public override string ParamTitle => "URL";
+
+    public override async Task<Result<List<WikiPageModel>>> MakeList()
     {
         try
         {
             string baseUrl = userPreferencesService.GetCurrentPref().UrlBase();
             WikiSite site = await wikiClientCache.GetWikiSite(userPreferencesService.GetCurrentPref().UrlApi());
             var httpClient = new HttpClient();
-            var html = await httpClient.GetStringAsync(Param);
+            string html = await httpClient.GetStringAsync(Param);
 
             var urls = new List<WikiPageModel>();
             urls.AddRange(await TerminationCharsBasedParser(html, baseUrl, site));
@@ -46,9 +46,9 @@ public class HtmlScraperListProvider(
 
     private async Task<List<WikiPageModel>> TerminationCharsBasedParser(string html, string baseUrl, WikiSite site)
     {
-        var terminationChars = new[] {' ', '\t', '\n', '"', '<', '>', '{', '}', '&'};
-            
-        var results = html.Split(baseUrl);
+        char[] terminationChars = new[] {' ', '\t', '\n', '"', '<', '>', '{', '}', '&'};
+
+        string[] results = html.Split(baseUrl);
         var wikiPageModels = new List<WikiPageModel>();
 
         foreach (string urlStart in results)
@@ -57,8 +57,9 @@ public class HtmlScraperListProvider(
             {
                 continue;
             }
-            var url = urlStart;
-            var i = urlStart.IndexOfAny(terminationChars);
+
+            string url = urlStart;
+            int i = urlStart.IndexOfAny(terminationChars);
             if (i != -1)
             {
                 url = urlStart[..i];
@@ -82,7 +83,6 @@ public class HtmlScraperListProvider(
                 {
                     wikiPageModels.Add(new WikiPageModel(new WikiPage(site, Tools.GetPageTitleFromUrl(baseUrl + url))));
                 }
-                
             }
             catch (Exception ex)
             {
@@ -104,7 +104,7 @@ public class HtmlScraperListProvider(
         {
             try
             {
-                var hrefValue = link.GetAttributeValue("href", string.Empty);
+                string? hrefValue = link.GetAttributeValue("href", string.Empty);
 
                 if (hrefValue.Contains(baseUrl))
                 {

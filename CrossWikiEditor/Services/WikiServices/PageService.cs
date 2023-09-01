@@ -15,38 +15,39 @@ namespace CrossWikiEditor.Services.WikiServices;
 
 public interface IPageService
 {
-    Task<Result<List<WikiPageModel>>> GetCategoriesOf(string apiRoot, string pageName, bool includeHidden = true, bool onlyHidden = false);
-    Task<Result<List<WikiPageModel>>> GetPagesOfCategory(string apiRoot, string categoryName, int recursive = 0);
-    Task<Result<List<WikiPageModel>>> FilesOnPage(string apiRoot, string pageName);
+    Task<Result<List<WikiPageModel>>> GetCategoriesOf(string apiRoot, string pageName, int limit, bool includeHidden = true, bool onlyHidden = false);
+    Task<Result<List<WikiPageModel>>> GetPagesOfCategory(string apiRoot, string categoryName, int limit, int recursive = 0);
+    Task<Result<List<WikiPageModel>>> FilesOnPage(string apiRoot, string pageName, int limit);
 
     /// <summary>
     /// Gets random pages in a specific namespace
     /// </summary>
     /// <param name="apiRoot">The api root of the wiki, e.g. https://hy.wikipedia.org/w/api.php?</param>
-    /// <param name="numberOfPages">Number of pages to generate.</param>
     /// <param name="namespaces">Only list pages in these namespaces. Should be null if all the namespaces are selected.</param>
+    /// <param name="limit">Number of pages to generate.</param>
     /// <returns></returns>
-    Task<Result<List<WikiPageModel>>> GetRandomPages(string apiRoot, int numberOfPages, int[]? namespaces);
+    Task<Result<List<WikiPageModel>>> GetRandomPages(string apiRoot, int[]? namespaces, int limit);
 
-    Task<Result<List<WikiPageModel>>> GetPagesByFileUsage(string apiRoot, string fileName);
-    Task<Result<List<WikiPageModel>>> LinksOnPage(string apiRoot, string pageName);
-    Task<Result<List<WikiPageModel>>> GetNewPages(string apiRoot);
-    Task<Result<List<WikiPageModel>>> GetTransclusionsOn(string apiRoot, string pageName);
-    Task<Result<List<WikiPageModel>>> GetTransclusionsOf(string apiRoot, string pageName, int[]? namespaces);
+    Task<Result<List<WikiPageModel>>> GetPagesByFileUsage(string apiRoot, string fileName, int limit);
+    Task<Result<List<WikiPageModel>>> LinksOnPage(string apiRoot, string pageName, int limit);
+    Task<Result<List<WikiPageModel>>> GetNewPages(string apiRoot, int limit);
+    Task<Result<List<WikiPageModel>>> GetTransclusionsOn(string apiRoot, string pageName, int limit);
+    Task<Result<List<WikiPageModel>>> GetTransclusionsOf(string apiRoot, string pageName, int[]? namespaces, int limit);
 
     Task<Result<List<WikiPageModel>>> GetPagesLinkedTo(string apiRoot, string title, int[]? namespaces, bool allowRedirectLinks,
-        bool? filterRedirects);
-    Task<Result<List<WikiPageModel>>> GetPagesWithProp(string apiRoot, string param);
-    Task<Result<List<WikiPageModel>>> WikiSearch(string apiRoot, string keyword, int[]? namespaces);
+        bool? filterRedirects, int limit);
+
+    Task<Result<List<WikiPageModel>>> GetPagesWithProp(string apiRoot, string param, int limit);
+    Task<Result<List<WikiPageModel>>> WikiSearch(string apiRoot, string keyword, int[]? namespaces, int limit);
 
     Result<List<WikiPageModel>> ConvertToTalk(List<WikiPageModel> pages);
     Result<List<WikiPageModel>> ConvertToSubject(List<WikiPageModel> pages);
 }
 
-public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferencesService userPreferencesService, ILogger logger)
+public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger)
     : IPageService
 {
-    public async Task<Result<List<WikiPageModel>>> GetCategoriesOf(string apiRoot, string pageName, bool includeHidden = true,
+    public async Task<Result<List<WikiPageModel>>> GetCategoriesOf(string apiRoot, string pageName, int limit, bool includeHidden = true,
         bool onlyHidden = false)
     {
         try
@@ -71,18 +72,18 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
                 catGen.HiddenCategoryFilter = PropertyFilterOption.WithProperty;
             }
 
-            List<WikiPage> result = await catGen.EnumPagesAsync().ToListAsync();
+            List<WikiPage> result = await catGen.EnumPagesAsync().Take(limit).ToListAsync();
             return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
         }
         catch (Exception e)
         {
-            logger.Fatal(e, "Failed to get pages. Site: {Site}, page: {Page}, includeHidden: {IncludeHidden}, onlyHidden: {OnlyHidden}", 
-                apiRoot, pageName, includeHidden, onlyHidden);
+            logger.Fatal(e, "Failed to get pages. Site: {Site}, page: {Page}, includeHidden: {IncludeHidden}, onlyHidden: {OnlyHidden}, limit: {Limit}",
+                apiRoot, pageName, includeHidden, onlyHidden, limit);
             return Result<List<WikiPageModel>>.Failure(e.Message);
         }
     }
 
-    public async Task<Result<List<WikiPageModel>>> GetPagesOfCategory(string apiRoot, string categoryName, int recursive = 0)
+    public async Task<Result<List<WikiPageModel>>> GetPagesOfCategory(string apiRoot, string categoryName, int limit, int recursive = 0)
     {
         if (!categoryName.Contains(':'))
         {
@@ -94,7 +95,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
             List<List<WikiPage>> resultByDepth = new();
             WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
             var catGen = new CategoryMembersGenerator(new WikiPage(site, categoryName));
-            resultByDepth.Add(await catGen.EnumPagesAsync().ToListAsync());
+            resultByDepth.Add(await catGen.EnumPagesAsync().Take(limit).ToListAsync());
 
             for (int i = 0; i < recursive; i++)
             {
@@ -103,7 +104,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
                 foreach (WikiPage subCat in subCats)
                 {
                     catGen = new CategoryMembersGenerator(new WikiPage(site, subCat.Title));
-                    temp.AddRange(await catGen.EnumPagesAsync().ToListAsync());
+                    temp.AddRange(await catGen.EnumPagesAsync().Take(limit).Take(limit).ToListAsync());
                 }
 
                 resultByDepth.Add(temp);
@@ -113,28 +114,28 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
         }
         catch (Exception e)
         {
-            logger.Fatal(e, "Failed to get pages. Category: {CategoryName}, recursive: {Recursive}", categoryName, recursive);
+            logger.Fatal(e, "Failed to get pages. Category: {CategoryName}, recursive: {Recursive}, limit: {Limit}", categoryName, recursive, limit);
             return Result<List<WikiPageModel>>.Failure(e.Message);
         }
     }
 
-    public async Task<Result<List<WikiPageModel>>> FilesOnPage(string apiRoot, string pageName)
+    public async Task<Result<List<WikiPageModel>>> FilesOnPage(string apiRoot, string pageName, int limit)
     {
         try
         {
             WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
             var gen = new FilesGenerator(site, pageName);
-            List<WikiPage> result = await gen.EnumPagesAsync().ToListAsync();
+            List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
             return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
         }
         catch (Exception e)
         {
-            logger.Fatal(e, "Failed to get pages. Site {Site}, page: {Page}", apiRoot, pageName);
+            logger.Fatal(e, "Failed to get pages. Site {Site}, page: {Page}, limit: {Limit}", apiRoot, pageName, limit);
             return Result<List<WikiPageModel>>.Failure(e.Message);
         }
     }
 
-    public async Task<Result<List<WikiPageModel>>> GetRandomPages(string apiRoot, int numberOfPages, int[]? namespaces)
+    public async Task<Result<List<WikiPageModel>>> GetRandomPages(string apiRoot, int[]? namespaces, int limit)
     {
         try
         {
@@ -142,20 +143,19 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
             var gen = new RandomPageGenerator(site)
             {
                 NamespaceIds = namespaces,
-                PaginationSize = numberOfPages
+                PaginationSize = limit
             };
-            List<WikiPage> result = await gen.EnumPagesAsync().Take(numberOfPages).ToListAsync();
+            List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
             return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
         }
         catch (Exception e)
         {
-            logger.Fatal(e, "Failed to get pages. Site {Root}, numberOfPages: {NumberOfPages}, namespaces: {Namespaces}", apiRoot, numberOfPages,
-                namespaces);
+            logger.Fatal(e, "Failed to get pages. Site {Root}, namespaces: {Namespaces}, limit: {Limit}", apiRoot, namespaces, limit);
             return Result<List<WikiPageModel>>.Failure(e.Message);
         }
     }
 
-    public async Task<Result<List<WikiPageModel>>> GetPagesByFileUsage(string apiRoot, string fileName)
+    public async Task<Result<List<WikiPageModel>>> GetPagesByFileUsage(string apiRoot, string fileName, int limit)
     {
         try
         {
@@ -166,33 +166,33 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
 
             WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
             var gen = new FileUsageGenerator(site, fileName);
-            List<WikiPage> result = await gen.EnumPagesAsync().ToListAsync();
+            List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
             return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
         }
         catch (Exception e)
         {
-            logger.Fatal(e, "Failed to get pages. Site {Site}, file: {File}", apiRoot, fileName);
+            logger.Fatal(e, "Failed to get pages. Site {Site}, file: {File}, limit: {Limit}", apiRoot, fileName, limit);
             return Result<List<WikiPageModel>>.Failure(e.Message);
         }
     }
 
-    public async Task<Result<List<WikiPageModel>>> LinksOnPage(string apiRoot, string pageName)
+    public async Task<Result<List<WikiPageModel>>> LinksOnPage(string apiRoot, string pageName, int limit)
     {
         try
         {
             WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
             var gen = new LinksGenerator(site, pageName);
-            List<WikiPage> result = await gen.EnumPagesAsync().ToListAsync();
+            List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
             return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
         }
         catch (Exception e)
         {
-            logger.Fatal(e, "Failed to get pages. Site {Site}, page: {Page}", apiRoot, pageName);
+            logger.Fatal(e, "Failed to get pages. Site {Site}, page: {Page}, limit: {Limit}", apiRoot, pageName, limit);
             return Result<List<WikiPageModel>>.Failure(e.Message);
         }
     }
 
-    public async Task<Result<List<WikiPageModel>>> GetNewPages(string apiRoot)
+    public async Task<Result<List<WikiPageModel>>> GetNewPages(string apiRoot, int limit)
     {
         try
         {
@@ -201,19 +201,19 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
             {
                 TypeFilters = RecentChangesFilterTypes.Create,
                 RedirectsFilter = PropertyFilterOption.WithoutProperty,
-                NamespaceIds = new[] { 0 }
+                NamespaceIds = new[] {0}
             };
-            List<WikiPage> result = await gen.EnumPagesAsync().ToListAsync();
+            List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
             return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
         }
         catch (Exception e)
         {
-            logger.Fatal(e, "Failed to get pages. Site {Site}", apiRoot);
+            logger.Fatal(e, "Failed to get pages. Site {Site}, limit: {Limit}", apiRoot, limit);
             return Result<List<WikiPageModel>>.Failure(e.Message);
         }
     }
 
-    public async Task<Result<List<WikiPageModel>>> GetTransclusionsOn(string apiRoot, string pageName)
+    public async Task<Result<List<WikiPageModel>>> GetTransclusionsOn(string apiRoot, string pageName, int limit)
     {
         try
         {
@@ -222,17 +222,17 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
             {
                 PaginationSize = 500
             };
-            List<WikiPage> result = await gen.EnumPagesAsync().ToListAsync();
+            List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
             return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
         }
         catch (Exception e)
         {
-            logger.Fatal(e, "Failed to get pages. Site {Site}, page: {Page}", apiRoot, pageName);
+            logger.Fatal(e, "Failed to get pages. Site {Site}, page: {Page}, limit: {Limit}", apiRoot, pageName, limit);
             return Result<List<WikiPageModel>>.Failure(e.Message);
         }
     }
 
-    public async Task<Result<List<WikiPageModel>>> GetTransclusionsOf(string apiRoot, string pageName, int[]? namespaces)
+    public async Task<Result<List<WikiPageModel>>> GetTransclusionsOf(string apiRoot, string pageName, int[]? namespaces, int limit)
     {
         try
         {
@@ -242,12 +242,12 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
                 PaginationSize = 500,
                 NamespaceIds = namespaces
             };
-            List<WikiPage> result = await gen.EnumPagesAsync().ToListAsync();
+            List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
             return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
         }
         catch (Exception e)
         {
-            logger.Fatal(e, "Failed to get pages. Site {Site}, page: {Page}, namespaces: {Namespaces}", apiRoot, pageName, namespaces);
+            logger.Fatal(e, "Failed to get pages. Site {Site}, page: {Page}, namespaces: {Namespaces}, limit: {Limit}", apiRoot, pageName, namespaces, limit);
             return Result<List<WikiPageModel>>.Failure(e.Message);
         }
     }
@@ -256,7 +256,8 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
         string title,
         int[]? namespaces,
         bool allowRedirectLinks,
-        bool? filterRedirects)
+        bool? filterRedirects,
+        int limit)
     {
         try
         {
@@ -273,48 +274,50 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
                 },
                 AllowRedirectedLinks = allowRedirectLinks
             };
-            List<WikiPage> result = await gen.EnumPagesAsync().ToListAsync();
+            List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
             return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
         }
         catch (Exception e)
         {
-            logger.Fatal(e, "Failed to get pages. Site {Site}, title: {Title}, namespaces: {Namespaces}, allowRedirectLinks: {AllowRedirectLinks}, filterRedirects: {FilterRedirects}", 
-                apiRoot, title, namespaces, allowRedirectLinks, filterRedirects);
+            logger.Fatal(e,
+                "Failed to get pages. Site {Site}, title: {Title}, namespaces: {Namespaces}, allowRedirectLinks: {AllowRedirectLinks}, filterRedirects: {FilterRedirects}, limit: {Limit}",
+                apiRoot, title, namespaces, allowRedirectLinks, filterRedirects, limit);
             return Result<List<WikiPageModel>>.Failure(e.Message);
         }
     }
 
-    public async Task<Result<List<WikiPageModel>>> GetPagesWithProp(string apiRoot, string param)
+    public async Task<Result<List<WikiPageModel>>> GetPagesWithProp(string apiRoot, string param, int limit)
     {
         try
         {
             WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
             var gen = new PagesWithPropGenerator(site, param);
-            List<WikiPage> result = await gen.EnumPagesAsync().ToListAsync();
+            List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
             return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
         }
         catch (Exception e)
         {
-            logger.Fatal(e, "Failed to get pages. Site {Site}, property name: {Keyword}", apiRoot, param);
+            logger.Fatal(e, "Failed to get pages. Site {Site}, property name: {Keyword}, limit: {Limit}", apiRoot, param, limit);
             return Result<List<WikiPageModel>>.Failure(e.Message);
         }
     }
 
-    public async Task<Result<List<WikiPageModel>>> WikiSearch(string apiRoot, string keyword, int[]? namespaces)
+    public async Task<Result<List<WikiPageModel>>> WikiSearch(string apiRoot, string keyword, int[]? namespaces, int limit)
     {
         try
         {
             WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
             var gen = new SearchGenerator(site, keyword)
             {
-                NamespaceIds = namespaces
+                NamespaceIds = namespaces,
+                PaginationSize = Math.Min(limit, 500)
             };
-            List<WikiPage> result = await gen.EnumPagesAsync().ToListAsync();
+            List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
             return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
         }
         catch (Exception e)
         {
-            logger.Fatal(e, "Failed to get pages. Site {Site}, keyword: {Keyword}, namespaces: {Namespaces}", apiRoot, keyword, namespaces);
+            logger.Fatal(e, "Failed to get pages. Site {Site}, keyword: {Keyword}, namespaces: {Namespaces}, limit: {Limit}", apiRoot, keyword, namespaces, limit);
             return Result<List<WikiPageModel>>.Failure(e.Message);
         }
     }
@@ -322,7 +325,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
     private Result<WikiPageModel> ConvertToTalk(WikiPageModel page)
     {
         try
-        { 
+        {
             return Result<WikiPageModel>.Success(page.ToTalkPage());
         }
         catch (Exception e)
@@ -338,7 +341,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
         foreach (WikiPageModel wikiPageModel in pages)
         {
             Result<WikiPageModel> talkPageResult = ConvertToTalk(wikiPageModel);
-            if (talkPageResult is { IsSuccessful: true, Value: not null })
+            if (talkPageResult is {IsSuccessful: true, Value: not null})
             {
                 result.Add(talkPageResult.Value);
             }

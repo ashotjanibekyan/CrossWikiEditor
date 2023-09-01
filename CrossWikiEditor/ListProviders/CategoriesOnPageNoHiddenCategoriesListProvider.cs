@@ -8,14 +8,17 @@ using CrossWikiEditor.Utils;
 
 namespace CrossWikiEditor.ListProviders;
 
-public class CategoriesOnPageNoHiddenCategoriesListProvider(IPageService pageService, IUserPreferencesService userPreferencesService)
-    : CategoriesOnPageListProvider(pageService, userPreferencesService)
+public class CategoriesOnPageNoHiddenCategoriesListProvider(
+        IPageService pageService,
+        IUserPreferencesService userPreferencesService,
+        IDialogService dialogService) 
+    : CategoriesOnPageListProvider(userPreferencesService, pageService, dialogService)
 {
     public override string Title => "Categories on page (no hidden categories)";
 
-    public override async Task<Result<List<WikiPageModel>>> MakeList()
+    public override async Task<Result<List<WikiPageModel>>> MakeList(int limit)
     {
         UserPrefs userPrefs = userPreferencesService.GetCurrentPref();
-        return await pageService.GetCategoriesOf(userPrefs.UrlApi(), Param, false);
+        return await pageService.GetCategoriesOf(userPrefs.UrlApi(), Param, limit, false);
     }
 }

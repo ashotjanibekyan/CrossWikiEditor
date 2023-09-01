@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CrossWikiEditor.ListProviders;
+using CrossWikiEditor.ListProviders.BaseListProviders;
 using CrossWikiEditor.Messages;
 using CrossWikiEditor.Models;
 using CrossWikiEditor.Services;
@@ -99,8 +99,14 @@ public sealed partial class MakeListViewModel : ViewModelBase
         {
             return;
         }
+        
+        Result<List<WikiPageModel>> result = SelectedListProvider switch
+        {
+            ILimitedListProvider limitedListProvider => await limitedListProvider.MakeList(await limitedListProvider.GetLimit()),
+            IUnlimitedListProvider unlimitedListProvider => await unlimitedListProvider.MakeList(),
+            _ => Result<List<WikiPageModel>>.Success(new List<WikiPageModel>())
+        };
 
-        Result<List<WikiPageModel>> result = await SelectedListProvider.MakeList();
         if (result is { IsSuccessful: true, Value: not null })
         {
             Pages.AddRange(result.Value);

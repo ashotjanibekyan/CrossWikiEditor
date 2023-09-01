@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
+using CrossWikiEditor.ListProviders.BaseListProviders;
 using CrossWikiEditor.Models;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
@@ -11,17 +12,16 @@ using CrossWikiEditor.Utils;
 
 namespace CrossWikiEditor.ListProviders;
 
-public partial class GoogleSearchListProvider(IUserPreferencesService userPreferencesService,
-        IWikiClientCache wikiClientCache)
-    : IListProvider
+public partial class GoogleSearchListProvider(
+    IUserPreferencesService userPreferencesService,
+    IWikiClientCache wikiClientCache,
+    IDialogService dialogService) : LimitedListProviderBase(dialogService)
 {
     private static readonly Regex _regexGoogle = RegexGoogle();
-    public string Title => "Google search";
-    public string ParamTitle => "Google search";
-    public string Param { get; set; } = string.Empty;
-    public bool CanMake => !string.IsNullOrWhiteSpace(Param);
+    public override string Title => "Google search";
+    public override string ParamTitle => "Google search";
 
-    public async Task<Result<List<WikiPageModel>>> MakeList()
+    public override async Task<Result<List<WikiPageModel>>> MakeList(int limit)
     {
         try
         {
@@ -60,6 +60,10 @@ public partial class GoogleSearchListProvider(IUserPreferencesService userPrefer
                         if (result is {IsSuccessful: true, Value: not null})
                         {
                             list.Add(result.Value);
+                            if (list.Count >= limit)
+                            {
+                                break;
+                            }
                         }
                     }
                 }

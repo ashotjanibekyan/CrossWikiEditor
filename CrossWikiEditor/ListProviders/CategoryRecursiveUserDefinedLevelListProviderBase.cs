@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using CrossWikiEditor.ListProviders.BaseListProviders;
 using CrossWikiEditor.Models;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
@@ -9,19 +10,19 @@ using CrossWikiEditor.ViewModels;
 
 namespace CrossWikiEditor.ListProviders;
 
-public class CategoryRecursiveUserDefinedLevelListProvider(IPageService pageService,
+public class CategoryRecursiveUserDefinedLevelListProviderBase(
+        IPageService pageService,
         IUserPreferencesService userPreferencesService,
         IDialogService dialogService)
-    : INeedAdditionalParamsListProvider
+    : LimitedListProviderBase(dialogService), INeedAdditionalParamsListProvider
 {
     private int? recursionLevel;
 
-    public string Title => "Category (recursive user defined level)";
-    public string ParamTitle => "Category";
-    public string Param { get; set; } = string.Empty;
-    public bool CanMake => recursionLevel is not null && !string.IsNullOrWhiteSpace(Param);
+    public override string Title => "Category (recursive user defined level)";
+    public override string ParamTitle => "Category";
+    public override bool CanMake => recursionLevel is not null && !string.IsNullOrWhiteSpace(Param);
 
-    public async Task<Result<List<WikiPageModel>>> MakeList()
+    public override async Task<Result<List<WikiPageModel>>> MakeList(int limit)
     {
         if (recursionLevel is null)
         {
@@ -29,7 +30,7 @@ public class CategoryRecursiveUserDefinedLevelListProvider(IPageService pageServ
         }
 
         UserPrefs userPrefs = userPreferencesService.GetCurrentPref();
-        Result<List<WikiPageModel>> result = await pageService.GetPagesOfCategory(userPrefs.UrlApi(), Param, (int) recursionLevel);
+        Result<List<WikiPageModel>> result = await pageService.GetPagesOfCategory(userPrefs.UrlApi(), Param, limit, (int) recursionLevel);
         recursionLevel = null;
         return result;
     }

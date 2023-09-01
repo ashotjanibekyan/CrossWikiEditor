@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
+using CrossWikiEditor.ListProviders.BaseListProviders;
 using CrossWikiEditor.Models;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
@@ -13,20 +14,20 @@ using WikiClientLibrary.Sites;
 
 namespace CrossWikiEditor.ListProviders;
 
-public class TextFileListProvider(IFileDialogService fileDialogService,
+public class TextFileListProvider(
+        IFileDialogService fileDialogService,
         ISystemService systemService,
         IWikiClientCache wikiClientCache,
         IUserPreferencesService userPreferencesService)
-    : INeedAdditionalParamsListProvider
+    : UnlimitedListProviderBase, INeedAdditionalParamsListProvider
 {
     private readonly List<string> _textFiles = new();
 
-    public string Title => "Text file";
-    public string ParamTitle => string.Empty;
-    public string Param { get; set; } = string.Empty;
-    public bool CanMake => _textFiles.Count != 0;
+    public override string Title => "Text file";
+    public override string ParamTitle => string.Empty;
+    public override bool CanMake => _textFiles.Count != 0;
 
-    public async Task<Result<List<WikiPageModel>>> MakeList()
+    public override async Task<Result<List<WikiPageModel>>> MakeList()
     {
         WikiSite site = await wikiClientCache.GetWikiSite(userPreferencesService.GetCurrentPref().UrlApi());
         var titles = new List<string>();
@@ -44,7 +45,7 @@ public class TextFileListProvider(IFileDialogService fileDialogService,
             }
             else
             {
-                titles.AddRange(pageText.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries)
+                titles.AddRange(pageText.Split(new[] {"\r\n", "\n"}, StringSplitOptions.RemoveEmptyEntries)
                     .Where(s => s.Trim().Length != 0)
                     .Select(Tools.RemoveSyntax));
             }

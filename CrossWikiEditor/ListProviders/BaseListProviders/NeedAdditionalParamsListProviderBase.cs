@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace CrossWikiEditor.ListProviders;
+namespace CrossWikiEditor.ListProviders.BaseListProviders;
 
 public interface INeedAdditionalParamsListProvider : IListProvider
 {

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using CrossWikiEditor.ListProviders.BaseListProviders;
 using CrossWikiEditor.Models;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
@@ -7,15 +8,17 @@ using CrossWikiEditor.Utils;
 
 namespace CrossWikiEditor.ListProviders;
 
-public class NewPagesListProvider(IUserPreferencesService userPreferencesService, IPageService pageService) : IListProvider
+public class NewPagesListProvider(
+    IUserPreferencesService userPreferencesService,
+    IPageService pageService,
+    IDialogService dialogService) : LimitedListProviderBase(dialogService)
 {
-    public string Title => "New pages";
-    public string ParamTitle => string.Empty;
-    public string Param { get; set; } = string.Empty;
-    public bool CanMake => true;
+    public override string Title => "New pages";
+    public override string ParamTitle => string.Empty;
+    public override bool CanMake => true;
 
-    public async Task<Result<List<WikiPageModel>>> MakeList()
+    public override async Task<Result<List<WikiPageModel>>> MakeList(int limit)
     {
-        return await pageService.GetNewPages(userPreferencesService.GetCurrentPref().UrlApi());
+        return await pageService.GetNewPages(userPreferencesService.GetCurrentPref().UrlApi(), limit);
     }
 }

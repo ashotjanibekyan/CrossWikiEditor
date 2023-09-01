@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using CrossWikiEditor.ListProviders.BaseListProviders;
 using CrossWikiEditor.Models;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
@@ -7,16 +8,17 @@ using CrossWikiEditor.Utils;
 
 namespace CrossWikiEditor.ListProviders;
 
-public class WikiSearchInTextAllNsListProvider(IUserPreferencesService userPreferencesService, IPageService pageService) : IListProvider
+public class WikiSearchInTextAllNsListProvider(
+    IUserPreferencesService userPreferencesService,
+    IPageService pageService,
+    IDialogService dialogService) : LimitedListProviderBase(dialogService)
 {
-    public string Title => "Wiki search (text) (all NS)";
-    public string ParamTitle => "Wiki search";
-    public string Param { get; set; } = string.Empty;
-    public bool CanMake => !string.IsNullOrWhiteSpace(Param);
+    public override string Title => "Wiki search (text) (all NS)";
+    public override string ParamTitle => "Wiki search";
 
-    public async Task<Result<List<WikiPageModel>>> MakeList()
+    public override async Task<Result<List<WikiPageModel>>> MakeList(int limit)
     {
         string apiRoot = userPreferencesService.GetCurrentPref().UrlApi();
-        return await pageService.WikiSearch(apiRoot, Param, null);
+        return await pageService.WikiSearch(apiRoot, Param, null, limit);
     }
 }
