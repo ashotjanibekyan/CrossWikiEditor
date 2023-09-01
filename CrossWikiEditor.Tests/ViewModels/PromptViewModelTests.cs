@@ -2,12 +2,13 @@
 
 namespace CrossWikiEditor.Tests.ViewModels;
 
-public class PromptViewModelTests
+public class PromptViewModelTests : BaseTest
 {
     private PromptViewModel _sut;
     [SetUp]
     public void SetUp()
     {
+        SetUpServices();
         _sut = new PromptViewModel("title", "text");
     }
     
@@ -16,13 +17,12 @@ public class PromptViewModelTests
     {
         // arrange
         _sut.Value = value;
-        IDialog dialog = Substitute.For<IDialog>();
 
         // act
-        _sut.OkCommand.Execute(dialog);
+        _sut.OkCommand.Execute(_dialog);
 
         // assert
-        dialog.Received(1).Close(value);
+        _dialog.Received(1).Close(value);
     }
     
     [Test]

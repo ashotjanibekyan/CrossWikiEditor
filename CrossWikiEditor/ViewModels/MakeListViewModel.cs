@@ -310,6 +310,8 @@ public sealed partial class MakeListViewModel : ViewModelBase
                         case SetOperations.Intersection:
                             list.IntersectWith(result.Pages);
                             break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
                     }
 
                     filteredPages = new List<WikiPageModel>(list);
