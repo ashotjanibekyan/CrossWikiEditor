@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.Messaging;
 using CrossWikiEditor.ListProviders;
 using CrossWikiEditor.Repositories;
 using CrossWikiEditor.Services.WikiServices;
@@ -25,7 +24,7 @@ public class ViewModelFactory(IFileDialogService fileDialogService,
         IWikiClientCache wikiClientCache,
         IUserService userService,
         IUserPreferencesService userPreferencesService,
-        IMessenger messenger,
+        IMessengerWrapper messenger,
         TextFileListProvider textFileListProvider)
     : IViewModelFactory
 {

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using CrossWikiEditor.Models;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
+using CrossWikiEditor.Utils;
 
 namespace CrossWikiEditor.ListProviders;
 public sealed class UserContribsListProvider(IUserPreferencesService userPreferencesService, IUserService userService) : IListProvider

@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
 using CrossWikiEditor.Messages;
+using CrossWikiEditor.Utils;
 
 namespace CrossWikiEditor.ViewModels.ControlViewModels;
 
-public sealed partial class StartViewModel(IMessenger messenger) : ViewModelBase
+public sealed partial class StartViewModel(IMessengerWrapper messenger) : ViewModelBase
 {
     public IEnumerable<string> Summaries { get; set; } = new List<string>
     {

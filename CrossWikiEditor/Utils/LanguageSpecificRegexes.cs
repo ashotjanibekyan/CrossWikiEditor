@@ -1,6 +1,5 @@
 ﻿using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.Messaging;
 using CrossWikiEditor.Messages;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
@@ -19,7 +18,7 @@ public class LanguageSpecificRegexes : IAsyncInitialization
     public LanguageSpecificRegexes(
         IUserPreferencesService userPreferencesService,
         IWikiClientCache wikiClientCache,
-        IMessenger messenger)
+        IMessengerWrapper messenger)
     {
         _userPreferencesService = userPreferencesService;
         _wikiClientCache = wikiClientCache;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CrossWikiEditor.Models;
+using CrossWikiEditor.Utils;
 using Serilog;
 using WikiClientLibrary.Client;
 using WikiClientLibrary.Pages;

@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
 using CrossWikiEditor.ListProviders;
 using CrossWikiEditor.Messages;
 using CrossWikiEditor.Models;
@@ -33,7 +32,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
     private readonly IUserPreferencesService _userPreferencesService;
 
     public MakeListViewModel(
-        IMessenger messenger,
+        IMessengerWrapper messenger,
         ILogger logger,
         IDialogService dialogService,
         IWikiClientCache clientCache,

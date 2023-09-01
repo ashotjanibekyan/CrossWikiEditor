@@ -1,4 +1,4 @@
-﻿namespace CrossWikiEditor;
+﻿namespace CrossWikiEditor.Utils;
 
 public sealed class Result
 {

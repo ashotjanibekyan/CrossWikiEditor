@@ -1,10 +1,10 @@
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
 using CrossWikiEditor.Messages;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Settings;
+using CrossWikiEditor.Utils;
 
 namespace CrossWikiEditor.ViewModels;
 
@@ -17,7 +17,7 @@ public sealed partial class StatusBarViewModel : ViewModelBase
     public StatusBarViewModel(IViewModelFactory viewModelFactory,
         IDialogService dialogService,
         IUserPreferencesService userPreferencesService,
-        IMessenger messenger)
+        IMessengerWrapper messenger)
     {
         _viewModelFactory = viewModelFactory;
         _dialogService = dialogService;

@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Avalonia.Input.Platform;
+using CrossWikiEditor.Utils;
 using Serilog;
 
 namespace CrossWikiEditor.Services;

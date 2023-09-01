@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CrossWikiEditor.Models;
+using CrossWikiEditor.Utils;
 using CrossWikiEditor.WikiClientLibraryUtils.Generators;
 using Serilog;
 using WikiClientLibrary;

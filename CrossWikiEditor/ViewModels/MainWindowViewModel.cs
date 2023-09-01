@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.Messaging;
 using CrossWikiEditor.Messages;
+using CrossWikiEditor.Utils;
 using CrossWikiEditor.ViewModels.ControlViewModels;
 using CrossWikiEditor.ViewModels.MenuViewModels;
 using CrossWikiEditor.ViewModels.ReportViewModels;
@@ -24,7 +24,7 @@ public sealed class MainWindowViewModel : ViewModelBase
         WhatLinksHereViewModel whatLinksHereViewModel,
         LogsViewModel logsViewModel,
         PageLogsViewModel pageLogsViewModel,
-        IMessenger messenger)
+        IMessengerWrapper messenger)
     {
         StatusBarViewModel = statusBarViewModel;
         MakeListViewModel = makeListViewModel;

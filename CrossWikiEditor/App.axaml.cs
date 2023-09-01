@@ -112,7 +112,7 @@ public class App : Application
         builder.RegisterInstance(stringEncryptionService).As<IStringEncryptionService>();
         builder.RegisterInstance(logger).As<ILogger>();
         builder.Register(c => TopLevel.GetTopLevel(_mainWindow)?.Clipboard).As<IClipboard>();
-        builder.Register(c => WeakReferenceMessenger.Default).As<IMessenger>();
+        builder.RegisterInstance(new MessengerWrapper(WeakReferenceMessenger.Default)).As<IMessengerWrapper>();
     }
 
     private void RegisterViewModels(ContainerBuilder builder)

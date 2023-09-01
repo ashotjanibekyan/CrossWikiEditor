@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.Messaging;
 using CrossWikiEditor.Messages;
 using CrossWikiEditor.Models;
 using CrossWikiEditor.Settings;
+using CrossWikiEditor.Utils;
 using WikiClientLibrary.Pages;
 
 namespace CrossWikiEditor;
 
 public class PageListProcessor
 {
-    private readonly IMessenger _messenger;
+    private readonly IMessengerWrapper _messenger;
     private readonly List<WikiPageModel> _pages;
     private readonly NormalFindAndReplaceRules _normalFindAndReplaceRules;
     private bool _isAlive = true;
 
-    public PageListProcessor(IMessenger messenger, List<WikiPageModel> pages, NormalFindAndReplaceRules normalFindAndReplaceRules)
+    public PageListProcessor(IMessengerWrapper messenger, List<WikiPageModel> pages, NormalFindAndReplaceRules normalFindAndReplaceRules)
     {
         _messenger = messenger;
         _pages = pages;

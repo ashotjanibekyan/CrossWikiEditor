@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
 using CrossWikiEditor.Messages;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Settings;
+using CrossWikiEditor.Utils;
 
 namespace CrossWikiEditor.ViewModels;
 
 public sealed partial class PreferencesViewModel : ViewModelBase
 {
     private readonly IUserPreferencesService _userPreferencesService;
-    private readonly IMessenger _messenger;
+    private readonly IMessengerWrapper _messenger;
 
-    public PreferencesViewModel(IUserPreferencesService userPreferencesService, IMessenger messenger)
+    public PreferencesViewModel(IUserPreferencesService userPreferencesService, IMessengerWrapper messenger)
     {
         _userPreferencesService = userPreferencesService;
         _messenger = messenger;

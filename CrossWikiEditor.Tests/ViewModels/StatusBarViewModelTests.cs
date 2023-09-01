@@ -1,4 +1,6 @@
-﻿using CrossWikiEditor.Settings;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using CrossWikiEditor.Messages;
+using CrossWikiEditor.Settings;
 using CrossWikiEditor.ViewModels;
 
 namespace CrossWikiEditor.Tests.ViewModels;
@@ -69,5 +71,41 @@ public class StatusBarViewModelTests : BaseTest
             _viewModelFactory.GetProfilesViewModel();
             _dialogService.Received(1).ShowDialog<bool>(profilesViewModel);
         });
+    }
+
+    [Test]
+    public void Constructor_ShouldSubscribeToNewAccountLoggedInMessage()
+    {
+        MessageHandler<object, NewAccountLoggedInMessage> handler = null;
+
+        // Act
+        var vm = new StatusBarViewModel(_viewModelFactory, _dialogService, _userPreferencesService, _messenger);
+
+        // assert
+        _messenger.Received(1).Register(vm, Arg.Any<MessageHandler<object, NewAccountLoggedInMessage>>());
+    }
+
+    [Test]
+    public void Constructor_ShouldSubscribeToProjectChangedMessage()
+    {
+        MessageHandler<object, ProjectChangedMessage> handler = null;
+
+        // Act
+        var vm = new StatusBarViewModel(_viewModelFactory, _dialogService, _userPreferencesService, _messenger);
+
+        // assert
+        _messenger.Received(1).Register(vm, Arg.Any<MessageHandler<object, ProjectChangedMessage>>());
+    }
+
+    [Test]
+    public void Constructor_ShouldSubscribeToLanguageCodeChangedMessage()
+    {
+        MessageHandler<object, LanguageCodeChangedMessage> handler = null;
+
+        // Act
+        var vm = new StatusBarViewModel(_viewModelFactory, _dialogService, _userPreferencesService, _messenger);
+
+        // assert
+        _messenger.Received(1).Register(vm, Arg.Any<MessageHandler<object, LanguageCodeChangedMessage>>());
     }
 }

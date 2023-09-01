@@ -3,13 +3,13 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
 using CrossWikiEditor.Messages;
 using CrossWikiEditor.Models;
 using CrossWikiEditor.Repositories;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
 using CrossWikiEditor.Settings;
+using CrossWikiEditor.Utils;
 
 namespace CrossWikiEditor.ViewModels;
 
@@ -18,7 +18,7 @@ public sealed partial class ProfilesViewModel(IFileDialogService fileDialogServi
         IProfileRepository profileRepository,
         IUserService userService,
         IUserPreferencesService userPreferencesService,
-        IMessenger messenger)
+        IMessengerWrapper messenger)
     : ViewModelBase
 {
     [ObservableProperty] private Profile? _selectedProfile;

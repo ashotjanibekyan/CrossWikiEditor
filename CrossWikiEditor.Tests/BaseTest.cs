@@ -1,8 +1,8 @@
 using Avalonia.Input.Platform;
-using CommunityToolkit.Mvvm.Messaging;
 using CrossWikiEditor.Repositories;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
+using CrossWikiEditor.Utils;
 using Serilog;
 
 namespace CrossWikiEditor.Tests;
@@ -16,7 +16,7 @@ public abstract class BaseTest
     protected IUserPreferencesService _userPreferencesService;
     protected IViewModelFactory _viewModelFactory;
     protected IDialog _dialog;
-    protected IMessenger _messenger;
+    protected IMessengerWrapper _messenger;
     protected IClipboard _clipboard;
     protected ILogger _logger;
 
@@ -34,7 +34,7 @@ public abstract class BaseTest
         _userPreferencesService = Substitute.For<IUserPreferencesService>();
         _viewModelFactory = Substitute.For<IViewModelFactory>();
         _dialog = Substitute.For<IDialog>();
-        _messenger = Substitute.For<IMessenger>();
+        _messenger = Substitute.For<IMessengerWrapper>();
         _clipboard = Substitute.For<IClipboard>();
         _logger = Substitute.For<ILogger>();
 

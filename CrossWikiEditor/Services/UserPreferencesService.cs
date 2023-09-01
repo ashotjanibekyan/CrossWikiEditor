@@ -3,9 +3,9 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
-using CommunityToolkit.Mvvm.Messaging;
 using CrossWikiEditor.Messages;
 using CrossWikiEditor.Settings;
+using CrossWikiEditor.Utils;
 
 namespace CrossWikiEditor.Services;
 
@@ -20,7 +20,7 @@ public sealed class UserPreferencesService : IUserPreferencesService
 {
     private UserPrefs _currentPref;
 
-    public UserPreferencesService(IMessenger messenger)
+    public UserPreferencesService(IMessengerWrapper messenger)
     {
         _currentPref = new UserPrefs();
         messenger.Register<LanguageCodeChangedMessage>(this, (r, m) => _currentPref.LanguageCode = m.Value);
