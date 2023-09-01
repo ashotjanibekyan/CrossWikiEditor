@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CrossWikiEditor.ListProviders;
-using CrossWikiEditor.ListProviders.BaseListProviders;
 using CrossWikiEditor.Models;
 using CrossWikiEditor.Utils;
 
@@ -51,7 +50,7 @@ public partial class FilterViewModel(List<WikiNamespace> subjectNamespaces, List
 
         if (textFileListProvider.CanMake)
         {
-            Result<List<WikiPageModel>> result = await (textFileListProvider as IUnlimitedListProvider).MakeList();
+            Result<List<WikiPageModel>> result = await textFileListProvider.MakeList();
             if (result is { IsSuccessful: true, Value: not null })
             {
                 Pages = result.Value.ToObservableCollection();
