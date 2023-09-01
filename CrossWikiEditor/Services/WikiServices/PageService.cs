@@ -36,7 +36,7 @@ public interface IPageService
 
     Task<Result<List<WikiPageModel>>> GetPagesLinkedTo(string apiRoot, string title, int[]? namespaces, bool allowRedirectLinks,
         bool? filterRedirects);
-
+    Task<Result<List<WikiPageModel>>> GetPagesWithProp(string apiRoot, string param);
     Task<Result<List<WikiPageModel>>> WikiSearch(string apiRoot, string keyword, int[]? namespaces);
 
     Result<List<WikiPageModel>> ConvertToTalk(List<WikiPageModel> pages);
@@ -280,6 +280,22 @@ public sealed class PageService(IWikiClientCache wikiClientCache, IUserPreferenc
         {
             logger.Fatal(e, "Failed to get pages. Site {Site}, title: {Title}, namespaces: {Namespaces}, allowRedirectLinks: {AllowRedirectLinks}, filterRedirects: {FilterRedirects}", 
                 apiRoot, title, namespaces, allowRedirectLinks, filterRedirects);
+            return Result<List<WikiPageModel>>.Failure(e.Message);
+        }
+    }
+
+    public async Task<Result<List<WikiPageModel>>> GetPagesWithProp(string apiRoot, string param)
+    {
+        try
+        {
+            WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
+            var gen = new PagesWithPropGenerator(site, param);
+            List<WikiPage> result = await gen.EnumPagesAsync().ToListAsync();
+            return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
+        }
+        catch (Exception e)
+        {
+            logger.Fatal(e, "Failed to get pages. Site {Site}, property name: {Keyword}", apiRoot, param);
             return Result<List<WikiPageModel>>.Failure(e.Message);
         }
     }
