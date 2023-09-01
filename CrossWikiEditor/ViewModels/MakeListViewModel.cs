@@ -272,13 +272,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
             Pages = subjectPages.ToObservableCollection();
         }
     }
-
-    [RelayCommand]
-    private void FormatPageTitlesPerDisplayTitle()
-    {
-        throw new NotImplementedException();
-    }
-
+    
     [RelayCommand]
     private async Task Filter()
     {

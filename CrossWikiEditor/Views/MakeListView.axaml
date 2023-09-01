@@ -99,9 +99,6 @@
                         <MenuItem IsEnabled="{Binding !!SelectedPages.Count}"
                                   Command="{Binding ConvertFromTalkPagesCommand}" Header="Convert from talk pages" />
                         <Separator />
-                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}"
-                                  Command="{Binding FormatPageTitlesPerDisplayTitleCommand}"
-                                  Header="Format page titles per displaytitle" />
                         <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Command="{Binding FilterCommand}"
                                   Header="Filter" />
                         <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Command="{Binding SaveListCommand}"
