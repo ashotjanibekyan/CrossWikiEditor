@@ -15,7 +15,7 @@ public interface IUserService
 {
     Task<Result> Login(Profile profile, string apiRoot);
     Task<Result<List<WikiPageModel>>> GetWatchlistPages(int limit);
-    Task<Result<List<WikiPageModel>>> GetUserContribsPages(string apiRoot, string username, int limit);
+    Task<Result<List<WikiPageModel>>> GetUserContributionsPages(string apiRoot, string username, int limit);
 }
 
 public sealed class UserService(IWikiClientCache wikiClientCache, IUserPreferencesService userPreferencesService, ILogger logger)
@@ -52,13 +52,18 @@ public sealed class UserService(IWikiClientCache wikiClientCache, IUserPreferenc
         }
     }
 
-    public async Task<Result<List<WikiPageModel>>> GetUserContribsPages(string apiRoot, string username, int limit)
+    public async Task<Result<List<WikiPageModel>>> GetUserContributionsPages(string apiRoot, string username, int limit)
     {
         try
         {
-            // TODO: the library doesn't provide an easy way to retrieve this information.
-            // fix the library to implement this part without it
-            throw new NotImplementedException();
+            WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
+            var gen = new UserContributionsGenerator(site, new List<string> {username})
+            {
+                IncludeTitle = true,
+                IncludeIds = true
+            };
+            List<UserContributionResultItem> result = await gen.EnumItemsAsync().Take(limit).ToListAsync();
+            return Result<List<WikiPageModel>>.Success(result.Select(item => new WikiPageModel(item.WikiPage)).ToList());
         }
         catch (Exception e)
         {

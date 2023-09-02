@@ -8,7 +8,7 @@ using CrossWikiEditor.Utils;
 
 namespace CrossWikiEditor.ListProviders;
 
-public sealed class UserContribsListProvider(
+public class UserContributionsListProvider(
     IUserPreferencesService userPreferencesService,
     IUserService userService,
     IDialogService dialogService) : LimitedListProviderBase(dialogService)
@@ -18,6 +18,6 @@ public sealed class UserContribsListProvider(
 
     public override async Task<Result<List<WikiPageModel>>> MakeList(int limit)
     {
-        return await userService.GetUserContribsPages(userPreferencesService.GetCurrentPref().UrlApi(), Param, limit);
+        return await userService.GetUserContributionsPages(userPreferencesService.GetCurrentPref().UrlApi(), Param, limit);
     }
 }
