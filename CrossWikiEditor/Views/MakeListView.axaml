@@ -6,6 +6,7 @@
              xmlns:models="clr-namespace:CrossWikiEditor.Models"
              xmlns:utils="clr-namespace:CrossWikiEditor.Utils"
              x:DataType="vm:MakeListViewModel"
+             x:Name="This"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="CrossWikiEditor.Views.MakeListView">
     <Grid RowDefinitions="Auto,Auto,Auto,Auto,*,Auto" Margin="3">
@@ -112,7 +113,14 @@
                 </ListBox.ContextMenu>
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="models:WikiPageModel">
-                        <TextBlock Text="{Binding Title}" />
+                        <TextBlock Text="{Binding Title}">
+                            <Interaction.Behaviors>
+                                <EventTriggerBehavior EventName="DoubleTapped">
+                                    <InvokeCommandAction
+                                        Command="{ReflectionBinding #This.DataContext.OpenInBrowserCommand}" />
+                                </EventTriggerBehavior>
+                            </Interaction.Behaviors>
+                        </TextBlock>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

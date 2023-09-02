@@ -177,7 +177,6 @@ public class App : Application
         builder.RegisterType<TextFileListProvider>().As<IListProvider>();
         builder.RegisterType<TransclusionsOnPageListProvider>().As<IListProvider>();
         //builder.RegisterType<UserContribsListProvider>().As<IListProvider>();
-        // todo: user contrib (user defined number)
         builder.RegisterType<WhatLinksHereListProvider>().As<IListProvider>();
         builder.RegisterType<WhatTranscludesHereListProvider>().As<IListProvider>();
         builder.RegisterType<WhatTranscludesHereAllNsListProvider>().As<IListProvider>();
