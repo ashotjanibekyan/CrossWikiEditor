@@ -10,6 +10,7 @@ using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.Messaging;
 using CrossWikiEditor.ListProviders;
 using CrossWikiEditor.ListProviders.BaseListProviders;
+using CrossWikiEditor.ListProviders.SpecialPageListProviders;
 using CrossWikiEditor.Repositories;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
@@ -70,6 +71,7 @@ public class App : Application
         RegisterRepositories(builder);
         RegisterDialogs(builder);
         RegisterListProviders(builder);
+        RegisterSpecialPageListProviders(builder);
         RegisterUtils(builder);
 
         builder.Register(c => _container!).As<IContainer>();
@@ -148,6 +150,7 @@ public class App : Application
         builder.RegisterType<SelectNamespacesView>().Named<IDialog>(nameof(SelectNamespacesViewModel));
         builder.RegisterType<WhatLinksHereOptionsView>().Named<IDialog>(nameof(WhatLinksHereOptionsViewModel));
         builder.RegisterType<FindAndReplaceView>().Named<IDialog>(nameof(FindAndReplaceViewModel));
+        builder.RegisterType<SpecialPageListProviderSelectorView>().Named<IDialog>(nameof(SpecialPageListProviderSelectorViewModel));
     }
 
     private void RegisterListProviders(ContainerBuilder builder)
@@ -173,7 +176,7 @@ public class App : Application
         builder.RegisterType<NewPagesListProvider>().As<IListProvider>();
         builder.RegisterType<PagesWithPropListProvider>().As<IListProvider>();
         builder.RegisterType<RandomListProvider>().As<IListProvider>();
-        // todo: Special pages
+        builder.RegisterType<SpecialPageListProvider>().As<IListProvider>();
         builder.RegisterType<TextFileListProvider>().As<IListProvider>();
         builder.RegisterType<TransclusionsOnPageListProvider>().As<IListProvider>();
         builder.RegisterType<UserContributionsListProvider>().As<IListProvider>();
@@ -186,6 +189,11 @@ public class App : Application
         builder.RegisterType<WikiSearchInTextAllNsListProvider>().As<IListProvider>();
 
         builder.RegisterType<TextFileListProvider>();
+    }
+
+    public void RegisterSpecialPageListProviders(ContainerBuilder builder)
+    {
+        builder.RegisterType<AllCategoriesListProvider>().As<ISpecialPageListProvider>();
     }
 
     private void RegisterUtils(ContainerBuilder builder)

@@ -38,6 +38,7 @@ public interface IPageService
         bool? filterRedirects, int limit);
 
     Task<Result<List<WikiPageModel>>> GetPagesWithProp(string apiRoot, string param, int limit);
+    Task<Result<List<WikiPageModel>>> GetAllCategories(string apiRoot, string startTitle, int limit);
     Task<Result<List<WikiPageModel>>> WikiSearch(string apiRoot, string keyword, int[]? namespaces, int limit);
 
     Result<List<WikiPageModel>> ConvertToTalk(List<WikiPageModel> pages);
@@ -298,6 +299,25 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
         catch (Exception e)
         {
             logger.Fatal(e, "Failed to get pages. Site {Site}, property name: {Keyword}, limit: {Limit}", apiRoot, param, limit);
+            return Result<List<WikiPageModel>>.Failure(e.Message);
+        }
+    }
+
+    public async Task<Result<List<WikiPageModel>>> GetAllCategories(string apiRoot, string startTitle, int limit)
+    {
+        try
+        {
+            WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
+            var gen = new AllCategoriesGenerator(site)
+            {
+                StartTitle = startTitle
+            };
+            List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
+            return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
+        }
+        catch (Exception e)
+        {
+            logger.Fatal(e, "Failed to get pages. Site {Site}, start title: {StartTitle}, limit: {Limit}", apiRoot, startTitle, limit);
             return Result<List<WikiPageModel>>.Failure(e.Message);
         }
     }

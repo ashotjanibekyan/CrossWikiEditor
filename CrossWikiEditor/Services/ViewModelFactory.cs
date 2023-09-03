@@ -1,10 +1,16 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.Messaging;
 using CrossWikiEditor.ListProviders;
+using CrossWikiEditor.ListProviders.BaseListProviders;
+using CrossWikiEditor.ListProviders.SpecialPageListProviders;
 using CrossWikiEditor.Repositories;
 using CrossWikiEditor.Services.WikiServices;
 using CrossWikiEditor.Utils;
 using CrossWikiEditor.ViewModels;
+using Serilog;
+using Serilog.Core;
 using WikiClientLibrary.Sites;
 
 namespace CrossWikiEditor.Services;
@@ -16,6 +22,7 @@ public interface IViewModelFactory
     Task<FilterViewModel> GetFilterViewModel();
     Task<SelectNamespacesViewModel> GetSelectNamespacesViewModel();
     Task<WhatLinksHereOptionsViewModel> GetWhatLinksHereOptionsViewModel();
+    Task<SpecialPageListProviderSelectorViewModel> GetSpecialPageListProviderSelectorViewModel();
 }
 
 public class ViewModelFactory(IFileDialogService fileDialogService,
@@ -23,8 +30,10 @@ public class ViewModelFactory(IFileDialogService fileDialogService,
         IProfileRepository profileRepository,
         IWikiClientCache wikiClientCache,
         IUserService userService,
+        IPageService pageService,
         IUserPreferencesService userPreferencesService,
         IMessengerWrapper messenger,
+        IEnumerable<ISpecialPageListProvider> specialPageListProviders,
         TextFileListProvider textFileListProvider)
     : IViewModelFactory
 {
@@ -61,5 +70,12 @@ public class ViewModelFactory(IFileDialogService fileDialogService,
         WikiSite site = await wikiClientCache.GetWikiSite(userPreferencesService.GetCurrentPref().UrlApi());
         WikiNamespace[] namespaces = site.Namespaces.Select(x => new WikiNamespace(x.Id, x.CustomName)).ToArray();
         return new WhatLinksHereOptionsViewModel(namespaces.ToList());
+    }
+
+    public async Task<SpecialPageListProviderSelectorViewModel> GetSpecialPageListProviderSelectorViewModel()
+    {
+        WikiSite site = await wikiClientCache.GetWikiSite(userPreferencesService.GetCurrentPref().UrlApi());
+        WikiNamespace[] namespaces = site.Namespaces.Select(x => new WikiNamespace(x.Id, x.CustomName)).ToArray();
+        return new SpecialPageListProviderSelectorViewModel(specialPageListProviders.ToList(), namespaces.ToList());
     }
 }
