@@ -3,15 +3,10 @@ using WikiClientLibrary.Pages;
 
 namespace CrossWikiEditor.WikiClientLibraryUtils.Generators;
 
-public class UserContributionResultItem
+public class UserContributionResultItem(WikiPage wikiPage)
 {
-    public UserContributionResultItem(WikiPage wikiPage)
-    {
-        WikiPage = wikiPage;
-    }
-    
-    public WikiPage WikiPage { get; }
-    
+    public WikiPage WikiPage { get; } = wikiPage;
+
     [JsonProperty("userid")]
     public int UserId { get; set; }
     

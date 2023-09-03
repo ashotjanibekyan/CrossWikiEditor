@@ -70,7 +70,7 @@ public class ViewModelFactory(IFileDialogService fileDialogService,
     public async Task<SpecialPageListProviderSelectorViewModel> GetSpecialPageListProviderSelectorViewModel()
     {
         WikiSite site = await wikiClientCache.GetWikiSite(userPreferencesService.GetCurrentPref().UrlApi());
-        WikiNamespace[] namespaces = site.Namespaces.Select(x => new WikiNamespace(x.Id, x.CustomName)).ToArray();
+        WikiNamespace[] namespaces = site.Namespaces.Where(x => x.Id >= 0).Select(x => new WikiNamespace(x.Id, x.CustomName)).ToArray();
         return new SpecialPageListProviderSelectorViewModel(specialPageListProviders.ToList(), namespaces.ToList());
     }
 }

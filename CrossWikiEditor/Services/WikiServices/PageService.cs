@@ -39,6 +39,9 @@ public interface IPageService
 
     Task<Result<List<WikiPageModel>>> GetPagesWithProp(string apiRoot, string param, int limit);
     Task<Result<List<WikiPageModel>>> GetAllCategories(string apiRoot, string startTitle, int limit);
+    Task<Result<List<WikiPageModel>>> GetAllFiles(string apiRoot, string startTitle, int limit);
+    Task<Result<List<WikiPageModel>>> GetAllPages(string apiRoot, string startTitle, int namespaceId, PropertyFilterOption redirectsFilter, int limit);
+    Task<Result<List<WikiPageModel>>> GetAllPagesWithPrefix(string apiRoot, string prefix, int namespaceId, int limit);
     Task<Result<List<WikiPageModel>>> WikiSearch(string apiRoot, string keyword, int[]? namespaces, int limit);
 
     Result<List<WikiPageModel>> ConvertToTalk(List<WikiPageModel> pages);
@@ -322,6 +325,19 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
         }
     }
 
+    public async Task<Result<List<WikiPageModel>>> GetAllFiles(string apiRoot, string startTitle, int limit) =>
+        await GetAllPages(apiRoot, startTitle, namespaceId: 6, redirectsFilter: PropertyFilterOption.Disable, limit: limit);
+
+    public async Task<Result<List<WikiPageModel>>> GetAllPages(string apiRoot, string startTitle, int namespaceId, PropertyFilterOption redirectsFilter, int limit)
+    {
+        return await GetAllPages(apiRoot, namespaceId, redirectsFilter, limit, startTitle: startTitle);
+    }
+
+    public async Task<Result<List<WikiPageModel>>> GetAllPagesWithPrefix(string apiRoot, string prefix, int namespaceId, int limit)
+    {
+        return await GetAllPages(apiRoot, namespaceId, PropertyFilterOption.Disable, limit, prefix: prefix);
+    }
+    
     public async Task<Result<List<WikiPageModel>>> WikiSearch(string apiRoot, string keyword, int[]? namespaces, int limit)
     {
         try
@@ -380,6 +396,42 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
         {
             logger.Fatal(e, "Failed to get pages. {WikiPageModel}", page);
             return Result<WikiPageModel>.Failure(e.Message);
+        }
+    }
+
+    private async Task<Result<List<WikiPageModel>>> GetAllPages(
+        string apiRoot, 
+        int namespaceId,
+        PropertyFilterOption redirectsFilter, 
+        int limit,
+        string? startTitle = null,
+        string? prefix = null)
+    {
+        try
+        {
+            WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
+            var gen = new AllPagesGenerator(site)
+            {
+                NamespaceId = namespaceId,
+                RedirectsFilter = redirectsFilter
+            };
+            if (startTitle is not null)
+            {
+                gen.StartTitle = startTitle;
+            }
+
+            if (prefix is not null)
+            {
+                gen.Prefix = prefix;
+            }
+            List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
+            return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
+        }
+        catch (Exception e)
+        {
+            logger.Fatal(e, "Failed to get pages. Site {Site}, start title: {StartTitle}, prefix: {Prefix}, namespace: {NamespaceId}, redirectsFilter {RedirectsFilter}, limit: {Limit}", apiRoot,
+                startTitle, prefix, namespaceId, redirectsFilter, limit);
+            return Result<List<WikiPageModel>>.Failure(e.Message);
         }
     }
 

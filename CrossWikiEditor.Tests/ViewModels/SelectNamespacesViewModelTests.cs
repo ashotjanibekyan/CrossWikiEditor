@@ -1,6 +1,6 @@
 ﻿using CrossWikiEditor.ViewModels;
 
-namespace CrossWikiEditor.Tests;
+namespace CrossWikiEditor.Tests.ViewModels;
 
 public class SelectNamespacesViewModelTests
 {

@@ -5,21 +5,23 @@ using CrossWikiEditor.Models;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Services.WikiServices;
 using CrossWikiEditor.Utils;
+using WikiClientLibrary.Generators;
 
 namespace CrossWikiEditor.ListProviders.SpecialPageListProviders;
 
-public class AllCategoriesListProvider(
+public class AllPagesListProvider(
     IDialogService dialogService,
     IPageService pageService,
     IUserPreferencesService userPreferencesService) : LimitedListProviderBase(dialogService), ISpecialPageListProvider
 {
-    public override string Title => "All Categories";
+    public override string Title => "All Pages";
     public override string ParamTitle => "Start from";
     public override bool CanMake => true;
     public int NamespaceId { get; set; }
-    public bool NeedsNamespace => false;
+    public bool NeedsNamespace => true;
     public override async Task<Result<List<WikiPageModel>>> MakeList(int limit)
     {
-        return await pageService.GetAllCategories(userPreferencesService.GetCurrentPref().UrlApi(), Param, limit);
+        return await pageService.GetAllPages(userPreferencesService.GetCurrentPref().UrlApi(), Param, NamespaceId,
+            redirectsFilter: PropertyFilterOption.Disable, limit);
     }
 }

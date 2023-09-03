@@ -191,9 +191,14 @@ public class App : Application
         builder.RegisterType<TextFileListProvider>();
     }
 
-    public void RegisterSpecialPageListProviders(ContainerBuilder builder)
+    private void RegisterSpecialPageListProviders(ContainerBuilder builder)
     {
         builder.RegisterType<AllCategoriesListProvider>().As<ISpecialPageListProvider>();
+        builder.RegisterType<AllFilesListProvider>().As<ISpecialPageListProvider>();
+        builder.RegisterType<AllPagesListProvider>().As<ISpecialPageListProvider>();
+        builder.RegisterType<AllPagesNoRedirectsListProvider>().As<ISpecialPageListProvider>();
+        builder.RegisterType<AllPagesWithPrefixListProvider>().As<ISpecialPageListProvider>();
+        builder.RegisterType<AllRedirectsListProvider>().As<ISpecialPageListProvider>();
     }
 
     private void RegisterUtils(ContainerBuilder builder)
