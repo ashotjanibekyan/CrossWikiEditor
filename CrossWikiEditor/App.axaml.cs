@@ -199,6 +199,23 @@ public class App : Application
         builder.RegisterType<AllPagesNoRedirectsListProvider>().As<ISpecialPageListProvider>();
         builder.RegisterType<AllPagesWithPrefixListProvider>().As<ISpecialPageListProvider>();
         builder.RegisterType<AllRedirectsListProvider>().As<ISpecialPageListProvider>();
+        // all users
+        // disambig pages
+        // link search
+        // new files
+        // new pages
+        builder.RegisterType<PagesWithPropListProvider>().As<ISpecialPageListProvider>();
+        // pages without language link
+        // pages without language link (no redirects)
+        // protected pages 
+        // random pages
+        // random redirects
+        // recent changes
+        // user contibs
+        // what links here
+        // what redirects here
+        // what transcludes page
+        // wiki search (text)
     }
 
     private void RegisterUtils(ContainerBuilder builder)
