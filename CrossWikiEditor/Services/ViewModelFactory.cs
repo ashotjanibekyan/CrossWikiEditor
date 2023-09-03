@@ -1,16 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.Messaging;
 using CrossWikiEditor.ListProviders;
-using CrossWikiEditor.ListProviders.BaseListProviders;
 using CrossWikiEditor.ListProviders.SpecialPageListProviders;
 using CrossWikiEditor.Repositories;
 using CrossWikiEditor.Services.WikiServices;
 using CrossWikiEditor.Utils;
 using CrossWikiEditor.ViewModels;
-using Serilog;
-using Serilog.Core;
 using WikiClientLibrary.Sites;
 
 namespace CrossWikiEditor.Services;
@@ -30,7 +26,6 @@ public class ViewModelFactory(IFileDialogService fileDialogService,
         IProfileRepository profileRepository,
         IWikiClientCache wikiClientCache,
         IUserService userService,
-        IPageService pageService,
         IUserPreferencesService userPreferencesService,
         IMessengerWrapper messenger,
         IEnumerable<ISpecialPageListProvider> specialPageListProviders,
