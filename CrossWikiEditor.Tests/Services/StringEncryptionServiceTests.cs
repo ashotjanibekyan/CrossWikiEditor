@@ -1,5 +1,5 @@
 ﻿using System.Security.Cryptography;
-using CrossWikiEditor.Services;
+using CrossWikiEditor.Core.Services;
 
 namespace CrossWikiEditor.Tests.Services;
 

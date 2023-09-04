@@ -2,11 +2,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:vm="clr-namespace:CrossWikiEditor.ViewModels"
+        xmlns:viewModels="clr-namespace:CrossWikiEditor.Core.ViewModels;assembly=CrossWikiEditor.Core"
         Classes="DialogWindow"
         SizeToContent="WidthAndHeight"
         x:Name="This"
-        x:DataType="vm:SpecialPageListProviderSelectorViewModel"
+        x:DataType="viewModels:SpecialPageListProviderSelectorViewModel"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="CrossWikiEditor.Views.SpecialPageListProviderSelectorView"
         Title="Special page">

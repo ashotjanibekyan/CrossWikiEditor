@@ -2,12 +2,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:vm="clr-namespace:CrossWikiEditor.ViewModels"
+        xmlns:viewModels="clr-namespace:CrossWikiEditor.Core.ViewModels;assembly=CrossWikiEditor.Core"
         SizeToContent="WidthAndHeight"
         Classes="DialogWindow"
         mc:Ignorable="d"
         x:Class="CrossWikiEditor.Views.SelectNamespacesView"
-        x:DataType="vm:SelectNamespacesViewModel"
+        x:DataType="viewModels:SelectNamespacesViewModel"
         x:Name="This"
         Title="SelectNamespacesView">
     <Grid RowDefinitions="Auto,300,Auto" Margin="4">
@@ -15,7 +15,7 @@
         <ListBox Grid.Row="1" SelectionMode="Multiple" Margin="3" ScrollViewer.HorizontalScrollBarVisibility="Visible"
                  ItemsSource="{Binding Namespaces}">
             <ListBox.ItemTemplate>
-                <DataTemplate DataType="vm:WikiNamespace">
+                <DataTemplate DataType="viewModels:WikiNamespace">
                     <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}" />
                 </DataTemplate>
             </ListBox.ItemTemplate>

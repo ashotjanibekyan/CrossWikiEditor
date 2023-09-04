@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using CrossWikiEditor.Core;
 
 namespace CrossWikiEditor.Views;
 

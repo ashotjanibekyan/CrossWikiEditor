@@ -2,13 +2,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:vm="clr-namespace:CrossWikiEditor.ViewModels"
+        xmlns:viewModels="clr-namespace:CrossWikiEditor.Core.ViewModels;assembly=CrossWikiEditor.Core"
         SizeToContent="WidthAndHeight"
         Classes="DialogWindow"
         CanResize="False"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="CrossWikiEditor.Views.AlertView"
-        x:DataType="vm:AlertViewModel"
+        x:DataType="viewModels:AlertViewModel"
         x:Name="This"
         Title="{Binding Title}">
     <Grid RowDefinitions="Auto,Auto" Margin="16">

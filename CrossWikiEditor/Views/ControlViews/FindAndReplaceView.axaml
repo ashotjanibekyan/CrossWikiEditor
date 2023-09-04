@@ -3,12 +3,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:CrossWikiEditor.Controls"
-        xmlns:controlVm="clr-namespace:CrossWikiEditor.ViewModels.ControlViewModels"
+        xmlns:controlViewModels="clr-namespace:CrossWikiEditor.Core.ViewModels.ControlViewModels;assembly=CrossWikiEditor.Core"
         Classes="DialogWindow"
         SizeToContent="Width"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="CrossWikiEditor.Views.ControlViews.FindAndReplaceView"
-        x:DataType="controlVm:FindAndReplaceViewModel"
+        x:DataType="controlViewModels:FindAndReplaceViewModel"
         x:Name="This"
         Title="Find and Replace">
     <Grid RowDefinitions="Auto,*" Margin="4">

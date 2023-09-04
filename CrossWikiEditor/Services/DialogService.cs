@@ -1,14 +1,10 @@
 using System.Threading.Tasks;
 using Autofac;
-using CrossWikiEditor.ViewModels;
+using CrossWikiEditor.Core;
+using CrossWikiEditor.Core.Services;
+using CrossWikiEditor.Core.ViewModels;
 
 namespace CrossWikiEditor.Services;
-
-public interface IDialogService
-{
-    Task<TResult?> ShowDialog<TResult>(ViewModelBase viewModel);
-    Task Alert(string title, string content);
-}
 
 public sealed class DialogService(IContainer container, IOwner mainWindow) : IDialogService
 {

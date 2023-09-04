@@ -1,7 +1,7 @@
-using CrossWikiEditor.ListProviders;
-using CrossWikiEditor.ListProviders.SpecialPageListProviders;
-using CrossWikiEditor.Services;
-using CrossWikiEditor.ViewModels;
+using CrossWikiEditor.Core.ListProviders;
+using CrossWikiEditor.Core.ListProviders.SpecialPageListProviders;
+using CrossWikiEditor.Core.Services;
+using CrossWikiEditor.Core.ViewModels;
 
 namespace CrossWikiEditor.Tests.Services;
 

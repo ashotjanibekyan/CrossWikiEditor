@@ -1,4 +1,4 @@
-using CrossWikiEditor.ViewModels;
+using CrossWikiEditor.Core.ViewModels;
 
 namespace CrossWikiEditor.Tests.ViewModels;
 

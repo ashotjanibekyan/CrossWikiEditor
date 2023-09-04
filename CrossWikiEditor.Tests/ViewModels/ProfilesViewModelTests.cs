@@ -1,7 +1,7 @@
-using CrossWikiEditor.Models;
-using CrossWikiEditor.Settings;
-using CrossWikiEditor.Utils;
-using CrossWikiEditor.ViewModels;
+using CrossWikiEditor.Core.Models;
+using CrossWikiEditor.Core.Settings;
+using CrossWikiEditor.Core.Utils;
+using CrossWikiEditor.Core.ViewModels;
 
 namespace CrossWikiEditor.Tests.ViewModels;
 

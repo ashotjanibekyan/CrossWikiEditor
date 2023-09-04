@@ -1,25 +1,17 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Avalonia.Input.Platform;
-using CrossWikiEditor.Utils;
+using CrossWikiEditor.Core.Services;
+using CrossWikiEditor.Core.Utils;
 using Serilog;
 
 namespace CrossWikiEditor.Services;
 
-public interface ISystemService
-{
-    Result OpenLinkInBrowser(string url);
-    Task<string?> GetClipboardTextAsync();
-    Task SetClipboardTextAsync(string? text);
-    Task WriteAllLinesAsync(string path, IEnumerable<string> contents);
-    Task<string> ReadAllTextAsync(string path, Encoding encoding);
-}
-
-public class SystemService(IClipboard clipboard, ILogger logger) : ISystemService
+public sealed class SystemService(IClipboard clipboard, ILogger logger) : ISystemService
 {
     public Result OpenLinkInBrowser(string url)
     {

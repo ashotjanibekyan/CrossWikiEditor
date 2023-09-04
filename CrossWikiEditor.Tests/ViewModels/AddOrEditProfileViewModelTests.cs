@@ -1,6 +1,5 @@
-using Avalonia.Platform.Storage;
-using CrossWikiEditor.Models;
-using CrossWikiEditor.ViewModels;
+using CrossWikiEditor.Core.Models;
+using CrossWikiEditor.Core.ViewModels;
 
 namespace CrossWikiEditor.Tests.ViewModels;
 
@@ -20,9 +19,7 @@ public class AddOrEditProfileViewModelTests : BaseTest
     {
         // arrange
         _fileDialogService
-            .OpenFilePickerAsync("Select settings file", false,
-                Arg.Is<List<FilePickerFileType>>(
-                    x => x.Count == 1 && x[0].Patterns != null && x[0].Patterns.Count == 1 && x[0].Patterns[0] == "*.xml"))
+            .OpenFilePickerAsync("Select settings file", false, new List<string>{ "*.xml" })
             .Returns(new[] { "some/valid/file.xml" });
 
         // act
@@ -37,9 +34,7 @@ public class AddOrEditProfileViewModelTests : BaseTest
     {
         // arrange
         _fileDialogService
-            .OpenFilePickerAsync("Select settings file", false,
-                Arg.Is<List<FilePickerFileType>>(
-                    x => x.Count == 1 && x[0].Patterns != null && x[0].Patterns.Count == 1 && x[0].Patterns[0] == "*.xml"))
+            .OpenFilePickerAsync("Select settings file", false, new List<string>{"*.xml"})
             .Returns(Array.Empty<string>());
         string? initialDefaultSettingsPath = _sut.DefaultSettingsPath;
 
@@ -55,9 +50,7 @@ public class AddOrEditProfileViewModelTests : BaseTest
     {
         // arrange
         _fileDialogService
-            .OpenFilePickerAsync("Select settings file", false,
-                Arg.Is<List<FilePickerFileType>>(
-                    x => x.Count == 1 && x[0].Patterns != null && x[0].Patterns.Count == 1 && x[0].Patterns[0] == "*.xml"))
+            .OpenFilePickerAsync("Select settings file", false, new List<string>{"*.xml"})
             .ReturnsNull();
         string? initialDefaultSettingsPath = _sut.DefaultSettingsPath;
 

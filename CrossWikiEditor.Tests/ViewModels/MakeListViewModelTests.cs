@@ -1,11 +1,12 @@
 ﻿using System.Collections.ObjectModel;
-using CrossWikiEditor.ListProviders.BaseListProviders;
-using CrossWikiEditor.Models;
-using CrossWikiEditor.Settings;
-using CrossWikiEditor.Utils;
-using CrossWikiEditor.ViewModels;
+using CrossWikiEditor.Core.ListProviders.BaseListProviders;
+using CrossWikiEditor.Core.Models;
+using CrossWikiEditor.Core.Settings;
+using CrossWikiEditor.Core.Utils;
+using CrossWikiEditor.Core.ViewModels;
 using WikiClientLibrary.Client;
 using WikiClientLibrary.Sites;
+using CollectionExtensions = CrossWikiEditor.Core.Utils.CollectionExtensions;
 
 namespace CrossWikiEditor.Tests.ViewModels;
 
@@ -115,7 +116,7 @@ public class MakeListViewModelTests : BaseTest
         // arrange
         List<WikiPageModel>? randomPages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(10);
         _sut.Pages = randomPages.ToObservableCollection();
-        _sut.SelectedPages = new[] { _sut.Pages[3], _sut.Pages[6], _sut.Pages[1] }.ToObservableCollection();
+        _sut.SelectedPages = CollectionExtensions.ToObservableCollection<WikiPageModel>(new[] { _sut.Pages[3], _sut.Pages[6], _sut.Pages[1] });
         randomPages.RemoveAt(1);
         randomPages.RemoveAt(2);
         randomPages.RemoveAt(4);
@@ -542,7 +543,7 @@ public class MakeListViewModelTests : BaseTest
     {
         // arrange
         _sut.Pages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(5).ToObservableCollection();
-        _sut.SelectedPages = _sut.Pages.ToList().RandomSubset(3).ToObservableCollection();
+        _sut.SelectedPages = CollectionExtensions.RandomSubset<WikiPageModel>(_sut.Pages.ToList(), 3).ToObservableCollection();
         _sut.Pages[0].NamespaceId = 0;
         _sut.Pages[1].NamespaceId = 2;
         _sut.Pages[2].NamespaceId = 0;

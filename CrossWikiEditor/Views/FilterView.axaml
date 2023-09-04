@@ -2,14 +2,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:vm="clr-namespace:CrossWikiEditor.ViewModels"
-        xmlns:models="clr-namespace:CrossWikiEditor.Models"
-        xmlns:utils="clr-namespace:CrossWikiEditor.Utils"
+        xmlns:viewModels="clr-namespace:CrossWikiEditor.Core.ViewModels;assembly=CrossWikiEditor.Core"
+        xmlns:utils="clr-namespace:CrossWikiEditor.Converters"
+        xmlns:models="clr-namespace:CrossWikiEditor.Core.Models;assembly=CrossWikiEditor.Core"
         Height="400" x:Name="This"
         Classes="DialogWindow"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="300"
         x:Class="CrossWikiEditor.Views.FilterView"
-        x:DataType="vm:FilterViewModel"
+        x:DataType="viewModels:FilterViewModel"
         Title="FilterView">
     <Grid ColumnDefinitions="5*,3*,3*,*" Margin="0,4">
         <HeaderedContentControl Grid.Column="0" Header="Namespaces to keep">
@@ -20,7 +20,7 @@
                          ScrollViewer.HorizontalScrollBarVisibility="Visible"
                          ItemsSource="{Binding SubjectNamespaces}">
                     <ListBox.ItemTemplate>
-                        <DataTemplate DataType="vm:WikiNamespace">
+                        <DataTemplate DataType="viewModels:WikiNamespace">
                             <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}" />
                         </DataTemplate>
                     </ListBox.ItemTemplate>
@@ -31,7 +31,7 @@
                          ScrollViewer.HorizontalScrollBarVisibility="Visible"
                          ItemsSource="{Binding TalkNamespaces}">
                     <ListBox.ItemTemplate>
-                        <DataTemplate DataType="vm:WikiNamespace">
+                        <DataTemplate DataType="viewModels:WikiNamespace">
                             <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}" />
                         </DataTemplate>
                     </ListBox.ItemTemplate>

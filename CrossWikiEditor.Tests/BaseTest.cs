@@ -1,8 +1,9 @@
 using Avalonia.Input.Platform;
-using CrossWikiEditor.Repositories;
-using CrossWikiEditor.Services;
-using CrossWikiEditor.Services.WikiServices;
-using CrossWikiEditor.Utils;
+using CrossWikiEditor.Core;
+using CrossWikiEditor.Core.Repositories;
+using CrossWikiEditor.Core.Services;
+using CrossWikiEditor.Core.Services.WikiServices;
+using CrossWikiEditor.Core.Utils;
 using Serilog;
 
 namespace CrossWikiEditor.Tests;

@@ -1,4 +1,4 @@
-﻿using CrossWikiEditor.Utils;
+﻿using CrossWikiEditor.Core.Utils;
 
 namespace CrossWikiEditor.Tests.Utils;
 

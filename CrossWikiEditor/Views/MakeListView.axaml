@@ -2,10 +2,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="using:CrossWikiEditor.ViewModels"
-             xmlns:models="clr-namespace:CrossWikiEditor.Models"
-             xmlns:utils="clr-namespace:CrossWikiEditor.Utils"
-             x:DataType="vm:MakeListViewModel"
+             xmlns:viewModels="clr-namespace:CrossWikiEditor.Core.ViewModels;assembly=CrossWikiEditor.Core"
+             xmlns:converters="clr-namespace:CrossWikiEditor.Converters"
+             xmlns:models="clr-namespace:CrossWikiEditor.Core.Models;assembly=CrossWikiEditor.Core"
+             x:DataType="viewModels:MakeListViewModel"
              x:Name="This"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="CrossWikiEditor.Views.MakeListView">
@@ -23,11 +23,11 @@
             </ComboBox>
 
             <Label Grid.Row="1"
-                   IsVisible="{Binding SelectedListProvider.ParamTitle, Converter={x:Static utils:Converters.IsNotNullOrWhiteSpace}}"
+                   IsVisible="{Binding SelectedListProvider.ParamTitle, Converter={x:Static converters:Converters.IsNotNullOrWhiteSpace}}"
                    VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0"
                    Content="{Binding SelectedListProvider.ParamTitle, StringFormat='{}{0}:'}" />
             <TextBox Grid.Row="1" Grid.Column="1"
-                     IsEnabled="{Binding SelectedListProvider.ParamTitle, Converter={x:Static utils:Converters.IsNotNullOrWhiteSpace}}"
+                     IsEnabled="{Binding SelectedListProvider.ParamTitle, Converter={x:Static converters:Converters.IsNotNullOrWhiteSpace}}"
                      Text="{Binding SelectedListProvider.Param}" HorizontalAlignment="Stretch" />
         </Grid>
         <Label Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center"

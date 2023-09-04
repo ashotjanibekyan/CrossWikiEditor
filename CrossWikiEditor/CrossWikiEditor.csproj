@@ -135,4 +135,8 @@
         <AdditionalFiles Include="Views\ReportViews\PageLogsView.axaml"/>
         <AdditionalFiles Include="Views\ReportViews\WhatLinksHereView.axaml"/>
     </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\CrossWikiEditor.Core\CrossWikiEditor.Core.csproj" />
+    </ItemGroup>
 </Project>

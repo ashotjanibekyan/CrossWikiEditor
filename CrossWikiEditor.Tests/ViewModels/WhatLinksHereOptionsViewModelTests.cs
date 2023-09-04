@@ -1,5 +1,5 @@
-﻿using CrossWikiEditor.Models;
-using CrossWikiEditor.ViewModels;
+﻿using CrossWikiEditor.Core.Models;
+using CrossWikiEditor.Core.ViewModels;
 
 namespace CrossWikiEditor.Tests.ViewModels;
 

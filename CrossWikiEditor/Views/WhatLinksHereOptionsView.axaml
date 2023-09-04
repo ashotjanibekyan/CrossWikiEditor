@@ -2,11 +2,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:vm="clr-namespace:CrossWikiEditor.ViewModels"
+        xmlns:viewModels="clr-namespace:CrossWikiEditor.Core.ViewModels;assembly=CrossWikiEditor.Core"
         Classes="DialogWindow"
         SizeToContent="WidthAndHeight"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:DataType="vm:WhatLinksHereOptionsViewModel"
+        x:DataType="viewModels:WhatLinksHereOptionsViewModel"
         x:Class="CrossWikiEditor.Views.WhatLinksHereOptionsView"
         x:Name="This"
         Title="WhatLinksHereOptionsView">
@@ -19,7 +19,7 @@
                          ScrollViewer.HorizontalScrollBarVisibility="Visible"
                          ItemsSource="{Binding Namespaces}">
                     <ListBox.ItemTemplate>
-                        <DataTemplate DataType="vm:WikiNamespace">
+                        <DataTemplate DataType="viewModels:WikiNamespace">
                             <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}" />
                         </DataTemplate>
                     </ListBox.ItemTemplate>
