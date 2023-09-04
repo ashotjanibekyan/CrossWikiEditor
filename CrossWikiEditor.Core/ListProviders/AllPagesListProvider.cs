@@ -17,11 +17,8 @@ public class AllPagesListProvider(
     public override string Title => "All Pages";
     public override string ParamTitle => "Start from";
     public override bool CanMake => _namespace is {Length: 1};
-    public async Task GetAdditionalParams()
-    {
-        _namespace = await this.GetNamespaces(isMultiselect: false, dialogService, viewModelFactory);
-    }
-
+    
+    public async Task GetAdditionalParams() => _namespace = await this.GetNamespaces(isMultiselect: false, dialogService, viewModelFactory);
     public override async Task<Result<List<WikiPageModel>>> MakeList(int limit)
     {
         return await pageService.GetAllPages(userPreferencesService.GetCurrentPref().UrlApi(), Param, _namespace!.First(),

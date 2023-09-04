@@ -157,7 +157,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
         }
     }
 
-    public async Task<Result<List<WikiPageModel>>> GetNewPages(string apiRoot, int limit)
+    public async Task<Result<List<WikiPageModel>>> GetNewPages(string apiRoot, int[] namespaces, int limit)
     {
         try
         {
@@ -166,7 +166,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
             {
                 TypeFilters = RecentChangesFilterTypes.Create,
                 RedirectsFilter = PropertyFilterOption.WithoutProperty,
-                NamespaceIds = new[] {0}
+                NamespaceIds = namespaces
             };
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
             return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());

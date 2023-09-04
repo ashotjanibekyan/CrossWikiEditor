@@ -154,7 +154,6 @@ public class App : Application
 
     private void RegisterListProviders(ContainerBuilder builder)
     {
-        
         builder.RegisterType<AllCategoriesListProvider>().As<IListProvider>();
         builder.RegisterType<AllFilesListProvider>().As<IListProvider>();
         builder.RegisterType<AllPagesListProvider>().As<IListProvider>();
@@ -162,6 +161,14 @@ public class App : Application
         builder.RegisterType<AllPagesWithPrefixListProvider>().As<IListProvider>();
         builder.RegisterType<AllRedirectsListProvider>().As<IListProvider>();
         builder.RegisterType<AllUsersListProvider>().As<IListProvider>();
+        builder.RegisterType<DisambiguationPagesListProvider>().As<IListProvider>();
+        // TODO: Link search
+        // TODO: Pages without Language links
+        // TODO: Pages without Language links (no redirect)
+        // TODO: Protected pages
+        // TODO: Random redirects
+        // TODO: Recent changes
+        // TODO: What redirects here
         
         builder.RegisterType<CategoriesOnPageListProvider>().As<IListProvider>();
         builder.RegisterType<CategoriesOnPageNoHiddenCategoriesListProvider>().As<IListProvider>();
@@ -194,7 +201,6 @@ public class App : Application
         builder.RegisterType<WikiSearchInTitleAllNsListProvider>().As<IListProvider>();
         builder.RegisterType<WikiSearchInTextListProvider>().As<IListProvider>();
         builder.RegisterType<WikiSearchInTextAllNsListProvider>().As<IListProvider>();
-        builder.RegisterType<DisambiguationPagesListProvider>().As<IListProvider>();
 
         builder.RegisterType<TextFileListProvider>();
     }

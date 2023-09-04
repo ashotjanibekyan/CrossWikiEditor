@@ -21,7 +21,7 @@ public interface IPageService
 
     Task<Result<List<WikiPageModel>>> GetPagesByFileUsage(string apiRoot, string fileName, int limit);
     Task<Result<List<WikiPageModel>>> LinksOnPage(string apiRoot, string pageName, int limit);
-    Task<Result<List<WikiPageModel>>> GetNewPages(string apiRoot, int limit);
+    Task<Result<List<WikiPageModel>>> GetNewPages(string apiRoot, int[] namespaces, int limit);
     Task<Result<List<WikiPageModel>>> GetTransclusionsOn(string apiRoot, string pageName, int limit);
     Task<Result<List<WikiPageModel>>> GetTransclusionsOf(string apiRoot, string pageName, int[]? namespaces, int limit);
 
