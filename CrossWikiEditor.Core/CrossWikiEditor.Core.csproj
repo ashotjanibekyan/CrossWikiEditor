@@ -7,7 +7,6 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Autofac" Version="7.1.0"/>
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1"/>
         <PackageReference Include="CXuesong.MW.WikiClientLibrary" Version="0.7.5"/>
         <PackageReference Include="HtmlAgilityPack" Version="1.11.52" />
