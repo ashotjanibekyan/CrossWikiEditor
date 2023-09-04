@@ -201,7 +201,7 @@ public class App : Application
         builder.RegisterType<AllPagesNoRedirectsListProvider>().As<ISpecialPageListProvider>();
         builder.RegisterType<AllPagesWithPrefixListProvider>().As<ISpecialPageListProvider>();
         builder.RegisterType<AllRedirectsListProvider>().As<ISpecialPageListProvider>();
-        // all users
+        builder.RegisterType<AllUsersListProvider>().As<ISpecialPageListProvider>();
         // disambig pages
         // link search
         // new files
