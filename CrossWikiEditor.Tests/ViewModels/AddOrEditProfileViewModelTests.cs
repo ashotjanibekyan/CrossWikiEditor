@@ -19,7 +19,7 @@ public class AddOrEditProfileViewModelTests : BaseTest
     {
         // arrange
         _fileDialogService
-            .OpenFilePickerAsync("Select settings file", false, new List<string>{ "*.xml" })
+            .OpenFilePickerAsync("Select settings file", false, Arg.Is<List<string>>(x => x.First() == "*.xml"))
             .Returns(new[] { "some/valid/file.xml" });
 
         // act
