@@ -11,7 +11,6 @@ using CommunityToolkit.Mvvm.Messaging;
 using CrossWikiEditor.Core;
 using CrossWikiEditor.Core.ListProviders;
 using CrossWikiEditor.Core.ListProviders.BaseListProviders;
-using CrossWikiEditor.Core.ListProviders.SpecialPageListProviders;
 using CrossWikiEditor.Core.Repositories;
 using CrossWikiEditor.Core.Services;
 using CrossWikiEditor.Core.Services.WikiServices;
@@ -73,7 +72,6 @@ public class App : Application
         RegisterRepositories(builder);
         RegisterDialogs(builder);
         RegisterListProviders(builder);
-        RegisterSpecialPageListProviders(builder);
         RegisterUtils(builder);
 
         builder.Register(c => _container!).As<IContainer>();
@@ -152,11 +150,19 @@ public class App : Application
         builder.RegisterType<SelectNamespacesView>().Named<IDialog>(nameof(SelectNamespacesViewModel));
         builder.RegisterType<WhatLinksHereOptionsView>().Named<IDialog>(nameof(WhatLinksHereOptionsViewModel));
         builder.RegisterType<FindAndReplaceView>().Named<IDialog>(nameof(FindAndReplaceViewModel));
-        builder.RegisterType<SpecialPageListProviderSelectorView>().Named<IDialog>(nameof(SpecialPageListProviderSelectorViewModel));
     }
 
     private void RegisterListProviders(ContainerBuilder builder)
     {
+        
+        builder.RegisterType<AllCategoriesListProvider>().As<IListProvider>();
+        builder.RegisterType<AllFilesListProvider>().As<IListProvider>();
+        builder.RegisterType<AllPagesListProvider>().As<IListProvider>();
+        builder.RegisterType<AllPagesNoRedirectsListProvider>().As<IListProvider>();
+        builder.RegisterType<AllPagesWithPrefixListProvider>().As<IListProvider>();
+        builder.RegisterType<AllRedirectsListProvider>().As<IListProvider>();
+        builder.RegisterType<AllUsersListProvider>().As<IListProvider>();
+        
         builder.RegisterType<CategoriesOnPageListProvider>().As<IListProvider>();
         builder.RegisterType<CategoriesOnPageNoHiddenCategoriesListProvider>().As<IListProvider>();
         builder.RegisterType<CategoriesOnPageOnlyHiddenCategoriesListProvider>().As<IListProvider>();
@@ -178,7 +184,6 @@ public class App : Application
         builder.RegisterType<NewPagesListProvider>().As<IListProvider>();
         builder.RegisterType<PagesWithPropListProvider>().As<IListProvider>();
         builder.RegisterType<RandomListProvider>().As<IListProvider>();
-        builder.RegisterType<SpecialPageListProvider>().As<IListProvider>();
         builder.RegisterType<TextFileListProvider>().As<IListProvider>();
         builder.RegisterType<TransclusionsOnPageListProvider>().As<IListProvider>();
         builder.RegisterType<UserContributionsListProvider>().As<IListProvider>();
@@ -189,35 +194,9 @@ public class App : Application
         builder.RegisterType<WikiSearchInTitleAllNsListProvider>().As<IListProvider>();
         builder.RegisterType<WikiSearchInTextListProvider>().As<IListProvider>();
         builder.RegisterType<WikiSearchInTextAllNsListProvider>().As<IListProvider>();
+        builder.RegisterType<DisambiguationPagesListProvider>().As<IListProvider>();
 
         builder.RegisterType<TextFileListProvider>();
-    }
-
-    private void RegisterSpecialPageListProviders(ContainerBuilder builder)
-    {
-        builder.RegisterType<AllCategoriesListProvider>().As<ISpecialPageListProvider>();
-        builder.RegisterType<AllFilesListProvider>().As<ISpecialPageListProvider>();
-        builder.RegisterType<AllPagesListProvider>().As<ISpecialPageListProvider>();
-        builder.RegisterType<AllPagesNoRedirectsListProvider>().As<ISpecialPageListProvider>();
-        builder.RegisterType<AllPagesWithPrefixListProvider>().As<ISpecialPageListProvider>();
-        builder.RegisterType<AllRedirectsListProvider>().As<ISpecialPageListProvider>();
-        builder.RegisterType<AllUsersListProvider>().As<ISpecialPageListProvider>();
-        // disambig pages
-        // link search
-        // new files
-        // new pages
-        builder.RegisterType<PagesWithPropListProvider>().As<ISpecialPageListProvider>();
-        // pages without language link
-        // pages without language link (no redirects)
-        // protected pages 
-        // random pages
-        // random redirects
-        // recent changes
-        // user contibs
-        // what links here
-        // what redirects here
-        // what transcludes page
-        // wiki search (text)
     }
 
     private void RegisterUtils(ContainerBuilder builder)

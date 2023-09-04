@@ -42,7 +42,7 @@ public sealed class MainWindowViewModel : ViewModelBase
         {
             _myBot = Task.Run((Func<Task?>) (async () =>
             {
-                var pageProcessor = new PageListProcessor(messenger, Enumerable.ToList<WikiPageModel>(MakeListViewModel.Pages), OptionsViewModel.NormalFindAndReplaceRules);
+                var pageProcessor = new PageListProcessor(messenger, MakeListViewModel.Pages.ToList<WikiPageModel>(), OptionsViewModel.NormalFindAndReplaceRules);
                 await pageProcessor.Start();
             }));
         });

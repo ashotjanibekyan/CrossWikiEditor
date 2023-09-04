@@ -21,8 +21,8 @@ public partial class FilterViewModel(List<WikiNamespace> subjectNamespaces, List
     [RelayCommand]
     private void Save(IDialog dialog)
     {
-        IEnumerable<int> arr1 = Enumerable.ToList<WikiNamespace>(SubjectNamespaces).Where(x => x.IsChecked).Select(x => x.Id);
-        IEnumerable<int> arr2 = Enumerable.ToList<WikiNamespace>(TalkNamespaces).Where(x => x.IsChecked).Select(x => x.Id);
+        IEnumerable<int> arr1 = SubjectNamespaces.ToList<WikiNamespace>().Where(x => x.IsChecked).Select(x => x.Id);
+        IEnumerable<int> arr2 = TalkNamespaces.ToList<WikiNamespace>().Where(x => x.IsChecked).Select(x => x.Id);
         dialog.Close(new FilterOptions(
             arr1.Concat(arr2).ToArray(),
             RemoveTitlesContaining,
@@ -31,7 +31,7 @@ public partial class FilterViewModel(List<WikiNamespace> subjectNamespaces, List
             SortAlphabetically,
             RemoveDuplicates,
             SelectedSetOperations,
-            Enumerable.ToList<WikiPageModel>(Pages)));
+            Pages.ToList<WikiPageModel>()));
     }
 
     [RelayCommand]
@@ -63,16 +63,16 @@ public partial class FilterViewModel(List<WikiNamespace> subjectNamespaces, List
 
     partial void OnIsAllTalkCheckedChanged(bool value)
     {
-        TalkNamespaces = Enumerable
-            .ToList<WikiNamespace>(TalkNamespaces)
+        TalkNamespaces = TalkNamespaces
+            .ToList<WikiNamespace>()
             .Select(x => new WikiNamespace(x.Id, x.Name, value))
             .ToObservableCollection();
     }
 
     partial void OnIsAllSubjectCheckedChanged(bool value)
     {
-        SubjectNamespaces = Enumerable
-            .ToList<WikiNamespace>(SubjectNamespaces)
+        SubjectNamespaces = SubjectNamespaces
+            .ToList<WikiNamespace>()
             .Select(x => new WikiNamespace(x.Id, x.Name, value))
             .ToObservableCollection();
     }

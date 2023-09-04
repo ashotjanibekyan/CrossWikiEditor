@@ -11,12 +11,20 @@
         x:Name="This"
         Title="SelectNamespacesView">
     <Grid RowDefinitions="Auto,300,Auto" Margin="4">
-        <CheckBox Grid.Row="0" Content="Select all" IsChecked="{Binding IsAllSelected}" Margin="4" />
-        <ListBox Grid.Row="1" SelectionMode="Multiple" Margin="3" ScrollViewer.HorizontalScrollBarVisibility="Visible"
+        <CheckBox Grid.Row="0" Content="Select all" IsVisible="{Binding IsMultiselect}" IsChecked="{Binding IsAllSelected}" Margin="4" />
+        <ListBox Grid.Row="1" SelectionMode="Single" IsVisible="{Binding IsMultiselect}" Margin="3" ScrollViewer.HorizontalScrollBarVisibility="Visible"
                  ItemsSource="{Binding Namespaces}">
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="viewModels:WikiNamespace">
                     <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <ListBox Grid.Row="1" SelectionMode="Single" IsVisible="{Binding !IsMultiselect}" Margin="3" ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                 ItemsSource="{Binding Namespaces}">
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="viewModels:WikiNamespace">
+                    <RadioButton Content="{Binding Name}" GroupName="groupname" IsChecked="{Binding IsChecked}" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

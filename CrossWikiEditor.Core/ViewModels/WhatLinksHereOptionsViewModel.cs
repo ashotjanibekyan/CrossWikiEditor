@@ -14,14 +14,14 @@ public sealed partial class WhatLinksHereOptionsViewModel(List<WikiNamespace> na
     [ObservableProperty] private bool _includeRedirects;
     partial void OnIsAllNamespacesCheckedChanged(bool value)
     {
-        Namespaces = Enumerable
-            .Select<WikiNamespace, WikiNamespace>(Namespaces, x => new WikiNamespace(x.Id, x.Name, value)).ToObservableCollection();
+        Namespaces = Namespaces
+            .Select<WikiNamespace, WikiNamespace>(x => new WikiNamespace(x.Id, x.Name, value)).ToObservableCollection();
     }
 
     [RelayCommand]
     private void Ok(IDialog dialog)
     {
-        var result = new WhatLinksHereOptions(Enumerable.Where<WikiNamespace>(Namespaces, x => x.IsChecked).Select(x => x.Id).ToArray(), IncludeRedirects,
+        var result = new WhatLinksHereOptions(Namespaces.Where<WikiNamespace>(x => x.IsChecked).Select(x => x.Id).ToArray(), IncludeRedirects,
             (RedirectFilter) SelectedRedirectFilter);
         dialog.Close(result);
     }

@@ -10,10 +10,9 @@ public class RandomListProvider(IPageService pageService,
         IDialogService dialogService,
         IViewModelFactory viewModelFactory,
         IUserPreferencesService userPreferencesService)
-    : LimitedListProviderBase(dialogService), INeedAdditionalParamsListProvider
+    : LimitedListProviderBase(dialogService), INeedNamespacesListProvider
 {
     private int[]? _namespaces;
-
     public override string Title => "Random pages";
     public override string ParamTitle => string.Empty;
     public override bool CanMake => _namespaces is not null;
@@ -25,12 +24,5 @@ public class RandomListProvider(IPageService pageService,
         return result;
     }
 
-    public async Task GetAdditionalParams()
-    {
-        int[]? result = await dialogService.ShowDialog<int[]>(await viewModelFactory.GetSelectNamespacesViewModel());
-        if (result is not null)
-        {
-            _namespaces = result;
-        }
-    }
+    public async Task GetAdditionalParams() => _namespaces = await this.GetNamespaces(isMultiselect: true, dialogService, viewModelFactory);
 }

@@ -46,7 +46,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
         _fileDialogService = fileDialogService;
         _userPreferencesService = userPreferencesService;
 
-        ListProviders = listProviders.ToObservableCollection();
+        ListProviders = listProviders.OrderBy(l => l.Title).ToObservableCollection();
         SelectedListProvider = ListProviders[0];
 
         messenger.Register<PageUpdatedMessage>(this, (recipient, message) =>
@@ -73,9 +73,9 @@ public sealed partial class MakeListViewModel : ViewModelBase
     [RelayCommand]
     private void Remove()
     {
-        if (Enumerable.Any<WikiPageModel>(SelectedPages))
+        if (SelectedPages.Any())
         {
-            CollectionExtensions.Remove(Pages, new List<WikiPageModel>(SelectedPages));
+            Pages.Remove(new List<WikiPageModel>(SelectedPages));
         }
 
         SelectedPages = new ObservableCollection<WikiPageModel>();
@@ -103,7 +103,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
 
         if (result is { IsSuccessful: true, Value: not null })
         {
-            CollectionExtensions.AddRange(Pages, result.Value);
+            Pages.AddRange(result.Value);
         }
         else
         {
@@ -115,7 +115,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
     [RelayCommand]
     private void OpenInBrowser()
     {
-        if (!Enumerable.Any<WikiPageModel>(SelectedPages))
+        if (!SelectedPages.Any())
         {
             return;
         }
@@ -129,7 +129,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
     [RelayCommand]
     private void OpenHistoryInBrowser()
     {
-        if (!Enumerable.Any<WikiPageModel>(SelectedPages))
+        if (!SelectedPages.Any())
         {
             return;
         }
@@ -143,25 +143,25 @@ public sealed partial class MakeListViewModel : ViewModelBase
     [RelayCommand]
     private async Task Cut()
     {
-        if (!Enumerable.Any<WikiPageModel>(SelectedPages))
+        if (!SelectedPages.Any())
         {
             return;
         }
 
-        await _systemService.SetClipboardTextAsync(string.Join(Environment.NewLine, Enumerable.Select<WikiPageModel, string>(SelectedPages, x => x.Title)));
-        CollectionExtensions.Remove(Pages, Enumerable.ToList<WikiPageModel>(SelectedPages));
+        await _systemService.SetClipboardTextAsync(string.Join(Environment.NewLine, SelectedPages.Select<WikiPageModel, string>(x => x.Title)));
+        Pages.Remove(SelectedPages.ToList<WikiPageModel>());
         SelectedPages = new ObservableCollection<WikiPageModel>();
     }
 
     [RelayCommand]
     private async Task Copy()
     {
-        if (!Enumerable.Any<WikiPageModel>(SelectedPages))
+        if (!SelectedPages.Any())
         {
             return;
         }
 
-        await _systemService.SetClipboardTextAsync(string.Join(Environment.NewLine, Enumerable.Select<WikiPageModel, string>(SelectedPages, x => x.Title)));
+        await _systemService.SetClipboardTextAsync(string.Join(Environment.NewLine, SelectedPages.Select<WikiPageModel, string>(x => x.Title)));
     }
 
     [RelayCommand]
@@ -202,7 +202,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
     [RelayCommand]
     private void SelectInverse()
     {
-        var newSelection = Enumerable.Where<WikiPageModel>(Pages, page => !SelectedPages.Contains(page)).ToList();
+        var newSelection = Pages.Where(page => !SelectedPages.Contains(page)).ToList();
 
         SelectedPages = newSelection.ToObservableCollection();
     }
@@ -210,7 +210,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
     [RelayCommand]
     private void RemoveSelected()
     {
-        CollectionExtensions.Remove(Pages, Enumerable.ToList<WikiPageModel>(SelectedPages));
+        Pages.Remove(SelectedPages.ToList());
         SelectedPages.Clear();
     }
 
@@ -224,22 +224,22 @@ public sealed partial class MakeListViewModel : ViewModelBase
     [RelayCommand]
     private void RemoveDuplicate()
     {
-        Pages = Enumerable.Distinct<WikiPageModel>(Pages).ToObservableCollection();
+        Pages = Pages.Distinct().ToObservableCollection();
         SelectedPages.Clear();
     }
 
     [RelayCommand]
     private void RemoveNonMainSpace()
     {
-        Pages = Enumerable.Where<WikiPageModel>(Pages, p => p.NamespaceId == 0).ToObservableCollection();
+        Pages = Pages.Where(p => p.NamespaceId == 0).ToObservableCollection();
         SelectedPages.Clear();
     }
 
     [RelayCommand]
     private void MoveToTop()
     {
-        var selectedPages = Enumerable.ToList<WikiPageModel>(SelectedPages);
-        CollectionExtensions.Remove(Pages, selectedPages);
+        var selectedPages = SelectedPages.ToList();
+        Pages.Remove(selectedPages);
         Pages = selectedPages.Concat(Pages).ToObservableCollection();
         SelectedPages.Clear();
     }
@@ -247,16 +247,16 @@ public sealed partial class MakeListViewModel : ViewModelBase
     [RelayCommand]
     private void MoveToBottom()
     {
-        var selectedPages = Enumerable.ToList<WikiPageModel>(SelectedPages);
-        CollectionExtensions.Remove(Pages, selectedPages);
-        CollectionExtensions.AddRange(Pages, selectedPages);
+        var selectedPages = SelectedPages.ToList();
+        Pages.Remove(selectedPages);
+        Pages.AddRange(selectedPages);
         SelectedPages.Clear();
     }
 
     [RelayCommand]
     private void ConvertToTalkPages()
     {
-        List<WikiPageModel>? talkPages = _pageService.ConvertToTalk(Enumerable.ToList<WikiPageModel>(Pages)).Value;
+        List<WikiPageModel>? talkPages = _pageService.ConvertToTalk(Pages.ToList()).Value;
         if (talkPages is not null)
         {
             Pages = talkPages.ToObservableCollection();
@@ -266,7 +266,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
     [RelayCommand]
     private void ConvertFromTalkPages()
     {
-        List<WikiPageModel>? subjectPages = _pageService.ConvertToSubject(Enumerable.ToList<WikiPageModel>(Pages)).Value;
+        List<WikiPageModel>? subjectPages = _pageService.ConvertToSubject(Pages.ToList()).Value;
         if (subjectPages is not null)
         {
             Pages = subjectPages.ToObservableCollection();
@@ -281,7 +281,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
             FilterOptions? result = await _dialogService.ShowDialog<FilterOptions>(await _viewModelFactory.GetFilterViewModel());
             if (result != null)
             {
-                var filteredPages = Enumerable.Where<WikiPageModel>(Pages, page => WikiPageExtensions.ShouldKeepPer(page, result)).ToList();
+                var filteredPages = Pages.Where(page => page.ShouldKeepPer(result)).ToList();
 
                 if (result.SortAlphabetically)
                 {
@@ -338,13 +338,13 @@ public sealed partial class MakeListViewModel : ViewModelBase
     [RelayCommand]
     private void SortAlphabetically()
     {
-        Pages = Enumerable.OrderBy<WikiPageModel, string>(Pages, x => x.Title).ToObservableCollection();
+        Pages = Pages.OrderBy<WikiPageModel, string>(x => x.Title).ToObservableCollection();
     }
 
     [RelayCommand]
     private void SortReverseAlphabetically()
     {
-        Pages = Enumerable.OrderByDescending<WikiPageModel, string>(Pages, x => x.Title).ToObservableCollection();
+        Pages = Pages.OrderByDescending<WikiPageModel, string>(x => x.Title).ToObservableCollection();
     }
 
     [ObservableProperty] private ObservableCollection<IListProvider> _listProviders;

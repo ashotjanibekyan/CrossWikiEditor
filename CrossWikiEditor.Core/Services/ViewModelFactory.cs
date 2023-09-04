@@ -1,5 +1,4 @@
 ﻿using CrossWikiEditor.Core.ListProviders;
-using CrossWikiEditor.Core.ListProviders.SpecialPageListProviders;
 using CrossWikiEditor.Core.Repositories;
 using CrossWikiEditor.Core.Services.WikiServices;
 using CrossWikiEditor.Core.Utils;
@@ -13,9 +12,8 @@ public interface IViewModelFactory
     ProfilesViewModel GetProfilesViewModel();
     PreferencesViewModel GetPreferencesViewModel();
     Task<FilterViewModel> GetFilterViewModel();
-    Task<SelectNamespacesViewModel> GetSelectNamespacesViewModel();
+    Task<SelectNamespacesViewModel> GetSelectNamespacesViewModel(bool isMultiselect = true);
     Task<WhatLinksHereOptionsViewModel> GetWhatLinksHereOptionsViewModel();
-    Task<SpecialPageListProviderSelectorViewModel> GetSpecialPageListProviderSelectorViewModel();
 }
 
 public class ViewModelFactory(IFileDialogService fileDialogService,
@@ -25,7 +23,6 @@ public class ViewModelFactory(IFileDialogService fileDialogService,
         IUserService userService,
         IUserPreferencesService userPreferencesService,
         IMessengerWrapper messenger,
-        IEnumerable<ISpecialPageListProvider> specialPageListProviders,
         TextFileListProvider textFileListProvider)
     : IViewModelFactory
 {
@@ -50,11 +47,11 @@ public class ViewModelFactory(IFileDialogService fileDialogService,
             textFileListProvider);
     }
 
-    public async Task<SelectNamespacesViewModel> GetSelectNamespacesViewModel()
+    public async Task<SelectNamespacesViewModel> GetSelectNamespacesViewModel(bool isMultiselect = true)
     {
         WikiSite site = await wikiClientCache.GetWikiSite(userPreferencesService.GetCurrentPref().UrlApi());
         WikiNamespace[] namespaces = site.Namespaces.Select(x => new WikiNamespace(x.Id, x.CustomName)).ToArray();
-        return new SelectNamespacesViewModel(namespaces.ToList());
+        return new SelectNamespacesViewModel(namespaces.ToList(), isMultiselect);
     }
 
     public async Task<WhatLinksHereOptionsViewModel> GetWhatLinksHereOptionsViewModel()
@@ -62,12 +59,5 @@ public class ViewModelFactory(IFileDialogService fileDialogService,
         WikiSite site = await wikiClientCache.GetWikiSite(userPreferencesService.GetCurrentPref().UrlApi());
         WikiNamespace[] namespaces = site.Namespaces.Select(x => new WikiNamespace(x.Id, x.CustomName)).ToArray();
         return new WhatLinksHereOptionsViewModel(namespaces.ToList());
-    }
-
-    public async Task<SpecialPageListProviderSelectorViewModel> GetSpecialPageListProviderSelectorViewModel()
-    {
-        WikiSite site = await wikiClientCache.GetWikiSite(userPreferencesService.GetCurrentPref().UrlApi());
-        WikiNamespace[] namespaces = site.Namespaces.Where(x => x.Id >= 0).Select(x => new WikiNamespace(x.Id, x.CustomName)).ToArray();
-        return new SpecialPageListProviderSelectorViewModel(specialPageListProviders.ToList(), namespaces.ToList());
     }
 }

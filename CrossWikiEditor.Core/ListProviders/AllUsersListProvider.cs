@@ -4,12 +4,12 @@ using CrossWikiEditor.Core.Services;
 using CrossWikiEditor.Core.Services.WikiServices;
 using CrossWikiEditor.Core.Utils;
 
-namespace CrossWikiEditor.Core.ListProviders.SpecialPageListProviders;
+namespace CrossWikiEditor.Core.ListProviders;
 
 public class AllUsersListProvider(
     IDialogService dialogService,
     IUserService userService,
-    IUserPreferencesService userPreferencesService) : LimitedListProviderBase(dialogService), ISpecialPageListProvider
+    IUserPreferencesService userPreferencesService) : LimitedListProviderBase(dialogService)
 {
     public override string Title => "All Users";
     public override string ParamTitle => "Start from";
@@ -17,6 +17,4 @@ public class AllUsersListProvider(
     {
         return await userService.GetAllUsers(userPreferencesService.GetCurrentPref().UrlApi(), Param, limit);
     }
-    public int NamespaceId { get; set; }
-    public bool NeedsNamespace => false;
 }
