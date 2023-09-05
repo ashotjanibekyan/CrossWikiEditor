@@ -5,7 +5,7 @@ using CrossWikiEditor.Core.ViewModels;
 
 namespace CrossWikiEditor.Tests.ViewModels;
 
-public class ProfilesViewModelTests : BaseTest
+public sealed class ProfilesViewModelTests : BaseTest
 {
     private ProfilesViewModel _sut;
 

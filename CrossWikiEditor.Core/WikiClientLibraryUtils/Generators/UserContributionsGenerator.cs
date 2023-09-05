@@ -9,7 +9,7 @@ using WikiClientLibrary.Sites;
 
 namespace CrossWikiEditor.Core.WikiClientLibraryUtils.Generators;
 
-public class UserContributionsGenerator : WikiList<UserContributionResultItem>
+public sealed class UserContributionsGenerator : WikiList<UserContributionResultItem>
 {
     private readonly List<string>? _usernames;
     private readonly List<int>? _userIds;

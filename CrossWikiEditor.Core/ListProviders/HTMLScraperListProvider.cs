@@ -11,7 +11,7 @@ using Tools = CrossWikiEditor.Core.Utils.Tools;
 
 namespace CrossWikiEditor.Core.ListProviders;
 
-public class HtmlScraperListProvider(
+public sealed class HtmlScraperListProvider(
     IUserPreferencesService userPreferencesService,
     IWikiClientCache wikiClientCache,
     ILogger logger) : UnlimitedListProviderBase

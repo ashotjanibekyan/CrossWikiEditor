@@ -3,7 +3,7 @@ using CrossWikiEditor.Core.ViewModels;
 
 namespace CrossWikiEditor.Tests.ViewModels;
 
-public class PromptViewModelTests : BaseTest
+public sealed class PromptViewModelTests : BaseTest
 {
     private PromptViewModel _sut;
     [SetUp]

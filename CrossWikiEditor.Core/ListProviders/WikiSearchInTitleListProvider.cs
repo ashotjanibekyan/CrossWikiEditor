@@ -6,7 +6,7 @@ using CrossWikiEditor.Core.Utils;
 
 namespace CrossWikiEditor.Core.ListProviders;
 
-public class WikiSearchInTitleListProvider(
+public sealed class WikiSearchInTitleListProvider(
     IUserPreferencesService userPreferencesService,
     IPageService pageService,
     IDialogService dialogService) : LimitedListProviderBase(dialogService)

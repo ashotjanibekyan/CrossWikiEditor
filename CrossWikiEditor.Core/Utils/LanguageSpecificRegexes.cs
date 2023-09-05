@@ -7,7 +7,7 @@ using WikiClientLibrary.Sites;
 
 namespace CrossWikiEditor.Core.Utils;
 
-public class LanguageSpecificRegexes : IAsyncInitialization
+public sealed class LanguageSpecificRegexes : IAsyncInitialization
 {
     private readonly IUserPreferencesService _userPreferencesService;
     private readonly IWikiClientCache _wikiClientCache;

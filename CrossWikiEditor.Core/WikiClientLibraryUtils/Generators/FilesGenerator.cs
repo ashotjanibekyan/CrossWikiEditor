@@ -8,7 +8,7 @@ namespace CrossWikiEditor.Core.WikiClientLibraryUtils.Generators;
 /// This class is mostly copied from WikiClientLibrary itself. Once this class is released and is available via Nuget,
 /// We should get rid of this class.
 /// </summary>
-public class FilesGenerator : WikiPagePropertyGenerator
+public sealed class FilesGenerator : WikiPagePropertyGenerator
 {
     public FilesGenerator(WikiSite site, string pageTitle) : base(site)
     {

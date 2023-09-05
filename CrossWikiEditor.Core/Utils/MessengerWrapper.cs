@@ -11,7 +11,7 @@ public interface IMessengerWrapper
         where TMessage : class;
 }
 
-public class MessengerWrapper(IMessenger messenger) : IMessengerWrapper
+public sealed class MessengerWrapper(IMessenger messenger) : IMessengerWrapper
 {
     public TMessage Send<TMessage>(TMessage message)
         where TMessage : class

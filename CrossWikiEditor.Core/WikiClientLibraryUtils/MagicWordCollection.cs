@@ -9,7 +9,7 @@ namespace CrossWikiEditor.Core.WikiClientLibraryUtils;
 /// This class is mostly copied from WikiClientLibrary itself. Once this class is released and is available via Nuget,
 /// We should get rid of this class.
 /// </summary>
-public class MagicWordCollection : ReadOnlyCollection<MagicWordInfo>
+public sealed class MagicWordCollection : ReadOnlyCollection<MagicWordInfo>
 {
     private static readonly JsonSerializer WikiJsonSerializer = CreateWikiJsonSerializer();
 

@@ -2,7 +2,7 @@ using CrossWikiEditor.Core.ViewModels;
 
 namespace CrossWikiEditor.Tests.ViewModels;
 
-public class AlertViewModelTests : BaseTest
+public sealed class AlertViewModelTests : BaseTest
 {
     private AlertViewModel _sut;
 

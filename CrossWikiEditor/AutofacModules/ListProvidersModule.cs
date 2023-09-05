@@ -1,10 +1,11 @@
 using Autofac;
 using CrossWikiEditor.Core.ListProviders;
 using CrossWikiEditor.Core.ListProviders.BaseListProviders;
+using CrossWikiEditor.Core.WikiClientLibraryUtils.Generators;
 
 namespace CrossWikiEditor.AutofacModules;
 
-public class ListProvidersModule : Module
+public sealed class ListProvidersModule : Module
 {
     protected override void Load(ContainerBuilder builder)
     {
@@ -15,7 +16,6 @@ public class ListProvidersModule : Module
         builder.RegisterType<AllPagesWithPrefixListProvider>().As<IListProvider>();
         builder.RegisterType<AllRedirectsListProvider>().As<IListProvider>();
         builder.RegisterType<AllUsersListProvider>().As<IListProvider>();
-        builder.RegisterType<DisambiguationPagesListProvider>().As<IListProvider>();
         // TODO: Link search
         // TODO: Pages without Language links
         // TODO: Pages without Language links (no redirect)
@@ -28,6 +28,7 @@ public class ListProvidersModule : Module
         builder.RegisterType<CategoryRecursive1LevelListProvider>().As<IListProvider>();
         builder.RegisterType<CategoryRecursiveUserDefinedLevelListProviderBase>().As<IListProvider>();
         builder.RegisterType<CategoryRecursiveListProvider>().As<IListProvider>();
+        builder.RegisterType<DisambiguationPagesListProvider>().As<IListProvider>();
         // TODO: CheckWiki error
         // TODO: CheckWiki error (number)
         // TODO: Database dump
@@ -38,6 +39,7 @@ public class ListProvidersModule : Module
         builder.RegisterType<LinksOnPageListProvider>().As<IListProvider>();
         builder.RegisterType<LinksOnPageBlueListProvider>().As<IListProvider>();
         builder.RegisterType<LinksOnPageRedListProvider>().As<IListProvider>();
+        builder.RegisterType<LinkSearchListProvider>().As<IListProvider>();
         builder.RegisterType<MyWatchlistListProvider>().As<IListProvider>();
         builder.RegisterType<NewPagesListProvider>().As<IListProvider>();
         builder.RegisterType<PagesWithPropListProvider>().As<IListProvider>();

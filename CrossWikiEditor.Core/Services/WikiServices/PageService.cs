@@ -357,17 +357,33 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
         }
     }
 
+    public async Task<Result<List<WikiPageModel>>> LinkSearch(string apiRoot, string url, int limit)
+    {
+        try
+        {
+            WikiSite wikiSite = await wikiClientCache.GetWikiSite(apiRoot);
+            var gen = new ExternalUrlUsageGenerator(wikiSite)
+            {
+                Url = url,
+            };
+
+            List<ExternalUrlUsageItem> result = await gen.EnumItemsAsync().Take(limit).ToListAsync();
+            return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(new WikiPage(wikiSite, x.Title, x.NamespaceId))).ToList());
+        }
+        catch (Exception e)
+        {
+            logger.Fatal(e, "Failed to get pages. Site: {ApiRoot}, Url: {Url} limit: {Limit}", apiRoot, url, limit);
+            return Result<List<WikiPageModel>>.Failure(e.Message);
+        }
+    }
+
     public Result<List<WikiPageModel>> ConvertToTalk(List<WikiPageModel> pages)
     {
-        List<WikiPageModel> result = new();
-        foreach (WikiPageModel wikiPageModel in pages)
-        {
-            Result<WikiPageModel> talkPageResult = ConvertToTalk(wikiPageModel);
-            if (talkPageResult is {IsSuccessful: true, Value: not null})
-            {
-                result.Add(talkPageResult.Value);
-            }
-        }
+        List<WikiPageModel> result = (from wikiPageModel in pages
+            select ConvertToTalk(wikiPageModel)
+            into talkPageResult
+            where talkPageResult is {IsSuccessful: true, Value: not null}
+            select talkPageResult.Value).ToList();
 
         return Result<List<WikiPageModel>>.Success(result);
     }

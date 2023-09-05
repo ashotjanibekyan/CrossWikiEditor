@@ -5,7 +5,7 @@ using CrossWikiEditor.Core.Utils;
 
 namespace CrossWikiEditor.Core.ListProviders;
 
-public class LinksOnPageBlueListProvider(
+public sealed class LinksOnPageBlueListProvider(
         IUserPreferencesService userPreferencesService,
         IPageService pageService,
         IDialogService dialogService)

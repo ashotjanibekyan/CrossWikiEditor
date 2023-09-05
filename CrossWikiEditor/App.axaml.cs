@@ -12,18 +12,17 @@ using CrossWikiEditor.Views;
 
 namespace CrossWikiEditor;
 
-public class App : Application
+public sealed class App : Application
 {
     private IContainer? _container;
     private MainWindow? _mainWindow;
-    private string _appData;
 
     public App()
     {
-        _appData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CrossWikiBrowser");
-        if (!Directory.Exists(_appData))
+        string? appData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CrossWikiBrowser");
+        if (!Directory.Exists(appData))
         {
-            Directory.CreateDirectory(_appData);
+            Directory.CreateDirectory(appData);
         }
     }
 

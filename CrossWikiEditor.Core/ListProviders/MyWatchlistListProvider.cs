@@ -6,7 +6,7 @@ using CrossWikiEditor.Core.Utils;
 
 namespace CrossWikiEditor.Core.ListProviders;
 
-public class MyWatchlistListProvider(
+public sealed class MyWatchlistListProvider(
     IUserService userService,
     IDialogService dialogService) : LimitedListProviderBase(dialogService)
 {

@@ -6,7 +6,7 @@ using CrossWikiEditor.Core.Utils;
 
 namespace CrossWikiEditor.Core.ListProviders;
 
-public class WhatLinksHereListProvider(
+public sealed class WhatLinksHereListProvider(
     IUserPreferencesService userPreferencesService,
     IViewModelFactory viewModelFactory,
     IDialogService dialogService,

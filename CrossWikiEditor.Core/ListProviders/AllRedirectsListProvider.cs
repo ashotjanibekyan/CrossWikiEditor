@@ -7,7 +7,7 @@ using WikiClientLibrary.Generators;
 
 namespace CrossWikiEditor.Core.ListProviders;
 
-public class AllRedirectsListProvider(
+public sealed class AllRedirectsListProvider(
     IDialogService dialogService,
     IPageService pageService,
     IViewModelFactory viewModelFactory,

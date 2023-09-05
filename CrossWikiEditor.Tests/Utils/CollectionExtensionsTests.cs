@@ -2,7 +2,7 @@
 
 namespace CrossWikiEditor.Tests.Utils;
 
-public class CollectionExtensionsTests
+public sealed class CollectionExtensionsTests
 {
     [Test]
     public void ToObservableCollection_ShouldReturnEmptyCollection_WhenEnumerableIsEmpty()

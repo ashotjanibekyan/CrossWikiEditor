@@ -3,7 +3,7 @@ using CrossWikiEditor.Core.ViewModels;
 
 namespace CrossWikiEditor.Tests.ViewModels;
 
-public class AddOrEditProfileViewModelTests : BaseTest
+public sealed class AddOrEditProfileViewModelTests : BaseTest
 {
     private AddOrEditProfileViewModel _sut;
 

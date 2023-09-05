@@ -3,7 +3,7 @@ using CrossWikiEditor.Core.Services;
 
 namespace CrossWikiEditor.Tests.Services;
 
-public class StringEncryptionServiceTests
+public sealed class StringEncryptionServiceTests
 {
     [Test]
     [Combinatorial]

@@ -9,7 +9,7 @@ using WikiClientLibrary.Sites;
 
 namespace CrossWikiEditor.Core.ListProviders;
 
-public class TextFileListProvider(
+public sealed class TextFileListProvider(
         IFileDialogService fileDialogService,
         ISystemService systemService,
         IWikiClientCache wikiClientCache,

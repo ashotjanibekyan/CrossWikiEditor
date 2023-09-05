@@ -7,7 +7,7 @@ using CrossWikiEditor.Core.Utils;
 
 namespace CrossWikiEditor.Core.ListProviders;
 
-public class CategoryRecursiveListProvider(
+public sealed class CategoryRecursiveListProvider(
     IUserPreferencesService userPreferencesService,
     IPageService pageService,
     IDialogService dialogService) : LimitedListProviderBase(dialogService)

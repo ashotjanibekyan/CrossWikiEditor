@@ -6,7 +6,7 @@ using CrossWikiEditor.Core.Utils;
 
 namespace CrossWikiEditor.Core.ListProviders;
 
-public class ImageFileLinksListProvider(
+public sealed class ImageFileLinksListProvider(
     IPageService pageService,
     IUserPreferencesService userPreferencesService,
     IDialogService dialogService) : LimitedListProviderBase(dialogService)

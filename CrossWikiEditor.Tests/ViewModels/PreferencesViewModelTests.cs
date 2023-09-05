@@ -4,7 +4,7 @@ using CrossWikiEditor.Core.ViewModels;
 
 namespace CrossWikiEditor.Tests.ViewModels;
 
-public class PreferencesViewModelTests : BaseTest
+public sealed class PreferencesViewModelTests : BaseTest
 {
     private PreferencesViewModel _sut;
 

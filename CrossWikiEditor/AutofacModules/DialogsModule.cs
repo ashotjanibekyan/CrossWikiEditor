@@ -7,7 +7,7 @@ using CrossWikiEditor.Views.ControlViews;
 
 namespace CrossWikiEditor.AutofacModules;
 
-public class DialogsModule : Module
+public sealed class DialogsModule : Module
 {
     protected override void Load(ContainerBuilder builder)
     {

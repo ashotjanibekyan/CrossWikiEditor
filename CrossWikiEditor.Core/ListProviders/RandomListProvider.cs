@@ -6,7 +6,7 @@ using CrossWikiEditor.Core.Utils;
 
 namespace CrossWikiEditor.Core.ListProviders;
 
-public class RandomListProvider(IPageService pageService,
+public sealed class RandomListProvider(IPageService pageService,
         IDialogService dialogService,
         IViewModelFactory viewModelFactory,
         IUserPreferencesService userPreferencesService)

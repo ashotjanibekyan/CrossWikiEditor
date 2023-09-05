@@ -5,7 +5,7 @@ using CrossWikiEditor.Core.ViewModels;
 
 namespace CrossWikiEditor.Tests.ViewModels;
 
-public class StatusBarViewModelTests : BaseTest
+public sealed class StatusBarViewModelTests : BaseTest
 {
     private StatusBarViewModel _sut;
 

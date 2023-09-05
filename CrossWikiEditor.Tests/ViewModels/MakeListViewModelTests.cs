@@ -10,7 +10,7 @@ using CollectionExtensions = CrossWikiEditor.Core.Utils.CollectionExtensions;
 
 namespace CrossWikiEditor.Tests.ViewModels;
 
-public class MakeListViewModelTests : BaseTest
+public sealed class MakeListViewModelTests : BaseTest
 {
     private MakeListViewModel _sut;
     private const string ApiRoot = "https://hy.wikipedia.org/w/api.php?";

@@ -16,7 +16,7 @@ public interface IViewModelFactory
     Task<SelectNamespacesAndRedirectFilterViewModel> GetSelectNamespacesAndRedirectFilterViewModel(bool isIncludeRedirectsVisible = true);
 }
 
-public class ViewModelFactory(IFileDialogService fileDialogService,
+public sealed class ViewModelFactory(IFileDialogService fileDialogService,
         IDialogService dialogService,
         IProfileRepository profileRepository,
         IWikiClientCache wikiClientCache,

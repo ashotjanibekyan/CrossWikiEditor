@@ -4,7 +4,7 @@ using CrossWikiEditor.Core.ViewModels;
 
 namespace CrossWikiEditor.Tests.Services;
 
-public class ViewModelFactoryTests : BaseTest
+public sealed class ViewModelFactoryTests : BaseTest
 {
     private ViewModelFactory _sut;
 

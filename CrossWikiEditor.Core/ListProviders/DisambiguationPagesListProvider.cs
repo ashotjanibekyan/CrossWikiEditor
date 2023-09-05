@@ -6,7 +6,7 @@ using CrossWikiEditor.Core.Utils;
 
 namespace CrossWikiEditor.Core.ListProviders;
 
-public class DisambiguationPagesListProvider(
+public sealed class DisambiguationPagesListProvider(
     IDialogService dialogService,
     IPageService pageService,
     IUserPreferencesService userPreferencesService) : LimitedListProviderBase(dialogService)

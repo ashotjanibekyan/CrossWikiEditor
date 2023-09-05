@@ -14,7 +14,7 @@ public interface IWikiClientCache
     Task<Result<WikiPageModel>> GetWikiPageModel(string apiRoot, string title, bool forceNew = false);
 }
 
-public class WikiClientCache(ILogger logger) : IWikiClientCache
+public sealed class WikiClientCache(ILogger logger) : IWikiClientCache
 {
     private Dictionary<string, WikiClient> _wikiClients = new();
     private Dictionary<string, WikiSite> _wikiSites = new();

@@ -5,7 +5,7 @@ using WikiClientLibrary.Sites;
 
 namespace CrossWikiEditor.Core.WikiClientLibraryUtils.Generators;
 
-public class AllUsersPageGenerator : WikiList<WikiPage>
+public sealed class AllUsersPageGenerator : WikiList<WikiPage>
 {
     public AllUsersPageGenerator(WikiSite site) : base(site)
     {

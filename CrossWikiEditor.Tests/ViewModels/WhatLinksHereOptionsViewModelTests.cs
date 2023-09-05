@@ -3,7 +3,7 @@ using CrossWikiEditor.Core.ViewModels;
 
 namespace CrossWikiEditor.Tests.ViewModels;
 
-public class WhatLinksHereOptionsViewModelTests : BaseTest
+public sealed class WhatLinksHereOptionsViewModelTests : BaseTest
 {
     [SetUp]
     public void SetUp()

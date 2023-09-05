@@ -6,7 +6,7 @@ using CrossWikiEditor.Core.Utils;
 
 namespace CrossWikiEditor.Core.ListProviders;
 
-public class UserContributionsListProvider(
+public sealed class UserContributionsListProvider(
     IUserPreferencesService userPreferencesService,
     IUserService userService,
     IDialogService dialogService) : LimitedListProviderBase(dialogService)

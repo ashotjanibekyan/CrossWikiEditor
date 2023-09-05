@@ -5,7 +5,7 @@ using WikiClientLibrary.Sites;
 
 namespace CrossWikiEditor.Core.Models;
 
-public class WikiPageModel : IEquatable<WikiPageModel>, IComparable<WikiPageModel>, IAsyncInitialization
+public sealed class WikiPageModel : IEquatable<WikiPageModel>, IComparable<WikiPageModel>, IAsyncInitialization
 {
     private WikiPage? _wikiPage;
 

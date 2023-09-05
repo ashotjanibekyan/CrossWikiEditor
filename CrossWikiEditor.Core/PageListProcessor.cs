@@ -7,7 +7,7 @@ using WikiClientLibrary.Pages;
 
 namespace CrossWikiEditor.Core;
 
-public class PageListProcessor
+public sealed class PageListProcessor
 {
     private readonly IMessengerWrapper _messenger;
     private readonly List<WikiPageModel> _pages;

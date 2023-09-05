@@ -3,7 +3,7 @@ using WikiClientLibrary.Pages;
 
 namespace CrossWikiEditor.Core.WikiClientLibraryUtils.Generators;
 
-public class UserContributionResultItem(WikiPage wikiPage)
+public sealed class UserContributionResultItem(WikiPage wikiPage)
 {
     public WikiPage WikiPage { get; } = wikiPage;
 

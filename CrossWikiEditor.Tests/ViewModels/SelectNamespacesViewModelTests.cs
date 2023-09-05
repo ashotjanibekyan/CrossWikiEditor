@@ -3,7 +3,7 @@ using CrossWikiEditor.Core.ViewModels;
 
 namespace CrossWikiEditor.Tests.ViewModels;
 
-public class SelectNamespacesViewModelTests
+public sealed class SelectNamespacesViewModelTests
 {
     private SelectNamespacesViewModel _sut;
 

@@ -6,7 +6,7 @@ using CrossWikiEditor.Core.Utils;
 
 namespace CrossWikiEditor.Core.ListProviders;
 
-public class WhatTranscludesHereListProvider(
+public sealed class WhatTranscludesHereListProvider(
     IUserPreferencesService userPreferencesService,
     IPageService pageService,
     IDialogService dialogService) : LimitedListProviderBase(dialogService)

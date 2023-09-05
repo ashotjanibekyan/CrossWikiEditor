@@ -8,7 +8,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace CrossWikiEditor.Controls;
 
-public class Hyperlink : InlineUIContainer
+public sealed class Hyperlink : InlineUIContainer
 {
     private readonly Underline _underline;
     private readonly TextBlock _textBlock;

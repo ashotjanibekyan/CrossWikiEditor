@@ -2,7 +2,7 @@
 
 namespace CrossWikiEditor.Tests.Utils;
 
-public class ToolsTests
+public sealed class ToolsTests
 {
 
     [TestCase("https://en.wikipedia.org/wiki/Artificial_intelligence", ExpectedResult = "Artificial intelligence")]

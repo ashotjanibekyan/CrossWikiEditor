@@ -47,7 +47,7 @@ file static class Mapper
 /// Realm is great but we use a tiny fraction of its capabilities and it is responsible for 30% of the final filesize of the app.
 /// Write the content on a file instead for now.
 /// </summary>
-public class SimpleJsonProfileRepository(IStringEncryptionService stringEncryptionService) : IProfileRepository
+public sealed class SimpleJsonProfileRepository(IStringEncryptionService stringEncryptionService) : IProfileRepository
 {
     private const string JsonName = "profiles.json";
     private readonly object _profileJsonLock = new();

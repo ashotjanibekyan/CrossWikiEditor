@@ -8,7 +8,7 @@ namespace CrossWikiEditor.Core.WikiClientLibraryUtils;
 /// We should get rid of this class.
 /// </summary>
 [JsonObject(MemberSerialization.OptIn)]
-public class MagicWordInfo
+public sealed class MagicWordInfo
 {
     [JsonProperty] public string Name { get; private set; } = "";
 

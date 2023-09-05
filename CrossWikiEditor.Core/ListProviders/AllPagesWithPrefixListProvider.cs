@@ -6,7 +6,7 @@ using CrossWikiEditor.Core.Utils;
 
 namespace CrossWikiEditor.Core.ListProviders;
 
-public class AllPagesWithPrefixListProvider(
+public sealed class AllPagesWithPrefixListProvider(
     IDialogService dialogService,
     IPageService pageService,
     IViewModelFactory viewModelFactory,

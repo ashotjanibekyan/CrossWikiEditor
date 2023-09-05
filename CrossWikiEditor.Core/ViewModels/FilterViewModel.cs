@@ -7,7 +7,7 @@ using CrossWikiEditor.Core.Utils;
 
 namespace CrossWikiEditor.Core.ViewModels;
 
-public class WikiNamespace(int id, string name, bool isChecked = false)
+public sealed class WikiNamespace(int id, string name, bool isChecked = false)
 {
     public int Id { get; } = id;
     public string Name { get; init; } = name;

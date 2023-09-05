@@ -6,7 +6,7 @@ using CrossWikiEditor.Core.Utils;
 
 namespace CrossWikiEditor.Core.ListProviders;
 
-public class RecentChangesListProvider(
+public sealed class RecentChangesListProvider(
     IDialogService dialogService,
     IPageService pageService,
     IUserPreferencesService userPreferencesService,

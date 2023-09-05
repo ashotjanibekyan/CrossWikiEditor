@@ -8,7 +8,7 @@ using PromptViewModel = CrossWikiEditor.Core.ViewModels.PromptViewModel;
 
 namespace CrossWikiEditor.Core.ListProviders;
 
-public class CategoryRecursiveUserDefinedLevelListProviderBase(
+public sealed class CategoryRecursiveUserDefinedLevelListProviderBase(
         IPageService pageService,
         IUserPreferencesService userPreferencesService,
         IDialogService dialogService)

@@ -6,7 +6,7 @@ using CrossWikiEditor.Core.Utils;
 
 namespace CrossWikiEditor.Core.ListProviders;
 
-public class CategoriesOnPageOnlyHiddenCategoriesListProvider(
+public sealed class CategoriesOnPageOnlyHiddenCategoriesListProvider(
         IPageService pageService,
         IUserPreferencesService userPreferencesService,
         IDialogService dialogService)

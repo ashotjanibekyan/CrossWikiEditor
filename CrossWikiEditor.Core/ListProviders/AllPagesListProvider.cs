@@ -7,7 +7,7 @@ using WikiClientLibrary.Generators;
 
 namespace CrossWikiEditor.Core.ListProviders;
 
-public class AllPagesListProvider(
+public sealed class AllPagesListProvider(
     IDialogService dialogService,
     IPageService pageService,
     IViewModelFactory viewModelFactory,

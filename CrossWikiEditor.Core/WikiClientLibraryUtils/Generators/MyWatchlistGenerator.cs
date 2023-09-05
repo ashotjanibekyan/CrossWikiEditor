@@ -5,7 +5,7 @@ using WikiClientLibrary.Sites;
 
 namespace CrossWikiEditor.Core.WikiClientLibraryUtils.Generators;
 
-public class MyWatchlistGenerator : WikiPageGenerator
+public sealed class MyWatchlistGenerator : WikiPageGenerator
 {
     public MyWatchlistGenerator(WikiSite site) : base(site)
     {

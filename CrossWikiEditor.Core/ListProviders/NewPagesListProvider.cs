@@ -6,7 +6,7 @@ using CrossWikiEditor.Core.Utils;
 
 namespace CrossWikiEditor.Core.ListProviders;
 
-public class NewPagesListProvider(
+public sealed class NewPagesListProvider(
     IUserPreferencesService userPreferencesService,
     IPageService pageService,
     IViewModelFactory viewModelFactory,

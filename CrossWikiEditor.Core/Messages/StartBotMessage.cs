@@ -1,5 +1,5 @@
 ﻿namespace CrossWikiEditor.Core.Messages;
 
-public class StartBotMessage
+public sealed class StartBotMessage
 {
 }

@@ -3,7 +3,7 @@ using WikiClientLibrary.Sites;
 
 namespace CrossWikiEditor.Core.WikiClientLibraryUtils.Generators;
 
-public class PagesWithPropGenerator : WikiPageGenerator
+public sealed class PagesWithPropGenerator : WikiPageGenerator
 {
     public PagesWithPropGenerator(WikiSite site, string propertyName) : base(site)
     {
