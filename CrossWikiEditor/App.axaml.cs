@@ -167,7 +167,6 @@ public class App : Application
         // TODO: Pages without Language links (no redirect)
         // TODO: Protected pages
         // TODO: Random redirects
-        // TODO: Recent changes
         // TODO: What redirects here
         
         builder.RegisterType<CategoriesOnPageListProvider>().As<IListProvider>();
@@ -191,6 +190,7 @@ public class App : Application
         builder.RegisterType<NewPagesListProvider>().As<IListProvider>();
         builder.RegisterType<PagesWithPropListProvider>().As<IListProvider>();
         builder.RegisterType<RandomListProvider>().As<IListProvider>();
+        builder.RegisterType<RecentChangesListProvider>().As<IListProvider>();
         builder.RegisterType<TextFileListProvider>().As<IListProvider>();
         builder.RegisterType<TransclusionsOnPageListProvider>().As<IListProvider>();
         builder.RegisterType<UserContributionsListProvider>().As<IListProvider>();

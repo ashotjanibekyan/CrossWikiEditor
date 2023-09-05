@@ -34,6 +34,7 @@ public interface IPageService
     Task<Result<List<WikiPageModel>>> GetAllPages(string apiRoot, string startTitle, int namespaceId, PropertyFilterOption redirectsFilter, int limit);
     Task<Result<List<WikiPageModel>>> GetAllPagesWithPrefix(string apiRoot, string prefix, int namespaceId, int limit);
     Task<Result<List<WikiPageModel>>> WikiSearch(string apiRoot, string keyword, int[]? namespaces, int limit);
+    Task<Result<List<WikiPageModel>>> GetRecentlyChangedPages(string apiRoot, int[]? namespaces, int limit);
 
     Result<List<WikiPageModel>> ConvertToTalk(List<WikiPageModel> pages);
     Result<List<WikiPageModel>> ConvertToSubject(List<WikiPageModel> pages);

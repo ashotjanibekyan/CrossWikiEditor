@@ -332,6 +332,25 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
         }
     }
 
+    public async Task<Result<List<WikiPageModel>>> GetRecentlyChangedPages(string apiRoot, int[]? namespaces, int limit)
+    {
+        try
+        {
+            WikiSite wikiSite = await wikiClientCache.GetWikiSite(apiRoot);
+            var gen = new RecentChangesGenerator(wikiSite)
+            {
+                NamespaceIds = namespaces
+            };
+            List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
+            return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
+        }
+        catch (Exception e)
+        {
+            logger.Fatal(e, "Failed to get pages. Site: {ApiRoot}, namespaces: {Namespaces}, limit: {Limit}", apiRoot, namespaces, limit);
+            return Result<List<WikiPageModel>>.Failure(e.Message);
+        }
+    }
+
     public Result<List<WikiPageModel>> ConvertToTalk(List<WikiPageModel> pages)
     {
         List<WikiPageModel> result = new();
