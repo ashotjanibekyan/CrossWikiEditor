@@ -14,6 +14,7 @@ public interface IViewModelFactory
     Task<FilterViewModel> GetFilterViewModel();
     Task<SelectNamespacesViewModel> GetSelectNamespacesViewModel(bool isMultiselect = true);
     Task<SelectNamespacesAndRedirectFilterViewModel> GetSelectNamespacesAndRedirectFilterViewModel(bool isIncludeRedirectsVisible = true);
+    SelectProtectionSelectionPageViewModel GetSelectProtectionSelectionPageViewModel();
 }
 
 public sealed class ViewModelFactory(IFileDialogService fileDialogService,
@@ -62,5 +63,10 @@ public sealed class ViewModelFactory(IFileDialogService fileDialogService,
         {
             IsIncludeRedirectsVisible = isIncludeRedirectsVisible
         };
+    }
+    
+    public SelectProtectionSelectionPageViewModel GetSelectProtectionSelectionPageViewModel()
+    {
+        return new SelectProtectionSelectionPageViewModel();
     }
 }

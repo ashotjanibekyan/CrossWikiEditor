@@ -1,0 +1,31 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:CrossWikiEditor.Core.ViewModels;assembly=CrossWikiEditor.Core"
+        Classes="DialogWindow"
+        SizeToContent="WidthAndHeight"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:DataType="viewModels:SelectProtectionSelectionPageViewModel"
+        x:Class="CrossWikiEditor.Views.SelectProtectionSelectionPageView"
+        x:Name="This"
+        Title="Select Protection Level">
+    <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="Auto,Auto">
+        <Label Grid.Row="0" Grid.Column="0">Type</Label>
+        <Label Grid.Row="0" Grid.Column="1">Level</Label>
+        
+        <ListBox Grid.Row="1" Grid.Column="0" SelectionMode="Single" SelectedIndex="{Binding ProtectionType}">
+            <ListBoxItem Content="Edit protection" />
+            <ListBoxItem Content="Move protection" />
+            <ListBoxItem Content="Edit &amp; Move protection" />
+        </ListBox>
+        
+        <ListBox Grid.Row="1" Grid.Column="1" SelectionMode="Single" SelectedIndex="{Binding ProtectionLevel}">
+            <ListBoxItem Content="Autoconfirmed" />
+            <ListBoxItem Content="Sysop" />
+            <ListBoxItem Content="Autoconfirmed &amp; Sysop" />
+        </ListBox>
+        
+        <Button Grid.Row="2" Grid.Column="1" Content="Ok" HorizontalAlignment="Right" Command="{Binding OkCommand}" CommandParameter="{Binding #This}" />
+    </Grid>
+</Window>

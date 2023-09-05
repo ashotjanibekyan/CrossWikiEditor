@@ -12,22 +12,20 @@ public sealed class ViewModelsModule(MainWindow mainWindow) : Module
 {
     protected override void Load(ContainerBuilder builder)
     {
-        builder.RegisterType<MainWindowViewModel>();
-        builder.RegisterType<StatusBarViewModel>();
-
-        builder.RegisterType<MakeListViewModel>();
-        builder.RegisterType<OptionsViewModel>();
-        builder.RegisterType<MoreViewModel>();
-        builder.RegisterType<MenuViewModel>();
-        builder.RegisterType<FileMenuViewModel>().WithParameter(new TypedParameter(typeof(Window), mainWindow));
         builder.RegisterType<DisambigViewModel>();
+        builder.RegisterType<EditBoxViewModel>();
+        builder.RegisterType<FileMenuViewModel>().WithParameter(new TypedParameter(typeof(Window), mainWindow));
+        builder.RegisterType<HistoryViewModel>();
+        builder.RegisterType<LogsViewModel>();
+        builder.RegisterType<MainWindowViewModel>();
+        builder.RegisterType<MakeListViewModel>();
+        builder.RegisterType<MenuViewModel>();
+        builder.RegisterType<MoreViewModel>();
+        builder.RegisterType<OptionsViewModel>();
+        builder.RegisterType<PageLogsViewModel>();
         builder.RegisterType<SkipViewModel>();
         builder.RegisterType<StartViewModel>();
-
-        builder.RegisterType<EditBoxViewModel>();
-        builder.RegisterType<HistoryViewModel>();
+        builder.RegisterType<StatusBarViewModel>();
         builder.RegisterType<WhatLinksHereViewModel>();
-        builder.RegisterType<LogsViewModel>();
-        builder.RegisterType<PageLogsViewModel>();
     }
 }

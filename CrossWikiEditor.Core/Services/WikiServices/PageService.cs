@@ -311,6 +311,28 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
         return await GetAllPages(apiRoot, namespaceId, PropertyFilterOption.Disable, PropertyFilterOption.Disable, limit, prefix: prefix);
     }
     
+    public async Task<Result<List<WikiPageModel>>> GetProtectedPages(string apiRoot, string protectType, string protectLevel, int limit)
+    {
+        try
+        {
+            WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
+            var gen = new AllPagesGeneratorEx(site)
+            {
+                PaginationSize = 500,
+                ProtectionType = protectType,
+                ProtectionLevel = protectLevel
+            };
+            List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
+            return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
+        }
+        catch (Exception e)
+        {
+            logger.Fatal(e, "Failed to get pages. Site {Site}, protectType: {ProtectType}, protectLevel: {ProtectLevel}, limit: {Limit}", apiRoot,
+                protectType, protectLevel, limit);
+            return Result<List<WikiPageModel>>.Failure(e.Message);
+        }
+    }
+    
     public async Task<Result<List<WikiPageModel>>> WikiSearch(string apiRoot, string keyword, int[]? namespaces, int limit)
     {
         try
