@@ -16,9 +16,6 @@ public sealed class ListProvidersModule : Module
         builder.RegisterType<AllPagesWithPrefixListProvider>().As<IListProvider>();
         builder.RegisterType<AllRedirectsListProvider>().As<IListProvider>();
         builder.RegisterType<AllUsersListProvider>().As<IListProvider>();
-        // TODO: Link search
-        // TODO: Pages without Language links
-        // TODO: Pages without Language links (no redirect)
         // TODO: Protected pages
         
         builder.RegisterType<CategoriesOnPageListProvider>().As<IListProvider>();
@@ -42,6 +39,8 @@ public sealed class ListProvidersModule : Module
         builder.RegisterType<LinkSearchListProvider>().As<IListProvider>();
         builder.RegisterType<MyWatchlistListProvider>().As<IListProvider>();
         builder.RegisterType<NewPagesListProvider>().As<IListProvider>();
+        builder.RegisterType<PagesWithoutLanguageLinksListProvider>().As<IListProvider>();
+        builder.RegisterType<PagesWithoutLanguageLinksNoRedirectsListProvider>().As<IListProvider>();
         builder.RegisterType<PagesWithPropListProvider>().As<IListProvider>();
         builder.RegisterType<RandomListProvider>().As<IListProvider>();
         builder.RegisterType<RecentChangesListProvider>().As<IListProvider>();

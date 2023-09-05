@@ -292,17 +292,23 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
         }
     }
 
-    public async Task<Result<List<WikiPageModel>>> GetAllFiles(string apiRoot, string startTitle, int limit) =>
-        await GetAllPages(apiRoot, startTitle, namespaceId: 6, redirectsFilter: PropertyFilterOption.Disable, limit: limit);
+    public async Task<Result<List<WikiPageModel>>> GetAllFiles(string apiRoot, string startTitle, int limit) => 
+        await GetAllPages(
+            apiRoot: apiRoot,
+            startTitle: startTitle,
+            namespaceId: 6,
+            redirectsFilter: PropertyFilterOption.Disable,
+            langLinksFilter: PropertyFilterOption.Disable,
+            limit: limit);
 
-    public async Task<Result<List<WikiPageModel>>> GetAllPages(string apiRoot, string startTitle, int namespaceId, PropertyFilterOption redirectsFilter, int limit)
+    public async Task<Result<List<WikiPageModel>>> GetAllPages(string apiRoot, string startTitle, int namespaceId, PropertyFilterOption redirectsFilter, PropertyFilterOption langLinksFilter, int limit)
     {
-        return await GetAllPages(apiRoot, namespaceId, redirectsFilter, limit, startTitle: startTitle);
+        return await GetAllPages(apiRoot, namespaceId, redirectsFilter, langLinksFilter, limit, startTitle);
     }
 
     public async Task<Result<List<WikiPageModel>>> GetAllPagesWithPrefix(string apiRoot, string prefix, int namespaceId, int limit)
     {
-        return await GetAllPages(apiRoot, namespaceId, PropertyFilterOption.Disable, limit, prefix: prefix);
+        return await GetAllPages(apiRoot, namespaceId, PropertyFilterOption.Disable, PropertyFilterOption.Disable, limit, prefix: prefix);
     }
     
     public async Task<Result<List<WikiPageModel>>> WikiSearch(string apiRoot, string keyword, int[]? namespaces, int limit)
@@ -404,7 +410,8 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
     private async Task<Result<List<WikiPageModel>>> GetAllPages(
         string apiRoot, 
         int namespaceId,
-        PropertyFilterOption redirectsFilter, 
+        PropertyFilterOption redirectsFilter,
+        PropertyFilterOption langLinksFilter,
         int limit,
         string? startTitle = null,
         string? prefix = null)
@@ -415,7 +422,9 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
             var gen = new AllPagesGenerator(site)
             {
                 NamespaceId = namespaceId,
-                RedirectsFilter = redirectsFilter
+                RedirectsFilter = redirectsFilter,
+                LanguageLinkFilter = langLinksFilter,
+                PaginationSize = 500
             };
             if (startTitle is not null)
             {

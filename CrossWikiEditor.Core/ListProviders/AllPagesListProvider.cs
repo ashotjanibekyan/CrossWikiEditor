@@ -22,6 +22,6 @@ public sealed class AllPagesListProvider(
     public override async Task<Result<List<WikiPageModel>>> MakeList(int limit)
     {
         return await pageService.GetAllPages(userPreferencesService.GetCurrentPref().UrlApi(), Param, _namespace!.First(),
-            redirectsFilter: PropertyFilterOption.Disable, limit);
+            redirectsFilter: PropertyFilterOption.Disable, langLinksFilter: PropertyFilterOption.Disable, limit);
     }
 }
