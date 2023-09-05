@@ -100,7 +100,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
         }
     }
 
-    public async Task<Result<List<WikiPageModel>>> GetRandomPages(string apiRoot, int[]? namespaces, int limit)
+    public async Task<Result<List<WikiPageModel>>> GetRandomPages(string apiRoot, int[]? namespaces, bool? filterRedirects, int limit)
     {
         try
         {
@@ -108,7 +108,13 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
             var gen = new RandomPageGenerator(site)
             {
                 NamespaceIds = namespaces,
-                PaginationSize = limit
+                PaginationSize = limit,
+                RedirectsFilter = filterRedirects switch
+                {
+                    true => PropertyFilterOption.WithProperty,
+                    false => PropertyFilterOption.WithoutProperty,
+                    null => PropertyFilterOption.Disable
+                }
             };
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
             return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());

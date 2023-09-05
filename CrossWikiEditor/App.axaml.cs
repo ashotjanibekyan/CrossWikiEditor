@@ -148,7 +148,7 @@ public class App : Application
         builder.RegisterType<PreferencesView>().Named<IDialog>(nameof(PreferencesViewModel));
         builder.RegisterType<AddNewProfileView>().Named<IDialog>(nameof(AddOrEditProfileViewModel));
         builder.RegisterType<SelectNamespacesView>().Named<IDialog>(nameof(SelectNamespacesViewModel));
-        builder.RegisterType<WhatLinksHereOptionsView>().Named<IDialog>(nameof(WhatLinksHereOptionsViewModel));
+        builder.RegisterType<SelectNamespacesAndRedirectFilterView>().Named<IDialog>(nameof(SelectNamespacesAndRedirectFilterViewModel));
         builder.RegisterType<FindAndReplaceView>().Named<IDialog>(nameof(FindAndReplaceViewModel));
     }
 
@@ -166,8 +166,6 @@ public class App : Application
         // TODO: Pages without Language links
         // TODO: Pages without Language links (no redirect)
         // TODO: Protected pages
-        // TODO: Random redirects
-        // TODO: What redirects here
         
         builder.RegisterType<CategoriesOnPageListProvider>().As<IListProvider>();
         builder.RegisterType<CategoriesOnPageNoHiddenCategoriesListProvider>().As<IListProvider>();

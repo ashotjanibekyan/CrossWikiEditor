@@ -6,10 +6,10 @@
         Classes="DialogWindow"
         SizeToContent="WidthAndHeight"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:DataType="viewModels:WhatLinksHereOptionsViewModel"
-        x:Class="CrossWikiEditor.Views.WhatLinksHereOptionsView"
+        x:DataType="viewModels:SelectNamespacesAndRedirectFilterViewModel"
+        x:Class="CrossWikiEditor.Views.SelectNamespacesAndRedirectFilterView"
         x:Name="This"
-        Title="WhatLinksHereOptionsView">
+        Title="Select namespaces and redirect filter">
     <Grid RowDefinitions="300,Auto" Margin="4">
         <HeaderedContentControl Grid.RowSpan="" Header="The namespace to enumerate">
             <Grid RowDefinitions="Auto,*" Margin="4">
@@ -33,7 +33,7 @@
                 <ComboBoxItem>Only redirects</ComboBoxItem>
                 <ComboBoxItem>No redirects</ComboBoxItem>
             </ComboBox>
-            <CheckBox Content="Include links to redirects too" IsChecked="{Binding IncludeRedirects}" />
+            <CheckBox IsVisible="{Binding IsIncludeRedirectsVisible}" Content="Include links to redirects too" IsChecked="{Binding IncludeRedirects}" />
             <Button Command="{Binding OkCommand}" CommandParameter="{Binding #This}" Content="Ok" />
         </StackPanel>
     </Grid>

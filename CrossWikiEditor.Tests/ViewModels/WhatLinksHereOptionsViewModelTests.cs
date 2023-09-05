@@ -17,7 +17,7 @@ public class WhatLinksHereOptionsViewModelTests : BaseTest
     {
         // arrange
         List<WikiNamespace>? namespaces = Fakers.WikiNamespaceFaker.Generate(20);
-        var sut = new WhatLinksHereOptionsViewModel(namespaces);
+        var sut = new SelectNamespacesAndRedirectFilterViewModel(namespaces);
         foreach (WikiNamespace ns in sut.Namespaces)
         {
             ns.IsChecked = !newValue;
@@ -37,7 +37,7 @@ public class WhatLinksHereOptionsViewModelTests : BaseTest
     {
         // arrange
         List<WikiNamespace>? namespaces = Fakers.WikiNamespaceFaker.Generate(20);
-        var sut = new WhatLinksHereOptionsViewModel(namespaces);
+        var sut = new SelectNamespacesAndRedirectFilterViewModel(namespaces);
         sut.Namespaces[2].IsChecked = true;
         sut.Namespaces[7].IsChecked = true;
         sut.IncludeRedirects = true;
@@ -47,7 +47,7 @@ public class WhatLinksHereOptionsViewModelTests : BaseTest
         sut.OkCommand.Execute(_dialog);
 
         // assert
-        _dialog.Received(1).Close(Arg.Is<WhatLinksHereOptions>(options =>
+        _dialog.Received(1).Close(Arg.Is<NamespacesAndRedirectFilterOptions>(options =>
             options.IncludeRedirects == sut.IncludeRedirects
             && (int) options.RedirectFilter == sut.SelectedRedirectFilter
             && options.Namespaces.OrderBy(e => e).SequenceEqual(sut.Namespaces.Where(x => x.IsChecked).Select(n => n.Id).OrderBy(e => e))));

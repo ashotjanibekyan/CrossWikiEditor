@@ -3,9 +3,9 @@ using CrossWikiEditor.Core;
 
 namespace CrossWikiEditor.Views;
 
-public partial class WhatLinksHereOptionsView : Window, IDialog
+public partial class SelectNamespacesAndRedirectFilterView : Window, IDialog
 {
-    public WhatLinksHereOptionsView()
+    public SelectNamespacesAndRedirectFilterView()
     {
         InitializeComponent();
     }

@@ -12,7 +12,7 @@ public class WhatLinksHereListProvider(
     IDialogService dialogService,
     IPageService pageService) : LimitedListProviderBase(dialogService), INeedAdditionalParamsListProvider
 {
-    private WhatLinksHereOptions? _options;
+    private NamespacesAndRedirectFilterOptions? _options;
     public override string Title => "What links here";
     public override string ParamTitle => "What links to";
     public override bool CanMake => !string.IsNullOrWhiteSpace(Param) && _options is not null;
@@ -36,8 +36,8 @@ public class WhatLinksHereListProvider(
 
     public async Task GetAdditionalParams()
     {
-        WhatLinksHereOptions? result =
-            await dialogService.ShowDialog<WhatLinksHereOptions>(await viewModelFactory.GetWhatLinksHereOptionsViewModel());
+        NamespacesAndRedirectFilterOptions? result =
+            await dialogService.ShowDialog<NamespacesAndRedirectFilterOptions>(await viewModelFactory.GetSelectNamespacesAndRedirectFilterViewModel());
         if (result is not null)
         {
             _options = result;

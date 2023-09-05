@@ -9,16 +9,7 @@ public interface IPageService
     Task<Result<List<WikiPageModel>>> GetCategoriesOf(string apiRoot, string pageName, int limit, bool includeHidden = true, bool onlyHidden = false);
     Task<Result<List<WikiPageModel>>> GetPagesOfCategory(string apiRoot, string categoryName, int limit, int recursive = 0);
     Task<Result<List<WikiPageModel>>> FilesOnPage(string apiRoot, string pageName, int limit);
-
-    /// <summary>
-    /// Gets random pages in a specific namespace
-    /// </summary>
-    /// <param name="apiRoot">The api root of the wiki, e.g. https://hy.wikipedia.org/w/api.php?</param>
-    /// <param name="namespaces">Only list pages in these namespaces. Should be null if all the namespaces are selected.</param>
-    /// <param name="limit">Number of pages to generate.</param>
-    /// <returns></returns>
-    Task<Result<List<WikiPageModel>>> GetRandomPages(string apiRoot, int[]? namespaces, int limit);
-
+    Task<Result<List<WikiPageModel>>> GetRandomPages(string apiRoot, int[]? namespaces, bool? filterRedirects, int limit);
     Task<Result<List<WikiPageModel>>> GetPagesByFileUsage(string apiRoot, string fileName, int limit);
     Task<Result<List<WikiPageModel>>> LinksOnPage(string apiRoot, string pageName, int limit);
     Task<Result<List<WikiPageModel>>> GetNewPages(string apiRoot, int[] namespaces, int limit);

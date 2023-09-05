@@ -10,19 +10,35 @@ public class RandomListProvider(IPageService pageService,
         IDialogService dialogService,
         IViewModelFactory viewModelFactory,
         IUserPreferencesService userPreferencesService)
-    : LimitedListProviderBase(dialogService), INeedNamespacesListProvider
+    : LimitedListProviderBase(dialogService), INeedAdditionalParamsListProvider
 {
-    private int[]? _namespaces;
+    private NamespacesAndRedirectFilterOptions? _options;
     public override string Title => "Random pages";
     public override string ParamTitle => string.Empty;
-    public override bool CanMake => _namespaces is not null;
+    public override bool CanMake => _options is not null;
 
-    public async Task GetAdditionalParams() => _namespaces = await this.GetNamespaces(isMultiselect: true, dialogService, viewModelFactory);
+    public async Task GetAdditionalParams()
+    {
+        NamespacesAndRedirectFilterOptions? result =
+            await dialogService.ShowDialog<NamespacesAndRedirectFilterOptions>(
+                await viewModelFactory.GetSelectNamespacesAndRedirectFilterViewModel(isIncludeRedirectsVisible: false));
+        if (result is not null)
+        {
+            _options = result;
+        }
+    }
     public override async Task<Result<List<WikiPageModel>>> MakeList(int limit)
     {
-        Result<List<WikiPageModel>> result = await pageService.GetRandomPages(userPreferencesService.GetCurrentPref().UrlApi(), _namespaces, limit);
-        _namespaces = null;
-        return result;
+        return await pageService.GetRandomPages(
+            userPreferencesService.GetCurrentPref().UrlApi(),
+            _options!.Namespaces,
+            filterRedirects: _options.RedirectFilter switch
+            {
+                RedirectFilter.All => null,
+                RedirectFilter.Redirects => true,
+                RedirectFilter.NoRedirects => false,
+                _ => null
+            },
+            limit: limit);
     }
-
 }

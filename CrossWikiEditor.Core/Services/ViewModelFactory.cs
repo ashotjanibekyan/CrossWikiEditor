@@ -13,7 +13,7 @@ public interface IViewModelFactory
     PreferencesViewModel GetPreferencesViewModel();
     Task<FilterViewModel> GetFilterViewModel();
     Task<SelectNamespacesViewModel> GetSelectNamespacesViewModel(bool isMultiselect = true);
-    Task<WhatLinksHereOptionsViewModel> GetWhatLinksHereOptionsViewModel();
+    Task<SelectNamespacesAndRedirectFilterViewModel> GetSelectNamespacesAndRedirectFilterViewModel(bool isIncludeRedirectsVisible = true);
 }
 
 public class ViewModelFactory(IFileDialogService fileDialogService,
@@ -54,10 +54,13 @@ public class ViewModelFactory(IFileDialogService fileDialogService,
         return new SelectNamespacesViewModel(namespaces.ToList(), isMultiselect);
     }
 
-    public async Task<WhatLinksHereOptionsViewModel> GetWhatLinksHereOptionsViewModel()
+    public async Task<SelectNamespacesAndRedirectFilterViewModel> GetSelectNamespacesAndRedirectFilterViewModel(bool isIncludeRedirectsVisible = true)
     {
         WikiSite site = await wikiClientCache.GetWikiSite(userPreferencesService.GetCurrentPref().UrlApi());
         WikiNamespace[] namespaces = site.Namespaces.Select(x => new WikiNamespace(x.Id, x.CustomName)).ToArray();
-        return new WhatLinksHereOptionsViewModel(namespaces.ToList());
+        return new SelectNamespacesAndRedirectFilterViewModel(namespaces.ToList())
+        {
+            IsIncludeRedirectsVisible = isIncludeRedirectsVisible
+        };
     }
 }
