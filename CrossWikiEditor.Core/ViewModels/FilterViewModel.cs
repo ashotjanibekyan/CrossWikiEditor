@@ -7,13 +7,6 @@ using CrossWikiEditor.Core.Utils;
 
 namespace CrossWikiEditor.Core.ViewModels;
 
-public sealed class WikiNamespace(int id, string name, bool isChecked = false)
-{
-    public int Id { get; } = id;
-    public string Name { get; init; } = name;
-    public bool IsChecked { get; set; } = isChecked;
-}
-
 public partial class FilterViewModel(List<WikiNamespace> subjectNamespaces, List<WikiNamespace> talkNamespaces,
         TextFileListProvider textFileListProvider)
     : ViewModelBase
@@ -21,8 +14,8 @@ public partial class FilterViewModel(List<WikiNamespace> subjectNamespaces, List
     [RelayCommand]
     private void Save(IDialog dialog)
     {
-        IEnumerable<int> arr1 = SubjectNamespaces.ToList<WikiNamespace>().Where(x => x.IsChecked).Select(x => x.Id);
-        IEnumerable<int> arr2 = TalkNamespaces.ToList<WikiNamespace>().Where(x => x.IsChecked).Select(x => x.Id);
+        IEnumerable<int> arr1 = SubjectNamespaces.ToList().Where(x => x.IsChecked).Select(x => x.Id);
+        IEnumerable<int> arr2 = TalkNamespaces.ToList().Where(x => x.IsChecked).Select(x => x.Id);
         dialog.Close(new FilterOptions(
             arr1.Concat(arr2).ToArray(),
             RemoveTitlesContaining,
@@ -31,7 +24,7 @@ public partial class FilterViewModel(List<WikiNamespace> subjectNamespaces, List
             SortAlphabetically,
             RemoveDuplicates,
             SelectedSetOperations,
-            Pages.ToList<WikiPageModel>()));
+            Pages.ToList()));
     }
 
     [RelayCommand]
@@ -64,7 +57,6 @@ public partial class FilterViewModel(List<WikiNamespace> subjectNamespaces, List
     partial void OnIsAllTalkCheckedChanged(bool value)
     {
         TalkNamespaces = TalkNamespaces
-            .ToList<WikiNamespace>()
             .Select(x => new WikiNamespace(x.Id, x.Name, value))
             .ToObservableCollection();
     }
@@ -72,7 +64,6 @@ public partial class FilterViewModel(List<WikiNamespace> subjectNamespaces, List
     partial void OnIsAllSubjectCheckedChanged(bool value)
     {
         SubjectNamespaces = SubjectNamespaces
-            .ToList<WikiNamespace>()
             .Select(x => new WikiNamespace(x.Id, x.Name, value))
             .ToObservableCollection();
     }

@@ -19,7 +19,6 @@ public sealed class ServicesModule(MainWindow mainWindow) : Module
 {
     protected override void Load(ContainerBuilder builder)
     {
-        IStorageProvider storageProvider = TopLevel.GetTopLevel(mainWindow)!.StorageProvider;
         (byte[] key, byte[] iv) = StringEncryptionService.GenerateKeyAndIv("SHOULD IMPLEMENT THIS LATER");
         IStringEncryptionService stringEncryptionService = new StringEncryptionService(key, iv);
 
@@ -44,7 +43,7 @@ public sealed class ServicesModule(MainWindow mainWindow) : Module
         builder.RegisterType<DialogService>()
             .As<IDialogService>()
             .WithParameter(new TypedParameter(typeof(IOwner), mainWindow)).SingleInstance();
-        builder.RegisterInstance(storageProvider).As<IStorageProvider>();
+        builder.Register(c => TopLevel.GetTopLevel(mainWindow)!.StorageProvider).As<IStorageProvider>();
         builder.RegisterInstance(stringEncryptionService).As<IStringEncryptionService>();
         builder.RegisterInstance(logger).As<ILogger>();
         builder.Register(c => TopLevel.GetTopLevel(mainWindow)?.Clipboard).As<IClipboard>();

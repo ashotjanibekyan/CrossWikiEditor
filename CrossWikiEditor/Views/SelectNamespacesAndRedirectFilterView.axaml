@@ -3,6 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:CrossWikiEditor.Core.ViewModels;assembly=CrossWikiEditor.Core"
+        xmlns:models="clr-namespace:CrossWikiEditor.Core.Models;assembly=CrossWikiEditor.Core"
         Classes="DialogWindow"
         SizeToContent="WidthAndHeight"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -19,7 +20,7 @@
                          ScrollViewer.HorizontalScrollBarVisibility="Visible"
                          ItemsSource="{Binding Namespaces}">
                     <ListBox.ItemTemplate>
-                        <DataTemplate DataType="viewModels:WikiNamespace">
+                        <DataTemplate DataType="models:WikiNamespace">
                             <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}" />
                         </DataTemplate>
                     </ListBox.ItemTemplate>

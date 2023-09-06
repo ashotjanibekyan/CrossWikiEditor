@@ -1,4 +1,5 @@
 ﻿using CrossWikiEditor.Core.ListProviders;
+using CrossWikiEditor.Core.Models;
 using CrossWikiEditor.Core.Repositories;
 using CrossWikiEditor.Core.Services.WikiServices;
 using CrossWikiEditor.Core.Utils;
@@ -15,6 +16,7 @@ public interface IViewModelFactory
     Task<SelectNamespacesViewModel> GetSelectNamespacesViewModel(bool isMultiselect = true);
     Task<SelectNamespacesAndRedirectFilterViewModel> GetSelectNamespacesAndRedirectFilterViewModel(bool isIncludeRedirectsVisible = true);
     SelectProtectionSelectionPageViewModel GetSelectProtectionSelectionPageViewModel();
+    Task<DatabaseScannerViewModel> GetDatabaseScannerViewModel();
 }
 
 public sealed class ViewModelFactory(IFileDialogService fileDialogService,
@@ -68,5 +70,10 @@ public sealed class ViewModelFactory(IFileDialogService fileDialogService,
     public SelectProtectionSelectionPageViewModel GetSelectProtectionSelectionPageViewModel()
     {
         return new SelectProtectionSelectionPageViewModel();
+    }
+
+    public async Task<DatabaseScannerViewModel> GetDatabaseScannerViewModel()
+    {
+        return new DatabaseScannerViewModel(dialogService, await wikiClientCache.GetWikiSite(userPreferencesService.GetCurrentPref().UrlApi()), fileDialogService);
     }
 }

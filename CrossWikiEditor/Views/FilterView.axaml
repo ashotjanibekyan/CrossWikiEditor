@@ -20,7 +20,7 @@
                          ScrollViewer.HorizontalScrollBarVisibility="Visible"
                          ItemsSource="{Binding SubjectNamespaces}">
                     <ListBox.ItemTemplate>
-                        <DataTemplate DataType="viewModels:WikiNamespace">
+                        <DataTemplate DataType="models:WikiNamespace">
                             <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}" />
                         </DataTemplate>
                     </ListBox.ItemTemplate>
@@ -31,7 +31,7 @@
                          ScrollViewer.HorizontalScrollBarVisibility="Visible"
                          ItemsSource="{Binding TalkNamespaces}">
                     <ListBox.ItemTemplate>
-                        <DataTemplate DataType="viewModels:WikiNamespace">
+                        <DataTemplate DataType="models:WikiNamespace">
                             <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}" />
                         </DataTemplate>
                     </ListBox.ItemTemplate>

@@ -10,7 +10,6 @@ public sealed class ListProvidersModule : Module
     {
         // TODO: CheckWiki error
         // TODO: CheckWiki error (number)
-        // TODO: Database dump
         builder.RegisterType<AllCategoriesListProvider>().As<IListProvider>();
         builder.RegisterType<AllFilesListProvider>().As<IListProvider>();
         builder.RegisterType<AllPagesListProvider>().As<IListProvider>();
@@ -25,6 +24,7 @@ public sealed class ListProvidersModule : Module
         builder.RegisterType<CategoryRecursive1LevelListProvider>().As<IListProvider>();
         builder.RegisterType<CategoryRecursiveListProvider>().As<IListProvider>();
         builder.RegisterType<CategoryRecursiveUserDefinedLevelListProviderBase>().As<IListProvider>();
+        builder.RegisterType<DatabaseDumpListProvider>().As<IListProvider>();
         builder.RegisterType<DisambiguationPagesListProvider>().As<IListProvider>();
         builder.RegisterType<FilesOnPageListProvider>().As<IListProvider>();
         builder.RegisterType<GoogleSearchListProvider>().As<IListProvider>();

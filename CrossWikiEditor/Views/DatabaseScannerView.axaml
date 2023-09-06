@@ -1,0 +1,88 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:CrossWikiEditor.Core.ViewModels;assembly=CrossWikiEditor.Core"
+        xmlns:controls="clr-namespace:CrossWikiEditor.Controls"
+        xmlns:models="clr-namespace:CrossWikiEditor.Core.Models;assembly=CrossWikiEditor.Core"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:DataType="viewModels:DatabaseScannerViewModel"
+        x:Class="CrossWikiEditor.Views.DatabaseScannerView"
+        Title="DatabaseScannerView">
+    <Grid RowDefinitions="Auto,Auto">
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
+            <TabControl Grid.Column="0">
+                <TabItem Header="Database">
+                    <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="1*,1*,1*,1*,1*">
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Database file:" />
+                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding DatabaseFile}" IsReadOnly="True" />
+                        <Button Grid.Row="0" Grid.Column="2" Content="Browse..." Command="{Binding BrowseCommand}"></Button>
+                        
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Site name:" />
+                        <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding SiteName}" IsReadOnly="True" />
+                        
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Base:" />
+                        <TextBlock Grid.Row="2" Grid.Column="1" IsVisible="{Binding Base, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                            <controls:Hyperlink Href="{Binding Base}" Text="Main page" />
+                        </TextBlock>
+                        
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Generator:" />
+                        <TextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Generator}" IsReadOnly="True" />
+                        
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="Case:" />
+                        <TextBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Case}" IsReadOnly="True" />
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Namespace">
+                    <Grid ColumnDefinitions="1*,1*" RowDefinitions="Auto,*" Margin="4">
+                        <CheckBox Grid.Row="0" Grid.Column="0" Content="Subject" IsChecked="{Binding IsAllSubjectChecked}"
+                                  Margin="4" />
+                        <ListBox Grid.Row="1" Grid.Column="0" SelectionMode="Multiple" Margin="3"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                                 ItemsSource="{Binding SubjectNamespaces}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate DataType="models:WikiNamespace">
+                                    <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}" />
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+
+                        <CheckBox Grid.Row="0" Grid.Column="1" Content="Talk" IsChecked="{Binding IsAllTalkChecked}" Margin="4" />
+                        <ListBox Grid.Row="1" Grid.Column="1" SelectionMode="Multiple" Margin="3"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                                 ItemsSource="{Binding TalkNamespaces}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate DataType="models:WikiNamespace">
+                                    <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}" />
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Title"></TabItem>
+                <TabItem Header="Revision"></TabItem>
+                <TabItem Header="Text"></TabItem>
+                <TabItem Header="Searching"></TabItem>
+                <TabItem Header="Restriction"></TabItem>
+                <TabItem Header="Help"></TabItem>
+            </TabControl>
+            <StackPanel Grid.Column="1">
+                <Button Content="Start" Command="{Binding StartCommand}" />
+                <Button Content="Pause" Command="{Binding PauseCommand}" />
+                <Button Content="Reset" />
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1" RowDefinitions="Auto,Auto" ColumnDefinitions="1*,1*">
+            <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center"
+                   Content="{Binding Pages.Count, StringFormat='{}{0} pages'}" />
+            <ListBox Grid.Row="1" Grid.Column="0" Height="500" SelectionMode="Single" Margin="3" ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                     ItemsSource="{Binding Pages}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="models:WikiPageModel">
+                        <TextBlock Text="{Binding Title}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+    </Grid>
+</Window>

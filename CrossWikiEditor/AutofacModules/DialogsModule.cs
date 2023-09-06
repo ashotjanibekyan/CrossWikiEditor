@@ -13,6 +13,7 @@ public sealed class DialogsModule : Module
     {
         builder.RegisterType<AddNewProfileView>().Named<IDialog>(nameof(AddOrEditProfileViewModel));
         builder.RegisterType<AlertView>().Named<IDialog>(nameof(AlertViewModel));
+        builder.RegisterType<DatabaseScannerView>().Named<IDialog>(nameof(DatabaseScannerViewModel));
         builder.RegisterType<FilterView>().Named<IDialog>(nameof(FilterViewModel));
         builder.RegisterType<FindAndReplaceView>().Named<IDialog>(nameof(FindAndReplaceViewModel));
         builder.RegisterType<PreferencesView>().Named<IDialog>(nameof(PreferencesViewModel));

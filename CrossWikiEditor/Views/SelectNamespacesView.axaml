@@ -3,6 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:CrossWikiEditor.Core.ViewModels;assembly=CrossWikiEditor.Core"
+        xmlns:models="clr-namespace:CrossWikiEditor.Core.Models;assembly=CrossWikiEditor.Core"
         SizeToContent="WidthAndHeight"
         Classes="DialogWindow"
         mc:Ignorable="d"
@@ -15,7 +16,7 @@
         <ListBox Grid.Row="1" SelectionMode="Single" IsVisible="{Binding IsMultiselect}" Margin="3" ScrollViewer.HorizontalScrollBarVisibility="Visible"
                  ItemsSource="{Binding Namespaces}">
             <ListBox.ItemTemplate>
-                <DataTemplate DataType="viewModels:WikiNamespace">
+                <DataTemplate DataType="models:WikiNamespace">
                     <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
@@ -23,7 +24,7 @@
         <ListBox Grid.Row="1" SelectionMode="Single" IsVisible="{Binding !IsMultiselect}" Margin="3" ScrollViewer.HorizontalScrollBarVisibility="Visible"
                  ItemsSource="{Binding Namespaces}">
             <ListBox.ItemTemplate>
-                <DataTemplate DataType="viewModels:WikiNamespace">
+                <DataTemplate DataType="models:WikiNamespace">
                     <RadioButton Content="{Binding Name}" GroupName="groupname" IsChecked="{Binding IsChecked}" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
