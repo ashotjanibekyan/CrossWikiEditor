@@ -1,7 +1,6 @@
 using Autofac;
 using CrossWikiEditor.Core.ListProviders;
 using CrossWikiEditor.Core.ListProviders.BaseListProviders;
-using CrossWikiEditor.Core.WikiClientLibraryUtils.Generators;
 
 namespace CrossWikiEditor.AutofacModules;
 
@@ -40,6 +39,7 @@ public sealed class ListProvidersModule : Module
         builder.RegisterType<PagesWithPropListProvider>().As<IListProvider>();
         builder.RegisterType<PagesWithoutLanguageLinksListProvider>().As<IListProvider>();
         builder.RegisterType<PagesWithoutLanguageLinksNoRedirectsListProvider>().As<IListProvider>();
+        builder.RegisterType<PetscanListProvider>().As<IListProvider>();
         builder.RegisterType<ProtectedPagesListProvider>().As<IListProvider>();
         builder.RegisterType<RandomListProvider>().As<IListProvider>();
         builder.RegisterType<RecentChangesListProvider>().As<IListProvider>();
