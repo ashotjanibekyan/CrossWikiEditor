@@ -14,17 +14,27 @@ public class PetscanListProvider(IUserPreferencesService userPreferencesService,
     public override string ParamTitle => "PSID";
     public override async Task<Result<List<WikiPageModel>>> MakeList()
     {
-        WikiSite wikiSite = await wikiClientCache.GetWikiSite(userPreferencesService.GetCurrentPref().UrlApi());
-        var wikiPageModels = new List<WikiPageModel>();
-        if (int.TryParse(Param, out int id))
+        try
         {
-            var httpClient = new HttpClient();
-            HttpResponseMessage result = await httpClient.GetAsync($"https://petscan.wmflabs.org/?psid={id}&format=plain");
-            string content = await result.Content.ReadAsStringAsync();
-            var titles = content.Split('\n').ToList();
-            wikiPageModels.AddRange(titles.Select(title => new WikiPageModel(new WikiPage(wikiSite, title))));
+            WikiSite wikiSite = await wikiClientCache.GetWikiSite(userPreferencesService.GetCurrentPref().UrlApi());
+            var wikiPageModels = new List<WikiPageModel>();
+            if (long.TryParse(Param, out long id))
+            {
+                var httpClient = new HttpClient();
+                HttpResponseMessage result = await httpClient.GetAsync($"https://petscan.wmflabs.org/?psid={id}&format=plain");
+                if (result.IsSuccessStatusCode)
+                {
+                    string content = await result.Content.ReadAsStringAsync();
+                    var titles = content.Split('\n').ToList();
+                    wikiPageModels.AddRange(titles.Select(title => new WikiPageModel(new WikiPage(wikiSite, title))));
+                }
+            }
+            
+            return Result<List<WikiPageModel>>.Success(wikiPageModels);
         }
-
-        return Result<List<WikiPageModel>>.Success(wikiPageModels);
+        catch (Exception e)
+        {
+            return Result<List<WikiPageModel>>.Failure(e.Message);
+        }
     }
 }
