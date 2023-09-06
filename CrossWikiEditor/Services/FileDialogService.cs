@@ -16,18 +16,22 @@ public sealed class FileDialogService(IStorageProvider storageProvider) : IFileD
         bool allowMultiple,
         List<string>? patterns = null)
     {
-        IReadOnlyList<IStorageFile> result = await storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+        var options = new FilePickerOpenOptions()
         {
             Title = title,
             AllowMultiple = allowMultiple,
-            FileTypeFilter = new List<FilePickerFileType>
+        };
+        if (patterns is not null)
+        {
+            options.FileTypeFilter = new List<FilePickerFileType>
             {
-                new FilePickerFileType(null)
+                new(null)
                 {
                     Patterns = patterns
                 }
-            }
-        });
+            };
+        }
+        IReadOnlyList<IStorageFile> result = await storageProvider.OpenFilePickerAsync(options);
         return result.Select(f => HttpUtility.UrlDecode(f.Path.AbsolutePath)).ToArray();
     }
 
