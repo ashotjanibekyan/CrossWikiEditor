@@ -5,7 +5,7 @@ using CrossWikiEditor.Core.Utils;
 
 namespace CrossWikiEditor.Tests.ListProviders;
 
-public class AllCategoriesListProviderTests : BaseTest
+public class AllCategoriesListProviderTests : ListProvidersBaseTest
 {
     private AllCategoriesListProvider _sut;
     
@@ -13,6 +13,7 @@ public class AllCategoriesListProviderTests : BaseTest
     public void SetUp()
     {
         SetUpServices();
+        SetUpUserPrefs("hyw", ProjectEnum.Wikipedia);
         _sut = new AllCategoriesListProvider(_dialogService, _pageService, _userPreferencesService);
     }
 
@@ -20,18 +21,8 @@ public class AllCategoriesListProviderTests : BaseTest
     public async Task MakeList_ShouldReturnPageServiceResults()
     {
         // arrange
-        var expectedPages = new List<WikiPageModel>
-        {
-            new("title", "https://hyw.wikipedia.org/w/api.php?", _wikiClientCache),
-            new("title1", "https://hyw.wikipedia.org/w/api.php?", _wikiClientCache),
-        };
-        _pageService.GetAllCategories("https://hyw.wikipedia.org/w/api.php?", "", 73)
-            .Returns(Result<List<WikiPageModel>>.Success(expectedPages));
-        _userPreferencesService.GetCurrentPref().Returns(new UserPrefs
-        {
-            LanguageCode = "hyw",
-            Project = ProjectEnum.Wikipedia
-        });
+        List<WikiPageModel>? expectedPages = Fakers.GetWikiPageModelFaker(_userPrefs.UrlApi(), _wikiClientCache).Generate(4);
+        _pageService.GetAllCategories(_userPrefs.UrlApi(), "", 73).Returns(Result<List<WikiPageModel>>.Success(expectedPages));
 
         // act
         Result<List<WikiPageModel>> result = await _sut.MakeList(73);
@@ -39,21 +30,14 @@ public class AllCategoriesListProviderTests : BaseTest
         // assert
         result.IsSuccessful.Should().BeTrue();
         result.Value.Should().NotBeNull();
-        result.Value[0].Title.Should().Be("title");
-        result.Value[1].Title.Should().Be("title1");
+        result.Value.Should().BeEquivalentTo(expectedPages);
     }
 
     [Test]
     public async Task MakeList_ShouldReturnUnsuccessfulResult_WhenPageServiceReturnsUnsuccessfulResult()
     {
         // arrange
-        _pageService.GetAllCategories("https://hyw.wikipedia.org/w/api.php?", "", 73)
-            .Returns(Result<List<WikiPageModel>>.Failure("failed to get pages"));
-        _userPreferencesService.GetCurrentPref().Returns(new UserPrefs
-        {
-            LanguageCode = "hyw",
-            Project = ProjectEnum.Wikipedia
-        });
+        _pageService.GetAllCategories(_userPrefs.UrlApi(), "", 73).Returns(Result<List<WikiPageModel>>.Failure("failed to get pages"));
 
         // act
         Result<List<WikiPageModel>> result = await _sut.MakeList(73);
