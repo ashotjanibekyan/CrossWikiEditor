@@ -14,7 +14,10 @@ public class AllCategoriesListProviderTests : ListProvidersBaseTest
     {
         SetUpServices();
         SetUpUserPrefs("hyw", ProjectEnum.Wikipedia);
-        _sut = new AllCategoriesListProvider(_dialogService, _pageService, _userPreferencesService);
+        _sut = new AllCategoriesListProvider(_dialogService, _pageService, _userPreferencesService)
+        {
+            Param = "start from here"
+        };
     }
 
     [Test]
@@ -22,7 +25,7 @@ public class AllCategoriesListProviderTests : ListProvidersBaseTest
     {
         // arrange
         List<WikiPageModel>? expectedPages = Fakers.GetWikiPageModelFaker(_userPrefs.UrlApi(), _wikiClientCache).Generate(4);
-        _pageService.GetAllCategories(_userPrefs.UrlApi(), "", 73).Returns(Result<List<WikiPageModel>>.Success(expectedPages));
+        _pageService.GetAllCategories(_userPrefs.UrlApi(), _sut.Param, 73).Returns(Result<List<WikiPageModel>>.Success(expectedPages));
 
         // act
         Result<List<WikiPageModel>> result = await _sut.MakeList(73);
@@ -37,7 +40,7 @@ public class AllCategoriesListProviderTests : ListProvidersBaseTest
     public async Task MakeList_ShouldReturnUnsuccessfulResult_WhenPageServiceReturnsUnsuccessfulResult()
     {
         // arrange
-        _pageService.GetAllCategories(_userPrefs.UrlApi(), "", 73).Returns(Result<List<WikiPageModel>>.Failure("failed to get pages"));
+        _pageService.GetAllCategories(_userPrefs.UrlApi(), _sut.Param, 73).Returns(Result<List<WikiPageModel>>.Failure("failed to get pages"));
 
         // act
         Result<List<WikiPageModel>> result = await _sut.MakeList(73);

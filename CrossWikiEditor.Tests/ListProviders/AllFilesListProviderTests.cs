@@ -14,7 +14,10 @@ public class AllFilesListProviderTests : ListProvidersBaseTest
     {
         SetUpServices();
         SetUpUserPrefs("hyw", ProjectEnum.Wikipedia);
-        _sut = new AllFilesListProvider(_dialogService, _pageService, _userPreferencesService);
+        _sut = new AllFilesListProvider(_dialogService, _pageService, _userPreferencesService)
+        {
+            Param = "start from here"
+        };
     }
 
     [Test]
@@ -22,7 +25,7 @@ public class AllFilesListProviderTests : ListProvidersBaseTest
     {
         // arrange
         List<WikiPageModel>? expectedPages = Fakers.GetWikiPageModelFaker(_userPrefs.UrlApi(), _wikiClientCache).Generate(4);
-        _pageService.GetAllFiles(_userPrefs.UrlApi(), "", 73).Returns(Result<List<WikiPageModel>>.Success(expectedPages));
+        _pageService.GetAllFiles(_userPrefs.UrlApi(), _sut.Param, 73).Returns(Result<List<WikiPageModel>>.Success(expectedPages));
 
         // act
         Result<List<WikiPageModel>> result = await _sut.MakeList(73);
@@ -37,7 +40,7 @@ public class AllFilesListProviderTests : ListProvidersBaseTest
     public async Task MakeList_ShouldReturnUnsuccessfulResult_WhenPageServiceReturnsUnsuccessfulResult()
     {
         // arrange
-        _pageService.GetAllFiles(_userPrefs.UrlApi(), "", 73).Returns(Result<List<WikiPageModel>>.Failure("failed to get pages"));
+        _pageService.GetAllFiles(_userPrefs.UrlApi(), _sut.Param, 73).Returns(Result<List<WikiPageModel>>.Failure("failed to get pages"));
 
         // act
         Result<List<WikiPageModel>> result = await _sut.MakeList(73);
