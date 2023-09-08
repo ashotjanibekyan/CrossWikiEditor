@@ -7,6 +7,7 @@
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Simple.xaml" />
         <StyleInclude Source="./Styles/ButtonStyles.axaml" />
         <StyleInclude Source="./Styles/DialogStyles.axaml" />
+        <StyleInclude Source="avares://AvaloniaEdit/Themes/Simple/AvaloniaEdit.xaml" />
         <Style Selector="HeaderedContentControl">
             <Setter Property="Template">
                 <Setter.Value>

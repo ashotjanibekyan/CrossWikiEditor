@@ -5,6 +5,7 @@
         xmlns:viewModels="clr-namespace:CrossWikiEditor.Core.ViewModels;assembly=CrossWikiEditor.Core"
         xmlns:controls="clr-namespace:CrossWikiEditor.Controls"
         xmlns:models="clr-namespace:CrossWikiEditor.Core.Models;assembly=CrossWikiEditor.Core"
+        xmlns:avaloniaEdit="https://github.com/avaloniaui/avaloniaedit"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:DataType="viewModels:DatabaseScannerViewModel"
         x:Class="CrossWikiEditor.Views.DatabaseScannerView"
@@ -83,6 +84,22 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
+
+            <Label Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Content="Convert" />
+            <StackPanel Grid.Row="1" Grid.Column="1">
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox Content="Add heading every" IsChecked="{Binding !IsAlphabetisedHeading}" />
+                    <NumericUpDown Value="{Binding NumberOfPagesOnEachSection}" />
+                    <Button Content="Make" Command="{Binding MakeCommand}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox Content="Alphabetised headings" IsChecked="{Binding IsAlphabetisedHeading}" />
+                    <TextBlock Text="List type" />
+                    <RadioButton Content="#" IsChecked="{Binding IsNumericList}" GroupName="listType"/>
+                    <RadioButton Content="*" GroupName="listType"/>
+                </StackPanel>
+                <avaloniaEdit:TextEditor Name="TextEditor" IsReadOnly="True" Height="500" />
+            </StackPanel>
         </Grid>
     </Grid>
 </Window>

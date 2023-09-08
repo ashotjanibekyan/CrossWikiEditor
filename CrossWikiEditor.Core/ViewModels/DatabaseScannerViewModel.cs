@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
+using System.Text;
 using System.Xml;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -32,7 +33,12 @@ public sealed partial class DatabaseScannerViewModel(
     [ObservableProperty] private string _base = string.Empty;
     [ObservableProperty] private string _generator = string.Empty;
     [ObservableProperty] private string _case = string.Empty;
-
+    
+    [ObservableProperty] private string _convertedText = string.Empty;
+    [ObservableProperty] private bool _isAlphabetisedHeading;
+    [ObservableProperty] private int _numberOfPagesOnEachSection = 25;
+    [ObservableProperty] private bool _isNumericList;
+    
     partial void OnIsAllTalkCheckedChanged(bool value)
     {
         TalkNamespaces = TalkNamespaces
@@ -156,6 +162,49 @@ public sealed partial class DatabaseScannerViewModel(
         _scannerCancellationTokenSource.Cancel();
         _scannerTask = null;
         _scannerCancellationTokenSource = new CancellationTokenSource();
+    }
+
+    [RelayCommand]
+    private void Make()
+    {
+        if (Pages.Count == 0)
+        {
+            return;
+        }
+
+        if (IsAlphabetisedHeading)
+        {
+            MakeAlphabetisedList();
+        }
+        else
+        {
+            MakeNumericList();
+        }
+    }
+
+    private void MakeAlphabetisedList()
+    {
+        throw new NotImplementedException();
+    }
+
+    public EventHandler<string> ConvertedTextChanged;
+
+    private void MakeNumericList()
+    {
+        string seperator = IsNumericList ? "#" : "*";
+        IEnumerable<WikiPageModel[]> pages = Pages.Chunk(NumberOfPagesOnEachSection);
+        var sb = new StringBuilder();
+        const int i = 1;
+        foreach (WikiPageModel[] section in pages)
+        {
+            sb.Append($"== {i} ==\n");
+            foreach (WikiPageModel page in section)
+            {
+                sb.Append($"{seperator} [[{page.Title}]]\n");
+            }
+        }
+        
+        ConvertedTextChanged.Invoke(this, sb.ToString());
     }
 
     private void UpdateUi()
