@@ -31,6 +31,7 @@ public sealed class MakeListViewModelTests : BaseTest
             LanguageCode = "hy",
             Project = ProjectEnum.Wikipedia
         });
+        _userPreferencesService.CurrentApiUrl.Returns(ApiRoot);
         _wikiClientCache.GetWikiSite(Arg.Any<string>()).Returns(new WikiSite(_wikiClient, ApiRoot));
     }
 

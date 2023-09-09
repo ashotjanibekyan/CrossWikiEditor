@@ -20,6 +20,7 @@ public class ListProvidersBaseTest : BaseTest
             Project = project
         };
         _userPreferencesService.GetCurrentPref().Returns(_userPrefs);
+        _userPreferencesService.CurrentApiUrl.Returns(_userPrefs.UrlApi());
     }
 
     protected async Task MakeList_ShouldReturnPageServiceResults(LimitedListProviderBase sut, List<WikiPageModel> expectedPages)
