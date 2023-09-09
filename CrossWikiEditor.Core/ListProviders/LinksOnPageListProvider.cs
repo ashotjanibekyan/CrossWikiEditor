@@ -1,9 +1,9 @@
 ﻿namespace CrossWikiEditor.Core.ListProviders;
 
 public class LinksOnPageListProvider(
-    IUserPreferencesService userPreferencesService,
+    IDialogService dialogService,
     IPageService pageService,
-    IDialogService dialogService) : LimitedListProviderBase(dialogService)
+    IUserPreferencesService userPreferencesService) : LimitedListProviderBase(dialogService)
 {
     public override string Title => "Links on page";
     public override string ParamTitle => "Links on";

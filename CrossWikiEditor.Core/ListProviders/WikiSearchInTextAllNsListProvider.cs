@@ -1,9 +1,9 @@
 ﻿namespace CrossWikiEditor.Core.ListProviders;
 
 public sealed class WikiSearchInTextAllNsListProvider(
-    IUserPreferencesService userPreferencesService,
+    IDialogService dialogService,
     IPageService pageService,
-    IDialogService dialogService) : LimitedListProviderBase(dialogService)
+    IUserPreferencesService userPreferencesService) : LimitedListProviderBase(dialogService)
 {
     public override string Title => "Wiki search (text) (all NS)";
     public override string ParamTitle => "Wiki search";

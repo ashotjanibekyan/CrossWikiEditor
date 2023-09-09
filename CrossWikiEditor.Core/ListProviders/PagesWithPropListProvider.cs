@@ -1,9 +1,9 @@
 ﻿namespace CrossWikiEditor.Core.ListProviders;
 
 public sealed class PagesWithPropListProvider(
-    IUserPreferencesService userPreferencesService,
+    IDialogService dialogService,
     IPageService pageService,
-    IDialogService dialogService) : LimitedListProviderBase(dialogService)
+    IUserPreferencesService userPreferencesService) : LimitedListProviderBase(dialogService)
 {
     public override string Title => "Pages with a page property";
     public override string ParamTitle => "Property name";

@@ -1,9 +1,9 @@
 ﻿namespace CrossWikiEditor.Core.ListProviders;
 
 public sealed class WhatTranscludesHereListProvider(
-    IUserPreferencesService userPreferencesService,
+    IDialogService dialogService,
     IPageService pageService,
-    IDialogService dialogService) : LimitedListProviderBase(dialogService)
+    IUserPreferencesService userPreferencesService) : LimitedListProviderBase(dialogService)
 {
     public override string Title => "What transcludes page";
     public override string ParamTitle => "What embeds";

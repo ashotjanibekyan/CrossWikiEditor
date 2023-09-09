@@ -1,9 +1,9 @@
 ﻿namespace CrossWikiEditor.Core.ListProviders;
 
 public sealed class UserContributionsListProvider(
-    IUserPreferencesService userPreferencesService,
+    IDialogService dialogService,
     IUserService userService,
-    IDialogService dialogService) : LimitedListProviderBase(dialogService)
+    IUserPreferencesService userPreferencesService) : LimitedListProviderBase(dialogService)
 {
     public override string Title => "User contribs";
     public override string ParamTitle => "User";

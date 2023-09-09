@@ -4,7 +4,7 @@ public sealed class LinksOnPageRedListProvider(
         IUserPreferencesService userPreferencesService,
         IPageService pageService,
         IDialogService dialogService)
-    : LinksOnPageListProvider(userPreferencesService, pageService, dialogService)
+    : LinksOnPageListProvider(dialogService, pageService, userPreferencesService)
 {
     public override string Title => "Links on page (only bluelinks)";
 
