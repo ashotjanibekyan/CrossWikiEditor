@@ -1,9 +1,9 @@
 ﻿namespace CrossWikiEditor.Core.ListProviders;
 
 public sealed class ImageFileLinksListProvider(
+    IDialogService dialogService,
     IPageService pageService,
-    IUserPreferencesService userPreferencesService,
-    IDialogService dialogService) : LimitedListProviderBase(dialogService)
+    IUserPreferencesService userPreferencesService) : LimitedListProviderBase(dialogService)
 {
     public override string Title => "Image file links";
     public override string ParamTitle => "File";
