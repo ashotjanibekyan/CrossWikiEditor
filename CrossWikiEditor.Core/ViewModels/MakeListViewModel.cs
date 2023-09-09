@@ -10,7 +10,6 @@ using CrossWikiEditor.Core.Services;
 using CrossWikiEditor.Core.Services.WikiServices;
 using CrossWikiEditor.Core.Utils;
 using Serilog;
-using CollectionExtensions = CrossWikiEditor.Core.Utils.CollectionExtensions;
 
 namespace CrossWikiEditor.Core.ViewModels;
 

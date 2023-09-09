@@ -1,7 +1,6 @@
 ﻿using Bogus;
 using CrossWikiEditor.Core.Models;
 using CrossWikiEditor.Core.Services.WikiServices;
-using CrossWikiEditor.Core.ViewModels;
 
 namespace CrossWikiEditor.Tests;
 

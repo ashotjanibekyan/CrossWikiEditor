@@ -6,7 +6,6 @@ using CrossWikiEditor.Core.Utils;
 using CrossWikiEditor.Core.ViewModels;
 using WikiClientLibrary.Client;
 using WikiClientLibrary.Sites;
-using CollectionExtensions = CrossWikiEditor.Core.Utils.CollectionExtensions;
 
 namespace CrossWikiEditor.Tests.ViewModels;
 

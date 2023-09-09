@@ -12,14 +12,14 @@ public sealed class AllPagesWithPrefixListProvider(
     IViewModelFactory viewModelFactory,
     IUserPreferencesService userPreferencesService) : LimitedListProviderBase(dialogService), INeedNamespacesListProvider
 {
-    private int[]? _namespace;
+    private int[]? _namespaces;
     public override string Title => "All Pages with prefix (Prefixindex)";
     public override string ParamTitle => "Prefix";
-    public override bool CanMake => _namespace is {Length: 1};
+    public override bool CanMake => _namespaces is {Length: 1};
     
-    public async Task GetAdditionalParams() => _namespace = await this.GetNamespaces(isMultiselect: false, dialogService, viewModelFactory);
+    public async Task GetAdditionalParams() => _namespaces = await this.GetNamespaces(isMultiselect: false, dialogService, viewModelFactory);
     public override async Task<Result<List<WikiPageModel>>> MakeList(int limit)
     {
-        return await pageService.GetAllPagesWithPrefix(userPreferencesService.GetCurrentPref().UrlApi(), Param, _namespace!.First(), limit);
+        return await pageService.GetAllPagesWithPrefix(userPreferencesService.GetCurrentPref().UrlApi(), Param, _namespaces!.First(), limit);
     }
 }
