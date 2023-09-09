@@ -5,6 +5,7 @@ public class ListProvidersBaseTest : BaseTest
     protected UserPrefs _userPrefs;
     protected SelectNamespacesViewModel _selectNamespacesViewModel;
     protected SelectProtectionSelectionPageViewModel _selectProtectionSelectionPageViewModel;
+    protected SelectNamespacesAndRedirectFilterViewModel _selectNamespacesAndRedirectFilterViewModel;
     protected List<WikiPageModel> _expectedPages;
 
     protected void SetUpUserPrefs(string languageCode, ProjectEnum project)
