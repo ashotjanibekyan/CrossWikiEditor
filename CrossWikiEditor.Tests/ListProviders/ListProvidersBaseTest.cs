@@ -22,9 +22,9 @@ public class ListProvidersBaseTest : BaseTest
         // arrange
 
         // act
-        if (sut is INeedNamespacesListProvider needNamespacesListProvider)
+        if (sut is INeedAdditionalParamsListProvider needAdditionalParamsListProvider)
         {
-            await needNamespacesListProvider.GetAdditionalParams();
+            await needAdditionalParamsListProvider.GetAdditionalParams();
         }
         Result<List<WikiPageModel>> result = await sut.MakeList(73);
 

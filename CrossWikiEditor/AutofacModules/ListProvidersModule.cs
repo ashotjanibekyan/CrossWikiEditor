@@ -23,7 +23,7 @@ public sealed class ListProvidersModule : Module
         builder.RegisterType<CategoryListProvider>().As<IListProvider>();
         builder.RegisterType<CategoryRecursive1LevelListProvider>().As<IListProvider>();
         builder.RegisterType<CategoryRecursiveListProvider>().As<IListProvider>();
-        builder.RegisterType<CategoryRecursiveUserDefinedLevelListProviderBase>().As<IListProvider>();
+        builder.RegisterType<CategoryRecursiveUserDefinedLevelListProvider>().As<IListProvider>();
         builder.RegisterType<DatabaseDumpListProvider>().As<IListProvider>();
         builder.RegisterType<DisambiguationPagesListProvider>().As<IListProvider>();
         builder.RegisterType<FilesOnPageListProvider>().As<IListProvider>();
