@@ -23,7 +23,7 @@ public class ListProvidersBaseTest : BaseTest
         _userPreferencesService.CurrentApiUrl.Returns(_userPrefs.UrlApi());
     }
 
-    protected async Task MakeList_ShouldReturnPageServiceResults(LimitedListProviderBase sut, List<WikiPageModel> expectedPages)
+    protected async Task MakeList_ShouldReturnServiceResults(LimitedListProviderBase sut, List<WikiPageModel> expectedPages)
     {
         // arrange
 
@@ -38,6 +38,30 @@ public class ListProvidersBaseTest : BaseTest
         result.IsSuccessful.Should().BeTrue();
         result.Value.Should().NotBeNull();
         result.Value.Should().BeEquivalentTo(expectedPages);
+    }
+
+    protected void CanMake_ShouldBeFalse_WhenParamIsEmpty(ListProviderBase sut)
+    {
+        // arrange
+        sut.Param = "";
+
+        // act
+        var result = sut.CanMake;
+
+        // assert
+        result.Should().BeFalse();
+    }
+
+    protected void CanMake_ShouldBeTrue_WhenParamIsEmpty(ListProviderBase sut)
+    {
+        // arrange
+        sut.Param = "not empty";
+
+        // act
+        var result = sut.CanMake;
+
+        // assert
+        result.Should().BeTrue();
     }
     
     protected async Task CanMake_ShouldBeFalse_WhenGetAdditionalParamsNotCalled(INeedNamespacesListProvider sut)

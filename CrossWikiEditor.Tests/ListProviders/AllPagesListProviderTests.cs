@@ -46,7 +46,7 @@ public class AllPagesListProviderTests : ListProvidersBaseTest
         _pageService.GetAllPages(_userPrefs.UrlApi(), _sut.Param, 7, PropertyFilterOption.Disable, PropertyFilterOption.Disable, 73)
             .Returns(Result<List<WikiPageModel>>.Success(_expectedPages));
 
-        await base.MakeList_ShouldReturnPageServiceResults(_sut, _expectedPages);
+        await MakeList_ShouldReturnServiceResults(_sut, _expectedPages);
     }
 
     [Test]

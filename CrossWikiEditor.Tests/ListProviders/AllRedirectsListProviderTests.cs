@@ -2,26 +2,30 @@
 using CrossWikiEditor.Core.Models;
 using CrossWikiEditor.Core.Settings;
 using CrossWikiEditor.Core.Utils;
+using CrossWikiEditor.Core.ViewModels;
+using WikiClientLibrary.Generators;
 
 namespace CrossWikiEditor.Tests.ListProviders;
 
-public class AllPagesWithPrefixListProviderTests : ListProvidersBaseTest
+public class AllRedirectsListProviderTests : ListProvidersBaseTest
 {
-    private AllPagesWithPrefixListProvider _sut;
+    private AllRedirectsListProvider _sut;
     
     [SetUp]
     public void SetUp()
     {
         SetUpServices();
         SetUpUserPrefs("hyw", ProjectEnum.Wikipedia);
-        _sut = new AllPagesWithPrefixListProvider(_dialogService, _pageService, _viewModelFactory, _userPreferencesService)
+        _selectNamespacesViewModel = new SelectNamespacesViewModel(new List<WikiNamespace>(), false);
+        _sut = new AllRedirectsListProvider(_dialogService, _pageService, _viewModelFactory, _userPreferencesService)
         {
-            Param = "my prefix"
+            Param = "start from here"
         };
         _dialogService.ShowDialog<int[]?>(_selectNamespacesViewModel).Returns(new[] {7, 2, 3, 9});
+        _viewModelFactory.GetSelectNamespacesViewModel(false).Returns(_selectNamespacesViewModel);
         _expectedPages = Fakers.GetWikiPageModelFaker(_userPrefs.UrlApi(), _wikiClientCache).Generate(4);
     }
-    
+
     [Test]
     public async Task CanMake_ShouldBeFalse_WhenGetAdditionalParamsNotCalled() =>
         await base.CanMake_ShouldBeFalse_WhenGetAdditionalParamsNotCalled(_sut);
@@ -34,11 +38,12 @@ public class AllPagesWithPrefixListProviderTests : ListProvidersBaseTest
     public async Task CanMake_ShouldBeTrue_WhenGetAdditionalParamsReturnsNonEmptyList() =>
         await base.CanMake_ShouldBeTrue_WhenGetAdditionalParamsReturnsNonEmptyList(_sut, _selectNamespacesViewModel);
 
+
     [Test]
     public async Task MakeList_ShouldReturnPageServiceResults()
     {
         // arrange
-        _pageService.GetAllPagesWithPrefix(_userPrefs.UrlApi(), _sut.Param,  7, 73)
+        _pageService.GetAllPages(_userPrefs.UrlApi(), _sut.Param, 7, PropertyFilterOption.WithProperty, PropertyFilterOption.Disable, 73)
             .Returns(Result<List<WikiPageModel>>.Success(_expectedPages));
 
         await MakeList_ShouldReturnServiceResults(_sut, _expectedPages);
@@ -48,7 +53,7 @@ public class AllPagesWithPrefixListProviderTests : ListProvidersBaseTest
     public async Task MakeList_ShouldReturnUnsuccessfulResult_WhenPageServiceReturnsUnsuccessfulResult()
     {
         // arrange
-        _pageService.GetAllPagesWithPrefix(_userPrefs.UrlApi(), _sut.Param, 7, 73)
+        _pageService.GetAllPages(_userPrefs.UrlApi(), _sut.Param, 7, PropertyFilterOption.WithProperty, PropertyFilterOption.Disable, 73)
             .Returns(Result<List<WikiPageModel>>.Failure("failed to get pages"));
 
         // act
@@ -63,7 +68,7 @@ public class AllPagesWithPrefixListProviderTests : ListProvidersBaseTest
     [TearDown]
     public void TearDown()
     {
-        _sut.Title.Should().Be("All Pages with prefix (Prefixindex)");
-        _sut.ParamTitle.Should().Be("Prefix");
+        _sut.Title.Should().Be("All Redirects");
+        _sut.ParamTitle.Should().Be("Start from");
     }
 }
