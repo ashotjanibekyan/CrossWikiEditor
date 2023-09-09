@@ -1,9 +1,9 @@
 namespace CrossWikiEditor.Core.ListProviders;
 
 public sealed class FilesOnPageListProvider(
-    IUserPreferencesService userPreferencesService,
+    IDialogService dialogService,
     IPageService pageService,
-    IDialogService dialogService) : LimitedListProviderBase(dialogService)
+    IUserPreferencesService userPreferencesService) : LimitedListProviderBase(dialogService)
 {
     public override string Title => "Files on page";
     public override string ParamTitle => "Files on";
