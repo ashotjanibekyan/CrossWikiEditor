@@ -18,22 +18,17 @@ public class AllCategoriesListProviderTests : ListProvidersBaseTest
         {
             Param = "start from here"
         };
+        _expectedPages = Fakers.GetWikiPageModelFaker(_userPrefs.UrlApi(), _wikiClientCache).Generate(4);
     }
 
     [Test]
     public async Task MakeList_ShouldReturnPageServiceResults()
     {
         // arrange
-        List<WikiPageModel>? expectedPages = Fakers.GetWikiPageModelFaker(_userPrefs.UrlApi(), _wikiClientCache).Generate(4);
-        _pageService.GetAllCategories(_userPrefs.UrlApi(), _sut.Param, 73).Returns(Result<List<WikiPageModel>>.Success(expectedPages));
+        _pageService.GetAllCategories(_userPrefs.UrlApi(), _sut.Param, 73)
+            .Returns(Result<List<WikiPageModel>>.Success(_expectedPages));
 
-        // act
-        Result<List<WikiPageModel>> result = await _sut.MakeList(73);
-
-        // assert
-        result.IsSuccessful.Should().BeTrue();
-        result.Value.Should().NotBeNull();
-        result.Value.Should().BeEquivalentTo(expectedPages);
+        await base.MakeList_ShouldReturnPageServiceResults(_sut, _expectedPages);
     }
 
     [Test]
