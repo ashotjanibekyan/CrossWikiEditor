@@ -1,7 +1,6 @@
 ﻿namespace CrossWikiEditor.Core.ListProviders;
 
-public sealed class WhatTranscludesHereListProvider(
-    IDialogService dialogService,
+public sealed class WhatTranscludesHereListProvider(IDialogService dialogService,
     IPageService pageService,
     IUserPreferencesService userPreferencesService) : LimitedListProviderBase(dialogService)
 {

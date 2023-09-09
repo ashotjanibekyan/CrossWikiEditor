@@ -10,7 +10,7 @@ public class UserContributionsListProviderTests : ListProvidersBaseTest
         SetUpServices();
         SetUpUserPrefs("hyw", ProjectEnum.Wikipedia);
         _selectNamespacesViewModel = new SelectNamespacesViewModel(new List<WikiNamespace>(), false);
-        _sut = new UserContributionsListProvider(_dialogService, _userService, _userPreferencesService)
+        _sut = new UserContributionsListProvider(_dialogService, _userPreferencesService, _userService)
         {
             Param = "start from here"
         };

@@ -1,10 +1,9 @@
 ﻿namespace CrossWikiEditor.Core.ListProviders;
 
-public class PagesWithoutLanguageLinksListProvider(
-    IDialogService dialogService,
+public class PagesWithoutLanguageLinksListProvider(IDialogService dialogService,
     IPageService pageService,
-    IViewModelFactory viewModelFactory,
-    IUserPreferencesService userPreferencesService) : AllPagesListProviderBase(dialogService, pageService, viewModelFactory, userPreferencesService)
+    IUserPreferencesService userPreferencesService,
+    IViewModelFactory viewModelFactory) : AllPagesListProviderBase(dialogService, pageService, viewModelFactory, userPreferencesService)
 {
     public override string Title => "Pages without language links";
 

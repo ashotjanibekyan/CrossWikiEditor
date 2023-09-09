@@ -1,7 +1,6 @@
 ﻿namespace CrossWikiEditor.Core.ListProviders;
 
-public sealed class ImageFileLinksListProvider(
-    IDialogService dialogService,
+public sealed class ImageFileLinksListProvider(IDialogService dialogService,
     IPageService pageService,
     IUserPreferencesService userPreferencesService) : LimitedListProviderBase(dialogService)
 {

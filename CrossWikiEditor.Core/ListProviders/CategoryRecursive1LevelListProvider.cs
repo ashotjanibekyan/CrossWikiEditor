@@ -1,9 +1,7 @@
 ﻿namespace CrossWikiEditor.Core.ListProviders;
 
-public sealed class CategoryRecursive1LevelListProvider(
-    IUserPreferencesService userPreferencesService,
-    ICategoryService categoryService,
-    IDialogService dialogService) : LimitedListProviderBase(dialogService)
+public sealed class CategoryRecursive1LevelListProvider(ICategoryService categoryService,
+    IDialogService dialogService, IUserPreferencesService userPreferencesService) : LimitedListProviderBase(dialogService)
 {
     public override string Title => "Category (recursive 1 level)";
     public override string ParamTitle => "Category";

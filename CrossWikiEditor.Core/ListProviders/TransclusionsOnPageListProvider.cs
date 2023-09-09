@@ -1,7 +1,6 @@
 ﻿namespace CrossWikiEditor.Core.ListProviders;
 
-public sealed class TransclusionsOnPageListProvider(
-    IDialogService dialogService,
+public sealed class TransclusionsOnPageListProvider(IDialogService dialogService,
     IPageService pageService,
     IUserPreferencesService userPreferencesService) : LimitedListProviderBase(dialogService)
 {

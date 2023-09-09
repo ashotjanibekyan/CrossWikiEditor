@@ -1,10 +1,8 @@
 ﻿namespace CrossWikiEditor.Core.ListProviders;
 
-public sealed class WhatLinksHereListProvider(
-    IUserPreferencesService userPreferencesService,
-    IViewModelFactory viewModelFactory,
-    IDialogService dialogService,
-    IPageService pageService) : LimitedListProviderBase(dialogService), INeedAdditionalParamsListProvider
+public sealed class WhatLinksHereListProvider(IDialogService dialogService,
+    IPageService pageService, IUserPreferencesService userPreferencesService,
+    IViewModelFactory viewModelFactory) : LimitedListProviderBase(dialogService), INeedAdditionalParamsListProvider
 {
     private NamespacesAndRedirectFilterOptions? _options;
     public override string Title => "What links here";

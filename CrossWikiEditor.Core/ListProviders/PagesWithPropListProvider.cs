@@ -1,7 +1,6 @@
 ﻿namespace CrossWikiEditor.Core.ListProviders;
 
-public sealed class PagesWithPropListProvider(
-    IDialogService dialogService,
+public sealed class PagesWithPropListProvider(IDialogService dialogService,
     IPageService pageService,
     IUserPreferencesService userPreferencesService) : LimitedListProviderBase(dialogService)
 {

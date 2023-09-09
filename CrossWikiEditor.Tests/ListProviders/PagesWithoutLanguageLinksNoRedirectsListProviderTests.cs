@@ -10,7 +10,7 @@ public class PagesWithoutLanguageLinksNoRedirectsListProviderTests : ListProvide
         SetUpServices();
         SetUpUserPrefs("hyw", ProjectEnum.Wikipedia);
         _selectNamespacesViewModel = new SelectNamespacesViewModel(new List<WikiNamespace>(), false);
-        _sut = new PagesWithoutLanguageLinksNoRedirectsListProvider(_dialogService, _pageService, _viewModelFactory, _userPreferencesService)
+        _sut = new PagesWithoutLanguageLinksNoRedirectsListProvider(_dialogService, _pageService, _userPreferencesService, _viewModelFactory)
         {
             Param = "start from here"
         };

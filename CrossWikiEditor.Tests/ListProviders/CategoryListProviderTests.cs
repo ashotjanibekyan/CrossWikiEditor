@@ -9,7 +9,7 @@ public class CategoryListProviderTests : ListProvidersBaseTest
     {
         SetUpServices();
         SetUpUserPrefs("hyw", ProjectEnum.Wikipedia);
-        _sut = new CategoryListProvider(_userPreferencesService, _categoryService, _dialogService);
+        _sut = new CategoryListProvider(_categoryService, _dialogService, _userPreferencesService);
         _expectedPages = Fakers.GetWikiPageModelFaker(_userPrefs.UrlApi(), _wikiClientCache).Generate(4);
     }
 

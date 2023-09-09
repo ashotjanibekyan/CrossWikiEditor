@@ -1,9 +1,7 @@
 ﻿namespace CrossWikiEditor.Core.ListProviders;
 
-public sealed class HtmlScraperListProvider(
-    IUserPreferencesService userPreferencesService,
-    IWikiClientCache wikiClientCache,
-    ILogger logger) : UnlimitedListProviderBase
+public sealed class HtmlScraperListProvider(ILogger logger, IUserPreferencesService userPreferencesService,
+    IWikiClientCache wikiClientCache) : UnlimitedListProviderBase
 {
     public override string Title => "HTML Scraper";
     public override string ParamTitle => "URL";

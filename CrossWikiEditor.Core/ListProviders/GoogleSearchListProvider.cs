@@ -1,9 +1,7 @@
 ﻿namespace CrossWikiEditor.Core.ListProviders;
 
-public partial class GoogleSearchListProvider(
-    IUserPreferencesService userPreferencesService,
-    IWikiClientCache wikiClientCache,
-    IDialogService dialogService) : LimitedListProviderBase(dialogService)
+public partial class GoogleSearchListProvider(IDialogService dialogService, IUserPreferencesService userPreferencesService,
+    IWikiClientCache wikiClientCache) : LimitedListProviderBase(dialogService)
 {
     private static readonly Regex _regexGoogle = RegexGoogle();
     public override string Title => "Google search";

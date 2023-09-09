@@ -9,7 +9,7 @@ public class AllPagesWithPrefixListProviderTests : ListProvidersBaseTest
     {
         SetUpServices();
         SetUpUserPrefs("hyw", ProjectEnum.Wikipedia);
-        _sut = new AllPagesWithPrefixListProvider(_dialogService, _pageService, _viewModelFactory, _userPreferencesService)
+        _sut = new AllPagesWithPrefixListProvider(_dialogService, _pageService, _userPreferencesService, _viewModelFactory)
         {
             Param = "my prefix"
         };

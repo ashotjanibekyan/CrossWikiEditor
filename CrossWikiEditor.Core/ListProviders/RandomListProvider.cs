@@ -1,9 +1,9 @@
 ﻿namespace CrossWikiEditor.Core.ListProviders;
 
-public sealed class RandomListProvider(IPageService pageService,
-        IDialogService dialogService,
-        IViewModelFactory viewModelFactory,
-        IUserPreferencesService userPreferencesService)
+public sealed class RandomListProvider(IDialogService dialogService,
+        IPageService pageService,
+        IUserPreferencesService userPreferencesService,
+        IViewModelFactory viewModelFactory)
     : LimitedListProviderBase(dialogService), INeedAdditionalParamsListProvider
 {
     private NamespacesAndRedirectFilterOptions? _options;

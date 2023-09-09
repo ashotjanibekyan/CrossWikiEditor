@@ -1,9 +1,7 @@
 ﻿namespace CrossWikiEditor.Core.ListProviders;
 
-public class CategoriesOnPageListProvider(
-    IUserPreferencesService userPreferencesService,
-    ICategoryService categoryService,
-    IDialogService dialogService) : LimitedListProviderBase(dialogService)
+public class CategoriesOnPageListProvider(ICategoryService categoryService,
+    IDialogService dialogService, IUserPreferencesService userPreferencesService) : LimitedListProviderBase(dialogService)
 {
     public override string Title => "Categories on page";
     public override string ParamTitle => "Page";

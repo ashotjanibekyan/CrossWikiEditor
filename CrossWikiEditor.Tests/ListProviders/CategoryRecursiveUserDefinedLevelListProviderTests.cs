@@ -9,7 +9,7 @@ public class CategoryRecursiveUserDefinedLevelListProviderTests : ListProvidersB
     {
         SetUpServices();
         SetUpUserPrefs("hyw", ProjectEnum.Wikipedia);
-        _sut = new CategoryRecursiveUserDefinedLevelListProvider(_categoryService, _userPreferencesService, _dialogService)
+        _sut = new CategoryRecursiveUserDefinedLevelListProvider(_categoryService, _dialogService, _userPreferencesService)
         {
             Param = "my prefix"
         };

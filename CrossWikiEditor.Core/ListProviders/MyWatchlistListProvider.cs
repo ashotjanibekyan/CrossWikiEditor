@@ -1,8 +1,6 @@
 ﻿namespace CrossWikiEditor.Core.ListProviders;
 
-public sealed class MyWatchlistListProvider(
-    IUserService userService,
-    IDialogService dialogService) : LimitedListProviderBase(dialogService)
+public sealed class MyWatchlistListProvider(IDialogService dialogService, IUserService userService) : LimitedListProviderBase(dialogService)
 {
     public override string Title => "My watchlist";
     public override string ParamTitle => string.Empty;

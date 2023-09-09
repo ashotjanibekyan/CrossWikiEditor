@@ -1,9 +1,8 @@
 ﻿namespace CrossWikiEditor.Core.ListProviders;
 
-public sealed class LinksOnPageBlueListProvider(
-        IUserPreferencesService userPreferencesService,
+public sealed class LinksOnPageBlueListProvider(IDialogService dialogService,
         IPageService pageService,
-        IDialogService dialogService)
+        IUserPreferencesService userPreferencesService)
     : LinksOnPageListProvider(dialogService, pageService, userPreferencesService)
 {
     public override string Title => "Links on page (only bluelinks)";

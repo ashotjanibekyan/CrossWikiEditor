@@ -9,7 +9,7 @@ public class CategoryRecursive1LevelListProviderTests : ListProvidersBaseTest
     {
         SetUpServices();
         SetUpUserPrefs("hyw", ProjectEnum.Wikipedia);
-        _sut = new CategoryRecursive1LevelListProvider(_userPreferencesService, _categoryService, _dialogService);
+        _sut = new CategoryRecursive1LevelListProvider(_categoryService, _dialogService, _userPreferencesService);
         _expectedPages = Fakers.GetWikiPageModelFaker(_userPrefs.UrlApi(), _wikiClientCache).Generate(4);
     }
 

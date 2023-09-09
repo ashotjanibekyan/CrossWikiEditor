@@ -1,10 +1,8 @@
 ﻿namespace CrossWikiEditor.Core.ListProviders;
 
-public class ProtectedPagesListProvider(
-    IUserPreferencesService userPreferencesService, 
-    IViewModelFactory viewModelFactory,
-    IDialogService dialogService,
-    IPageService pageService) : LimitedListProviderBase(dialogService), INeedAdditionalParamsListProvider
+public class ProtectedPagesListProvider(IDialogService dialogService,
+    IPageService pageService, IUserPreferencesService userPreferencesService,
+    IViewModelFactory viewModelFactory) : LimitedListProviderBase(dialogService), INeedAdditionalParamsListProvider
 {
     private string _protectionType = string.Empty;
     private string _protectionLevel = string.Empty;

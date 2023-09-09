@@ -1,9 +1,7 @@
 ﻿namespace CrossWikiEditor.Core.ListProviders;
 
-public sealed class CategoryListProvider(
-    IUserPreferencesService userPreferencesService,
-    ICategoryService categoryService,
-    IDialogService dialogService) : LimitedListProviderBase(dialogService)
+public sealed class CategoryListProvider(ICategoryService categoryService,
+    IDialogService dialogService, IUserPreferencesService userPreferencesService) : LimitedListProviderBase(dialogService)
 {
     public override string Title => "Category";
     public override string ParamTitle => "Category";

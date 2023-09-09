@@ -1,9 +1,8 @@
 namespace CrossWikiEditor.Core.ListProviders;
 
-public sealed class AllUsersListProvider(
-    IDialogService dialogService,
-    IUserService userService,
-    IUserPreferencesService userPreferencesService) : LimitedListProviderBase(dialogService)
+public sealed class AllUsersListProvider(IDialogService dialogService,
+    IUserPreferencesService userPreferencesService,
+    IUserService userService) : LimitedListProviderBase(dialogService)
 {
     public override string Title => "All Users";
     public override string ParamTitle => "Start from";

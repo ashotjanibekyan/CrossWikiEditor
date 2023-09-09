@@ -1,7 +1,6 @@
 namespace CrossWikiEditor.Core.ListProviders;
 
-public sealed class LinkSearchListProvider(
-    IDialogService dialogService,
+public sealed class LinkSearchListProvider(IDialogService dialogService,
     IPageService pageService,
     IUserPreferencesService userPreferencesService) : LimitedListProviderBase(dialogService)
 {

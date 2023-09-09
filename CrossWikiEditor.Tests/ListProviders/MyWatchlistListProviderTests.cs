@@ -1,18 +1,15 @@
 namespace CrossWikiEditor.Tests.ListProviders;
 
-public class AllCategoriesListProviderTests : ListProvidersBaseTest
+public class MyWatchlistListProviderTests : ListProvidersBaseTest
 {
-    private AllCategoriesListProvider _sut;
+    private MyWatchlistListProvider _sut;
     
     [SetUp]
     public void SetUp()
     {
         SetUpServices();
         SetUpUserPrefs("hyw", ProjectEnum.Wikipedia);
-        _sut = new AllCategoriesListProvider(_categoryService, _dialogService, _userPreferencesService)
-        {
-            Param = "start from here"
-        };
+        _sut = new MyWatchlistListProvider(_dialogService, _userService);
         _expectedPages = Fakers.GetWikiPageModelFaker(_userPrefs.UrlApi(), _wikiClientCache).Generate(4);
     }
 
@@ -20,7 +17,7 @@ public class AllCategoriesListProviderTests : ListProvidersBaseTest
     public async Task MakeList_ShouldReturnPageServiceResults()
     {
         // arrange
-        _categoryService.GetAllCategories(_userPrefs.UrlApi(), _sut.Param, 73)
+        _userService.GetWatchlistPages(73)
             .Returns(Result<List<WikiPageModel>>.Success(_expectedPages));
 
         await MakeList_ShouldReturnServiceResults(_sut, _expectedPages);
@@ -30,7 +27,7 @@ public class AllCategoriesListProviderTests : ListProvidersBaseTest
     public async Task MakeList_ShouldReturnUnsuccessfulResult_WhenPageServiceReturnsUnsuccessfulResult()
     {
         // arrange
-        _categoryService.GetAllCategories(_userPrefs.UrlApi(), _sut.Param, 73).Returns(Result<List<WikiPageModel>>.Failure("failed to get pages"));
+        _userService.GetWatchlistPages(73).Returns(Result<List<WikiPageModel>>.Failure("failed to get pages"));
 
         // act
         Result<List<WikiPageModel>> result = await _sut.MakeList(73);
@@ -44,7 +41,7 @@ public class AllCategoriesListProviderTests : ListProvidersBaseTest
     public void TearDown()
     {
         _sut.CanMake.Should().BeTrue();
-        _sut.Title.Should().Be("All Categories");
-        _sut.ParamTitle.Should().Be("Start from");
+        _sut.Title.Should().Be("My watchlist");
+        _sut.ParamTitle.Should().Be("");
     }
 }

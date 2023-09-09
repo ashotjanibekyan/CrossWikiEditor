@@ -1,9 +1,8 @@
 ﻿namespace CrossWikiEditor.Core.ListProviders;
 
-public sealed class CategoryRecursiveUserDefinedLevelListProvider(
-        ICategoryService categoryService,
-        IUserPreferencesService userPreferencesService,
-        IDialogService dialogService)
+public sealed class CategoryRecursiveUserDefinedLevelListProvider(ICategoryService categoryService,
+        IDialogService dialogService,
+        IUserPreferencesService userPreferencesService)
     : LimitedListProviderBase(dialogService), INeedAdditionalParamsListProvider
 {
     private int? _recursionLevel;

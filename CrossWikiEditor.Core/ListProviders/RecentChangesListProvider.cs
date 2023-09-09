@@ -1,7 +1,6 @@
 ﻿namespace CrossWikiEditor.Core.ListProviders;
 
-public sealed class RecentChangesListProvider(
-    IDialogService dialogService,
+public sealed class RecentChangesListProvider(IDialogService dialogService,
     IPageService pageService,
     IUserPreferencesService userPreferencesService,
     IViewModelFactory viewModelFactory) : LimitedListProviderBase(dialogService), INeedNamespacesListProvider

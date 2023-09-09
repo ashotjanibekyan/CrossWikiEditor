@@ -1,7 +1,6 @@
 namespace CrossWikiEditor.Core.ListProviders;
 
-public sealed class DisambiguationPagesListProvider(
-    IDialogService dialogService,
+public sealed class DisambiguationPagesListProvider(IDialogService dialogService,
     IPageService pageService,
     IUserPreferencesService userPreferencesService) : LimitedListProviderBase(dialogService)
 {

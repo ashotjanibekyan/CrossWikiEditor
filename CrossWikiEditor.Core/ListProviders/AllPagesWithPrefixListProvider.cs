@@ -1,10 +1,9 @@
 ﻿namespace CrossWikiEditor.Core.ListProviders;
 
-public sealed class AllPagesWithPrefixListProvider(
-    IDialogService dialogService,
+public sealed class AllPagesWithPrefixListProvider(IDialogService dialogService,
     IPageService pageService,
-    IViewModelFactory viewModelFactory,
-    IUserPreferencesService userPreferencesService) : LimitedListProviderBase(dialogService), INeedNamespacesListProvider
+    IUserPreferencesService userPreferencesService,
+    IViewModelFactory viewModelFactory) : LimitedListProviderBase(dialogService), INeedNamespacesListProvider
 {
     private int[]? _namespaces;
     public override string Title => "All Pages with prefix (Prefixindex)";

@@ -1,7 +1,6 @@
 namespace CrossWikiEditor.Core.ListProviders;
 
-public sealed class AllFilesListProvider(
-    IDialogService dialogService,
+public sealed class AllFilesListProvider(IDialogService dialogService,
     IPageService pageService,
     IUserPreferencesService userPreferencesService) : LimitedListProviderBase(dialogService)
 {

@@ -9,7 +9,7 @@ public class CategoriesOnPageOnlyHiddenCategoriesListProviderTests : ListProvide
     {
         SetUpServices();
         SetUpUserPrefs("hyw", ProjectEnum.Wikipedia);
-        _sut = new CategoriesOnPageOnlyHiddenCategoriesListProvider(_userPreferencesService, _categoryService, _dialogService)
+        _sut = new CategoriesOnPageOnlyHiddenCategoriesListProvider(_categoryService, _dialogService, _userPreferencesService)
         {
             Param = "page"
         };

@@ -9,7 +9,7 @@ public class CategoriesOnPageListProviderTests : ListProvidersBaseTest
     {
         SetUpServices();
         SetUpUserPrefs("hyw", ProjectEnum.Wikipedia);
-        _sut = new CategoriesOnPageListProvider(_userPreferencesService, _categoryService, _dialogService)
+        _sut = new CategoriesOnPageListProvider(_categoryService, _dialogService, _userPreferencesService)
         {
             Param = "page"
         };

@@ -1,10 +1,9 @@
 ﻿namespace CrossWikiEditor.Core.ListProviders;
 
-public sealed class TextFileListProvider(
-        IFileDialogService fileDialogService,
+public sealed class TextFileListProvider(IFileDialogService fileDialogService,
         ISystemService systemService,
-        IWikiClientCache wikiClientCache,
-        IUserPreferencesService userPreferencesService)
+        IUserPreferencesService userPreferencesService,
+        IWikiClientCache wikiClientCache)
     : UnlimitedListProviderBase, INeedAdditionalParamsListProvider
 {
     private readonly List<string> _textFiles = new();

@@ -9,7 +9,7 @@ public class AllUsersListProviderTests : ListProvidersBaseTest
     {
         SetUpServices();
         SetUpUserPrefs("hyw", ProjectEnum.Wikipedia);
-        _sut = new AllUsersListProvider(_dialogService, _userService, _userPreferencesService);
+        _sut = new AllUsersListProvider(_dialogService, _userPreferencesService, _userService);
         _expectedPages = Fakers.GetWikiPageModelFaker(_userPrefs.UrlApi(), _wikiClientCache).Generate(4);
     }
 

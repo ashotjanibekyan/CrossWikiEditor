@@ -1,10 +1,9 @@
 ﻿namespace CrossWikiEditor.Core.ListProviders;
 
-public sealed class NewPagesListProvider(
-    IUserPreferencesService userPreferencesService,
+public sealed class NewPagesListProvider(IDialogService dialogService,
     IPageService pageService,
-    IViewModelFactory viewModelFactory,
-    IDialogService dialogService) : LimitedListProviderBase(dialogService), INeedNamespacesListProvider
+    IUserPreferencesService userPreferencesService,
+    IViewModelFactory viewModelFactory) : LimitedListProviderBase(dialogService), INeedNamespacesListProvider
 {
     private int[]? _namespaces;
     public override string Title => "New pages";

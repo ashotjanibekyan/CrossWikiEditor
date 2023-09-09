@@ -10,7 +10,7 @@ public class AllPagesNoRedirectsListProviderTests : ListProvidersBaseTest
         SetUpServices();
         SetUpUserPrefs("hyw", ProjectEnum.Wikipedia);
         _selectNamespacesViewModel = new SelectNamespacesViewModel(new List<WikiNamespace>(), false);
-        _sut = new AllPagesNoRedirectsListProvider(_dialogService, _pageService, _viewModelFactory, _userPreferencesService)
+        _sut = new AllPagesNoRedirectsListProvider(_dialogService, _pageService, _userPreferencesService, _viewModelFactory)
         {
             Param = "start from here"
         };
