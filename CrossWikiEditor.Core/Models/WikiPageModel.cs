@@ -23,6 +23,7 @@ public sealed class WikiPageModel : IEquatable<WikiPageModel>, IComparable<WikiP
         WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
         await site.Initialization;
         _wikiPage = new WikiPage(site, title);
+        await _wikiPage.RefreshAsync();
         NamespaceId = _wikiPage.NamespaceId;
     }
     

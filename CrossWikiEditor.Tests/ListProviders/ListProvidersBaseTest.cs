@@ -4,6 +4,7 @@ public class ListProvidersBaseTest : BaseTest
 {
     protected UserPrefs _userPrefs;
     protected SelectNamespacesViewModel _selectNamespacesViewModel;
+    protected SelectProtectionSelectionPageViewModel _selectProtectionSelectionPageViewModel;
     protected List<WikiPageModel> _expectedPages;
 
     protected void SetUpUserPrefs(string languageCode, ProjectEnum project)
@@ -58,7 +59,7 @@ public class ListProvidersBaseTest : BaseTest
         result.Should().BeTrue();
     }
     
-    protected async Task CanMake_ShouldBeFalse_WhenGetAdditionalParamsNotCalled(INeedNamespacesListProvider sut)
+    protected async Task CanMake_ShouldBeFalse_WhenGetAdditionalParamsNotCalled(INeedAdditionalParamsListProvider sut)
     {
         // arrange
 
@@ -69,7 +70,7 @@ public class ListProvidersBaseTest : BaseTest
         sut.CanMake.Should().BeFalse();
     }
 
-    protected async Task CanMake_ShouldBeFalse_WhenGetAdditionalParamsReturnsEmptyList(INeedNamespacesListProvider sut, SelectNamespacesViewModel selectNamespacesViewModel)
+    protected async Task CanMake_ShouldBeFalse_WhenGetAdditionalParamsReturnsEmptyList(INeedAdditionalParamsListProvider sut, SelectNamespacesViewModel selectNamespacesViewModel)
     {
         // arrange
         _dialogService.ShowDialog<int[]?>(selectNamespacesViewModel).Returns(new int[] {});
@@ -81,7 +82,7 @@ public class ListProvidersBaseTest : BaseTest
         sut.CanMake.Should().BeFalse();
     }
 
-    protected async Task CanMake_ShouldBeTrue_WhenGetAdditionalParamsReturnsNonEmptyList(INeedNamespacesListProvider sut, SelectNamespacesViewModel selectNamespacesViewModel)
+    protected async Task CanMake_ShouldBeTrue_WhenGetAdditionalParamsReturnsNonEmptyList(INeedAdditionalParamsListProvider sut, SelectNamespacesViewModel selectNamespacesViewModel)
     {
         // arrange
         _dialogService.ShowDialog<int[]?>(selectNamespacesViewModel).Returns(new[] {1});

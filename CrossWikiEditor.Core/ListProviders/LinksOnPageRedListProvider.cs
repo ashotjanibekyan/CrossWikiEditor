@@ -5,7 +5,7 @@ public sealed class LinksOnPageRedListProvider(IDialogService dialogService,
         IUserPreferencesService userPreferencesService)
     : LinksOnPageListProvider(dialogService, pageService, userPreferencesService)
 {
-    public override string Title => "Links on page (only bluelinks)";
+    public override string Title => "Links on page (only redlinks)";
 
     public override async Task<Result<List<WikiPageModel>>> MakeList(int limit)
     {
