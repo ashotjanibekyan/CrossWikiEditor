@@ -15,9 +15,6 @@ public sealed class FilesOnPageListProvider(
     public override string Title => "Files on page";
     public override string ParamTitle => "Files on";
 
-    public override async Task<Result<List<WikiPageModel>>> MakeList(int limit)
-    {
-        UserPrefs userPrefs = userPreferencesService.GetCurrentPref();
-        return await pageService.FilesOnPage(userPrefs.UrlApi(), Param, limit);
-    }
+    public override async Task<Result<List<WikiPageModel>>> MakeList(int limit) =>
+        await pageService.FilesOnPage(userPreferencesService.CurrentApiUrl, Param, limit);
 }

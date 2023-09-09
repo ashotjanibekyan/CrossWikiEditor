@@ -53,7 +53,7 @@ public partial class GoogleSearchListProvider(
                     {
                         title = Regex.Replace(Tools.WikiDecode(title), @"\?\w+=.*", "");
                         Result<WikiPageModel> result =
-                            await wikiClientCache.GetWikiPageModel(userPreferencesService.GetCurrentPref().UrlApi(), title);
+                            await wikiClientCache.GetWikiPageModel(userPreferencesService.CurrentApiUrl, title);
                         if (result is {IsSuccessful: true, Value: not null})
                         {
                             list.Add(result.Value);

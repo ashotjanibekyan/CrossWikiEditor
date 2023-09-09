@@ -24,7 +24,7 @@ public sealed class HtmlScraperListProvider(
         try
         {
             string baseUrl = userPreferencesService.GetCurrentPref().UrlBase();
-            WikiSite site = await wikiClientCache.GetWikiSite(userPreferencesService.GetCurrentPref().UrlApi());
+            WikiSite site = await wikiClientCache.GetWikiSite(userPreferencesService.CurrentApiUrl);
             var httpClient = new HttpClient();
             string html = await httpClient.GetStringAsync(Param);
 

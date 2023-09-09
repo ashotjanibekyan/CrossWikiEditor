@@ -20,7 +20,7 @@ public abstract class AllPagesListProviderBase(
     protected async Task<Result<List<WikiPageModel>>> MakeListBase(int limit, PropertyFilterOption redirectsFilter,
         PropertyFilterOption langLinksFilter)
     {
-        return await pageService.GetAllPages(userPreferencesService.GetCurrentPref().UrlApi(), Param, _namespaces!.First(),
+        return await pageService.GetAllPages(userPreferencesService.CurrentApiUrl, Param, _namespaces!.First(),
             redirectsFilter: redirectsFilter, langLinksFilter: langLinksFilter, limit);
     }
 }

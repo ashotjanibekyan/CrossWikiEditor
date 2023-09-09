@@ -11,13 +11,10 @@ public sealed class DisambiguationPagesListProvider(
     IPageService pageService,
     IUserPreferencesService userPreferencesService) : LimitedListProviderBase(dialogService)
 {
-    private int[]? _namespaces;
-
     public override string Title => "Disambiguation pages";
     public override string ParamTitle => "";
-    public override bool CanMake => _namespaces is {Length: > 0};
-    public override async Task<Result<List<WikiPageModel>>> MakeList(int limit)
-    {
-        return await pageService.GetPagesWithProp(userPreferencesService.GetCurrentPref().UrlApi(), "disambiguation", limit);
-    }
+    public override bool CanMake => true;
+
+    public override async Task<Result<List<WikiPageModel>>> MakeList(int limit) =>
+        await pageService.GetPagesWithProp(userPreferencesService.CurrentApiUrl, "disambiguation", limit);
 }

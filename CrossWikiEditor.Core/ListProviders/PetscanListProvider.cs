@@ -16,7 +16,7 @@ public class PetscanListProvider(IUserPreferencesService userPreferencesService,
     {
         try
         {
-            WikiSite wikiSite = await wikiClientCache.GetWikiSite(userPreferencesService.GetCurrentPref().UrlApi());
+            WikiSite wikiSite = await wikiClientCache.GetWikiSite(userPreferencesService.CurrentApiUrl);
             var wikiPageModels = new List<WikiPageModel>();
             if (long.TryParse(Param, out long id))
             {

@@ -11,6 +11,7 @@ public interface IUserPreferencesService
 {
     UserPrefs GetUserPref(string path);
     UserPrefs GetCurrentPref();
+    string CurrentApiUrl { get; }
     void SetCurrentPref(UserPrefs userPrefs);
 }
 
@@ -32,6 +33,8 @@ public sealed class UserPreferencesService : IUserPreferencesService
         var xs = new XmlSerializer(typeof(UserPrefs));
         return (UserPrefs) (xs.Deserialize(new StringReader(settings)) ?? throw new InvalidOperationException());
     }
+
+    public string CurrentApiUrl => _currentPref.UrlApi();
 
     public void SetCurrentPref(UserPrefs userPrefs)
     {

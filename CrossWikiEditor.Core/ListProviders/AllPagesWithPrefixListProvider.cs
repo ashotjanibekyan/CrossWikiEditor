@@ -18,8 +18,7 @@ public sealed class AllPagesWithPrefixListProvider(
     public override bool CanMake => _namespaces is {Length: 1};
     
     public async Task GetAdditionalParams() => _namespaces = await this.GetNamespaces(isMultiselect: false, dialogService, viewModelFactory);
-    public override async Task<Result<List<WikiPageModel>>> MakeList(int limit)
-    {
-        return await pageService.GetAllPagesWithPrefix(userPreferencesService.GetCurrentPref().UrlApi(), Param, _namespaces!.First(), limit);
-    }
+
+    public override async Task<Result<List<WikiPageModel>>> MakeList(int limit) =>
+        await pageService.GetAllPagesWithPrefix(userPreferencesService.CurrentApiUrl, Param, _namespaces!.First(), limit);
 }

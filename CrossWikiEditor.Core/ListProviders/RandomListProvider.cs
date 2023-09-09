@@ -30,7 +30,7 @@ public sealed class RandomListProvider(IPageService pageService,
     public override async Task<Result<List<WikiPageModel>>> MakeList(int limit)
     {
         return await pageService.GetRandomPages(
-            userPreferencesService.GetCurrentPref().UrlApi(),
+            userPreferencesService.CurrentApiUrl,
             _options!.Namespaces,
             filterRedirects: _options.RedirectFilter switch
             {

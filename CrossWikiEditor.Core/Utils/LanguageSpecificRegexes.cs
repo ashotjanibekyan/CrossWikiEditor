@@ -28,7 +28,7 @@ public sealed class LanguageSpecificRegexes : IAsyncInitialization
 
     private async Task InitializeAsync()
     {
-        string apiRoot = _userPreferencesService.GetCurrentPref().UrlApi();
+        string apiRoot = _userPreferencesService.CurrentApiUrl;
         _site = await _wikiClientCache.GetWikiSite(apiRoot);
         _magicWordCollection = await _site.GetMagicWords();
         MakeRegexes();

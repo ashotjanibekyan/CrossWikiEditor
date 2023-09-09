@@ -14,9 +14,6 @@ public sealed class PagesWithPropListProvider(
     public override string Title => "Pages with a page property";
     public override string ParamTitle => "Property name";
 
-    public override async Task<Result<List<WikiPageModel>>> MakeList(int limit)
-    {
-        string apiRoot = userPreferencesService.GetCurrentPref().UrlApi();
-        return await pageService.GetPagesWithProp(apiRoot, Param, limit);
-    }
+    public override async Task<Result<List<WikiPageModel>>> MakeList(int limit) =>
+        await pageService.GetPagesWithProp(userPreferencesService.CurrentApiUrl, Param, limit);
 }

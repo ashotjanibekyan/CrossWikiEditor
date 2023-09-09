@@ -14,8 +14,6 @@ public sealed class UserContributionsListProvider(
     public override string Title => "User contribs";
     public override string ParamTitle => "User";
 
-    public override async Task<Result<List<WikiPageModel>>> MakeList(int limit)
-    {
-        return await userService.GetUserContributionsPages(userPreferencesService.GetCurrentPref().UrlApi(), Param, limit);
-    }
+    public override async Task<Result<List<WikiPageModel>>> MakeList(int limit) =>
+        await userService.GetUserContributionsPages(userPreferencesService.CurrentApiUrl, Param, limit);
 }

@@ -13,9 +13,7 @@ public sealed class LinkSearchListProvider(
 {
     public override string Title => "Link search";
     public override string ParamTitle => "URL";
-    public override async Task<Result<List<WikiPageModel>>> MakeList(int limit)
-    {
-        string apiRoot = userPreferencesService.GetCurrentPref().UrlApi();
-        return await pageService.LinkSearch(apiRoot, Param, limit);
-    }
+
+    public override async Task<Result<List<WikiPageModel>>> MakeList(int limit) =>
+        await pageService.LinkSearch(userPreferencesService.CurrentApiUrl, Param, limit);
 }

@@ -14,8 +14,7 @@ public sealed class AllCategoriesListProvider(
     public override string Title => "All Categories";
     public override string ParamTitle => "Start from";
     public override bool CanMake => true;
-    public override async Task<Result<List<WikiPageModel>>> MakeList(int limit)
-    {
-        return await pageService.GetAllCategories(userPreferencesService.GetCurrentPref().UrlApi(), Param, limit);
-    }
+
+    public override async Task<Result<List<WikiPageModel>>> MakeList(int limit) =>
+        await pageService.GetAllCategories(userPreferencesService.CurrentApiUrl, Param, limit);
 }

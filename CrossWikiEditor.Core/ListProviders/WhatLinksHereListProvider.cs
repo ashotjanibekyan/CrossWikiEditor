@@ -20,7 +20,7 @@ public sealed class WhatLinksHereListProvider(
     public override async Task<Result<List<WikiPageModel>>> MakeList(int limit)
     {
         return await pageService.GetPagesLinkedTo(
-            userPreferencesService.GetCurrentPref().UrlApi(),
+            userPreferencesService.CurrentApiUrl,
             Param,
             _options!.Namespaces,
             filterRedirects: _options.RedirectFilter switch

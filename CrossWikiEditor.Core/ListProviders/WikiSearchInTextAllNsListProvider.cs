@@ -14,9 +14,6 @@ public sealed class WikiSearchInTextAllNsListProvider(
     public override string Title => "Wiki search (text) (all NS)";
     public override string ParamTitle => "Wiki search";
 
-    public override async Task<Result<List<WikiPageModel>>> MakeList(int limit)
-    {
-        string apiRoot = userPreferencesService.GetCurrentPref().UrlApi();
-        return await pageService.WikiSearch(apiRoot, Param, null, limit);
-    }
+    public override async Task<Result<List<WikiPageModel>>> MakeList(int limit) =>
+        await pageService.WikiSearch(userPreferencesService.CurrentApiUrl, Param, null, limit);
 }

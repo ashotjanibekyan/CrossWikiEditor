@@ -23,9 +23,6 @@ public class ProtectedPagesListProvider(
         (_protectionType, _protectionLevel) = await dialogService.ShowDialog<(string, string)>(viewModelFactory.GetSelectProtectionSelectionPageViewModel());
     }
 
-    public override async Task<Result<List<WikiPageModel>>> MakeList(int limit)
-    {
-        string apiRoot = userPreferencesService.GetCurrentPref().UrlApi();
-        return await pageService.GetProtectedPages(apiRoot, _protectionType, _protectionLevel, limit);
-    }
+    public override async Task<Result<List<WikiPageModel>>> MakeList(int limit) =>
+        await pageService.GetProtectedPages(userPreferencesService.CurrentApiUrl, _protectionType, _protectionLevel, limit);
 }

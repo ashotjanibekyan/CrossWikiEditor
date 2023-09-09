@@ -59,7 +59,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
     {
         if (!string.IsNullOrWhiteSpace(NewPageTitle))
         {
-            Result<WikiPageModel> result = await _clientCache.GetWikiPageModel(_userPreferencesService.GetCurrentPref().UrlApi(), NewPageTitle);
+            Result<WikiPageModel> result = await _clientCache.GetWikiPageModel(_userPreferencesService.CurrentApiUrl, NewPageTitle);
             if (result is {IsSuccessful: true, Value: not null})
             {
                 Pages.Add(result.Value);
@@ -171,7 +171,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
         {
             string[] titles = clipboardText.Split(new[] { Environment.NewLine },
                 StringSplitOptions.None);
-            string urlApi = _userPreferencesService.GetCurrentPref().UrlApi();
+            string urlApi = _userPreferencesService.CurrentApiUrl;
             foreach (string title in titles)
             {
                 Result<WikiPageModel> result = await _clientCache.GetWikiPageModel(urlApi, title);

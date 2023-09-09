@@ -14,8 +14,5 @@ public sealed class MyWatchlistListProvider(
     public override string ParamTitle => string.Empty;
     public override bool CanMake => true;
 
-    public override async Task<Result<List<WikiPageModel>>> MakeList(int limit)
-    {
-        return await userService.GetWatchlistPages(limit);
-    }
+    public override async Task<Result<List<WikiPageModel>>> MakeList(int limit) => await userService.GetWatchlistPages(limit);
 }

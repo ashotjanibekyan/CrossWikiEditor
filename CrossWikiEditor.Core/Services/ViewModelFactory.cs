@@ -41,7 +41,7 @@ public sealed class ViewModelFactory(IFileDialogService fileDialogService,
 
     public async Task<FilterViewModel> GetFilterViewModel()
     {
-        WikiSite? site = await wikiClientCache.GetWikiSite(userPreferencesService.GetCurrentPref().UrlApi());
+        WikiSite? site = await wikiClientCache.GetWikiSite(userPreferencesService.CurrentApiUrl);
         WikiNamespace[] namespaces = site.Namespaces.Select(x => new WikiNamespace(x.Id, x.CustomName)).ToArray();
 
         return new FilterViewModel(
@@ -52,14 +52,14 @@ public sealed class ViewModelFactory(IFileDialogService fileDialogService,
 
     public async Task<SelectNamespacesViewModel> GetSelectNamespacesViewModel(bool isMultiselect = true)
     {
-        WikiSite site = await wikiClientCache.GetWikiSite(userPreferencesService.GetCurrentPref().UrlApi());
+        WikiSite site = await wikiClientCache.GetWikiSite(userPreferencesService.CurrentApiUrl);
         WikiNamespace[] namespaces = site.Namespaces.Select(x => new WikiNamespace(x.Id, x.CustomName)).ToArray();
         return new SelectNamespacesViewModel(namespaces.ToList(), isMultiselect);
     }
 
     public async Task<SelectNamespacesAndRedirectFilterViewModel> GetSelectNamespacesAndRedirectFilterViewModel(bool isIncludeRedirectsVisible = true)
     {
-        WikiSite site = await wikiClientCache.GetWikiSite(userPreferencesService.GetCurrentPref().UrlApi());
+        WikiSite site = await wikiClientCache.GetWikiSite(userPreferencesService.CurrentApiUrl);
         WikiNamespace[] namespaces = site.Namespaces.Select(x => new WikiNamespace(x.Id, x.CustomName)).ToArray();
         return new SelectNamespacesAndRedirectFilterViewModel(namespaces.ToList())
         {
@@ -74,6 +74,6 @@ public sealed class ViewModelFactory(IFileDialogService fileDialogService,
 
     public async Task<DatabaseScannerViewModel> GetDatabaseScannerViewModel()
     {
-        return new DatabaseScannerViewModel(dialogService, await wikiClientCache.GetWikiSite(userPreferencesService.GetCurrentPref().UrlApi()), fileDialogService);
+        return new DatabaseScannerViewModel(dialogService, await wikiClientCache.GetWikiSite(userPreferencesService.CurrentApiUrl), fileDialogService);
     }
 }

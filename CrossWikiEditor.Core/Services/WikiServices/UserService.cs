@@ -55,7 +55,7 @@ public sealed class UserService(IWikiClientCache wikiClientCache, IUserPreferenc
     {
         try
         {
-            WikiSite site = await wikiClientCache.GetWikiSite(userPreferencesService.GetCurrentPref().UrlApi());
+            WikiSite site = await wikiClientCache.GetWikiSite(userPreferencesService.CurrentApiUrl);
             var gen = new MyWatchlistGenerator(site);
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
             return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());

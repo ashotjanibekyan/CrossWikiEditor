@@ -21,10 +21,7 @@ public sealed class RecentChangesListProvider(
     {
         _namespaces = await this.GetNamespaces(true, dialogService, viewModelFactory);
     }
-    
-    public override async Task<Result<List<WikiPageModel>>> MakeList(int limit)
-    {
-        string apiRoot = userPreferencesService.GetCurrentPref().UrlApi();
-        return await pageService.GetRecentlyChangedPages(apiRoot, _namespaces, limit);
-    }
+
+    public override async Task<Result<List<WikiPageModel>>> MakeList(int limit) =>
+        await pageService.GetRecentlyChangedPages(userPreferencesService.CurrentApiUrl, _namespaces, limit);
 }

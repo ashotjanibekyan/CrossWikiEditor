@@ -14,9 +14,6 @@ public sealed class WhatTranscludesHereAllNsListProvider(
     public override string Title => "What transcludes page (all NS)";
     public override string ParamTitle => "What embeds";
 
-    public override async Task<Result<List<WikiPageModel>>> MakeList(int limit)
-    {
-        string apiRoot = userPreferencesService.GetCurrentPref().UrlApi();
-        return await pageService.GetTransclusionsOf(apiRoot, Param, null, limit);
-    }
+    public override async Task<Result<List<WikiPageModel>>> MakeList(int limit) =>
+        await pageService.GetTransclusionsOf(userPreferencesService.CurrentApiUrl, Param, null, limit);
 }

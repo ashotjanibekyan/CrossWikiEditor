@@ -18,8 +18,7 @@ public sealed class NewPagesListProvider(
     public override bool CanMake => _namespaces is {Length: > 0};
     
     public async Task GetAdditionalParams() => _namespaces = await this.GetNamespaces(true, dialogService, viewModelFactory);
-    public override async Task<Result<List<WikiPageModel>>> MakeList(int limit)
-    {
-        return await pageService.GetNewPages(userPreferencesService.GetCurrentPref().UrlApi(), _namespaces!, limit);
-    }
+
+    public override async Task<Result<List<WikiPageModel>>> MakeList(int limit) =>
+        await pageService.GetNewPages(userPreferencesService.CurrentApiUrl, _namespaces!, limit);
 }
