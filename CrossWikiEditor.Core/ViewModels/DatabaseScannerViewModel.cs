@@ -1,15 +1,3 @@
-using System.Collections.Concurrent;
-using System.Collections.ObjectModel;
-using System.Text;
-using System.Xml;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using CrossWikiEditor.Core.Models;
-using CrossWikiEditor.Core.Services;
-using CrossWikiEditor.Core.Utils;
-using WikiClientLibrary.Pages;
-using WikiClientLibrary.Sites;
-
 namespace CrossWikiEditor.Core.ViewModels;
 
 public sealed partial class DatabaseScannerViewModel(

@@ -1,9 +1,4 @@
-﻿using WikiClientLibrary.Generators;
-using WikiClientLibrary.Generators.Primitive;
-using WikiClientLibrary.Infrastructures;
-using WikiClientLibrary.Sites;
-
-namespace CrossWikiEditor.Core.WikiClientLibraryUtils.Generators;
+﻿namespace CrossWikiEditor.Core.WikiClientLibraryUtils.Generators;
 
 /// <summary>
 /// This class is mostly copied from WikiClientLibrary itself. Once this class is released and is available via Nuget,

@@ -1,8 +1,4 @@
-﻿using CrossWikiEditor.Core.Models;
-using WikiClientLibrary.Pages;
-using WikiClientLibrary.Sites;
-
-namespace CrossWikiEditor.Core.Utils;
+﻿namespace CrossWikiEditor.Core.Utils;
 
 public static class WikiPageExtensions
 {

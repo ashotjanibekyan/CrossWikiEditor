@@ -1,10 +1,3 @@
-using CrossWikiEditor.Core.ListProviders;
-using CrossWikiEditor.Core.Models;
-using CrossWikiEditor.Core.Settings;
-using CrossWikiEditor.Core.ViewModels;
-using CrossWikiEditor.Core.Utils;
-using WikiClientLibrary.Generators;
-
 namespace CrossWikiEditor.Tests.ListProviders;
 
 public class AllPagesNoRedirectsListProviderTests : ListProvidersBaseTest

@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace CrossWikiEditor.Core.WikiClientLibraryUtils;
 

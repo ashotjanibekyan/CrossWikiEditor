@@ -1,5 +1,3 @@
-using CrossWikiEditor.Core.Services;
-
 namespace CrossWikiEditor.Core.ListProviders.BaseListProviders;
 
 public static class ListProviderExtensions

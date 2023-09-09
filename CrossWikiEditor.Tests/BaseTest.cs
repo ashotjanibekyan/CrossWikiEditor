@@ -1,9 +1,6 @@
 using Avalonia.Input.Platform;
-using CrossWikiEditor.Core;
 using CrossWikiEditor.Core.Repositories;
-using CrossWikiEditor.Core.Services;
 using CrossWikiEditor.Core.Services.WikiServices;
-using CrossWikiEditor.Core.Utils;
 using Serilog;
 
 namespace CrossWikiEditor.Tests;
@@ -23,6 +20,7 @@ public abstract class BaseTest
 
     protected IUserService _userService;
     protected IPageService _pageService;
+    protected ICategoryService _categoryService;
     protected IWikiClientCache _wikiClientCache;
 
 
@@ -41,6 +39,7 @@ public abstract class BaseTest
 
         _userService = Substitute.For<IUserService>();
         _pageService = Substitute.For<IPageService>();
+        _categoryService = Substitute.For<ICategoryService>();
         _wikiClientCache = Substitute.For<IWikiClientCache>();
     }
 }

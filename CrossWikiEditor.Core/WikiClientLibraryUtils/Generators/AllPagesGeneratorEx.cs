@@ -1,7 +1,4 @@
-﻿using WikiClientLibrary.Generators;
-using WikiClientLibrary.Sites;
-
-namespace CrossWikiEditor.Core.WikiClientLibraryUtils.Generators;
+﻿namespace CrossWikiEditor.Core.WikiClientLibraryUtils.Generators;
 
 public class AllPagesGeneratorEx : AllPagesGenerator
 {

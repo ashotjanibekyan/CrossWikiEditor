@@ -1,12 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using CrossWikiEditor.Core.Messages;
-using CrossWikiEditor.Core.Services;
-using CrossWikiEditor.Core.Settings;
-using CrossWikiEditor.Core.Utils;
-
-namespace CrossWikiEditor.Core.ViewModels;
+﻿namespace CrossWikiEditor.Core.ViewModels;
 
 public sealed partial class PreferencesViewModel : ViewModelBase
 {

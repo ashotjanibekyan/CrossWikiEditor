@@ -1,16 +1,3 @@
-using System.Collections.ObjectModel;
-using System.Globalization;
-using System.Text;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using CrossWikiEditor.Core.ListProviders.BaseListProviders;
-using CrossWikiEditor.Core.Messages;
-using CrossWikiEditor.Core.Models;
-using CrossWikiEditor.Core.Services;
-using CrossWikiEditor.Core.Services.WikiServices;
-using CrossWikiEditor.Core.Utils;
-using Serilog;
-
 namespace CrossWikiEditor.Core.ViewModels;
 
 public sealed partial class MakeListViewModel : ViewModelBase

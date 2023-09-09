@@ -1,11 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using CrossWikiEditor.Core.ListProviders.BaseListProviders;
-using CrossWikiEditor.Core.Models;
-using CrossWikiEditor.Core.Settings;
-using CrossWikiEditor.Core.Utils;
-using CrossWikiEditor.Core.ViewModels;
-using WikiClientLibrary.Client;
-using WikiClientLibrary.Sites;
 
 namespace CrossWikiEditor.Tests.ViewModels;
 

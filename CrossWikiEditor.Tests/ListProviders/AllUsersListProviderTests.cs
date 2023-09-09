@@ -1,9 +1,3 @@
-using CrossWikiEditor.Core.ListProviders;
-using CrossWikiEditor.Core.Models;
-using CrossWikiEditor.Core.Settings;
-using CrossWikiEditor.Core.Utils;
-using WikiClientLibrary.Generators;
-
 namespace CrossWikiEditor.Tests.ListProviders;
 
 public class AllUsersListProviderTests : ListProvidersBaseTest
@@ -31,7 +25,6 @@ public class AllUsersListProviderTests : ListProvidersBaseTest
 
         await base.MakeList_ShouldReturnServiceResults(_sut, _expectedPages);
     }
-    
     
     [Test]
     public async Task MakeList_ShouldReturnUnsuccessfulResult_WhenServiceReturnsUnsuccessfulResult()

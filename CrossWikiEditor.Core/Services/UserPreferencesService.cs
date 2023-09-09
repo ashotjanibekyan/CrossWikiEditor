@@ -1,11 +1,4 @@
-﻿using System.Text;
-using System.Text.RegularExpressions;
-using System.Xml.Serialization;
-using CrossWikiEditor.Core.Messages;
-using CrossWikiEditor.Core.Settings;
-using CrossWikiEditor.Core.Utils;
-
-namespace CrossWikiEditor.Core.Services;
+﻿namespace CrossWikiEditor.Core.Services;
 
 public interface IUserPreferencesService
 {

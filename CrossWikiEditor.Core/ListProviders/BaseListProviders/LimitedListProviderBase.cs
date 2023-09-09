@@ -1,8 +1,3 @@
-using CrossWikiEditor.Core.Models;
-using CrossWikiEditor.Core.Services;
-using CrossWikiEditor.Core.Utils;
-using CrossWikiEditor.Core.ViewModels;
-
 namespace CrossWikiEditor.Core.ListProviders.BaseListProviders;
 
 public interface ILimitedListProvider : IListProvider

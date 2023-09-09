@@ -1,7 +1,3 @@
-using CrossWikiEditor.Core.ListProviders;
-using CrossWikiEditor.Core.Services;
-using CrossWikiEditor.Core.ViewModels;
-
 namespace CrossWikiEditor.Tests.Services;
 
 public sealed class ViewModelFactoryTests : BaseTest

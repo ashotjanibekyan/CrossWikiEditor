@@ -1,7 +1,4 @@
-﻿using CrossWikiEditor.Core;
-using CrossWikiEditor.Core.ViewModels;
-
-namespace CrossWikiEditor.Tests.ViewModels;
+﻿namespace CrossWikiEditor.Tests.ViewModels;
 
 public sealed class PromptViewModelTests : BaseTest
 {

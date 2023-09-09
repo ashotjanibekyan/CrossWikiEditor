@@ -1,10 +1,4 @@
-﻿using CrossWikiEditor.Core.ListProviders.BaseListProviders;
-using CrossWikiEditor.Core.Models;
-using CrossWikiEditor.Core.Services;
-using CrossWikiEditor.Core.Services.WikiServices;
-using CrossWikiEditor.Core.Utils;
-
-namespace CrossWikiEditor.Core.ListProviders;
+﻿namespace CrossWikiEditor.Core.ListProviders;
 
 public sealed class WikiSearchInTextListProvider(
     IUserPreferencesService userPreferencesService,

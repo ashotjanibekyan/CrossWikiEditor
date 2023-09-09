@@ -1,10 +1,4 @@
-﻿using CrossWikiEditor.Core.Models;
-using CrossWikiEditor.Core.Services;
-using CrossWikiEditor.Core.Services.WikiServices;
-using CrossWikiEditor.Core.Utils;
-using WikiClientLibrary.Generators;
-
-namespace CrossWikiEditor.Core.ListProviders.BaseListProviders;
+﻿namespace CrossWikiEditor.Core.ListProviders.BaseListProviders;
 
 public abstract class AllPagesListProviderBase(
     IDialogService dialogService,

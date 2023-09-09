@@ -1,12 +1,4 @@
-﻿using CrossWikiEditor.Core.ListProviders;
-using CrossWikiEditor.Core.Models;
-using CrossWikiEditor.Core.Repositories;
-using CrossWikiEditor.Core.Services.WikiServices;
-using CrossWikiEditor.Core.Utils;
-using CrossWikiEditor.Core.ViewModels;
-using WikiClientLibrary.Sites;
-
-namespace CrossWikiEditor.Core.Services;
+﻿namespace CrossWikiEditor.Core.Services;
 
 public interface IViewModelFactory
 {

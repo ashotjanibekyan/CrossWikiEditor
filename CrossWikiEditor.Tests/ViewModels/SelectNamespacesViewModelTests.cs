@@ -1,8 +1,4 @@
-﻿using CrossWikiEditor.Core;
-using CrossWikiEditor.Core.Models;
-using CrossWikiEditor.Core.ViewModels;
-
-namespace CrossWikiEditor.Tests.ViewModels;
+﻿namespace CrossWikiEditor.Tests.ViewModels;
 
 public sealed class SelectNamespacesViewModelTests
 {

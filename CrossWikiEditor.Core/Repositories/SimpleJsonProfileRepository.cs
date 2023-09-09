@@ -1,6 +1,4 @@
 ﻿using System.Text.Json;
-using CrossWikiEditor.Core.Models;
-using CrossWikiEditor.Core.Services;
 
 namespace CrossWikiEditor.Core.Repositories;
 

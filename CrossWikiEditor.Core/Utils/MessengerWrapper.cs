@@ -1,6 +1,4 @@
-﻿using CommunityToolkit.Mvvm.Messaging;
-
-namespace CrossWikiEditor.Core.Utils;
+﻿namespace CrossWikiEditor.Core.Utils;
 
 public interface IMessengerWrapper
 {

@@ -1,11 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using CrossWikiEditor.Core.Settings;
-using CrossWikiEditor.Core.Utils;
-
-namespace CrossWikiEditor.Core.ViewModels.ControlViewModels;
+﻿namespace CrossWikiEditor.Core.ViewModels.ControlViewModels;
 
 public partial class FindAndReplaceViewModel : ViewModelBase
 {

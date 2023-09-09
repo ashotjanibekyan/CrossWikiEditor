@@ -1,7 +1,4 @@
-﻿using System.Text;
-using System.Text.RegularExpressions;
-
-namespace CrossWikiEditor.Core.Utils;
+﻿namespace CrossWikiEditor.Core.Utils;
 
 public static class StringExtensions
 {

@@ -1,6 +1,4 @@
-﻿using CommunityToolkit.Mvvm.Input;
-
-namespace CrossWikiEditor.Core.ViewModels;
+﻿namespace CrossWikiEditor.Core.ViewModels;
 
 public sealed partial class AlertViewModel(string title, string contentText) : ViewModelBase
 {

@@ -1,8 +1,3 @@
-using CrossWikiEditor.Core.Models;
-using CrossWikiEditor.Core.Settings;
-using CrossWikiEditor.Core.Utils;
-using CrossWikiEditor.Core.ViewModels;
-
 namespace CrossWikiEditor.Tests.ViewModels;
 
 public sealed class ProfilesViewModelTests : BaseTest

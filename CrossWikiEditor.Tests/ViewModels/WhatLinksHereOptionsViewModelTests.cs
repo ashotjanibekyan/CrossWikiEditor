@@ -1,7 +1,4 @@
-﻿using CrossWikiEditor.Core.Models;
-using CrossWikiEditor.Core.ViewModels;
-
-namespace CrossWikiEditor.Tests.ViewModels;
+﻿namespace CrossWikiEditor.Tests.ViewModels;
 
 public sealed class WhatLinksHereOptionsViewModelTests : BaseTest
 {

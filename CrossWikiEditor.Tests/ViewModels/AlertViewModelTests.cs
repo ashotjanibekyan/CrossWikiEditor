@@ -1,5 +1,3 @@
-using CrossWikiEditor.Core.ViewModels;
-
 namespace CrossWikiEditor.Tests.ViewModels;
 
 public sealed class AlertViewModelTests : BaseTest

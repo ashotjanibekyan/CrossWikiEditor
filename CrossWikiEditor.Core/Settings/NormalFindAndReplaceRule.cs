@@ -1,6 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-
-namespace CrossWikiEditor.Core.Settings;
+﻿namespace CrossWikiEditor.Core.Settings;
 
 public partial class NormalFindAndReplaceRule(string find,
     string replaceWith,

@@ -38,6 +38,7 @@ public sealed class ServicesModule(MainWindow mainWindow) : Module
 
         builder.RegisterType<UserService>().As<IUserService>().SingleInstance();
         builder.RegisterType<PageService>().As<IPageService>().SingleInstance();
+        builder.RegisterType<CategoryService>().As<ICategoryService>().SingleInstance();
         builder.RegisterType<WikiClientCache>().As<IWikiClientCache>().SingleInstance();
 
         builder.RegisterType<DialogService>()
@@ -46,7 +47,7 @@ public sealed class ServicesModule(MainWindow mainWindow) : Module
         builder.Register(c => TopLevel.GetTopLevel(mainWindow)!.StorageProvider).As<IStorageProvider>();
         builder.RegisterInstance(stringEncryptionService).As<IStringEncryptionService>();
         builder.RegisterInstance(logger).As<ILogger>();
-        builder.Register(c => TopLevel.GetTopLevel(mainWindow)?.Clipboard).As<IClipboard>();
+        builder.Register(c => TopLevel.GetTopLevel(mainWindow)!.Clipboard).As<IClipboard>();
         builder.RegisterInstance(new MessengerWrapper(WeakReferenceMessenger.Default)).As<IMessengerWrapper>();
     }
 }

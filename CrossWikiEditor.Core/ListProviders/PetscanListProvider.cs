@@ -1,11 +1,3 @@
-using CrossWikiEditor.Core.ListProviders.BaseListProviders;
-using CrossWikiEditor.Core.Models;
-using CrossWikiEditor.Core.Services;
-using CrossWikiEditor.Core.Services.WikiServices;
-using CrossWikiEditor.Core.Utils;
-using WikiClientLibrary.Pages;
-using WikiClientLibrary.Sites;
-
 namespace CrossWikiEditor.Core.ListProviders;
 
 public class PetscanListProvider(IUserPreferencesService userPreferencesService, IWikiClientCache wikiClientCache) : UnlimitedListProviderBase

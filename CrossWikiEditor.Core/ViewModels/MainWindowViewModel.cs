@@ -1,11 +1,4 @@
-﻿using CrossWikiEditor.Core.Messages;
-using CrossWikiEditor.Core.Models;
-using CrossWikiEditor.Core.Utils;
-using CrossWikiEditor.Core.ViewModels.ControlViewModels;
-using CrossWikiEditor.Core.ViewModels.MenuViewModels;
-using CrossWikiEditor.Core.ViewModels.ReportViewModels;
-
-namespace CrossWikiEditor.Core.ViewModels;
+﻿namespace CrossWikiEditor.Core.ViewModels;
 
 public sealed class MainWindowViewModel : ViewModelBase
 {

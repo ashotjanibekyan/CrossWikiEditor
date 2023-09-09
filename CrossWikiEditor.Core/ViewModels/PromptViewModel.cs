@@ -1,6 +1,4 @@
-﻿using CommunityToolkit.Mvvm.Input;
-
-namespace CrossWikiEditor.Core.ViewModels;
+﻿namespace CrossWikiEditor.Core.ViewModels;
 
 public sealed partial class PromptViewModel(string title, string text) : ViewModelBase
 {

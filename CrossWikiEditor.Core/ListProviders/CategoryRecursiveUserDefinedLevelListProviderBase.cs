@@ -1,15 +1,7 @@
-﻿using CrossWikiEditor.Core.ListProviders.BaseListProviders;
-using CrossWikiEditor.Core.Models;
-using CrossWikiEditor.Core.Services;
-using CrossWikiEditor.Core.Services.WikiServices;
-using CrossWikiEditor.Core.Settings;
-using CrossWikiEditor.Core.Utils;
-using PromptViewModel = CrossWikiEditor.Core.ViewModels.PromptViewModel;
-
-namespace CrossWikiEditor.Core.ListProviders;
+﻿namespace CrossWikiEditor.Core.ListProviders;
 
 public sealed class CategoryRecursiveUserDefinedLevelListProviderBase(
-        IPageService pageService,
+        ICategoryService categoryService,
         IUserPreferencesService userPreferencesService,
         IDialogService dialogService)
     : LimitedListProviderBase(dialogService), INeedAdditionalParamsListProvider
@@ -28,7 +20,7 @@ public sealed class CategoryRecursiveUserDefinedLevelListProviderBase(
         }
 
         UserPrefs userPrefs = userPreferencesService.GetCurrentPref();
-        Result<List<WikiPageModel>> result = await pageService.GetPagesOfCategory(userPrefs.UrlApi(), Param, limit, (int) recursionLevel);
+        Result<List<WikiPageModel>> result = await categoryService.GetPagesOfCategory(userPrefs.UrlApi(), Param, limit, (int) recursionLevel);
         recursionLevel = null;
         return result;
     }

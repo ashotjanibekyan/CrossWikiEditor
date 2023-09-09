@@ -1,8 +1,3 @@
-using CrossWikiEditor.Core.ListProviders;
-using CrossWikiEditor.Core.Models;
-using CrossWikiEditor.Core.Settings;
-using CrossWikiEditor.Core.Utils;
-
 namespace CrossWikiEditor.Tests.ListProviders;
 
 public class AllCategoriesListProviderTests : ListProvidersBaseTest
@@ -14,7 +9,7 @@ public class AllCategoriesListProviderTests : ListProvidersBaseTest
     {
         SetUpServices();
         SetUpUserPrefs("hyw", ProjectEnum.Wikipedia);
-        _sut = new AllCategoriesListProvider(_dialogService, _pageService, _userPreferencesService)
+        _sut = new AllCategoriesListProvider(_dialogService, _categoryService, _userPreferencesService)
         {
             Param = "start from here"
         };
@@ -25,7 +20,7 @@ public class AllCategoriesListProviderTests : ListProvidersBaseTest
     public async Task MakeList_ShouldReturnPageServiceResults()
     {
         // arrange
-        _pageService.GetAllCategories(_userPrefs.UrlApi(), _sut.Param, 73)
+        _categoryService.GetAllCategories(_userPrefs.UrlApi(), _sut.Param, 73)
             .Returns(Result<List<WikiPageModel>>.Success(_expectedPages));
 
         await MakeList_ShouldReturnServiceResults(_sut, _expectedPages);
@@ -35,7 +30,7 @@ public class AllCategoriesListProviderTests : ListProvidersBaseTest
     public async Task MakeList_ShouldReturnUnsuccessfulResult_WhenPageServiceReturnsUnsuccessfulResult()
     {
         // arrange
-        _pageService.GetAllCategories(_userPrefs.UrlApi(), _sut.Param, 73).Returns(Result<List<WikiPageModel>>.Failure("failed to get pages"));
+        _categoryService.GetAllCategories(_userPrefs.UrlApi(), _sut.Param, 73).Returns(Result<List<WikiPageModel>>.Failure("failed to get pages"));
 
         // act
         Result<List<WikiPageModel>> result = await _sut.MakeList(73);

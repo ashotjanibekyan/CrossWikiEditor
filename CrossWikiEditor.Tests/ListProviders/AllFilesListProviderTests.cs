@@ -1,8 +1,3 @@
-using CrossWikiEditor.Core.ListProviders;
-using CrossWikiEditor.Core.Models;
-using CrossWikiEditor.Core.Settings;
-using CrossWikiEditor.Core.Utils;
-
 namespace CrossWikiEditor.Tests.ListProviders;
 
 public class AllFilesListProviderTests : ListProvidersBaseTest

@@ -1,9 +1,4 @@
-﻿using CrossWikiEditor.Core.Services.WikiServices;
-using CrossWikiEditor.Core.Utils;
-using WikiClientLibrary.Pages;
-using WikiClientLibrary.Sites;
-
-namespace CrossWikiEditor.Core.Models;
+﻿namespace CrossWikiEditor.Core.Models;
 
 public sealed class WikiPageModel : IEquatable<WikiPageModel>, IComparable<WikiPageModel>, IAsyncInitialization
 {

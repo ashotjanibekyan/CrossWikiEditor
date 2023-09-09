@@ -1,6 +1,4 @@
-﻿using CrossWikiEditor.Core.Utils;
-
-namespace CrossWikiEditor.Tests.Utils;
+﻿namespace CrossWikiEditor.Tests.Utils;
 
 public sealed class ToolsTests
 {

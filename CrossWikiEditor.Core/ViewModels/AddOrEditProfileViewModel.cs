@@ -1,10 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using CrossWikiEditor.Core.Models;
-using CrossWikiEditor.Core.Repositories;
-using CrossWikiEditor.Core.Services;
-
-namespace CrossWikiEditor.Core.ViewModels;
+﻿namespace CrossWikiEditor.Core.ViewModels;
 
 public sealed partial class AddOrEditProfileViewModel(IFileDialogService fileDialogService,
         IProfileRepository profileRepository,

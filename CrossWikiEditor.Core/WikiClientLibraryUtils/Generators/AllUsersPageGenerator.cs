@@ -1,7 +1,4 @@
 ﻿using Newtonsoft.Json.Linq;
-using WikiClientLibrary.Generators.Primitive;
-using WikiClientLibrary.Pages;
-using WikiClientLibrary.Sites;
 
 namespace CrossWikiEditor.Core.WikiClientLibraryUtils.Generators;
 

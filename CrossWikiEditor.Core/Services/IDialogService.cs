@@ -1,5 +1,3 @@
-using CrossWikiEditor.Core.ViewModels;
-
 namespace CrossWikiEditor.Core.Services;
 
 public interface IDialogService

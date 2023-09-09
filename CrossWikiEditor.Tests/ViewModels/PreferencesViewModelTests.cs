@@ -1,8 +1,4 @@
-﻿using CrossWikiEditor.Core.Messages;
-using CrossWikiEditor.Core.Settings;
-using CrossWikiEditor.Core.ViewModels;
-
-namespace CrossWikiEditor.Tests.ViewModels;
+﻿namespace CrossWikiEditor.Tests.ViewModels;
 
 public sealed class PreferencesViewModelTests : BaseTest
 {

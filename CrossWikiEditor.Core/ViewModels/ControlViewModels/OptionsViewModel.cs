@@ -1,8 +1,4 @@
-﻿using CommunityToolkit.Mvvm.Input;
-using CrossWikiEditor.Core.Services;
-using CrossWikiEditor.Core.Settings;
-
-namespace CrossWikiEditor.Core.ViewModels.ControlViewModels;
+﻿namespace CrossWikiEditor.Core.ViewModels.ControlViewModels;
 
 public sealed partial class OptionsViewModel(IDialogService dialogService) : ViewModelBase
 {

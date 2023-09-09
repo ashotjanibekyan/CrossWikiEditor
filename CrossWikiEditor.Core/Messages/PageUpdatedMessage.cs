@@ -1,6 +1,4 @@
-﻿using CrossWikiEditor.Core.Models;
-
-namespace CrossWikiEditor.Core.Messages;
+﻿namespace CrossWikiEditor.Core.Messages;
 
 public sealed class PageUpdatedMessage(WikiPageModel wikiPageModel, string oldContent, string newContent)
 {

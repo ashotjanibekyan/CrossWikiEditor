@@ -1,15 +1,4 @@
-﻿using CrossWikiEditor.Core.ListProviders.BaseListProviders;
-using CrossWikiEditor.Core.Models;
-using CrossWikiEditor.Core.Services;
-using CrossWikiEditor.Core.Services.WikiServices;
-using CrossWikiEditor.Core.Utils;
-using HtmlAgilityPack;
-using Serilog;
-using WikiClientLibrary.Pages;
-using WikiClientLibrary.Sites;
-using Tools = CrossWikiEditor.Core.Utils.Tools;
-
-namespace CrossWikiEditor.Core.ListProviders;
+﻿namespace CrossWikiEditor.Core.ListProviders;
 
 public sealed class HtmlScraperListProvider(
     IUserPreferencesService userPreferencesService,

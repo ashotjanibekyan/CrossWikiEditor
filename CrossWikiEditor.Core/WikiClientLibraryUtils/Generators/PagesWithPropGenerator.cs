@@ -1,7 +1,4 @@
-﻿using WikiClientLibrary.Generators.Primitive;
-using WikiClientLibrary.Sites;
-
-namespace CrossWikiEditor.Core.WikiClientLibraryUtils.Generators;
+﻿namespace CrossWikiEditor.Core.WikiClientLibraryUtils.Generators;
 
 public sealed class PagesWithPropGenerator : WikiPageGenerator
 {

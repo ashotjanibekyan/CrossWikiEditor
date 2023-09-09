@@ -1,10 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using CrossWikiEditor.Core.Models;
-using CrossWikiEditor.Core.Utils;
-
-namespace CrossWikiEditor.Core.ViewModels;
+﻿namespace CrossWikiEditor.Core.ViewModels;
 
 public sealed partial class SelectNamespacesViewModel(List<WikiNamespace> namespaces, bool isMultiselect = true) : ViewModelBase
 {

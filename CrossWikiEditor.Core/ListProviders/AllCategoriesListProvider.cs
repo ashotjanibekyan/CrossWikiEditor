@@ -1,14 +1,8 @@
-using CrossWikiEditor.Core.ListProviders.BaseListProviders;
-using CrossWikiEditor.Core.Models;
-using CrossWikiEditor.Core.Services;
-using CrossWikiEditor.Core.Services.WikiServices;
-using CrossWikiEditor.Core.Utils;
-
 namespace CrossWikiEditor.Core.ListProviders;
 
 public sealed class AllCategoriesListProvider(
     IDialogService dialogService,
-    IPageService pageService,
+    ICategoryService categoryService,
     IUserPreferencesService userPreferencesService) : LimitedListProviderBase(dialogService)
 {
     public override string Title => "All Categories";
@@ -16,5 +10,5 @@ public sealed class AllCategoriesListProvider(
     public override bool CanMake => true;
 
     public override async Task<Result<List<WikiPageModel>>> MakeList(int limit) =>
-        await pageService.GetAllCategories(userPreferencesService.CurrentApiUrl, Param, limit);
+        await categoryService.GetAllCategories(userPreferencesService.CurrentApiUrl, Param, limit);
 }

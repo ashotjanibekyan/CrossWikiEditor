@@ -1,13 +1,4 @@
-﻿using System.Text;
-using CrossWikiEditor.Core.ListProviders.BaseListProviders;
-using CrossWikiEditor.Core.Models;
-using CrossWikiEditor.Core.Services;
-using CrossWikiEditor.Core.Services.WikiServices;
-using CrossWikiEditor.Core.Utils;
-using WikiClientLibrary.Pages;
-using WikiClientLibrary.Sites;
-
-namespace CrossWikiEditor.Core.ListProviders;
+﻿namespace CrossWikiEditor.Core.ListProviders;
 
 public sealed class TextFileListProvider(
         IFileDialogService fileDialogService,

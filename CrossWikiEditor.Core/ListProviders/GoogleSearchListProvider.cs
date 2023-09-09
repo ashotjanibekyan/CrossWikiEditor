@@ -1,13 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using System.Web;
-using CrossWikiEditor.Core.ListProviders.BaseListProviders;
-using CrossWikiEditor.Core.Models;
-using CrossWikiEditor.Core.Services;
-using CrossWikiEditor.Core.Services.WikiServices;
-using CrossWikiEditor.Core.Utils;
-using Tools = CrossWikiEditor.Core.Utils.Tools;
-
-namespace CrossWikiEditor.Core.ListProviders;
+﻿namespace CrossWikiEditor.Core.ListProviders;
 
 public partial class GoogleSearchListProvider(
     IUserPreferencesService userPreferencesService,

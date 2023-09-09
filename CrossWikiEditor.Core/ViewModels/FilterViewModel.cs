@@ -1,10 +1,3 @@
-using System.Collections.ObjectModel;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using CrossWikiEditor.Core.ListProviders;
-using CrossWikiEditor.Core.Models;
-using CrossWikiEditor.Core.Utils;
-
 namespace CrossWikiEditor.Core.ViewModels;
 
 public partial class FilterViewModel(List<WikiNamespace> subjectNamespaces, List<WikiNamespace> talkNamespaces,

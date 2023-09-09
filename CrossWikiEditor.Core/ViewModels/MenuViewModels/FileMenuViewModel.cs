@@ -1,8 +1,4 @@
-﻿using CommunityToolkit.Mvvm.Input;
-using CrossWikiEditor.Core.Services;
-using CrossWikiEditor.Core.Settings;
-
-namespace CrossWikiEditor.Core.ViewModels.MenuViewModels;
+﻿namespace CrossWikiEditor.Core.ViewModels.MenuViewModels;
 
 public sealed partial class FileMenuViewModel(
     IViewModelFactory viewModelFactory,

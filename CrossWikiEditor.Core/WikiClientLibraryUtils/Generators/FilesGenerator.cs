@@ -1,7 +1,3 @@
-using WikiClientLibrary.Generators.Primitive;
-using WikiClientLibrary.Infrastructures;
-using WikiClientLibrary.Sites;
-
 namespace CrossWikiEditor.Core.WikiClientLibraryUtils.Generators;
 
 /// <summary>

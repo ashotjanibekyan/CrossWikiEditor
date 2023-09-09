@@ -1,11 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using CrossWikiEditor.Core.Messages;
-using CrossWikiEditor.Core.Models;
-using CrossWikiEditor.Core.Settings;
-using CrossWikiEditor.Core.Utils;
-using WikiClientLibrary.Pages;
-
-namespace CrossWikiEditor.Core;
+﻿namespace CrossWikiEditor.Core;
 
 public sealed class PageListProcessor
 {
