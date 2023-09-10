@@ -1,5 +1,4 @@
 using Avalonia.Input.Platform;
-using CrossWikiEditor.Core.Repositories;
 using CrossWikiEditor.Core.Services.WikiServices;
 using Serilog;
 

@@ -8,6 +8,7 @@ global using CrossWikiEditor.Core.ListProviders;
 global using CrossWikiEditor.Core.ListProviders.BaseListProviders;
 global using CrossWikiEditor.Core.Messages;
 global using CrossWikiEditor.Core.Models;
+global using CrossWikiEditor.Core.Repositories;
 global using CrossWikiEditor.Core.Services;
 global using CrossWikiEditor.Core.Settings;
 global using CrossWikiEditor.Core.Utils;
