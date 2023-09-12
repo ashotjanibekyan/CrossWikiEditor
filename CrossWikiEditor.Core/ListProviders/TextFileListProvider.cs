@@ -16,7 +16,6 @@ public sealed class TextFileListProvider(IFileDialogService fileDialogService,
     {
         WikiSite site = await wikiClientCache.GetWikiSite(userPreferencesService.CurrentApiUrl);
         var titles = new List<string>();
-        var result = new List<WikiPageModel>();
         foreach (string textFile in _textFiles)
         {
             string pageText = await systemService.ReadAllTextAsync(textFile, Encoding.Default);
@@ -36,17 +35,7 @@ public sealed class TextFileListProvider(IFileDialogService fileDialogService,
             }
         }
 
-        foreach (string title in titles)
-        {
-            try
-            {
-                var page = new WikiPage(site, title);
-                result.Add(new WikiPageModel(page));
-            }
-            catch (ArgumentException)
-            {
-            }
-        }
+        var result = titles.Select(title => new WikiPageModel(title, userPreferencesService.CurrentApiUrl, wikiClientCache)).ToList();
 
         _textFiles.Clear();
         return Result<List<WikiPageModel>>.Success(result);
