@@ -1,6 +1,6 @@
 namespace CrossWikiEditor.Core.ListProviders;
 
-public class PetscanListProvider(IUserPreferencesService userPreferencesService, IWikiClientCache wikiClientCache) : UnlimitedListProviderBase
+public class PetscanListProvider(IHttpClientFactory httpClientFactory, IUserPreferencesService userPreferencesService, IWikiClientCache wikiClientCache) : UnlimitedListProviderBase
 {
     public override string Title => "Petscan";
     public override string ParamTitle => "PSID";
@@ -12,7 +12,7 @@ public class PetscanListProvider(IUserPreferencesService userPreferencesService,
             var wikiPageModels = new List<WikiPageModel>();
             if (long.TryParse(Param, out long id))
             {
-                var httpClient = new HttpClient();
+                using HttpClient httpClient = httpClientFactory.CreateClient("Petscan");
                 HttpResponseMessage result = await httpClient.GetAsync($"https://petscan.wmflabs.org/?psid={id}&format=plain");
                 if (result.IsSuccessStatusCode)
                 {

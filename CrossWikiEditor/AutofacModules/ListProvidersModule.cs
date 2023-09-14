@@ -1,59 +1,57 @@
-using Autofac;
 using CrossWikiEditor.Core.ListProviders;
 using CrossWikiEditor.Core.ListProviders.BaseListProviders;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CrossWikiEditor.AutofacModules;
 
-public sealed class ListProvidersModule : Module
+public static class ListProvidersModule
 {
-    protected override void Load(ContainerBuilder builder)
+    public static void Register(IServiceCollection services)
     {
-        // TODO: CheckWiki error
-        // TODO: CheckWiki error (number)
-        builder.RegisterType<AllCategoriesListProvider>().As<IListProvider>();
-        builder.RegisterType<AllFilesListProvider>().As<IListProvider>();
-        builder.RegisterType<AllPagesListProvider>().As<IListProvider>();
-        builder.RegisterType<AllPagesNoRedirectsListProvider>().As<IListProvider>();
-        builder.RegisterType<AllPagesWithPrefixListProvider>().As<IListProvider>();
-        builder.RegisterType<AllRedirectsListProvider>().As<IListProvider>();
-        builder.RegisterType<AllUsersListProvider>().As<IListProvider>();
-        builder.RegisterType<CategoriesOnPageListProvider>().As<IListProvider>();
-        builder.RegisterType<CategoriesOnPageNoHiddenCategoriesListProvider>().As<IListProvider>();
-        builder.RegisterType<CategoriesOnPageOnlyHiddenCategoriesListProvider>().As<IListProvider>();
-        builder.RegisterType<CategoryListProvider>().As<IListProvider>();
-        builder.RegisterType<CategoryRecursive1LevelListProvider>().As<IListProvider>();
-        builder.RegisterType<CategoryRecursiveListProvider>().As<IListProvider>();
-        builder.RegisterType<CategoryRecursiveUserDefinedLevelListProvider>().As<IListProvider>();
-        builder.RegisterType<DatabaseDumpListProvider>().As<IListProvider>();
-        builder.RegisterType<DisambiguationPagesListProvider>().As<IListProvider>();
-        builder.RegisterType<FilesOnPageListProvider>().As<IListProvider>();
-        builder.RegisterType<GoogleSearchListProvider>().As<IListProvider>();
-        builder.RegisterType<HtmlScraperListProvider>().As<IListProvider>();
-        builder.RegisterType<ImageFileLinksListProvider>().As<IListProvider>();
-        builder.RegisterType<LinkSearchListProvider>().As<IListProvider>();
-        builder.RegisterType<LinksOnPageBlueListProvider>().As<IListProvider>();
-        builder.RegisterType<LinksOnPageListProvider>().As<IListProvider>();
-        builder.RegisterType<LinksOnPageRedListProvider>().As<IListProvider>();
-        builder.RegisterType<MyWatchlistListProvider>().As<IListProvider>();
-        builder.RegisterType<NewPagesListProvider>().As<IListProvider>();
-        builder.RegisterType<PagesWithPropListProvider>().As<IListProvider>();
-        builder.RegisterType<PagesWithoutLanguageLinksListProvider>().As<IListProvider>();
-        builder.RegisterType<PagesWithoutLanguageLinksNoRedirectsListProvider>().As<IListProvider>();
-        builder.RegisterType<PetscanListProvider>().As<IListProvider>();
-        builder.RegisterType<ProtectedPagesListProvider>().As<IListProvider>();
-        builder.RegisterType<RandomListProvider>().As<IListProvider>();
-        builder.RegisterType<RecentChangesListProvider>().As<IListProvider>();
-        builder.RegisterType<TextFileListProvider>().As<IListProvider>();
-        builder.RegisterType<TransclusionsOnPageListProvider>().As<IListProvider>();
-        builder.RegisterType<UserContributionsListProvider>().As<IListProvider>();
-        builder.RegisterType<WhatLinksHereListProvider>().As<IListProvider>();
-        builder.RegisterType<WhatTranscludesHereAllNsListProvider>().As<IListProvider>();
-        builder.RegisterType<WhatTranscludesHereListProvider>().As<IListProvider>();
-        builder.RegisterType<WikiSearchInTextAllNsListProvider>().As<IListProvider>();
-        builder.RegisterType<WikiSearchInTextListProvider>().As<IListProvider>();
-        builder.RegisterType<WikiSearchInTitleAllNsListProvider>().As<IListProvider>();
-        builder.RegisterType<WikiSearchInTitleListProvider>().As<IListProvider>();
+        services.AddTransient<IListProvider, AllCategoriesListProvider>();
+        services.AddTransient<IListProvider, AllFilesListProvider>();
+        services.AddTransient<IListProvider, AllPagesListProvider>();
+        services.AddTransient<IListProvider, AllPagesNoRedirectsListProvider>();
+        services.AddTransient<IListProvider, AllPagesWithPrefixListProvider>();
+        services.AddTransient<IListProvider, AllRedirectsListProvider>();
+        services.AddTransient<IListProvider, AllUsersListProvider>();
+        services.AddTransient<IListProvider, CategoriesOnPageListProvider>();
+        services.AddTransient<IListProvider, CategoriesOnPageNoHiddenCategoriesListProvider>();
+        services.AddTransient<IListProvider, CategoriesOnPageOnlyHiddenCategoriesListProvider>();
+        services.AddTransient<IListProvider, CategoryListProvider>();
+        services.AddTransient<IListProvider, CategoryRecursive1LevelListProvider>();
+        services.AddTransient<IListProvider, CategoryRecursiveListProvider>();
+        services.AddTransient<IListProvider, CategoryRecursiveUserDefinedLevelListProvider>();
+        services.AddTransient<IListProvider, DatabaseDumpListProvider>();
+        services.AddTransient<IListProvider, DisambiguationPagesListProvider>();
+        services.AddTransient<IListProvider, FilesOnPageListProvider>();
+        services.AddTransient<IListProvider, GoogleSearchListProvider>();
+        services.AddTransient<IListProvider, HtmlScraperListProvider>();
+        services.AddTransient<IListProvider, ImageFileLinksListProvider>();
+        services.AddTransient<IListProvider, LinkSearchListProvider>();
+        services.AddTransient<IListProvider, LinksOnPageBlueListProvider>();
+        services.AddTransient<IListProvider, LinksOnPageListProvider>();
+        services.AddTransient<IListProvider, LinksOnPageRedListProvider>();
+        services.AddTransient<IListProvider, MyWatchlistListProvider>();
+        services.AddTransient<IListProvider, NewPagesListProvider>();
+        services.AddTransient<IListProvider, PagesWithPropListProvider>();
+        services.AddTransient<IListProvider, PagesWithoutLanguageLinksListProvider>();
+        services.AddTransient<IListProvider, PagesWithoutLanguageLinksNoRedirectsListProvider>();
+        services.AddTransient<IListProvider, PetscanListProvider>();
+        services.AddTransient<IListProvider, ProtectedPagesListProvider>();
+        services.AddTransient<IListProvider, RandomListProvider>();
+        services.AddTransient<IListProvider, RecentChangesListProvider>();
+        services.AddTransient<IListProvider, TextFileListProvider>();
+        services.AddTransient<IListProvider, TransclusionsOnPageListProvider>();
+        services.AddTransient<IListProvider, UserContributionsListProvider>();
+        services.AddTransient<IListProvider, WhatLinksHereListProvider>();
+        services.AddTransient<IListProvider, WhatTranscludesHereAllNsListProvider>();
+        services.AddTransient<IListProvider, WhatTranscludesHereListProvider>();
+        services.AddTransient<IListProvider, WikiSearchInTextAllNsListProvider>();
+        services.AddTransient<IListProvider, WikiSearchInTextListProvider>();
+        services.AddTransient<IListProvider, WikiSearchInTitleAllNsListProvider>();
+        services.AddTransient<IListProvider, WikiSearchInTitleListProvider>();
 
-        builder.RegisterType<TextFileListProvider>();
+        services.AddTransient<TextFileListProvider>();
     }
 }

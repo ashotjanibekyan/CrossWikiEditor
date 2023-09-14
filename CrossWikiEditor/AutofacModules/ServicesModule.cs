@@ -1,23 +1,22 @@
-using Autofac;
 using Avalonia.Controls;
 using Avalonia.Input.Platform;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.Messaging;
-using CrossWikiEditor.Core;
 using CrossWikiEditor.Core.Services;
 using CrossWikiEditor.Core.Services.WikiServices;
 using CrossWikiEditor.Core.Utils;
 using CrossWikiEditor.Services;
 using CrossWikiEditor.Views;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog.Core;
 using Serilog.Formatting.Json;
 
 namespace CrossWikiEditor.AutofacModules;
 
-public sealed class ServicesModule(MainWindow mainWindow) : Module
+public static class ServicesModule
 {
-    protected override void Load(ContainerBuilder builder)
+    public static void Register(IServiceCollection services, MainWindow mainWindow)
     {
         (byte[] key, byte[] iv) = StringEncryptionService.GenerateKeyAndIv("SHOULD IMPLEMENT THIS LATER");
         IStringEncryptionService stringEncryptionService = new StringEncryptionService(key, iv);
@@ -31,23 +30,19 @@ public sealed class ServicesModule(MainWindow mainWindow) : Module
 #endif
             .CreateLogger();
 
-        builder.RegisterType<ViewModelFactory>().As<IViewModelFactory>().SingleInstance();
-        builder.RegisterType<FileDialogService>().As<IFileDialogService>().SingleInstance();
-        builder.RegisterType<SystemService>().As<ISystemService>().SingleInstance();
-        builder.RegisterType<UserPreferencesService>().As<IUserPreferencesService>().SingleInstance();
-
-        builder.RegisterType<UserService>().As<IUserService>().SingleInstance();
-        builder.RegisterType<PageService>().As<IPageService>().SingleInstance();
-        builder.RegisterType<CategoryService>().As<ICategoryService>().SingleInstance();
-        builder.RegisterType<WikiClientCache>().As<IWikiClientCache>().SingleInstance();
-
-        builder.RegisterType<DialogService>()
-            .As<IDialogService>()
-            .WithParameter(new TypedParameter(typeof(IOwner), mainWindow)).SingleInstance();
-        builder.Register(c => TopLevel.GetTopLevel(mainWindow)!.StorageProvider).As<IStorageProvider>();
-        builder.RegisterInstance(stringEncryptionService).As<IStringEncryptionService>();
-        builder.RegisterInstance(logger).As<ILogger>();
-        builder.Register(c => TopLevel.GetTopLevel(mainWindow)!.Clipboard).As<IClipboard>();
-        builder.RegisterInstance(new MessengerWrapper(WeakReferenceMessenger.Default)).As<IMessengerWrapper>();
+        services.AddSingleton<IViewModelFactory, ViewModelFactory>();
+        services.AddSingleton<IFileDialogService, FileDialogService>();
+        services.AddSingleton<IUserPreferencesService, UserPreferencesService>();
+        services.AddSingleton<ISystemService, SystemService>();
+        services.AddSingleton<IUserService, UserService>();
+        services.AddSingleton<IPageService, PageService>();
+        services.AddSingleton<ICategoryService, CategoryService>();
+        services.AddSingleton<IWikiClientCache, WikiClientCache>();
+        services.AddSingleton<IDialogService, DialogService>(sp => new DialogService(sp, mainWindow));
+        services.AddTransient<IStorageProvider>(sp => TopLevel.GetTopLevel(mainWindow)!.StorageProvider);
+        services.AddTransient<IClipboard>(sp => TopLevel.GetTopLevel(mainWindow)!.Clipboard);
+        services.AddSingleton<IStringEncryptionService>(sp => stringEncryptionService);
+        services.AddSingleton<ILogger>(sp => logger);
+        services.AddSingleton<IMessengerWrapper>(sp => new MessengerWrapper(WeakReferenceMessenger.Default));
     }
 }
