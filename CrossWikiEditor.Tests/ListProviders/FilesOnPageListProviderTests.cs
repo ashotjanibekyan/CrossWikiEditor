@@ -1,9 +1,7 @@
 namespace CrossWikiEditor.Tests.ListProviders;
 
-public class FilesOnPageListProviderTests : ListProvidersBaseTest
+public class FilesOnPageListProviderTests : ListProvidersBaseTest<FilesOnPageListProvider>
 {
-    private FilesOnPageListProvider _sut;
-
     [SetUp]
     public void SetUp()
     {

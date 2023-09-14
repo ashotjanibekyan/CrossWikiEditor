@@ -1,9 +1,7 @@
 namespace CrossWikiEditor.Tests.ListProviders;
 
-public class TransclusionsOnPageListProviderTests : ListProvidersBaseTest
+public class TransclusionsOnPageListProviderTests : ListProvidersBaseTest<TransclusionsOnPageListProvider>
 {
-    private TransclusionsOnPageListProvider _sut;
-
     [SetUp]
     public void SetUp()
     {

@@ -1,9 +1,7 @@
 namespace CrossWikiEditor.Tests.ListProviders;
 
-public class WikiSearchInTitleListProviderTests : ListProvidersBaseTest
+public class WikiSearchInTitleListProviderTests : ListProvidersBaseTest<WikiSearchInTitleListProvider>
 {
-    private WikiSearchInTitleListProvider _sut;
-
     [SetUp]
     public void SetUp()
     {

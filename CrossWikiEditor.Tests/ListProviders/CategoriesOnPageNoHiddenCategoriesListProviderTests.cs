@@ -1,9 +1,7 @@
 namespace CrossWikiEditor.Tests.ListProviders;
 
-public class CategoriesOnPageNoHiddenCategoriesListProviderTests : ListProvidersBaseTest
+public class CategoriesOnPageNoHiddenCategoriesListProviderTests : ListProvidersBaseTest<CategoriesOnPageNoHiddenCategoriesListProvider>
 {
-    private CategoriesOnPageNoHiddenCategoriesListProvider _sut;
-    
     [SetUp]
     public void SetUp()
     {

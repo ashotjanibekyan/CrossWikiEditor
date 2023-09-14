@@ -2,10 +2,8 @@ using System.Text;
 
 namespace CrossWikiEditor.Tests.ListProviders;
 
-public class TextFileListProviderTests : ListProvidersBaseTest
+public class TextFileListProviderTests : ListProvidersBaseTest<TextFileListProvider>
 {
-    private TextFileListProvider _sut;
-    
     [SetUp]
     public void SetUp()
     {

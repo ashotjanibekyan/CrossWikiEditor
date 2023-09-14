@@ -1,9 +1,7 @@
 namespace CrossWikiEditor.Tests.ListProviders;
 
-public class RandomListProviderTests : ListProvidersBaseTest
+public class RandomListProviderTests : ListProvidersBaseTest<RandomListProvider>
 {
-    private RandomListProvider _sut;
-
     [SetUp]
     public void SetUp()
     {

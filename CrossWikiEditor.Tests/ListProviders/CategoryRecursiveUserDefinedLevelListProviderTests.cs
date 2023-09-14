@@ -1,9 +1,7 @@
 namespace CrossWikiEditor.Tests.ListProviders;
 
-public class CategoryRecursiveUserDefinedLevelListProviderTests : ListProvidersBaseTest
+public class CategoryRecursiveUserDefinedLevelListProviderTests : ListProvidersBaseTest<CategoryRecursiveUserDefinedLevelListProvider>
 {
-    private CategoryRecursiveUserDefinedLevelListProvider _sut;
-    
     [SetUp]
     public void SetUp()
     {

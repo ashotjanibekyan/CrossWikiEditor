@@ -1,9 +1,7 @@
 namespace CrossWikiEditor.Tests.ListProviders;
 
-public class MyWatchlistListProviderTests : ListProvidersBaseTest
+public class MyWatchlistListProviderTests : ListProvidersBaseTest<MyWatchlistListProvider>
 {
-    private MyWatchlistListProvider _sut;
-    
     [SetUp]
     public void SetUp()
     {

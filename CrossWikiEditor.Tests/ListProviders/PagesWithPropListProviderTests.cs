@@ -1,9 +1,7 @@
 namespace CrossWikiEditor.Tests.ListProviders;
 
-public class PagesWithPropListProviderTests : ListProvidersBaseTest
+public class PagesWithPropListProviderTests : ListProvidersBaseTest<PagesWithPropListProvider>
 {
-    private PagesWithPropListProvider _sut;
-
     [SetUp]
     public void SetUp()
     {

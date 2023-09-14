@@ -1,9 +1,7 @@
 namespace CrossWikiEditor.Tests.ListProviders;
 
-public class AllFilesListProviderTests : ListProvidersBaseTest
+public class AllFilesListProviderTests : ListProvidersBaseTest<AllFilesListProvider>
 {
-    private AllFilesListProvider _sut;
-    
     [SetUp]
     public void SetUp()
     {

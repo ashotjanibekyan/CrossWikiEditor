@@ -1,9 +1,7 @@
 ﻿namespace CrossWikiEditor.Tests.ListProviders;
 
-public class AllRedirectsListProviderTests : ListProvidersBaseTest
+public class AllRedirectsListProviderTests : ListProvidersBaseTest<AllRedirectsListProvider>
 {
-    private AllRedirectsListProvider _sut;
-    
     [SetUp]
     public void SetUp()
     {

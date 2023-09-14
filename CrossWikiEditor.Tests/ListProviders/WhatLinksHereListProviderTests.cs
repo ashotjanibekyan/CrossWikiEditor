@@ -1,9 +1,7 @@
 namespace CrossWikiEditor.Tests.ListProviders;
 
-public class WhatLinksHereListProviderTest : ListProvidersBaseTest
+public class WhatLinksHereListProviderTests : ListProvidersBaseTest<WhatLinksHereListProvider>
 {
-    private WhatLinksHereListProvider _sut;
-
     [SetUp]
     public void SetUp()
     {

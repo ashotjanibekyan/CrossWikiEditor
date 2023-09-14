@@ -1,9 +1,7 @@
 namespace CrossWikiEditor.Tests.ListProviders;
 
-public class AllUsersListProviderTests : ListProvidersBaseTest
+public class AllUsersListProviderTests : ListProvidersBaseTest<AllUsersListProvider>
 {
-    private AllUsersListProvider _sut;
-
     [SetUp]
     public void SetUp()
     {

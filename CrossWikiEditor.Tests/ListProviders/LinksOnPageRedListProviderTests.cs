@@ -3,10 +3,8 @@ using Serilog;
 
 namespace CrossWikiEditor.Tests.ListProviders;
 
-public class LinksOnPageRedListProviderTests : ListProvidersBaseTest
+public class LinksOnPageRedListProviderTests : ListProvidersBaseTest<LinksOnPageRedListProvider>
 {
-    private LinksOnPageRedListProvider _sut;
-
     [SetUp]
     public void SetUp()
     {

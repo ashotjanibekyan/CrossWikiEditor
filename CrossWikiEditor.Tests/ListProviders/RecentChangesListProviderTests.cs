@@ -1,9 +1,7 @@
 namespace CrossWikiEditor.Tests.ListProviders;
 
-public class RecentChangesListProviderTests : ListProvidersBaseTest
+public class RecentChangesListProviderTests : ListProvidersBaseTest<RecentChangesListProvider>
 {
-    private RecentChangesListProvider _sut;
-
     [SetUp]
     public void SetUp()
     {

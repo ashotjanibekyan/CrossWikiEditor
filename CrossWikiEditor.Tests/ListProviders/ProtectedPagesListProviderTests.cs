@@ -1,9 +1,7 @@
 namespace CrossWikiEditor.Tests.ListProviders;
 
-public class ProtectedPagesListProviderTests : ListProvidersBaseTest
+public class ProtectedPagesListProviderTests : ListProvidersBaseTest<ProtectedPagesListProvider>
 {
-    private ProtectedPagesListProvider _sut;
-
     [SetUp]
     public void SetUp()
     {
