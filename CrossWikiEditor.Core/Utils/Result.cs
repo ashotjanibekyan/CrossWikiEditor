@@ -27,7 +27,7 @@ public sealed class Result<T>
     {
         IsSuccessful = isSuccessful;
         Value = value;
-        Error = error;
+        Error = error?.Trim();
     }
 
     public static Result<T> Success(T result)

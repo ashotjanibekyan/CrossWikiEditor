@@ -8,7 +8,6 @@ public class PetscanListProvider(IHttpClientFactory httpClientFactory, IUserPref
     {
         try
         {
-            WikiSite wikiSite = await wikiClientCache.GetWikiSite(userPreferencesService.CurrentApiUrl);
             var wikiPageModels = new List<WikiPageModel>();
             if (long.TryParse(Param, out long id))
             {
@@ -18,8 +17,16 @@ public class PetscanListProvider(IHttpClientFactory httpClientFactory, IUserPref
                 {
                     string content = await result.Content.ReadAsStringAsync();
                     var titles = content.Split('\n').ToList();
-                    wikiPageModels.AddRange(titles.Select(title => new WikiPageModel(new WikiPage(wikiSite, title))));
+                    wikiPageModels.AddRange(titles.Select(title => new WikiPageModel(title, userPreferencesService.CurrentApiUrl, wikiClientCache)));
                 }
+                else
+                {
+                    return Result<List<WikiPageModel>>.Failure($"Could not get the list. \n{await result.Content.ReadAsStringAsync()}");
+                }
+            }
+            else
+            {
+                return Result<List<WikiPageModel>>.Failure($"{Param} is not a valid PSID");
             }
             
             return Result<List<WikiPageModel>>.Success(wikiPageModels);
