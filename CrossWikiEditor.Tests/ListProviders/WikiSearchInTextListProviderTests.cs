@@ -1,6 +1,6 @@
 namespace CrossWikiEditor.Tests.ListProviders;
 
-public class WikiSearchInTextListProviderTests : ListProvidersBaseTest<WikiSearchInTextListProvider>
+public sealed class WikiSearchInTextListProviderTests : ListProvidersBaseTest<WikiSearchInTextListProvider>
 {
     [SetUp]
     public void SetUp()

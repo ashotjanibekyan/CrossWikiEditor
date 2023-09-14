@@ -3,7 +3,7 @@ using ILogger = Serilog.ILogger;
 
 namespace CrossWikiEditor.Tests.ListProviders;
 
-public class LinksOnPageBlueListProviderTests : ListProvidersBaseTest<LinksOnPageBlueListProvider>
+public sealed class LinksOnPageBlueListProviderTests : ListProvidersBaseTest<LinksOnPageBlueListProvider>
 {
     [SetUp]
     public void SetUp()

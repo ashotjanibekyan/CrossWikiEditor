@@ -3,7 +3,7 @@ using RichardSzalay.MockHttp;
 
 namespace CrossWikiEditor.Tests.ListProviders;
 
-public class PetscanListProviderTests : ListProvidersBaseTest<PetscanListProvider>
+public sealed class PetscanListProviderTests : ListProvidersBaseTest<PetscanListProvider>
 {
     private IHttpClientFactory _httpClientFactory;
     private MockHttpMessageHandler _mockHttpMessageHandler;

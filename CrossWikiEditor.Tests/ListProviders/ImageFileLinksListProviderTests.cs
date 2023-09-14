@@ -1,6 +1,6 @@
 namespace CrossWikiEditor.Tests.ListProviders;
 
-public class ImageFileLinksListProviderTests : ListProvidersBaseTest<ImageFileLinksListProvider>
+public sealed class ImageFileLinksListProviderTests : ListProvidersBaseTest<ImageFileLinksListProvider>
 {
     [SetUp]
     public void SetUp()

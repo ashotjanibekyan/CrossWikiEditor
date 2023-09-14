@@ -1,6 +1,6 @@
 namespace CrossWikiEditor.Tests.ListProviders;
 
-public class WhatTranscludesHereAllNsListProviderTests : ListProvidersBaseTest<WhatTranscludesHereAllNsListProvider>
+public sealed class WhatTranscludesHereAllNsListProviderTests : ListProvidersBaseTest<WhatTranscludesHereAllNsListProvider>
 {
     [SetUp]
     public void SetUp()

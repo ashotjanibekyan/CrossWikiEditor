@@ -1,6 +1,6 @@
 namespace CrossWikiEditor.Tests.Repositories;
 
-public class SimpleJsonProfileRepositoryTests
+public sealed class SimpleJsonProfileRepositoryTests
 {
     private SimpleJsonProfileRepository _sut;
 

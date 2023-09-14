@@ -1,6 +1,6 @@
 ﻿namespace CrossWikiEditor.Core.WikiClientLibraryUtils.Generators;
 
-public class AllPagesGeneratorEx : AllPagesGenerator
+public sealed class AllPagesGeneratorEx : AllPagesGenerator
 {
     public AllPagesGeneratorEx(WikiSite site) : base(site)
     {

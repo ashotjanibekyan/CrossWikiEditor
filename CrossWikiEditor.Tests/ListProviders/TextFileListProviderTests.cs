@@ -2,7 +2,7 @@ using System.Text;
 
 namespace CrossWikiEditor.Tests.ListProviders;
 
-public class TextFileListProviderTests : ListProvidersBaseTest<TextFileListProvider>
+public sealed class TextFileListProviderTests : ListProvidersBaseTest<TextFileListProvider>
 {
     [SetUp]
     public void SetUp()

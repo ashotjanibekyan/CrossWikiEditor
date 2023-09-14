@@ -1,6 +1,6 @@
 namespace CrossWikiEditor.Tests.ListProviders;
 
-public class ProtectedPagesListProviderTests : ListProvidersBaseTest<ProtectedPagesListProvider>
+public sealed class ProtectedPagesListProviderTests : ListProvidersBaseTest<ProtectedPagesListProvider>
 {
     [SetUp]
     public void SetUp()

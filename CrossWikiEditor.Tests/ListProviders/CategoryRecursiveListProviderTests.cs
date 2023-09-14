@@ -1,6 +1,6 @@
 namespace CrossWikiEditor.Tests.ListProviders;
 
-public class CategoryRecursiveListProviderTests : ListProvidersBaseTest<CategoryRecursiveListProvider>
+public sealed class CategoryRecursiveListProviderTests : ListProvidersBaseTest<CategoryRecursiveListProvider>
 {
     [SetUp]
     public void SetUp()

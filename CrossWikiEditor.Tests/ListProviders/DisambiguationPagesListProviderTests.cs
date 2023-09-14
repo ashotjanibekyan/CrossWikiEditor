@@ -1,6 +1,6 @@
 namespace CrossWikiEditor.Tests.ListProviders;
 
-public class DisambiguationPagesListProviderTests : ListProvidersBaseTest<DisambiguationPagesListProvider>
+public sealed class DisambiguationPagesListProviderTests : ListProvidersBaseTest<DisambiguationPagesListProvider>
 {
     [SetUp]
     public void SetUp()

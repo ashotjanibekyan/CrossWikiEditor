@@ -17,7 +17,7 @@ public static class Fakers
     
     public static Faker<WikiPageModel> GetWikiPageModelFaker(string apiRoot, IWikiClientCache wikiClientCache) =>
         new Faker<WikiPageModel>()
-            .CustomInstantiator(f => new WikiPageModel(f.Random.Word(), apiRoot, wikiClientCache))
+            .CustomInstantiator(f => new WikiPageModel(f.Random.Word() + f.UniqueIndex, apiRoot, wikiClientCache))
             .RuleFor(p => p.NamespaceId, f => f.Random.Int(0, 20));
     
     public static Faker<WikiNamespace> WikiNamespaceFaker = new Faker<WikiNamespace>()

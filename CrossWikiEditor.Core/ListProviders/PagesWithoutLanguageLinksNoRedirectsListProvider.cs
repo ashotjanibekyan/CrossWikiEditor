@@ -1,6 +1,6 @@
 namespace CrossWikiEditor.Core.ListProviders;
 
-public class PagesWithoutLanguageLinksNoRedirectsListProvider(IDialogService dialogService,
+public sealed class PagesWithoutLanguageLinksNoRedirectsListProvider(IDialogService dialogService,
     IPageService pageService,
     IUserPreferencesService userPreferencesService,
     IViewModelFactory viewModelFactory) : AllPagesListProviderBase(dialogService, pageService, viewModelFactory, userPreferencesService)

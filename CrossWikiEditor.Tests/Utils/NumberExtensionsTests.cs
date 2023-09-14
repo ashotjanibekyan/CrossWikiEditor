@@ -1,6 +1,6 @@
 namespace CrossWikiEditor.Tests.Utils;
 
-public class NumberExtensionsTests
+public sealed class NumberExtensionsTests
 {
     [TestCase(0, ExpectedResult = true)]
     [TestCase(-2, ExpectedResult = true)]

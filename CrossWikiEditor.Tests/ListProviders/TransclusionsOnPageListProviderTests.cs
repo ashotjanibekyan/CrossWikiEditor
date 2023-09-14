@@ -1,6 +1,6 @@
 namespace CrossWikiEditor.Tests.ListProviders;
 
-public class TransclusionsOnPageListProviderTests : ListProvidersBaseTest<TransclusionsOnPageListProvider>
+public sealed class TransclusionsOnPageListProviderTests : ListProvidersBaseTest<TransclusionsOnPageListProvider>
 {
     [SetUp]
     public void SetUp()

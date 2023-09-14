@@ -1,6 +1,6 @@
 namespace CrossWikiEditor.Tests.ListProviders;
 
-public class RecentChangesListProviderTests : ListProvidersBaseTest<RecentChangesListProvider>
+public sealed class RecentChangesListProviderTests : ListProvidersBaseTest<RecentChangesListProvider>
 {
     [SetUp]
     public void SetUp()

@@ -1,6 +1,6 @@
 namespace CrossWikiEditor.Tests.ListProviders;
 
-public class PagesWithoutLanguageLinksNoRedirectsListProviderTests : ListProvidersBaseTest<PagesWithoutLanguageLinksNoRedirectsListProvider>
+public sealed class PagesWithoutLanguageLinksNoRedirectsListProviderTests : ListProvidersBaseTest<PagesWithoutLanguageLinksNoRedirectsListProvider>
 {
     [SetUp]
     public void SetUp()

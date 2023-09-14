@@ -1,6 +1,6 @@
 ﻿namespace CrossWikiEditor.Core.ListProviders;
 
-public class DatabaseDumpListProvider(IDialogService dialogService, IViewModelFactory viewModelFactory) : UnlimitedListProviderBase
+public sealed class DatabaseDumpListProvider(IDialogService dialogService, IViewModelFactory viewModelFactory) : UnlimitedListProviderBase
 {
     public override string Title => "Database dump";
     public override string ParamTitle => "";
