@@ -3,6 +3,8 @@
 public class CategoriesOnPageListProvider(ICategoryService categoryService,
     IDialogService dialogService, IUserPreferencesService userPreferencesService) : LimitedListProviderBase(dialogService)
 {
+    protected IUserPreferencesService UserPreferencesService => userPreferencesService;
+    protected ICategoryService CategoryService => categoryService;
     public override string Title => "Categories on page";
     public override string ParamTitle => "Page";
 

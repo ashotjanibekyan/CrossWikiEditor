@@ -8,9 +8,9 @@ public sealed class UserContributionResultItem(WikiPage wikiPage)
 
     [JsonProperty("userid")]
     public int UserId { get; set; }
-    
+
     [JsonProperty("user")]
-    public string UserName { get; set; }
+    public string UserName { get; set; } = string.Empty;
     
     [JsonProperty]
     public int Pageid { get; set; }
@@ -25,13 +25,13 @@ public sealed class UserContributionResultItem(WikiPage wikiPage)
     /// Namespace id of the page.
     /// </summary>
     [JsonProperty("ns")]
-    public string NamespaceId { get; set; }
+    public string NamespaceId { get; set; } = string.Empty;
+
+    [JsonProperty]
+    public string Title { get; set; } = string.Empty;
     
     [JsonProperty]
-    public string Title { get; set; }
-    
-    [JsonProperty]
-    public string timestamp { get; set; }
+    public string timestamp { get; set; } = string.Empty;
     
     [JsonProperty("new")]
     public bool IsNew { get; set; }
@@ -43,10 +43,10 @@ public sealed class UserContributionResultItem(WikiPage wikiPage)
     public bool IsTop { get; set; }
     
     [JsonProperty]
-    public string Comment { get; set; }
+    public string Comment { get; set; } = string.Empty;
     
     [JsonProperty("parsedcomment")]
-    public string ParsedComment { get; set; }
+    public string ParsedComment { get; set; } = string.Empty;
     
     [JsonProperty]
     public bool Patrolled { get; set; }
@@ -61,6 +61,6 @@ public sealed class UserContributionResultItem(WikiPage wikiPage)
     public int ContentLengthDiff { get; set; }
     
     [JsonProperty("tags")]
-    public string[] Tags { get; set; }
+    public string[] Tags { get; set; } = Array.Empty<string>();
 }
 

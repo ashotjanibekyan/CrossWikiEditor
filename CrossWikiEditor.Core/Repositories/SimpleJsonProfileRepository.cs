@@ -5,11 +5,11 @@ namespace CrossWikiEditor.Core.Repositories;
 file class JsonProfile
 {
     public int Id { get; set; }
-    public string Username { get; set; }
+    public string Username { get; set; } = string.Empty;
     public bool IsPasswordSaved { get; set; }
-    public byte[] Password { get; set; }
-    public string DefaultSettingsPath { get; set; }
-    public string Notes { get; set; }
+    public byte[] Password { get; set; } = Array.Empty<byte>();
+    public string DefaultSettingsPath { get; set; } = string.Empty;
+    public string Notes { get; set; } = string.Empty;
 }
 
 file static class Mapper

@@ -14,7 +14,7 @@ public sealed class RandomListProvider(IDialogService dialogService,
     public async Task GetAdditionalParams()
     {
         NamespacesAndRedirectFilterOptions? result =
-            await dialogService.ShowDialog<NamespacesAndRedirectFilterOptions>(
+            await DialogService.ShowDialog<NamespacesAndRedirectFilterOptions>(
                 await viewModelFactory.GetSelectNamespacesAndRedirectFilterViewModel(isIncludeRedirectsVisible: false));
         if (result is not null)
         {

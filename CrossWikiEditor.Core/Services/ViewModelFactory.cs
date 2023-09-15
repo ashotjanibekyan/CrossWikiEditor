@@ -66,6 +66,6 @@ public sealed class ViewModelFactory(IFileDialogService fileDialogService,
 
     public async Task<DatabaseScannerViewModel> GetDatabaseScannerViewModel()
     {
-        return new DatabaseScannerViewModel(dialogService, await wikiClientCache.GetWikiSite(userPreferencesService.CurrentApiUrl), fileDialogService);
+        return new DatabaseScannerViewModel(await wikiClientCache.GetWikiSite(userPreferencesService.CurrentApiUrl), fileDialogService);
     }
 }

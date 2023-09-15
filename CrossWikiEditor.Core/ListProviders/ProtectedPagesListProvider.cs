@@ -12,7 +12,7 @@ public sealed class ProtectedPagesListProvider(IDialogService dialogService,
 
     public async Task GetAdditionalParams()
     {
-        (_protectionType, _protectionLevel) = await dialogService.ShowDialog<(string, string)>(viewModelFactory.GetSelectProtectionSelectionPageViewModel());
+        (_protectionType, _protectionLevel) = await DialogService.ShowDialog<(string, string)>(viewModelFactory.GetSelectProtectionSelectionPageViewModel());
     }
 
     public override async Task<Result<List<WikiPageModel>>> MakeList(int limit) =>

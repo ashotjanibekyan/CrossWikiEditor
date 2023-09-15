@@ -130,7 +130,7 @@ public sealed class UserContributionsGenerator : WikiList<UserContributionResult
     /// <summary>
     /// Only list revisions tagged with this tag.
     /// </summary>
-    public string Tag { get; set; }
+    public string? Tag { get; set; }
 
     /// <summary>
     /// In which direction to enumerate:

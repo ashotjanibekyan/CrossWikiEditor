@@ -26,7 +26,7 @@ public sealed class CategoryRecursiveUserDefinedLevelListProvider(ICategoryServi
 
     public async Task GetAdditionalParams()
     {
-        int? result = await dialogService.ShowDialog<int?>(new PromptViewModel("Number", "Recursion depth: ")
+        int? result = await DialogService.ShowDialog<int?>(new PromptViewModel("Number", "Recursion depth: ")
         {
             IsNumeric = true,
             Value = _recursionLevel ?? 1

@@ -7,5 +7,5 @@ public sealed class CategoriesOnPageNoHiddenCategoriesListProvider(ICategoryServ
     public override string Title => "Categories on page (no hidden categories)";
 
     public override async Task<Result<List<WikiPageModel>>> MakeList(int limit) =>
-        await categoryService.GetCategoriesOf(userPreferencesService.CurrentApiUrl, Param, limit, includeHidden: false);
+        await CategoryService.GetCategoriesOf(UserPreferencesService.CurrentApiUrl, Param, limit, includeHidden: false);
 }

@@ -1,8 +1,6 @@
 namespace CrossWikiEditor.Core.ViewModels;
 
-public sealed partial class DatabaseScannerViewModel(
-    IDialogService dialogService,
-    WikiSite wikiSite,
+public sealed partial class DatabaseScannerViewModel(WikiSite wikiSite,
     IFileDialogService fileDialogService) : ViewModelBase
 {
     private Task? _scannerTask;
@@ -175,7 +173,7 @@ public sealed partial class DatabaseScannerViewModel(
         throw new NotImplementedException();
     }
 
-    public EventHandler<string> ConvertedTextChanged;
+    public EventHandler<string>? ConvertedTextChanged;
 
     private void MakeNumericList()
     {
@@ -192,7 +190,7 @@ public sealed partial class DatabaseScannerViewModel(
             }
         }
         
-        ConvertedTextChanged.Invoke(this, sb.ToString());
+        ConvertedTextChanged?.Invoke(this, sb.ToString());
     }
 
     private void UpdateUi()

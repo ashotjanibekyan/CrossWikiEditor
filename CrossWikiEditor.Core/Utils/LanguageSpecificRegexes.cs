@@ -4,8 +4,8 @@ public sealed class LanguageSpecificRegexes : IAsyncInitialization
 {
     private readonly IUserPreferencesService _userPreferencesService;
     private readonly IWikiClientCache _wikiClientCache;
-    private WikiSite _site;
-    private MagicWordCollection _magicWordCollection;
+    private WikiSite? _site;
+    private MagicWordCollection? _magicWordCollection;
 
     public LanguageSpecificRegexes(
         IUserPreferencesService userPreferencesService,
@@ -39,6 +39,6 @@ public sealed class LanguageSpecificRegexes : IAsyncInitialization
         ExtractTitle = new Regex("^" + s + "([^?&]*)$");
     }
 
-    public Regex ExtractTitle { get; private set; }
+    public Regex? ExtractTitle { get; private set; }
     public Task InitAsync { get; private set; }
 }

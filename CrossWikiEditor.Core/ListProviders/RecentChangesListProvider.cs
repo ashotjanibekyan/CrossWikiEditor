@@ -12,7 +12,7 @@ public sealed class RecentChangesListProvider(IDialogService dialogService,
     
     public async Task GetAdditionalParams()
     {
-        _namespaces = await this.GetNamespaces(true, dialogService, viewModelFactory);
+        _namespaces = await this.GetNamespaces(true, DialogService, viewModelFactory);
     }
 
     public override async Task<Result<List<WikiPageModel>>> MakeList(int limit) =>

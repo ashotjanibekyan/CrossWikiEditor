@@ -40,7 +40,7 @@ public static class ServicesModule
         services.AddSingleton<IWikiClientCache, WikiClientCache>();
         services.AddSingleton<IDialogService, DialogService>(sp => new DialogService(sp, mainWindow));
         services.AddTransient<IStorageProvider>(sp => TopLevel.GetTopLevel(mainWindow)!.StorageProvider);
-        services.AddTransient<IClipboard>(sp => TopLevel.GetTopLevel(mainWindow)!.Clipboard);
+        services.AddTransient<IClipboard>(sp => TopLevel.GetTopLevel(mainWindow)!.Clipboard!);
         services.AddSingleton<IStringEncryptionService>(sp => stringEncryptionService);
         services.AddSingleton<ILogger>(sp => logger);
         services.AddSingleton<IMessengerWrapper>(sp => new MessengerWrapper(WeakReferenceMessenger.Default));

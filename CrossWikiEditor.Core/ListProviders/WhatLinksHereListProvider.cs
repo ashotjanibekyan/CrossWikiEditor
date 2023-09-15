@@ -29,7 +29,7 @@ public sealed class WhatLinksHereListProvider(IDialogService dialogService,
     public async Task GetAdditionalParams()
     {
         NamespacesAndRedirectFilterOptions? result =
-            await dialogService.ShowDialog<NamespacesAndRedirectFilterOptions>(await viewModelFactory.GetSelectNamespacesAndRedirectFilterViewModel());
+            await DialogService.ShowDialog<NamespacesAndRedirectFilterOptions>(await viewModelFactory.GetSelectNamespacesAndRedirectFilterViewModel());
         if (result is not null)
         {
             _options = result;
