@@ -5,9 +5,7 @@ namespace CrossWikiEditor.Tests;
 
 public static class Fakers
 {
-    private static Faker _faker = new();
-
-    public static Faker<Profile> ProfileFaker = new Faker<Profile>()
+    public static readonly Faker<Profile> ProfileFaker = new Faker<Profile>()
         .RuleFor(p => p.DefaultSettingsPath, f => f.System.FilePath())
         .RuleFor(p => p.IsPasswordSaved, f => f.Random.Bool())
         .RuleFor(p => p.Id, f => f.UniqueIndex)
@@ -20,6 +18,6 @@ public static class Fakers
             .CustomInstantiator(f => new WikiPageModel(f.Random.Word() + f.UniqueIndex, apiRoot, wikiClientCache))
             .RuleFor(p => p.NamespaceId, f => f.Random.Int(0, 20));
     
-    public static Faker<WikiNamespace> WikiNamespaceFaker = new Faker<WikiNamespace>()
+    public static readonly Faker<WikiNamespace> WikiNamespaceFaker = new Faker<WikiNamespace>()
         .CustomInstantiator(f => new WikiNamespace(f.UniqueIndex, f.Random.Word(), false));
 }

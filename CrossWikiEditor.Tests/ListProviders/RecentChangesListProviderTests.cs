@@ -18,16 +18,16 @@ public sealed class RecentChangesListProviderTests : ListProvidersBaseTest<Recen
     }
 
     [Test]
-    public async Task CanMake_ShouldBeFalse_WhenGetAdditionalParamsNotCalled() =>
-        await base.CanMake_ShouldBeFalse_WhenGetAdditionalParamsNotCalled(_sut);
+    public new async Task CanMake_ShouldBeFalse_WhenGetAdditionalParamsNotCalled() =>
+        await base.CanMake_ShouldBeFalse_WhenGetAdditionalParamsNotCalled();
 
     [Test]
     public async Task CanMake_ShouldBeFalse_WhenGetAdditionalParamsReturnsEmptyList() =>
-        await base.CanMake_ShouldBeFalse_WhenGetAdditionalParamsReturnsEmptyList(_sut, _selectNamespacesViewModel);
+        await base.CanMake_ShouldBeFalse_WhenGetAdditionalParamsReturnsEmptyList(_selectNamespacesViewModel);
 
     [Test]
     public async Task CanMake_ShouldBeTrue_WhenGetAdditionalParamsReturnsNonEmptyList() =>
-        await base.CanMake_ShouldBeTrue_WhenGetAdditionalParamsReturnsNonEmptyList(_sut, _selectNamespacesViewModel);
+        await base.CanMake_ShouldBeTrue_WhenGetAdditionalParamsReturnsNonEmptyList(_selectNamespacesViewModel);
     
     [Test]
     public async Task MakeList_ShouldReturnPageServiceResults()
@@ -36,7 +36,7 @@ public sealed class RecentChangesListProviderTests : ListProvidersBaseTest<Recen
         _pageService.GetRecentlyChangedPages(_userPrefs.UrlApi(), Arg.Is<int[]?>(x => x.SequenceEqual(new[] {7, 2, 3, 9})), 73)
             .Returns(Result<List<WikiPageModel>>.Success(_expectedPages));
 
-        await MakeList_ShouldReturnServiceResults(_sut, _expectedPages);
+        await MakeList_ShouldReturnServiceResults(_expectedPages);
     }
 
     [Test]

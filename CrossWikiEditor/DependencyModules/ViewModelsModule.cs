@@ -4,7 +4,7 @@ using CrossWikiEditor.Core.ViewModels.MenuViewModels;
 using CrossWikiEditor.Core.ViewModels.ReportViewModels;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CrossWikiEditor.AutofacModules;
+namespace CrossWikiEditor.DependencyModules;
 
 public static class ViewModelsModule
 {

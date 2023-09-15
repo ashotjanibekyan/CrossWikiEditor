@@ -15,8 +15,8 @@ public sealed class WikiSearchInTextAllNsListProviderTests : ListProvidersBaseTe
         _expectedPages = Fakers.GetWikiPageModelFaker(_userPrefs.UrlApi(), _wikiClientCache).Generate(4);
     }
     
-    [Test] public void CanMake_ShouldBeFalse_WhenParamIsEmpty() => base.CanMake_ShouldBeFalse_WhenParamIsEmpty(_sut);
-    [Test] public void CanMake_ShouldBeTrue_WhenParamIsEmpty() => base.CanMake_ShouldBeTrue_WhenParamIsEmpty(_sut);
+    [Test] public new void CanMake_ShouldBeFalse_WhenParamIsEmpty() => base.CanMake_ShouldBeFalse_WhenParamIsEmpty();
+    [Test] public new void CanMake_ShouldBeTrue_WhenParamIsEmpty() => base.CanMake_ShouldBeTrue_WhenParamIsEmpty();
     
     [Test]
     public async Task MakeList_ShouldReturnPageServiceResults()
@@ -25,7 +25,7 @@ public sealed class WikiSearchInTextAllNsListProviderTests : ListProvidersBaseTe
         _pageService.WikiSearch(_userPrefs.UrlApi(), _sut.Param, null, 73)
             .Returns(Result<List<WikiPageModel>>.Success(_expectedPages));
 
-        await MakeList_ShouldReturnServiceResults(_sut, _expectedPages);
+        await MakeList_ShouldReturnServiceResults(_expectedPages);
     }
 
     [Test]

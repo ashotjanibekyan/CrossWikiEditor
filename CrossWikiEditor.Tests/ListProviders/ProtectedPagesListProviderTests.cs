@@ -18,7 +18,7 @@ public sealed class ProtectedPagesListProviderTests : ListProvidersBaseTest<Prot
     }
 
     [Test]
-    public async Task CanMake_ShouldBeFalse_WhenGetAdditionalParamsNotCalled()
+    public new async Task CanMake_ShouldBeFalse_WhenGetAdditionalParamsNotCalled()
     {
         await _dialogService.DidNotReceive().ShowDialog<(string, string)>(Arg.Any<SelectProtectionSelectionPageViewModel>());
         _sut.CanMake.Should().BeFalse();
@@ -57,7 +57,7 @@ public sealed class ProtectedPagesListProviderTests : ListProvidersBaseTest<Prot
         _pageService.GetProtectedPages(_userPrefs.UrlApi(), "edit", "autoconfirmed", 73)
             .Returns(Result<List<WikiPageModel>>.Success(_expectedPages));
 
-        await MakeList_ShouldReturnServiceResults(_sut, _expectedPages);
+        await MakeList_ShouldReturnServiceResults(_expectedPages);
     }
 
     [Test]

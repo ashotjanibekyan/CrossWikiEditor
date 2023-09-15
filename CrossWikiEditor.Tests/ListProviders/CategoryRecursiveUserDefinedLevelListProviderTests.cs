@@ -49,7 +49,7 @@ public sealed class CategoryRecursiveUserDefinedLevelListProviderTests : ListPro
         _categoryService.GetPagesOfCategory(_userPrefs.UrlApi(), _sut.Param, 73, 12)
             .Returns(Result<List<WikiPageModel>>.Success(_expectedPages));
 
-        await MakeList_ShouldReturnServiceResults(_sut, _expectedPages);
+        await MakeList_ShouldReturnServiceResults(_expectedPages);
     }
 
     [Test]

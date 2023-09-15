@@ -26,7 +26,7 @@ public sealed class RandomListProviderTests : ListProvidersBaseTest<RandomListPr
     }
 
     [Test]
-    public async Task CanMake_ShouldBeFalse_WhenGetAdditionalParamsNotCalled()
+    public new async Task CanMake_ShouldBeFalse_WhenGetAdditionalParamsNotCalled()
     {
         await _dialogService.DidNotReceive().ShowDialog<NamespacesAndRedirectFilterOptions>(Arg.Any<SelectNamespacesAndRedirectFilterViewModel>());
         _sut.CanMake.Should().BeFalse();
@@ -76,7 +76,7 @@ public sealed class RandomListProviderTests : ListProvidersBaseTest<RandomListPr
         _pageService.GetRandomPages(_userPrefs.UrlApi(), Arg.Is<int[]?>(x => x.SequenceEqual(new []{3, 4})), filterRedirects, 73)
             .Returns(Result<List<WikiPageModel>>.Success(_expectedPages));
 
-        await MakeList_ShouldReturnServiceResults(_sut, _expectedPages);
+        await MakeList_ShouldReturnServiceResults(_expectedPages);
     }
 
     [TestCase(RedirectFilter.All, null, true)]

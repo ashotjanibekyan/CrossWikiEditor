@@ -21,7 +21,7 @@ public sealed class DisambiguationPagesListProviderTests : ListProvidersBaseTest
         _pageService.GetPagesWithProp(_userPrefs.UrlApi(), "disambiguation", 73)
             .Returns(Result<List<WikiPageModel>>.Success(_expectedPages));
 
-        await MakeList_ShouldReturnServiceResults(_sut, _expectedPages);
+        await MakeList_ShouldReturnServiceResults(_expectedPages);
     }
 
     [Test]

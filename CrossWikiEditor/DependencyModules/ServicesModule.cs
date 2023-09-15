@@ -12,7 +12,7 @@ using Serilog;
 using Serilog.Core;
 using Serilog.Formatting.Json;
 
-namespace CrossWikiEditor.AutofacModules;
+namespace CrossWikiEditor.DependencyModules;
 
 public static class ServicesModule
 {

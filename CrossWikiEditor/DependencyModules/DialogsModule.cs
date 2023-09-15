@@ -5,7 +5,7 @@ using CrossWikiEditor.Views;
 using CrossWikiEditor.Views.ControlViews;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CrossWikiEditor.AutofacModules;
+namespace CrossWikiEditor.DependencyModules;
 
 public static class DialogsModule
 {

@@ -21,8 +21,8 @@ public sealed class LinksOnPageRedListProviderTests : ListProvidersBaseTest<Link
         _expectedPages.Add(new WikiPageModel("8 Յուլիս", _userPrefs.UrlApi(), _wikiClientCache));
     }
     
-    [Test] public void CanMake_ShouldBeFalse_WhenParamIsEmpty() => base.CanMake_ShouldBeFalse_WhenParamIsEmpty(_sut);
-    [Test] public void CanMake_ShouldBeTrue_WhenParamIsEmpty() => base.CanMake_ShouldBeTrue_WhenParamIsEmpty(_sut);
+    [Test] public new void CanMake_ShouldBeFalse_WhenParamIsEmpty() => base.CanMake_ShouldBeFalse_WhenParamIsEmpty();
+    [Test] public new void CanMake_ShouldBeTrue_WhenParamIsEmpty() => base.CanMake_ShouldBeTrue_WhenParamIsEmpty();
     
     [Test]
     public async Task MakeList_ShouldReturnBluePageServiceResults()
@@ -31,7 +31,7 @@ public sealed class LinksOnPageRedListProviderTests : ListProvidersBaseTest<Link
         _pageService.LinksOnPage(_userPrefs.UrlApi(), _sut.Param, 73)
             .Returns(Result<List<WikiPageModel>>.Success(_expectedPages));
 
-        await MakeList_ShouldReturnServiceResults(_sut, new List<WikiPageModel>
+        await MakeList_ShouldReturnServiceResults(new List<WikiPageModel>
         {
             _expectedPages[0],
             _expectedPages[1],

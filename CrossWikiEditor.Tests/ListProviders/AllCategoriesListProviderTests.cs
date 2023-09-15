@@ -21,7 +21,7 @@ public sealed class AllCategoriesListProviderTests : ListProvidersBaseTest<AllCa
         _categoryService.GetAllCategories(_userPrefs.UrlApi(), _sut.Param, 73)
             .Returns(Result<List<WikiPageModel>>.Success(_expectedPages));
 
-        await MakeList_ShouldReturnServiceResults(_sut, _expectedPages);
+        await MakeList_ShouldReturnServiceResults(_expectedPages);
     }
 
     [Test]

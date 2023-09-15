@@ -16,16 +16,16 @@ public sealed class AllPagesWithPrefixListProviderTests : ListProvidersBaseTest<
     }
     
     [Test]
-    public async Task CanMake_ShouldBeFalse_WhenGetAdditionalParamsNotCalled() =>
-        await base.CanMake_ShouldBeFalse_WhenGetAdditionalParamsNotCalled(_sut);
+    public new async Task CanMake_ShouldBeFalse_WhenGetAdditionalParamsNotCalled() =>
+        await base.CanMake_ShouldBeFalse_WhenGetAdditionalParamsNotCalled();
 
     [Test]
     public async Task CanMake_ShouldBeFalse_WhenGetAdditionalParamsReturnsEmptyList() =>
-        await base.CanMake_ShouldBeFalse_WhenGetAdditionalParamsReturnsEmptyList(_sut, _selectNamespacesViewModel);
+        await base.CanMake_ShouldBeFalse_WhenGetAdditionalParamsReturnsEmptyList(_selectNamespacesViewModel);
 
     [Test]
     public async Task CanMake_ShouldBeTrue_WhenGetAdditionalParamsReturnsNonEmptyList() =>
-        await base.CanMake_ShouldBeTrue_WhenGetAdditionalParamsReturnsNonEmptyList(_sut, _selectNamespacesViewModel);
+        await base.CanMake_ShouldBeTrue_WhenGetAdditionalParamsReturnsNonEmptyList(_selectNamespacesViewModel);
 
     [Test]
     public async Task MakeList_ShouldReturnPageServiceResults()
@@ -34,7 +34,7 @@ public sealed class AllPagesWithPrefixListProviderTests : ListProvidersBaseTest<
         _pageService.GetAllPagesWithPrefix(_userPrefs.UrlApi(), _sut.Param,  7, 73)
             .Returns(Result<List<WikiPageModel>>.Success(_expectedPages));
 
-        await MakeList_ShouldReturnServiceResults(_sut, _expectedPages);
+        await MakeList_ShouldReturnServiceResults(_expectedPages);
     }
 
     [Test]

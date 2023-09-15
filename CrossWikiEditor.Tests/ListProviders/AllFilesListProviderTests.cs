@@ -21,7 +21,7 @@ public sealed class AllFilesListProviderTests : ListProvidersBaseTest<AllFilesLi
         _pageService.GetAllFiles(_userPrefs.UrlApi(), _sut.Param, 73)
             .Returns(Result<List<WikiPageModel>>.Success(_expectedPages));
 
-        await MakeList_ShouldReturnServiceResults(_sut, _expectedPages);
+        await MakeList_ShouldReturnServiceResults(_expectedPages);
     }
 
     [Test]

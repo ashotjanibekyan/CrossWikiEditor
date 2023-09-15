@@ -2,7 +2,7 @@ using CrossWikiEditor.Core.ListProviders;
 using CrossWikiEditor.Core.ListProviders.BaseListProviders;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CrossWikiEditor.AutofacModules;
+namespace CrossWikiEditor.DependencyModules;
 
 public static class ListProvidersModule
 {
