@@ -2,16 +2,21 @@ namespace CrossWikiEditor.Core.Services.HtmlParsers;
 
 public sealed class HtmlAgilityPackParser(ILogger logger, IUserPreferencesService userPreferencesService, IWikiClientCache wikiClientCache)
 {
-    public async Task<List<WikiPageModel>> GetPages(string html)
+    public List<WikiPageModel> GetPages(string html)
     {
         string baseUrl = userPreferencesService.GetCurrentPref().UrlBase();
-        WikiSite site = await wikiClientCache.GetWikiSite(userPreferencesService.CurrentApiUrl);
+        string apiUrl = userPreferencesService.GetCurrentPref().UrlApi();
         var doc = new HtmlDocument();
         doc.LoadHtml(html);
 
         var urls = new List<WikiPageModel>();
-
-        foreach (HtmlNode? link in doc.DocumentNode.SelectNodes("//a[@href]"))
+        HtmlNodeCollection? nodes = doc.DocumentNode.SelectNodes("//a[@href]");
+        if (nodes is null)
+        {
+            return urls;
+        }
+        
+        foreach (HtmlNode? link in nodes)
         {
             try
             {
@@ -19,8 +24,8 @@ public sealed class HtmlAgilityPackParser(ILogger logger, IUserPreferencesServic
 
                 if (hrefValue.Contains(baseUrl))
                 {
-                    urls.Add(new WikiPageModel(new WikiPage(site,
-                        Tools.GetPageTitleFromUrl(hrefValue[hrefValue.IndexOf(baseUrl, StringComparison.Ordinal)..]))));
+                    urls.Add(new WikiPageModel(Tools.GetPageTitleFromUrl(hrefValue[hrefValue.IndexOf(baseUrl, StringComparison.Ordinal)..]), apiUrl,
+                        wikiClientCache));
                 }
             }
             catch (Exception ex)

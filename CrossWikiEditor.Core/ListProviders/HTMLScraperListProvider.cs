@@ -16,7 +16,7 @@ public sealed class HtmlScraperListProvider(HtmlAgilityPackParser htmlAgilityPac
             string html = await httpClient.GetStringAsync(Param);
             var urls = new List<WikiPageModel>();
             urls.AddRange(await simpleHtmlParser.GetPages(html));
-            urls.AddRange(await htmlAgilityPackParser.GetPages(html));
+            urls.AddRange(htmlAgilityPackParser.GetPages(html));
             return Result<List<WikiPageModel>>.Success(urls.Distinct().ToList());
         }
         catch (Exception e)

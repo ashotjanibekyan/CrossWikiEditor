@@ -32,7 +32,7 @@ public sealed class SimpleHtmlParser(ILogger logger, IUserPreferencesService use
     private async Task<WikiPageModel> TryGetWikiPageModel(string urlStart)
     {
         string baseUrl = userPreferencesService.GetCurrentPref().UrlBase();
-        WikiSite site = await wikiClientCache.GetWikiSite(userPreferencesService.CurrentApiUrl);
+        string apiUrl = userPreferencesService.GetCurrentPref().UrlApi();
         string url = urlStart;
         int i = urlStart.IndexOfAny(_terminationChars);
         if (i != -1)
@@ -42,13 +42,13 @@ public sealed class SimpleHtmlParser(ILogger logger, IUserPreferencesService use
         
         if (url.Last() == '\'' || url.Last() == '\"')
         {
-            var page = new WikiPageModel(new WikiPage(site, Tools.GetPageTitleFromUrl(baseUrl + url[..^1])));
+            var page = new WikiPageModel(Tools.GetPageTitleFromUrl(baseUrl + url[..^1]), apiUrl, wikiClientCache);
             if (await page.Exists())
             {
                 return page;
             }
-            return new WikiPageModel(new WikiPage(site, Tools.GetPageTitleFromUrl(baseUrl + url)));
+            return new WikiPageModel(Tools.GetPageTitleFromUrl(baseUrl + url), apiUrl, wikiClientCache);
         }
-        return new WikiPageModel(new WikiPage(site, Tools.GetPageTitleFromUrl(baseUrl + url)));
+        return new WikiPageModel(Tools.GetPageTitleFromUrl(baseUrl + url), apiUrl, wikiClientCache);
     }
 }
