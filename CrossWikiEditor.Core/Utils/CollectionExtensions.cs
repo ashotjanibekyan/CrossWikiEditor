@@ -2,7 +2,7 @@
 
 public static class CollectionExtensions
 {
-    private static readonly Random _random = new();
+    private static readonly Random Random = new();
 
     public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> enumerable)
     {
@@ -11,10 +11,7 @@ public static class CollectionExtensions
 
     public static List<T> RandomSubset<T>(this List<T> sourceList, int count)
     {
-        if (sourceList == null)
-        {
-            throw new ArgumentNullException(nameof(sourceList));
-        }
+        ArgumentNullException.ThrowIfNull(sourceList);
 
         if (count < 0 || count > sourceList.Count)
         {
@@ -25,7 +22,7 @@ public static class CollectionExtensions
         var indexHash = new HashSet<int>();
         while (indexHash.Count < count)
         {
-            indexHash.Add(_random.Next(sourceList.Count));
+            indexHash.Add(Random.Next(sourceList.Count));
         }
 
         subset.AddRange(indexHash.Select(index => sourceList[index]));
