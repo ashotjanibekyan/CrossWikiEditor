@@ -24,15 +24,15 @@ Latest builds: https://drive.google.com/drive/folders/1c4CnqaQQFjeTcd6ydpBPLAsVQ
 * Category (recursive 1 level)
 * Category (recursive user defined level)
 * Category (recursive)
+* Database dump
 * Disambiguation pages
 * Files on page
-* Google search
 * HTML Scraper
 * Image file links
 * Link search
 * Links on page
 * Links on page (only bluelinks)
-* Links on page (only bluelinks)
+* Links on page (only redlinks)
 * My watchlist
 * New pages
 * Pages with a page property

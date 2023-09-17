@@ -25,7 +25,6 @@ public static class ListProvidersModule
         services.AddTransient<IListProvider, DatabaseDumpListProvider>();
         services.AddTransient<IListProvider, DisambiguationPagesListProvider>();
         services.AddTransient<IListProvider, FilesOnPageListProvider>();
-        services.AddTransient<IListProvider, GoogleSearchListProvider>();
         services.AddTransient<IListProvider, HtmlScraperListProvider>();
         services.AddTransient<IListProvider, ImageFileLinksListProvider>();
         services.AddTransient<IListProvider, LinkSearchListProvider>();
