@@ -1,4 +1,7 @@
 ﻿using System.Collections.ObjectModel;
+using System.Text;
+using CommunityToolkit.Mvvm.Messaging;
+using NUnit.Framework.Internal.Execution;
 
 namespace CrossWikiEditor.Tests.ViewModels;
 
@@ -26,6 +29,38 @@ public sealed class MakeListViewModelTests : BaseTest
         });
         _userPreferencesService.CurrentApiUrl.Returns(ApiRoot);
         _wikiClientCache.GetWikiSite(Arg.Any<string>()).Returns(new WikiSite(_wikiClient, ApiRoot));
+    }
+    
+    [Test]
+    public void Messanger_ShouldRemovePage_WhenPageUpdatedMessageReceived()
+    {
+        // arrange
+        var pages = new List<WikiPageModel>
+        {
+            new("Page1", ApiRoot, _wikiClientCache),
+            new("Page2", ApiRoot, _wikiClientCache),
+            new("Page3", ApiRoot, _wikiClientCache),
+            new("Page4", ApiRoot, _wikiClientCache),
+        };
+        List<IListProvider> listProviders = new()
+        {
+            Substitute.For<IListProvider>(),
+            Substitute.For<IListProvider>()
+        };
+        var messenger = new MessengerWrapper(WeakReferenceMessenger.Default);
+        _sut = new MakeListViewModel(messenger, _logger, _dialogService, _wikiClientCache, _pageService, _systemService, _viewModelFactory,
+            _fileDialogService, _userPreferencesService, listProviders)
+        {
+            Pages = pages.ToObservableCollection()
+        };
+        // act
+        messenger.Send(new PageUpdatedMessage(new WikiPageModel("Page2", ApiRoot, _wikiClientCache), "old content", "new content"));
+
+        // assert
+        _sut.Pages.Count.Should().Be(3);
+        _sut.Pages[0].Title.Should().Be("Page1");
+        _sut.Pages[1].Title.Should().Be("Page3");
+        _sut.Pages[2].Title.Should().Be("Page4");
     }
 
     [Test]
@@ -151,6 +186,27 @@ public sealed class MakeListViewModelTests : BaseTest
         _sut.SelectedPages.Should().BeEmpty();
     }
 
+
+    [Test]
+    public void MakeListCommand_ShouldGetLimit_WhenListProviderIsLimited()
+    {
+        // arrange
+        ILimitedListProvider listProvider = Substitute.For<ILimitedListProvider>();
+        _sut.SelectedListProvider = listProvider;
+        listProvider.CanMake.Returns(true);
+        listProvider.GetLimit().Returns(42);
+        List<WikiPageModel>? pages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(42);
+        listProvider.MakeList(42).Returns(Result<List<WikiPageModel>>.Success(pages));
+        
+        // act
+        _sut.MakeListCommand.Execute(42);
+
+        // assert
+        listProvider.Received(1).GetLimit();
+        listProvider.Received(1).MakeList(42);
+        _sut.Pages.Should().BeEquivalentTo(pages);
+    }
+    
     [Test]
     public void MakeListCommand_ShouldDoNothing_WhenSelectedProviderCanNotMake()
     {
@@ -588,6 +644,146 @@ public sealed class MakeListViewModelTests : BaseTest
                 new List<WikiPageModel> { new("template:page1", ApiRoot, _wikiClientCache), new("user:Page2", ApiRoot, _wikiClientCache), new("Page5", ApiRoot, _wikiClientCache), new("category:page2", ApiRoot, _wikiClientCache), new("Page3", ApiRoot, _wikiClientCache) },
                 options => options.WithStrictOrdering());
         _sut.SelectedPages.Should().BeEmpty();
+    }
+
+    [Test]
+    public void ConvertToTalkPagesCommand_ShouldConvertPagesToTalkPages_WhenPageServiceReturnsSuccess()
+    {
+        // arrange
+        List<WikiPageModel>? pages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(10);
+        List<WikiPageModel>? talkPages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(10);
+        _sut.Pages = pages.ToObservableCollection();
+        _pageService.ConvertToTalk(Arg.Is<List<WikiPageModel>>(argPages => argPages.SequenceEqual(pages)))
+                    .Returns(Result<List<WikiPageModel>>.Success(talkPages));
+
+        // act
+        _sut.ConvertToTalkPagesCommand.Execute(null);
+
+        // assert
+        _sut.Pages.Should().BeEquivalentTo(talkPages);
+    }
+    
+    
+    [Test]
+    public void ConvertToTalkPagesCommand_ShouldDoNothing_WhenPageServiceReturnsFailure()
+    {
+        // arrange
+        List<WikiPageModel>? pages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(10);
+        _sut.Pages = pages.ToObservableCollection();
+        _pageService.ConvertToTalk(Arg.Is<List<WikiPageModel>>(argPages => argPages.SequenceEqual(pages)))
+            .Returns(Result<List<WikiPageModel>>.Failure("can not convert"));
+
+        // act
+        _sut.ConvertToTalkPagesCommand.Execute(null);
+
+        // assert
+        _sut.Pages.Should().BeEquivalentTo(pages);
+    }
+    
+    [Test]
+    public void ConvertFromTalkPagesCommand_ShouldConvertPagesFromTalkPages_WhenPageServiceReturnsSuccess()
+    {
+        // arrange
+        List<WikiPageModel>? pages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(10);
+        List<WikiPageModel>? talkPages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(10);
+        _sut.Pages = pages.ToObservableCollection();
+        _pageService.ConvertToSubject(Arg.Is<List<WikiPageModel>>(argPages => argPages.SequenceEqual(pages)))
+            .Returns(Result<List<WikiPageModel>>.Success(talkPages));
+
+        // act
+        _sut.ConvertFromTalkPagesCommand.Execute(null);
+
+        // assert
+        _sut.Pages.Should().BeEquivalentTo(talkPages);
+    }
+    
+    
+    [Test]
+    public void ConvertFromTalkPagesCommand_ShouldDoNothing_WhenPageServiceReturnsFailure()
+    {
+        // arrange
+        List<WikiPageModel>? pages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(10);
+        _sut.Pages = pages.ToObservableCollection();
+        _pageService.ConvertToSubject(Arg.Is<List<WikiPageModel>>(argPages => argPages.SequenceEqual(pages)))
+            .Returns(Result<List<WikiPageModel>>.Failure("can not convert"));
+
+        // act
+        _sut.ConvertFromTalkPagesCommand.Execute(null);
+
+        // assert
+        _sut.Pages.Should().BeEquivalentTo(pages);
+    }
+
+    [Test]
+    public void SaveListCommand_ShouldSaveFile_WhenUserPickedALocationAndPagesExist()
+    {
+        // arrange
+        Func<Task<Stream>>? openWriteStream = Substitute.For<Func<Task<Stream>>>();
+        Stream stream = Substitute.For<Stream>();
+        IListProvider? listProvider = Substitute.For<IListProvider>();
+        _sut.SelectedListProvider = listProvider;
+        listProvider.Title.Returns("listProviderTitle");
+        listProvider.Param.Returns("ListProviderParam");
+        _fileDialogService.SaveFilePickerAsync("Save pages", defaultExtension: Arg.Any<string?>(), Arg.Any<string?>())
+                            .Returns((Substitute.For<Func<Task<Stream>>>(), openWriteStream));
+        openWriteStream().Returns(stream);
+        List<WikiPageModel>? pages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(3);
+        _sut.Pages = pages.ToObservableCollection();
+        
+        // act
+        _sut.SaveListCommand.Execute(null);
+
+        // assert
+
+        stream.Received(3).WriteAsync(Arg.Any<ReadOnlyMemory<byte>>(), Arg.Any<CancellationToken>());
+        Received.InOrder(() =>
+        {
+            stream.WriteAsync(Arg.Is<ReadOnlyMemory<byte>>(b => Encoding.UTF8.GetString(b.ToArray()) == $"# [[:{pages[0].Title}]]{Environment.NewLine}"));
+            stream.WriteAsync(Arg.Is<ReadOnlyMemory<byte>>(b => Encoding.UTF8.GetString(b.ToArray()) == $"# [[:{pages[1].Title}]]{Environment.NewLine}"));
+            stream.WriteAsync(Arg.Is<ReadOnlyMemory<byte>>(b => Encoding.UTF8.GetString(b.ToArray()) == $"# [[:{pages[2].Title}]]{Environment.NewLine}"));
+        });
+        stream.Received(1).Close();
+    }
+
+    [Test]
+    public void SaveListCommand_ShouldDoNothing_WhenUserDidNotPickALocationAndPagesExist()
+    {
+        // arrange
+        IListProvider? listProvider = Substitute.For<IListProvider>();
+        _sut.SelectedListProvider = listProvider;
+        listProvider.Title.Returns("listProviderTitle");
+        listProvider.Param.Returns("ListProviderParam");
+        _fileDialogService.SaveFilePickerAsync("Save pages", defaultExtension: Arg.Any<string?>(), Arg.Any<string?>())
+            .Returns((null, null));
+        List<WikiPageModel>? pages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(3);
+        _sut.Pages = pages.ToObservableCollection();
+        
+        // act
+        _sut.SaveListCommand.Execute(null);
+
+        // assert
+
+        _fileDialogService.Received(1).SaveFilePickerAsync("Save pages", defaultExtension: Arg.Any<string?>(), Arg.Any<string?>());
+    }
+    
+
+    [Test]
+    public void SaveListCommand_ShouldDoNothing_WhenUserPagesDoNotExist()
+    {
+        // arrange
+        IListProvider? listProvider = Substitute.For<IListProvider>();
+        _sut.SelectedListProvider = listProvider;
+        listProvider.Title.Returns("listProviderTitle");
+        listProvider.Param.Returns("ListProviderParam");
+        _fileDialogService.SaveFilePickerAsync("Save pages", defaultExtension: Arg.Any<string?>(), Arg.Any<string?>())
+            .Returns((null, null));
+        
+        // act
+        _sut.SaveListCommand.Execute(null);
+
+        // assert
+
+        _fileDialogService.DidNotReceive().SaveFilePickerAsync("Save pages", defaultExtension: Arg.Any<string?>(), Arg.Any<string?>());
     }
 
     [Test]

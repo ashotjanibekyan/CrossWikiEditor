@@ -7,5 +7,8 @@ public interface IFileDialogService
         bool allowMultiple,
         List<string>? patterns = null);
 
-    Task<(Func<Task<Stream>> openReadStream, Func<Task<Stream>> openWriteStream)> SaveFilePickerAsync(string title, string? defaultExtension = null, string? suggestedFileName = null);
+    Task<(Func<Task<Stream>>? openReadStream, Func<Task<Stream>>? openWriteStream)> SaveFilePickerAsync(
+        string title, 
+        string? defaultExtension = null,
+        string? suggestedFileName = null);
 }

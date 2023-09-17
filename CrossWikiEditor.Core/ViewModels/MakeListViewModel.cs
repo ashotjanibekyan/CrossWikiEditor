@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace CrossWikiEditor.Core.ViewModels;
 
 public sealed partial class MakeListViewModel : ViewModelBase
@@ -81,7 +83,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
         {
             ILimitedListProvider limitedListProvider => await limitedListProvider.MakeList(await limitedListProvider.GetLimit()),
             IUnlimitedListProvider unlimitedListProvider => await unlimitedListProvider.MakeList(),
-            _ => Result<List<WikiPageModel>>.Success(new List<WikiPageModel>())
+            _ => throw new UnreachableException("Wait what? A list is either limited or unlimited.")
         };
 
         if (result is { IsSuccessful: true, Value: not null })
@@ -306,16 +308,27 @@ public sealed partial class MakeListViewModel : ViewModelBase
     [RelayCommand]
     private async Task SaveList()
     {
-        string? suggestedTitle =
-            $"{SelectedListProvider.Title}_{SelectedListProvider.Param}_{DateTime.Now.ToString("yyyy-MM-dd-HH-mm", CultureInfo.InvariantCulture)}.txt";
-        var (openReadStream, openWriteStream) = await _fileDialogService.SaveFilePickerAsync("Save pages", suggestedFileName: suggestedTitle.ToFilenameSafe());
-        var stream = await openReadStream();
-        foreach ((string title, int _) in Pages)
+        if (Pages.Count == 0)
         {
-            await stream.WriteAsync(Encoding.UTF8.GetBytes($"# [[:{title}]]{Environment.NewLine}"));
+            return;
         }
+        string suggestedTitle = SelectedListProvider.Title;
+        if (!string.IsNullOrWhiteSpace(SelectedListProvider.Param))
+        {
+            suggestedTitle += $"_{SelectedListProvider.Param}";
+        }
+        suggestedTitle += $"_{DateTime.Now.ToString("yyyy-MM-dd-HH-mm", CultureInfo.InvariantCulture)}.txt";
+        (_, Func<Task<Stream>>? openWriteStream) = await _fileDialogService.SaveFilePickerAsync("Save pages", suggestedFileName: suggestedTitle.ToFilenameSafe());
+        if (openWriteStream is not null)
+        {
+            Stream stream = await openWriteStream();
+            foreach ((string title, int _) in Pages)
+            {
+                await stream.WriteAsync(Encoding.UTF8.GetBytes($"# [[:{title}]]{Environment.NewLine}"));
+            }
 
-        stream.Close();
+            stream.Close();
+        }
     }
 
     [RelayCommand]

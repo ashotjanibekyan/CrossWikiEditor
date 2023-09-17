@@ -35,7 +35,7 @@ public sealed class FileDialogService(IStorageProvider storageProvider) : IFileD
         return result.Select(f => HttpUtility.UrlDecode(f.Path.AbsolutePath)).ToArray();
     }
 
-    public async Task<(Func<Task<Stream>> openReadStream, Func<Task<Stream>> openWriteStream)> SaveFilePickerAsync(string title, string? defaultExtension = null, string? suggestedFileName = null)
+    public async Task<(Func<Task<Stream>>? openReadStream, Func<Task<Stream>>? openWriteStream)> SaveFilePickerAsync(string title, string? defaultExtension = null, string? suggestedFileName = null)
     {
         IStorageFile? storageFile = await storageProvider.SaveFilePickerAsync(new FilePickerSaveOptions()
         {
@@ -44,11 +44,7 @@ public sealed class FileDialogService(IStorageProvider storageProvider) : IFileD
             DefaultExtension = defaultExtension,
             SuggestedFileName = suggestedFileName
         });
-        if (storageFile is null)
-        {
-            throw new InvalidOperationException();
-        }
+        return storageFile is null ? (null, null) : (storageFile.OpenReadAsync, storageFile.OpenWriteAsync);
 
-        return (storageFile.OpenReadAsync, storageFile.OpenWriteAsync);
     }
 }
