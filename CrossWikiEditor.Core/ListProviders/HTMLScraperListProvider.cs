@@ -1,6 +1,4 @@
-﻿using CrossWikiEditor.Core.Services.HtmlParsers;
-
-namespace CrossWikiEditor.Core.ListProviders;
+﻿namespace CrossWikiEditor.Core.ListProviders;
 
 public sealed class HtmlScraperListProvider(HtmlAgilityPackParser htmlAgilityPackParser, IHttpClientFactory httpClientFactory, ILogger logger,
     SimpleHtmlParser simpleHtmlParser) : UnlimitedListProviderBase

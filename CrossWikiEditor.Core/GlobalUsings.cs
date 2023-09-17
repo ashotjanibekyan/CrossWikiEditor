@@ -23,6 +23,7 @@ global using CrossWikiEditor.Core.Messages;
 global using CrossWikiEditor.Core.Models;
 global using CrossWikiEditor.Core.Repositories;
 global using CrossWikiEditor.Core.Services;
+global using CrossWikiEditor.Core.Services.HtmlParsers;
 global using CrossWikiEditor.Core.Services.WikiServices;
 global using CrossWikiEditor.Core.Settings;
 global using CrossWikiEditor.Core.Utils;

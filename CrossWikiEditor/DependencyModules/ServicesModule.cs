@@ -3,6 +3,7 @@ using Avalonia.Input.Platform;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.Messaging;
 using CrossWikiEditor.Core.Services;
+using CrossWikiEditor.Core.Services.HtmlParsers;
 using CrossWikiEditor.Core.Services.WikiServices;
 using CrossWikiEditor.Core.Utils;
 using CrossWikiEditor.Services;
@@ -44,5 +45,7 @@ public static class ServicesModule
         services.AddSingleton<IStringEncryptionService>(sp => stringEncryptionService);
         services.AddSingleton<ILogger>(sp => logger);
         services.AddSingleton<IMessengerWrapper>(sp => new MessengerWrapper(WeakReferenceMessenger.Default));
+        services.AddTransient<SimpleHtmlParser>();
+        services.AddTransient<HtmlAgilityPackParser>();
     }
 }
