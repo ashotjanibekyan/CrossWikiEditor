@@ -14,7 +14,6 @@ public sealed class TextFileListProvider(IFileDialogService fileDialogService,
 
     public override async Task<Result<List<WikiPageModel>>> MakeList()
     {
-        WikiSite site = await wikiClientCache.GetWikiSite(userPreferencesService.CurrentApiUrl);
         var titles = new List<string>();
         foreach (string textFile in _textFiles)
         {

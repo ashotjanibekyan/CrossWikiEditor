@@ -25,12 +25,7 @@ public static class WikiPageExtensions
         return new WikiPage(wikiPage.Site, $"{ns.CanonicalName}:{wikiPage.TitleWithoutNamespace()}");
     }
 
-    public static string TitleWithoutNamespace(this WikiPage wikiPage)
-    {
-        return wikiPage.Title.Contains(':') ? wikiPage.Title.Split(':')[1] : wikiPage.Title;
-    }
-
-    public static string TitleWithoutNamespace(this WikiPageModel wikiPage)
+    private static string TitleWithoutNamespace(this WikiPage wikiPage)
     {
         return wikiPage.Title.Contains(':') ? wikiPage.Title.Split(':')[1] : wikiPage.Title;
     }

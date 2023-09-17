@@ -2,8 +2,6 @@
 
 public static partial class Tools
 {
-    private static readonly char[] InvalidChars = { '[', ']', '{', '}', '|', '<', '>', '#' };
-
     /// <summary>
     /// Removes underscores and wiki syntax from links
     /// </summary>
@@ -36,15 +34,6 @@ public static partial class Tools
     }
 
     /// <summary>
-    /// Decodes URL-encoded page titles into a normal string
-    /// </summary>
-    /// <param name="title">Page title to decode</param>
-    public static string WikiDecode(string title)
-    {
-        return HttpUtility.UrlDecode(title.Replace("+", "%2B")).Replace('_', ' ');
-    }
-
-    /// <summary>
     /// Returns index of first character different between strings
     /// </summary>
     /// <param name="a">First string</param>
@@ -66,7 +55,7 @@ public static partial class Tools
     {
         var uri = new Uri(url);
 
-        if (uri.Segments.Length > 2 && uri.Segments[1] == "w/")
+        if (uri.Segments is [_, "w/", ..])
         {
             NameValueCollection queryParameters = HttpUtility.ParseQueryString(uri.Query);
             string? pageTitle = queryParameters["title"];
@@ -99,7 +88,7 @@ public static partial class Tools
         return result;
     }
 
-    [GeneratedRegex("\\[\\[:?([^\\|[\\]]+)(?:\\]\\]|\\|)", RegexOptions.Compiled)]
+    [GeneratedRegex(@"\[\[:?([^\|[\]]+)(?:\]\]|\|)", RegexOptions.Compiled)]
     public static partial Regex WikiLinkRegex();
 
     [GeneratedRegex("(^[a-z]{2,3}:)|(simple:)", RegexOptions.Compiled)]
