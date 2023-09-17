@@ -52,7 +52,7 @@ public sealed class PageListProcessor
         {
             await Task.Delay(1000);
             //await page.WikiPage.UpdateContentAsync("via CWB");
-            _messenger.Send(new PageUpdatedMessage(page, initialContent, newContent));
+            _messenger.Send(new PageUpdatedMessage(page));
         }
         catch (Exception e)
         {

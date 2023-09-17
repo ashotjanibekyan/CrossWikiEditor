@@ -2,7 +2,7 @@
 
 namespace CrossWikiEditor.Tests.Utils;
 
-public class LanguageSpecificRegexesTests : BaseTest
+public sealed class LanguageSpecificRegexesTests : BaseTest
 {
     private LanguageSpecificRegexes _sut;
 

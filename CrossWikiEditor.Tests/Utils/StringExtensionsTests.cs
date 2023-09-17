@@ -2,7 +2,7 @@ using System.Runtime.InteropServices;
 
 namespace CrossWikiEditor.Tests.Utils;
 
-public class StringExtensionsTests
+public sealed class StringExtensionsTests
 {
     [Test]
     public void ToFilenameSafe_ReplacesInvalidCharsWithHyphen()

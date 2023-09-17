@@ -54,7 +54,7 @@ public sealed class MakeListViewModelTests : BaseTest
             Pages = pages.ToObservableCollection()
         };
         // act
-        messenger.Send(new PageUpdatedMessage(new WikiPageModel("Page2", ApiRoot, _wikiClientCache), "old content", "new content"));
+        messenger.Send(new PageUpdatedMessage(new WikiPageModel("Page2", ApiRoot, _wikiClientCache)));
 
         // assert
         _sut.Pages.Count.Should().Be(3);

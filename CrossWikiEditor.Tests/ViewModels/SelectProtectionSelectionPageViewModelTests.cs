@@ -1,6 +1,6 @@
 namespace CrossWikiEditor.Tests.ViewModels;
 
-public class SelectProtectionSelectionPageViewModelTests : BaseTest
+public sealed class SelectProtectionSelectionPageViewModelTests : BaseTest
 {
     private SelectProtectionSelectionPageViewModel _sut;
     

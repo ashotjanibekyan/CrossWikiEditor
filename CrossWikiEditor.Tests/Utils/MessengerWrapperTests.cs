@@ -2,7 +2,7 @@ using CommunityToolkit.Mvvm.Messaging;
 
 namespace CrossWikiEditor.Tests.Utils;
 
-public class MessengerWrapperTests
+public sealed class MessengerWrapperTests
 {
     [Test]
     public void Send_ShouldInvokeMessengerSendMethod()
