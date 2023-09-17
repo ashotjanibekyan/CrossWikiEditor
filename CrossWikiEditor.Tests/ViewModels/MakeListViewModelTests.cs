@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Text;
 using CommunityToolkit.Mvvm.Messaging;
-using NUnit.Framework.Internal.Execution;
 
 namespace CrossWikiEditor.Tests.ViewModels;
 
@@ -9,7 +8,7 @@ public sealed class MakeListViewModelTests : BaseTest
 {
     private MakeListViewModel _sut;
     private const string ApiRoot = "https://hy.wikipedia.org/w/api.php?";
-    private WikiClient _wikiClient = new WikiClient();
+    private readonly WikiClient _wikiClient = new();
 
     [SetUp]
     public void SetUp()
@@ -85,7 +84,7 @@ public sealed class MakeListViewModelTests : BaseTest
         _sut.NewPageTitle = "new page";
         List<WikiPageModel>? originalPages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(3);
         _sut.Pages = originalPages.ToObservableCollection();
-        _wikiClientCache.GetWikiPageModel(ApiRoot, "new page", false)
+        _wikiClientCache.GetWikiPageModel(ApiRoot, "new page")
             .Returns(args => Result<WikiPageModel>.Success(new WikiPageModel("new page", ApiRoot, _wikiClientCache)));
 
         // act
@@ -113,7 +112,7 @@ public sealed class MakeListViewModelTests : BaseTest
     {
         // arrange
         _sut.NewPageTitle = "    new page title   ";
-        _wikiClientCache.GetWikiPageModel(ApiRoot, Arg.Any<string>(), false)
+        _wikiClientCache.GetWikiPageModel(ApiRoot, Arg.Any<string>())
             .Returns(args => Result<WikiPageModel>.Success(new WikiPageModel("new page title", ApiRoot, _wikiClientCache)));
         
         // act
@@ -505,7 +504,7 @@ public sealed class MakeListViewModelTests : BaseTest
         _sut.Pages = new List<WikiPageModel> { new("page1", ApiRoot, _wikiClientCache), new("page2", ApiRoot, _wikiClientCache) }.ToObservableCollection();
         _systemService.GetClipboardTextAsync()
             .Returns($"page3{Environment.NewLine}fewfew{Environment.NewLine}ofiewf203{Environment.NewLine} foiwej   ");
-        _wikiClientCache.GetWikiPageModel(ApiRoot, Arg.Any<string>(), false)
+        _wikiClientCache.GetWikiPageModel(ApiRoot, Arg.Any<string>())
             .Returns(args => Result<WikiPageModel>.Success(new WikiPageModel(((string) args[1]).Trim(), ApiRoot, _wikiClientCache)));
         
         // act

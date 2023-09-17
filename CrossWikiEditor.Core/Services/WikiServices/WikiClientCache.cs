@@ -4,41 +4,41 @@ public interface IWikiClientCache
 {
     WikiClient GetWikiClient(string apiRoot, bool forceNew = false);
     Task<WikiSite> GetWikiSite(string apiRoot, bool forceNew = false);
-    Task<Result<WikiPageModel>> GetWikiPageModel(string apiRoot, string title, bool forceNew = false);
+    Task<Result<WikiPageModel>> GetWikiPageModel(string apiRoot, string title);
 }
 
 public sealed class WikiClientCache(ILogger logger) : IWikiClientCache
 {
-    private Dictionary<string, WikiClient> _wikiClients = new();
-    private Dictionary<string, WikiSite> _wikiSites = new();
+    private ConcurrentDictionary<string, WikiClient> _wikiClients = new();
+    private ConcurrentDictionary<string, WikiSite> _wikiSites = new();
 
     public WikiClient GetWikiClient(string apiRoot, bool forceNew = false)
     {
-        if (!_wikiClients.ContainsKey(apiRoot) || forceNew)
+        if (forceNew || !_wikiClients.TryGetValue(apiRoot, out WikiClient? client))
         {
-            _wikiClients[apiRoot] = new WikiClient();
+            client = new WikiClient();
+            _wikiClients[apiRoot] = client;
         }
-
-        return _wikiClients[apiRoot];
+        return client;
     }
 
     public async Task<WikiSite> GetWikiSite(string apiRoot, bool forceNew = false)
     {
-        if (!_wikiSites.ContainsKey(apiRoot) || forceNew)
+        if (forceNew || !_wikiSites.TryGetValue(apiRoot, out WikiSite? site))
         {
-            var site = new WikiSite(GetWikiClient(apiRoot, forceNew), apiRoot);
+            site = new WikiSite(GetWikiClient(apiRoot, forceNew), apiRoot);
             await site.Initialization;
             _wikiSites[apiRoot] = site;
         }
 
-        return _wikiSites[apiRoot];
+        return site;
     }
 
-    public async Task<Result<WikiPageModel>> GetWikiPageModel(string apiRoot, string title, bool forceNew = false)
+    public async Task<Result<WikiPageModel>> GetWikiPageModel(string apiRoot, string title)
     {
         try
         {
-            var page = new WikiPage(await GetWikiSite(apiRoot, forceNew), title);
+            var page = new WikiPage(await GetWikiSite(apiRoot), title);
             return Result<WikiPageModel>.Success(new WikiPageModel(page));
         }
         catch (Exception e)
