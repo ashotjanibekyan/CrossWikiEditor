@@ -4,7 +4,6 @@ public sealed partial class StatusBarViewModel : ViewModelBase
 {
     private readonly IViewModelFactory _viewModelFactory;
     private readonly IDialogService _dialogService;
-    private readonly IUserPreferencesService _userPreferencesService;
 
     public StatusBarViewModel(IViewModelFactory viewModelFactory,
         IDialogService dialogService,
@@ -13,7 +12,6 @@ public sealed partial class StatusBarViewModel : ViewModelBase
     {
         _viewModelFactory = viewModelFactory;
         _dialogService = dialogService;
-        _userPreferencesService = userPreferencesService;
         messenger.Register<NewAccountLoggedInMessage>(this, (_, m) => Username = m.Value.Username);
         messenger.Register<ProjectChangedMessage>(this, (_, m) => Project = m.Value.ToString());
         messenger.Register<LanguageCodeChangedMessage>(this, (_, m) => LanguageCode = m.Value);

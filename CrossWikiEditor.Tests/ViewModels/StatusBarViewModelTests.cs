@@ -11,6 +11,55 @@ public sealed class StatusBarViewModelTests : BaseTest
     {
         SetUpServices();
         _sut = new StatusBarViewModel(_viewModelFactory, _dialogService, _userPreferencesService, _messenger);
+        _messenger.Received().Register(_sut, Arg.Any<MessageHandler<object, NewAccountLoggedInMessage>>());
+        _messenger.Received().Register(_sut, Arg.Any<MessageHandler<object, ProjectChangedMessage>>());
+        _messenger.Received().Register(_sut, Arg.Any<MessageHandler<object, LanguageCodeChangedMessage>>());
+
+    }
+
+    [Test]
+    public void Messanger_ShouldUpdateUsername_WhenNewAccountLoggedInMessageReceived()
+    {
+        // arrange
+        var messenger = new MessengerWrapper(WeakReferenceMessenger.Default);
+        _sut = new StatusBarViewModel(_viewModelFactory, _dialogService, _userPreferencesService, messenger);
+
+        // act
+        messenger.Send(new NewAccountLoggedInMessage(new Profile()
+        {
+            Username = "this is a new username"
+        }));
+
+        // assert
+        _sut.Username.Should().Be("this is a new username");
+    }
+
+    [Test]
+    public void Messanger_ShouldUpdateLanguageCode_WhenLanguageCodeChangedMessageReceived()
+    {
+        // arrange
+        var messenger = new MessengerWrapper(WeakReferenceMessenger.Default);
+        _sut = new StatusBarViewModel(_viewModelFactory, _dialogService, _userPreferencesService, messenger);
+
+        // act
+        messenger.Send(new LanguageCodeChangedMessage("de"));
+
+        // assert
+        _sut.LanguageCode.Should().Be("de");
+    }
+
+    [Test]
+    public void Messanger_ShouldUpdateProject_WhenProjectChangedInMessageReceived()
+    {
+        // arrange
+        var messenger = new MessengerWrapper(WeakReferenceMessenger.Default);
+        _sut = new StatusBarViewModel(_viewModelFactory, _dialogService, _userPreferencesService, messenger);
+
+        // act
+        messenger.Send(new ProjectChangedMessage(ProjectEnum.Incubator));
+
+        // assert
+        _sut.Project.Should().Be("Incubator");
     }
 
     [Test]

@@ -35,10 +35,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
         ListProviders = listProviders.OrderBy(l => l.Title).ToObservableCollection();
         SelectedListProvider = ListProviders[0];
 
-        messenger.Register<PageUpdatedMessage>(this, (recipient, message) =>
-        {
-            Pages.Remove(message.Page);
-        });
+        messenger.Register<PageUpdatedMessage>(this, (recipient, message) => Pages.Remove(message.Page));
     }
 
     [RelayCommand]

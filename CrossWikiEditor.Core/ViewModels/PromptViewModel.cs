@@ -2,9 +2,9 @@
 
 public sealed partial class PromptViewModel(string title, string text) : ViewModelBase
 {
-    public bool IsNumeric { get; set; }
-    public string Title { get; set; } = title;
-    public string Text { get; set; } = text;
+    public required bool IsNumeric { get; init; }
+    public string Title { get; } = title;
+    public string Text { get; } = text;
     public int Value { get; set; }
 
     [RelayCommand]
