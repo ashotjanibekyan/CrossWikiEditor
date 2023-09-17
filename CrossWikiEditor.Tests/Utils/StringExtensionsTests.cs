@@ -1,3 +1,5 @@
+using System.Runtime.InteropServices;
+
 namespace CrossWikiEditor.Tests.Utils;
 
 public class StringExtensionsTests
@@ -7,13 +9,14 @@ public class StringExtensionsTests
     {
         // Arrange
         const string input = "file*name?with|invalid/characters";
-        const string expected = "file-name-with-invalid-characters";
+        const string expectedWindows = "file-name-with-invalid-characters";
+        const string expectedUnix = "file*name?with|invalid-characters";
 
         // Act
         string result = input.ToFilenameSafe();
 
         // Assert
-        result.Should().Be(expected);
+        result.Should().Be(RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? expectedWindows : expectedUnix);
     }
 
     [Test]
