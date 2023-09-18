@@ -150,15 +150,21 @@ public sealed class FilterViewModelTests : BaseTest
         _sut.Pages = Fakers.GetWikiPageModelFaker(_userPreferencesService.CurrentApiUrl, _wikiClientCache)
                            .Generate(10).ToObservableCollection();
         IDialog dialog = Substitute.For<IDialog>();
+        var namespacesToKeep = _sut.SubjectNamespaces.Where(n => n.IsChecked).Select(n => n.Id).ToList();
+        namespacesToKeep.AddRange(_sut.TalkNamespaces.Where(n => n.IsChecked).Select(n => n.Id));
 
         // act
         _sut.SaveCommand.Execute(dialog);
 
         // assert
-        dialog.Received(1).Close(Arg.Is<FilterOptions>(filter =>
-            filter.RemoveDuplicates == _sut.RemoveDuplicates && filter.RemoveTitlesContaining == _sut.RemoveTitlesContaining &&
-            filter.KeepTitlesContaining == _sut.KeepTitlesContaining && filter.UseRegex == _sut.UseRegex &&
-            filter.SetOperation == _sut.SelectedSetOperations && filter.Pages.SequenceEqual(_sut.Pages)));
+        dialog.Received(1).Close(Arg.Is<FilterOptions>(filter => filter.RemoveDuplicates == _sut.RemoveDuplicates &&
+                                                                 filter.RemoveTitlesContaining == _sut.RemoveTitlesContaining &&
+                                                                 filter.KeepTitlesContaining == _sut.KeepTitlesContaining &&
+                                                                 filter.UseRegex == _sut.UseRegex &&
+                                                                 _sut.SortAlphabetically == filter.SortAlphabetically &&
+                                                                 filter.SetOperation == _sut.SelectedSetOperations &&
+                                                                 filter.FilterPages.SequenceEqual(_sut.Pages) &&
+                                                                 filter.NamespacesToKeep.SequenceEqual(namespacesToKeep)));
     }
 
     [Test]

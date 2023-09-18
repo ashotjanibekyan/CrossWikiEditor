@@ -257,66 +257,22 @@ public sealed partial class MakeListViewModel : ViewModelBase
             Pages = subjectPages.ToObservableCollection();
         }
     }
-
-    private static List<WikiPageModel> FilterPerRemoveDuplicates(IEnumerable<WikiPageModel> pages, bool removeDuplicates)
-    {
-        return removeDuplicates ? pages.Distinct().ToList() : pages.ToList();
-    }
-
-    private static List<WikiPageModel> FilterPerNamespacesToKeep(IEnumerable<WikiPageModel> pages, int[] namespacesToKeep)
-    {
-        return namespacesToKeep.Length > 0 ? pages.Where(p => namespacesToKeep.Contains(p.NamespaceId)).ToList() : pages.ToList();
-    }
-
-    private static List<WikiPageModel> FilterPerRemoveTitlesContaining(IEnumerable<WikiPageModel> pages, string pattern, bool useRegex)
-    {
-        return pattern != string.Empty ? pages.Where(p => !p.Title.Contains(pattern, useRegex)).ToList() : pages.ToList();
-    }
-
-    private static List<WikiPageModel> FilterPerKeepTitlesContaining(IEnumerable<WikiPageModel> pages, string pattern, bool useRegex)
-    {
-        return pattern != string.Empty ? pages.Where(p => p.Title.Contains(pattern, useRegex)).ToList() : pages.ToList();
-    }
-
-    private static List<WikiPageModel> FilterPerSetOperation(List<WikiPageModel> pages, IReadOnlyCollection<WikiPageModel> secondPages,
-        SetOperations setOperation)
-    {
-        if (secondPages.Count == 0)
-        {
-            return pages;
-        }
-        var list = new HashSet<WikiPageModel>(pages);
-        if (setOperation == SetOperations.SymmetricDifference)
-        {
-            list.ExceptWith(secondPages);
-        }
-        if (setOperation == SetOperations.Intersection)
-        {
-            list.IntersectWith(secondPages);
-        }
-        return new List<WikiPageModel>(list);
-    }
-
-    private static List<WikiPageModel> FilterPerSortAlphabetically(IEnumerable<WikiPageModel> pages, bool sortAlphabetically)
-    {
-        return sortAlphabetically ? pages.OrderBy(p => p.Title).ToList() : pages.ToList();
-    }
     
     [RelayCommand]
     private async Task Filter()
     {
         try
         {
-            FilterOptions? result = await _dialogService.ShowDialog<FilterOptions>(await _viewModelFactory.GetFilterViewModel());
-            if (result != null)
+            FilterOptions? filter = await _dialogService.ShowDialog<FilterOptions>(await _viewModelFactory.GetFilterViewModel());
+            if (filter != null)
             {
                 var filteredPages = Pages.ToList();
-                filteredPages = FilterPerRemoveDuplicates(filteredPages, result.RemoveDuplicates);
-                filteredPages = FilterPerNamespacesToKeep(filteredPages, result.NamespacesToKeep);
-                filteredPages = FilterPerRemoveTitlesContaining(filteredPages, result.RemoveTitlesContaining, result.UseRegex);
-                filteredPages = FilterPerKeepTitlesContaining(filteredPages, result.KeepTitlesContaining, result.UseRegex);
-                filteredPages = FilterPerSetOperation(filteredPages, result.Pages, result.SetOperation);
-                filteredPages = FilterPerSortAlphabetically(filteredPages, result.SortAlphabetically);
+                filteredPages = filter.PerRemoveDuplicates(filteredPages);
+                filteredPages = filter.PerNamespacesToKeep(filteredPages);
+                filteredPages = filter.PerRemoveTitlesContaining(filteredPages);
+                filteredPages = filter.PerKeepTitlesContaining(filteredPages);
+                filteredPages = filter.PerSetOperation(filteredPages);
+                filteredPages = filter.PerSortAlphabetically(filteredPages);
                 Pages = filteredPages.ToObservableCollection();
             }
         }
