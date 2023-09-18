@@ -304,8 +304,8 @@ public sealed class ProfilesViewModelTests : BaseTest
     [Test]
     [Combinatorial]
     public void QuickLoginCommand_ShouldReturn_WhenUsernameOrPasswordIsMissing(
-        [Values("username", "", " ", null)] string username,
-        [Values("password", "", " ", null)] string password)
+        [Values("username", "", " ", null)] string? username,
+        [Values("password", "", " ", null)] string? password)
     {
         // arrange
         if (!string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password))
@@ -367,7 +367,7 @@ public sealed class ProfilesViewModelTests : BaseTest
     [TestCase("")]
     [TestCase("  ")]
     [TestCase(null)]
-    public void QuickLoginCommand_ShouldAlertDefaultMessage_WhenLoginIsUnsuccessfulAndThereIsNoMessage(string errorMessage)
+    public void QuickLoginCommand_ShouldAlertDefaultMessage_WhenLoginIsUnsuccessfulAndThereIsNoMessage(string? errorMessage)
     {
         // arrange
         _sut.Username = "username";

@@ -63,7 +63,7 @@ public sealed class MakeListViewModelTests : BaseTest
     }
 
     [Test]
-    public void AddNewPageCommand_ShouldDoNothing_WhenNewPageTitleIsEmpty([Values("", "  ", null)] string newPageTitle)
+    public void AddNewPageCommand_ShouldDoNothing_WhenNewPageTitleIsEmpty([Values("", "  ", null)] string? newPageTitle)
     {
         // arrange
         _sut.NewPageTitle = newPageTitle;
@@ -95,7 +95,7 @@ public sealed class MakeListViewModelTests : BaseTest
     }
 
     [Test]
-    public void AddNewPageCommand_ShouldClearNewPageTitle([Values("", null, " ", "new title")] string newPageTitle)
+    public void AddNewPageCommand_ShouldClearNewPageTitle([Values("", null, " ", "new title")] string? newPageTitle)
     {
         // arrange
         _sut.NewPageTitle = newPageTitle;
