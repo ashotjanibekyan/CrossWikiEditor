@@ -128,5 +128,6 @@ public sealed class PetscanListProviderTests : ListProvidersBaseTest<PetscanList
     {
         _sut.Title.Should().Be("Petscan");
         _sut.ParamTitle.Should().Be("PSID");
+        _mockHttpMessageHandler?.Dispose();
     }
 }

@@ -106,5 +106,6 @@ public sealed class HtmlScraperListProviderTests : ListProvidersBaseTest<HtmlScr
     {
         _sut.Title.Should().Be("HTML Scraper");
         _sut.ParamTitle.Should().Be("URL");
+        _mockHttpMessageHandler?.Dispose();
     }
 }
