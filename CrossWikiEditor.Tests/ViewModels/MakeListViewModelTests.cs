@@ -29,9 +29,10 @@ public sealed class MakeListViewModelTests : BaseTest
         _userPreferencesService.CurrentApiUrl.Returns(ApiRoot);
         _wikiClientCache.GetWikiSite(Arg.Any<string>()).Returns(new WikiSite(_wikiClient, ApiRoot));
     }
-    
+
+    #region Messenger
     [Test]
-    public void Messanger_ShouldRemovePage_WhenPageUpdatedMessageReceived()
+    public void Messenger_ShouldRemovePage_WhenPageUpdatedMessageReceived()
     {
         // arrange
         var pages = new List<WikiPageModel>
@@ -61,7 +62,9 @@ public sealed class MakeListViewModelTests : BaseTest
         _sut.Pages[1].Title.Should().Be("Page3");
         _sut.Pages[2].Title.Should().Be("Page4");
     }
+    #endregion
 
+    #region AddNewPageCommand
     [Test]
     public void AddNewPageCommand_ShouldDoNothing_WhenNewPageTitleIsEmpty([Values("", "  ", null)] string? newPageTitle)
     {
@@ -121,7 +124,9 @@ public sealed class MakeListViewModelTests : BaseTest
         // assert
         _sut.Pages.Should().BeEquivalentTo(new List<WikiPageModel> { new("new page title", ApiRoot, _wikiClientCache) });
     }
+    #endregion
 
+    #region RemoveCommand
     [Test]
     public void RemoveCommand_ShouldDoNothing_WhenThereIsNoSelectedPage()
     {
@@ -184,8 +189,9 @@ public sealed class MakeListViewModelTests : BaseTest
         // assert
         _sut.SelectedPages.Should().BeEmpty();
     }
+    #endregion
 
-
+    #region MakeListCommand
     [Test]
     public void MakeListCommand_ShouldGetLimit_WhenListProviderIsLimited()
     {
@@ -276,7 +282,9 @@ public sealed class MakeListViewModelTests : BaseTest
         // assert
         listProvider.Received(1).GetAdditionalParams();
     }
+    #endregion
 
+    #region OpenInBrowserCommand
     [Test]
     public void OpenInBrowserCommand_ShouldDoNothing_WhenThereIsNoSelectedPage()
     {
@@ -314,8 +322,9 @@ public sealed class MakeListViewModelTests : BaseTest
             _systemService.OpenLinkInBrowser($"https://hy.wikipedia.org/w/index.php?title={_sut.SelectedPages[3].Title}");
         });
     }
+    #endregion
 
-
+    #region OpenHistoryInBrowserCommand
     [Test]
     public void OpenHistoryInBrowserCommand_ShouldDoNothing_WhenThereIsNoSelectedPage()
     {
@@ -353,7 +362,9 @@ public sealed class MakeListViewModelTests : BaseTest
             _systemService.OpenLinkInBrowser($"https://hy.wikipedia.org/w/index.php?title={_sut.SelectedPages[3].Title}&action=history");
         });
     }
+    #endregion
 
+    #region CutCommand
     [Test]
     public void CutCommand_ShouldDoNothing_WhenSelectedPagesIsEmpty()
     {
@@ -384,8 +395,9 @@ public sealed class MakeListViewModelTests : BaseTest
         _sut.SelectedPages.Should().BeEmpty();
         _sut.Pages.Should().BeEquivalentTo(new List<WikiPageModel> { pages[0], pages[3] }.ToObservableCollection());
     }
+    #endregion
 
-
+    #region CopyCommand
     [Test]
     public void CopyCommand_ShouldDoNothing_WhenSelectedPagesIsEmpty()
     {
@@ -418,7 +430,9 @@ public sealed class MakeListViewModelTests : BaseTest
         _sut.SelectedPages.Should().BeEquivalentTo(selectedPages);
         _sut.Pages.Should().BeEquivalentTo(pages);
     }
+    #endregion
 
+    #region SelectAllCommand
     [Test]
     public void SelectAllCommand_ShouldSelectAllPages()
     {
@@ -433,7 +447,9 @@ public sealed class MakeListViewModelTests : BaseTest
         _sut.Pages.Should().HaveCount(5);
         _sut.Pages.Should().BeEquivalentTo(_sut.SelectedPages);
     }
+    #endregion
 
+    #region SelectNoneCommand
     [Test]
     public void SelectNoneCommand_ShouldUnSelectAllPages()
     {
@@ -448,7 +464,9 @@ public sealed class MakeListViewModelTests : BaseTest
         _sut.Pages.Should().HaveCount(5);
         _sut.SelectedPages.Should().BeEmpty();
     }
+    #endregion
 
+    #region SelectInverseCommand
     [Test]
     public void SelectInverseCommand_ShouldSelectAll_WhenNonIsSelected()
     {
@@ -496,7 +514,9 @@ public sealed class MakeListViewModelTests : BaseTest
         _sut.Pages.Should().HaveCount(5);
         _sut.SelectedPages.Should().BeEquivalentTo(pages.Where(p => !selectedPages.Contains(p)));
     }
+    #endregion
 
+    #region PastCommand
     [Test]
     public void PastCommand_ShouldSplitClipboardAndAddPages()
     {
@@ -517,7 +537,9 @@ public sealed class MakeListViewModelTests : BaseTest
             new("fewfew", ApiRoot, _wikiClientCache), new("ofiewf203", ApiRoot, _wikiClientCache), new("foiwej", ApiRoot, _wikiClientCache)
         }.ToObservableCollection());
     }
+    #endregion
 
+    #region RemoveSelectedCommand
     [Test]
     public void RemoveSelectedCommand_ShouldDoNothing_WhenSelectedPagesIsEmpty()
     {
@@ -551,7 +573,9 @@ public sealed class MakeListViewModelTests : BaseTest
         _sut.Pages.Should().BeEquivalentTo(notSelectedPages);
         _sut.SelectedPages.Should().BeEmpty();
     }
+    #endregion
 
+    #region RemoveAllCommand
     [Test]
     public void RemoveAllCommand_ShouldRemoveAllPages()
     {
@@ -568,7 +592,9 @@ public sealed class MakeListViewModelTests : BaseTest
         _sut.Pages.Should().BeEmpty();
         _sut.SelectedPages.Should().BeEmpty();
     }
+    #endregion
 
+    #region RemoveDuplicate
     [Test]
     public void RemoveDuplicate_ShouldRemoveDuplicatePages()
     {
@@ -585,7 +611,9 @@ public sealed class MakeListViewModelTests : BaseTest
         _sut.Pages.Should().BeEquivalentTo(pages.Distinct());
         _sut.SelectedPages.Should().BeEmpty();
     }
+    #endregion
 
+    #region RemoveNonMainSpaceCommand
     [Test]
     public void RemoveNonMainSpaceCommand_ShouldRemoveNonMainSpacePages()
     {
@@ -606,7 +634,9 @@ public sealed class MakeListViewModelTests : BaseTest
         _sut.Pages.Should().BeEquivalentTo(nonSelected);
         _sut.SelectedPages.Should().BeEmpty();
     }
+    #endregion
 
+    #region MoveToTopCommand
     [Test]
     public void MoveToTopCommand_ShouldMoveSelectedPagesToTheTop()
     {
@@ -625,7 +655,9 @@ public sealed class MakeListViewModelTests : BaseTest
                 options => options.WithStrictOrdering());
         _sut.SelectedPages.Should().BeEmpty();
     }
+    #endregion
 
+    #region MoveToBottomCommand
     [Test]
     public void MoveToBottomCommand_ShouldMoveSelectedPagesToTheBottom()
     {
@@ -644,7 +676,9 @@ public sealed class MakeListViewModelTests : BaseTest
                 options => options.WithStrictOrdering());
         _sut.SelectedPages.Should().BeEmpty();
     }
+    #endregion
 
+    #region ConvertToTalkPagesCommand
     [Test]
     public void ConvertToTalkPagesCommand_ShouldConvertPagesToTalkPages_WhenPageServiceReturnsSuccess()
     {
@@ -678,7 +712,9 @@ public sealed class MakeListViewModelTests : BaseTest
         // assert
         _sut.Pages.Should().BeEquivalentTo(pages);
     }
-    
+    #endregion
+
+    #region ConvertFromTalkPagesCommand
     [Test]
     public void ConvertFromTalkPagesCommand_ShouldConvertPagesFromTalkPages_WhenPageServiceReturnsSuccess()
     {
@@ -712,7 +748,292 @@ public sealed class MakeListViewModelTests : BaseTest
         // assert
         _sut.Pages.Should().BeEquivalentTo(pages);
     }
+    #endregion
 
+    #region FilterCommand
+    [Test]
+    public void FilterCommand_ShouldRemoveDuplicates_WhenRemoveDuplicatesIsTrue()
+    {
+        // arrange
+        List<WikiPageModel>? pages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(10);
+        _dialogService.ShowDialog<FilterOptions>(Arg.Any<FilterViewModel>())
+            .Returns(new FilterOptions(Array.Empty<int>(), "", "", false, false, true, SetOperations.Intersection, new List<WikiPageModel>()));
+        _sut.Pages.AddRange(pages);
+        _sut.Pages.AddRange(pages);
+
+        // act
+        _sut.FilterCommand.Execute(null);
+
+        // assert
+        _sut.Pages.Should().BeEquivalentTo(pages);
+    }
+
+    [Test]
+    public void FilterCommand_ShouldRemoveTitlesContaining_WhenRemoveTitlesContainingIsNotEmpty()
+    {
+        // arrange
+        _dialogService.ShowDialog<FilterOptions>(Arg.Any<FilterViewModel>())
+            .Returns(new FilterOptions(Array.Empty<int>(), "a", "", false, false, true, SetOperations.Intersection, new List<WikiPageModel>()));
+        _sut.Pages = new ObservableCollection<WikiPageModel>(new WikiPageModel[]
+        {
+            new("bbb", ApiRoot, _wikiClientCache),
+            new("babb", ApiRoot, _wikiClientCache),
+            new("bewgrbb", ApiRoot, _wikiClientCache),
+            new("abbb", ApiRoot, _wikiClientCache),
+            new("aaa", ApiRoot, _wikiClientCache),
+        });
+
+        // act
+        _sut.FilterCommand.Execute(null);
+
+        // assert
+        _sut.Pages.Count.Should().Be(2);
+        _sut.Pages[0].Title.Should().Be("bbb");
+        _sut.Pages[1].Title.Should().Be("bewgrbb");
+    }
+
+    [Test]
+    public void FilterCommand_ShouldOnlyKeepTitlesContaining_WhenKeepTitlesContainingIsNotEmpty()
+    {
+        // arrange
+        _dialogService.ShowDialog<FilterOptions>(Arg.Any<FilterViewModel>())
+            .Returns(new FilterOptions(Array.Empty<int>(), "", "a", false, false, true, SetOperations.Intersection, new List<WikiPageModel>()));
+        _sut.Pages = new ObservableCollection<WikiPageModel>(new WikiPageModel[]
+        {
+            new("bbb", ApiRoot, _wikiClientCache),
+            new("babb", ApiRoot, _wikiClientCache),
+            new("bewgrbb", ApiRoot, _wikiClientCache),
+            new("abbb", ApiRoot, _wikiClientCache),
+            new("aaa", ApiRoot, _wikiClientCache),
+        });
+
+        // act
+        _sut.FilterCommand.Execute(null);
+
+        // assert
+        _sut.Pages.Count.Should().Be(3);
+        _sut.Pages[0].Title.Should().Be("babb");
+        _sut.Pages[1].Title.Should().Be("abbb");
+        _sut.Pages[2].Title.Should().Be("aaa");
+    }
+
+    [Test]
+    public void FilterCommand_ShouldRemoveTitlesContainingRegex_WhenRemoveTitlesContainingIsNotEmptyAndUseRegex()
+    {
+        // arrange
+        _dialogService.ShowDialog<FilterOptions>(Arg.Any<FilterViewModel>())
+            .Returns(new FilterOptions(Array.Empty<int>(), @"\d", "", true, false, true, SetOperations.Intersection, new List<WikiPageModel>()));
+        _sut.Pages = new ObservableCollection<WikiPageModel>(new WikiPageModel[]
+        {
+            new("bb2b", ApiRoot, _wikiClientCache),
+            new("babb", ApiRoot, _wikiClientCache),
+            new("be4wgrbb", ApiRoot, _wikiClientCache),
+            new("abbb", ApiRoot, _wikiClientCache),
+            new("aa2a", ApiRoot, _wikiClientCache),
+        });
+
+        // act
+        _sut.FilterCommand.Execute(null);
+
+        // assert
+        _sut.Pages.Count.Should().Be(2);
+        _sut.Pages[0].Title.Should().Be("babb");
+        _sut.Pages[1].Title.Should().Be("abbb");
+    }
+
+    [Test]
+    public void FilterCommand_ShouldOnlyKeepTitlesContainingRegex_WhenKeepTitlesContainingIsNotEmptyAndUseRegex()
+    {
+        // arrange
+        _dialogService.ShowDialog<FilterOptions>(Arg.Any<FilterViewModel>())
+            .Returns(new FilterOptions(Array.Empty<int>(), "", @"\d", true, false, true, SetOperations.Intersection, new List<WikiPageModel>()));
+        _sut.Pages = new ObservableCollection<WikiPageModel>(new WikiPageModel[]
+        {
+            new("bb2b", ApiRoot, _wikiClientCache),
+            new("babb", ApiRoot, _wikiClientCache),
+            new("be4wgrbb", ApiRoot, _wikiClientCache),
+            new("abbb", ApiRoot, _wikiClientCache),
+            new("aa2a", ApiRoot, _wikiClientCache),
+        });
+
+        // act
+        _sut.FilterCommand.Execute(null);
+
+        // assert
+        _sut.Pages.Count.Should().Be(3);
+        _sut.Pages[0].Title.Should().Be("bb2b");
+        _sut.Pages[1].Title.Should().Be("be4wgrbb");
+        _sut.Pages[2].Title.Should().Be("aa2a");
+    }
+
+    [Test]
+    public async Task FilterCommand_ShouldKeepOnlyPagesInGivenNamespaces_WhenNamespacesToKeepIsNotEmpty()
+    {
+        // arrange
+        _dialogService.ShowDialog<FilterOptions>(Arg.Any<FilterViewModel>())
+            .Returns(new FilterOptions(new []{0, 1}, "", "", true, false, true, SetOperations.Intersection, new List<WikiPageModel>()));
+        _sut.Pages = new ObservableCollection<WikiPageModel>(new WikiPageModel[]
+        {
+            new("bb2b", ApiRoot, _wikiClientCache),
+            new("Մասնակից:babb", ApiRoot, _wikiClientCache),
+            new("Քննարկում:be4wgrbb", ApiRoot, _wikiClientCache),
+            new("Օգնություն:abbb", ApiRoot, _wikiClientCache),
+            new("Վիքիպեդիա:aa2a", ApiRoot, _wikiClientCache),
+        });
+        await Task.WhenAll(_sut.Pages.Select(p => p.InitAsync));
+
+        // act
+        _sut.FilterCommand.Execute(null);
+
+        // assert
+        _sut.Pages.Count.Should().Be(2);
+        _sut.Pages[0].Title.Should().Be("bb2b");
+        _sut.Pages[1].Title.Should().Be("Քննարկում:be4wgrbb");
+    }
+
+    [Test]
+    public void FilterCommand_ShouldKeepIntersection_WhenSetOperationIsIntersectionAndPagesIsNotEmpty()
+    {
+        // arrange
+        var pages = new WikiPageModel[]
+        {
+            new("bb2b", ApiRoot, _wikiClientCache),
+            new("Մասնակից:babb", ApiRoot, _wikiClientCache),
+            new("Քննարկում:be4wgrbb", ApiRoot, _wikiClientCache),
+            new("Օգնություն:abbb", ApiRoot, _wikiClientCache),
+            new("Վիքիպեդիա:aa2a", ApiRoot, _wikiClientCache),
+        };
+        _dialogService.ShowDialog<FilterOptions>(Arg.Any<FilterViewModel>())
+            .Returns(new FilterOptions(Array.Empty<int>(), "", "", true, false, true, SetOperations.Intersection, new List<WikiPageModel>
+            {
+                pages[1],
+                pages[3],
+            }));
+        _sut.Pages = new ObservableCollection<WikiPageModel>(pages);
+
+        // act
+        _sut.FilterCommand.Execute(null);
+
+        // assert
+        _sut.Pages.Count.Should().Be(2);
+        _sut.Pages[0].Title.Should().Be("Մասնակից:babb");
+        _sut.Pages[1].Title.Should().Be("Օգնություն:abbb");
+    }
+
+    [Test]
+    public void FilterCommand_ShouldKeepSymmetricDifference_WhenSetOperationIsSymmetricDifferenceAndPagesIsNotEmpty()
+    {
+        // arrange
+        var ogPages = new WikiPageModel[]
+        {
+            new("bb2b", ApiRoot, _wikiClientCache),
+            new("Մասնակից:babb", ApiRoot, _wikiClientCache),
+            new("Քննարկում:be4wgrbb", ApiRoot, _wikiClientCache),
+            new("Օգնություն:abbb", ApiRoot, _wikiClientCache),
+            new("Վիքիպեդիա:aa2a", ApiRoot, _wikiClientCache),
+        };
+        var filterPages = new List<WikiPageModel>
+        {
+            new("Վիքիպեդիա:aa2a", ApiRoot, _wikiClientCache),
+            new("Կաղապար:aոֆեոa2a", ApiRoot, _wikiClientCache),
+            ogPages[0],
+            ogPages[3]
+
+        };
+        _dialogService.ShowDialog<FilterOptions>(Arg.Any<FilterViewModel>())
+            .Returns(new FilterOptions(Array.Empty<int>(), "", "", true, false, true, SetOperations.SymmetricDifference, filterPages));
+        _sut.Pages = new ObservableCollection<WikiPageModel>(ogPages);
+
+        // act
+        _sut.FilterCommand.Execute(null);
+        // assert
+        _sut.Pages.Count.Should().Be(2);
+        _sut.Pages[0].Title.Should().Be("Մասնակից:babb");
+        _sut.Pages[1].Title.Should().Be("Քննարկում:be4wgrbb");
+    }
+
+    [Test]
+    public void FilterCommand_ShouldSort_WhenSortAlphabeticallyIsTrue()
+    {
+        // arrange
+        var ogPages = new WikiPageModel[]
+        {
+            new("bb2b", ApiRoot, _wikiClientCache),
+            new("bb3b", ApiRoot, _wikiClientCache),
+            new("Մասնակից:babb", ApiRoot, _wikiClientCache),
+            new("Քննարկում:be4wgrbb", ApiRoot, _wikiClientCache),
+            new("Օգնություն:abbb", ApiRoot, _wikiClientCache),
+            new("Վիքիպեդիա:aa2a", ApiRoot, _wikiClientCache),
+        };
+        _dialogService.ShowDialog<FilterOptions>(Arg.Any<FilterViewModel>())
+            .Returns(new FilterOptions(Array.Empty<int>(), "", "", true, true, true, SetOperations.SymmetricDifference, new List<WikiPageModel>()));
+        _sut.Pages = new ObservableCollection<WikiPageModel>(ogPages);
+
+        // act
+        _sut.FilterCommand.Execute(null);
+        // assert
+        _sut.Pages.Count.Should().Be(6);
+        _sut.Pages[0].Title.Should().Be("bb2b");
+        _sut.Pages[1].Title.Should().Be("bb3b");
+        _sut.Pages[2].Title.Should().Be("Մասնակից:babb");
+        _sut.Pages[3].Title.Should().Be("Վիքիպեդիա:aa2a");
+        _sut.Pages[4].Title.Should().Be("Քննարկում:be4wgrbb");
+        _sut.Pages[5].Title.Should().Be("Օգնություն:abbb");
+    }
+
+    [Test]
+    public void FilterCommand_ShouldRemoveTitleContainingAndKeepTitlesContaining_WhenRemoveAndKeepTitlesAreNotEmpty()
+    {
+        // arrange
+        _dialogService.ShowDialog<FilterOptions>(Arg.Any<FilterViewModel>())
+            .Returns(new FilterOptions(Array.Empty<int>(), "a", "b", false, false, true, SetOperations.Intersection, new List<WikiPageModel>()));
+        _sut.Pages = new ObservableCollection<WikiPageModel>(new WikiPageModel[]
+        {
+            new("bbb", ApiRoot, _wikiClientCache),
+            new("babb", ApiRoot, _wikiClientCache),
+            new("bewgrbb", ApiRoot, _wikiClientCache),
+            new("abbb", ApiRoot, _wikiClientCache),
+            new("aaa", ApiRoot, _wikiClientCache),
+        });
+
+        // act
+        _sut.FilterCommand.Execute(null);
+
+        // assert
+        _sut.Pages.Count.Should().Be(2);
+        _sut.Pages[0].Title.Should().Be("bbb");
+        _sut.Pages[1].Title.Should().Be("bewgrbb");
+    }
+    
+    
+
+    [Test]
+    public void FilterCommand_ShouldRemoveTitleContainingAndKeepTitlesContainingUseRegex_WhenRemoveAndKeepTitlesAreNotEmpty()
+    {
+        // arrange
+        _dialogService.ShowDialog<FilterOptions>(Arg.Any<FilterViewModel>())
+            .Returns(new FilterOptions(Array.Empty<int>(), @"\d", @"(.)\1", true, false, true, SetOperations.Intersection, new List<WikiPageModel>()));
+        _sut.Pages = new ObservableCollection<WikiPageModel>(new WikiPageModel[]
+        {
+            new("bgbggb", ApiRoot, _wikiClientCache),
+            new("babb", ApiRoot, _wikiClientCache),
+            new("bewg2rbb", ApiRoot, _wikiClientCache),
+            new("abgbgb", ApiRoot, _wikiClientCache),
+            new("a4aa", ApiRoot, _wikiClientCache),
+        });
+
+        // act
+        _sut.FilterCommand.Execute(null);
+
+        // assert
+        _sut.Pages.Count.Should().Be(2);
+        _sut.Pages[0].Title.Should().Be("bgbggb");
+        _sut.Pages[1].Title.Should().Be("babb");
+    }
+    
+    #endregion
+
+    #region SaveListCommand
     [Test]
     public void SaveListCommand_ShouldSaveFile_WhenUserPickedALocationAndPagesExist()
     {
@@ -743,7 +1064,7 @@ public sealed class MakeListViewModelTests : BaseTest
         });
         stream.Received(1).Close();
     }
-
+    
     [Test]
     public void SaveListCommand_ShouldDoNothing_WhenUserDidNotPickALocationAndPagesExist()
     {
@@ -784,7 +1105,9 @@ public sealed class MakeListViewModelTests : BaseTest
 
         _fileDialogService.DidNotReceive().SaveFilePickerAsync("Save pages", defaultExtension: Arg.Any<string?>(), Arg.Any<string?>());
     }
+    #endregion
 
+    #region SortAlphabeticallyCommand
     [Test]
     public void SortAlphabeticallyCommand_ShouldSortAlphabetically()
     {
@@ -800,7 +1123,9 @@ public sealed class MakeListViewModelTests : BaseTest
                 _sut.Pages.OrderBy(x => x.Title),
                 options => options.WithStrictOrdering());
     }
+    #endregion
 
+    #region SortReverseAlphabeticallyCommand
     [Test]
     public void SortReverseAlphabeticallyCommand_ShouldSortReverseAlphabetically()
     {
@@ -816,4 +1141,5 @@ public sealed class MakeListViewModelTests : BaseTest
                 _sut.Pages.OrderByDescending(x => x.Title),
                 options => options.WithStrictOrdering());
     }
+    #endregion
 }
