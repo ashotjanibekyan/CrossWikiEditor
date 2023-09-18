@@ -29,20 +29,4 @@ public static class WikiPageExtensions
     {
         return wikiPage.Title.Contains(':') ? wikiPage.Title.Split(':')[1] : wikiPage.Title;
     }
-
-    public static bool ShouldKeepPer(this WikiPageModel page, FilterOptions options)
-    {
-        bool shouldAdd = !(options.NamespacesToKeep.Any() && !options.NamespacesToKeep.Contains(page.NamespaceId));
-        if (options.RemoveTitlesContaining != string.Empty && page.Title.Contains(options.RemoveTitlesContaining, options.UseRegex))
-        {
-            shouldAdd = false;
-        }
-
-        if (options.KeepTitlesContaining != string.Empty && !page.Title.Contains(options.KeepTitlesContaining, options.UseRegex))
-        {
-            shouldAdd = false;
-        }
-
-        return shouldAdd;
-    }
 }
