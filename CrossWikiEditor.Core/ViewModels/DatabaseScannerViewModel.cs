@@ -168,30 +168,11 @@ public sealed partial class DatabaseScannerViewModel(WikiSite wikiSite,
         }
     }
 
-    private void MakeAlphabetisedList()
-    {
-        throw new NotImplementedException();
-    }
+    private void MakeAlphabetisedList() => _convertedTextChanged?.Invoke(this, Pages.ToWikiListAlphabetically(IsNumericList));
 
-    public EventHandler<string>? ConvertedTextChanged;
+    public EventHandler<string>? _convertedTextChanged;
 
-    private void MakeNumericList()
-    {
-        string seperator = IsNumericList ? "#" : "*";
-        IEnumerable<WikiPageModel[]> pages = Pages.Chunk(NumberOfPagesOnEachSection);
-        var sb = new StringBuilder();
-        const int i = 1;
-        foreach (WikiPageModel[] section in pages)
-        {
-            sb.Append($"== {i} ==\n");
-            foreach (WikiPageModel page in section)
-            {
-                sb.Append($"{seperator} [[{page.Title}]]\n");
-            }
-        }
-        
-        ConvertedTextChanged?.Invoke(this, sb.ToString());
-    }
+    private void MakeNumericList() => _convertedTextChanged?.Invoke(this, Pages.ToWikiList(IsNumericList, NumberOfPagesOnEachSection));
 
     private void UpdateUi()
     {
