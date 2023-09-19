@@ -4,6 +4,7 @@ using Serilog;
 
 namespace CrossWikiEditor.Tests;
 
+[Parallelizable]
 public abstract class BaseTest
 {
     protected IFileDialogService _fileDialogService;

@@ -253,19 +253,6 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
         }
     }
 
-    private Result<WikiPageModel> ConvertToTalk(WikiPageModel page)
-    {
-        try
-        {
-            return Result<WikiPageModel>.Success(page.ToTalkPage());
-        }
-        catch (Exception e)
-        {
-            logger.Fatal(e, "Failed to get pages. {WikiPageModel}", page);
-            return Result<WikiPageModel>.Failure(e.Message);
-        }
-    }
-
     public async Task<Result<List<WikiPageModel>>> GetRecentlyChangedPages(string apiRoot, int[]? namespaces, int limit)
     {
         try
@@ -302,30 +289,6 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
         {
             logger.Fatal(e, "Failed to get pages. Site: {ApiRoot}, Url: {Url} limit: {Limit}", apiRoot, url, limit);
             return Result<List<WikiPageModel>>.Failure(e.Message);
-        }
-    }
-
-    public Result<List<WikiPageModel>> ConvertToTalk(List<WikiPageModel> pages)
-    {
-        List<WikiPageModel> result = (from wikiPageModel in pages
-            select ConvertToTalk(wikiPageModel)
-            into talkPageResult
-            where talkPageResult is {IsSuccessful: true, Value: not null}
-            select talkPageResult.Value).ToList();
-
-        return Result<List<WikiPageModel>>.Success(result);
-    }
-
-    private Result<WikiPageModel> ConvertToSubject(WikiPageModel page)
-    {
-        try
-        {
-            return Result<WikiPageModel>.Success(page.ToSubjectPage());
-        }
-        catch (Exception e)
-        {
-            logger.Fatal(e, "Failed to get pages. {WikiPageModel}", page);
-            return Result<WikiPageModel>.Failure(e.Message);
         }
     }
 
@@ -370,12 +333,49 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
 
     public Result<List<WikiPageModel>> ConvertToSubject(List<WikiPageModel> pages)
     {
-        List<WikiPageModel> result = (from wikiPageModel in pages
+        List<WikiPageModel> result = (from wikiPageModel in pages 
             select ConvertToSubject(wikiPageModel)
             into subjectPageResult
             where subjectPageResult is {IsSuccessful: true, Value: not null}
             select subjectPageResult.Value).ToList();
 
         return Result<List<WikiPageModel>>.Success(result);
+    }
+
+    public Result<List<WikiPageModel>> ConvertToTalk(List<WikiPageModel> pages)
+    {
+        List<WikiPageModel> result = (from wikiPageModel in pages
+            select ConvertToTalk(wikiPageModel)
+            into talkPageResult
+            where talkPageResult is {IsSuccessful: true, Value: not null}
+            select talkPageResult.Value).ToList();
+
+        return Result<List<WikiPageModel>>.Success(result);
+    }
+
+    private Result<WikiPageModel> ConvertToSubject(WikiPageModel page)
+    {
+        try
+        {
+            return Result<WikiPageModel>.Success(page.ToSubjectPage());
+        }
+        catch (Exception e)
+        {
+            logger.Fatal(e, "Failed to get pages. {WikiPageModel}", page);
+            return Result<WikiPageModel>.Failure(e.Message);
+        }
+    }
+
+    private Result<WikiPageModel> ConvertToTalk(WikiPageModel page)
+    {
+        try
+        {
+            return Result<WikiPageModel>.Success(page.ToTalkPage());
+        }
+        catch (Exception e)
+        {
+            logger.Fatal(e, "Failed to get pages. {WikiPageModel}", page);
+            return Result<WikiPageModel>.Failure(e.Message);
+        }
     }
 }
