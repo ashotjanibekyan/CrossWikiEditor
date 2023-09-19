@@ -215,11 +215,57 @@ public class WikiPageModelExtensionsTests : BaseTest
                                      # [[Wfwaa]]
                                      # [[wfwfweaa]]
                                      # [[Wfwfweaa]]
-                                     
+
                                      """;
         
         // act
         string list = pages.ToWikiListAlphabetically(true);
+
+        // assert
+        list.Should().Be(expectedList);
+    }
+    
+    [Test]
+    public void ToWikiListAlphabetically_ShouldMakeBulletList()
+    {
+        // arrange
+        var pages = new List<WikiPageModel>
+        {
+            new("wfwfweaa", ApiRoot, _wikiClientCache),
+            new("baa", ApiRoot, _wikiClientCache),
+            new("bafwea", ApiRoot, _wikiClientCache),
+            new("1aafew", ApiRoot, _wikiClientCache),
+            new("aa", ApiRoot, _wikiClientCache),
+            new("wfwaa", ApiRoot, _wikiClientCache),
+            new("Wfwfweaa", ApiRoot, _wikiClientCache),
+            new("Baa", ApiRoot, _wikiClientCache),
+            new("Bafwea", ApiRoot, _wikiClientCache),
+            new("Aafew", ApiRoot, _wikiClientCache),
+            new("Aa", ApiRoot, _wikiClientCache),
+            new("Wfwaa", ApiRoot, _wikiClientCache),
+        };
+        const string expectedList = $"""
+                                     == 1 ==
+                                     * [[1aafew]]
+                                     == A ==
+                                     * [[aa]]
+                                     * [[Aa]]
+                                     * [[Aafew]]
+                                     == B ==
+                                     * [[baa]]
+                                     * [[Baa]]
+                                     * [[bafwea]]
+                                     * [[Bafwea]]
+                                     == W ==
+                                     * [[wfwaa]]
+                                     * [[Wfwaa]]
+                                     * [[wfwfweaa]]
+                                     * [[Wfwfweaa]]
+
+                                     """;
+        
+        // act
+        string list = pages.ToWikiListAlphabetically(false);
 
         // assert
         list.Should().Be(expectedList);
