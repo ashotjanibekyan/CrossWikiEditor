@@ -29,4 +29,18 @@ public static class StringExtensions
         var r = new Regex(value, regexOptions);
         return r.IsMatch(str);
     }
+
+    public static bool Contains(
+        this string str,
+        string value,
+        bool isRegex,
+        bool isCaseSensitive)
+    {
+        if (!isRegex)
+        {
+            return isCaseSensitive ? str.Contains(value) : str.Contains(value, StringComparison.OrdinalIgnoreCase);
+        }
+        Regex r = isCaseSensitive ? new Regex(value) : new Regex(value, RegexOptions.IgnoreCase);
+        return r.IsMatch(str);
+    }
 }

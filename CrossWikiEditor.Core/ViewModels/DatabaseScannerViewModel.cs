@@ -15,6 +15,13 @@ public sealed partial class DatabaseScannerViewModel(WikiSite wikiSite,
     [ObservableProperty] private ObservableCollection<WikiNamespace> _talkNamespaces = new();
     [ObservableProperty] private ObservableCollection<WikiPageModel> _pages = new();
 
+    [ObservableProperty] private bool _isTitleContainsEnabled;
+    [ObservableProperty] private bool _isTitleNotContainsEnabled;
+    [ObservableProperty] private string _titleContains = string.Empty;
+    [ObservableProperty] private string _titleNotContains = string.Empty;
+    [ObservableProperty] private bool _isTitleContainsRegex;
+    [ObservableProperty] private bool _isTitleContainsCaseSensitive;
+
     [ObservableProperty] private bool _isAllTalkChecked;
     [ObservableProperty] private bool _isAllSubjectChecked;
     [ObservableProperty] private string _databaseFile = string.Empty;
@@ -82,6 +89,14 @@ public sealed partial class DatabaseScannerViewModel(WikiSite wikiSite,
         _scannerCancellationTokenSource = new CancellationTokenSource();
     }
 
+    [RelayCommand]                                      
+    private void Save(IDialog dialog)
+    {
+        _scannerTask = null;
+        _scannerCancellationTokenSource.Cancel();
+        dialog.Close(Pages.ToList());
+    }
+
     [RelayCommand]
     private void Make()
     {
@@ -119,11 +134,22 @@ public sealed partial class DatabaseScannerViewModel(WikiSite wikiSite,
                 _titlesQueue.Enqueue(page.Title!);
             }
         }
+        _scannerTask = null;
     }
 
     private bool ShouldIncludePage(DbPage page)
     {
         if (ViolatesNamespaceCondition(page))
+        {
+            return false;
+        }
+
+        if (ViolatesTitleContains(page))
+        {
+            return false;
+        }
+
+        if (ViolatesTitleNotContains(page))
         {
             return false;
         }
@@ -141,6 +167,39 @@ public sealed partial class DatabaseScannerViewModel(WikiSite wikiSite,
         }
         
         return checkedNamespaces.All(ns => ns.Id != page.Ns);
+    }
+
+    private bool ViolatesTitleContains(DbPage page)
+    {
+        if (!IsTitleContainsEnabled)
+        {
+            return false;
+        }
+        if (page.Revision.Count == 0)
+        {
+            return true;
+        }
+        string? currentText = page.Revision.Last().Text;
+        if (currentText == null)
+        {
+            return true;
+        }
+        return !currentText.Contains(TitleContains, IsTitleContainsRegex, IsTitleContainsCaseSensitive);
+    }
+
+    private bool ViolatesTitleNotContains(DbPage page)
+    {
+        if (!IsTitleNotContainsEnabled)
+        {
+            return false;
+        }
+        
+        string? currentText = page.Revision.Last().Text;
+        if (currentText == null)
+        {
+            return false;
+        }
+        return currentText.Contains(TitleNotContains, IsTitleContainsRegex, IsTitleContainsCaseSensitive);
     }
 
     private DbPage ParsePageElement(XmlReader reader)
@@ -346,6 +405,7 @@ public sealed partial class DatabaseScannerViewModel(WikiSite wikiSite,
             if (reader.Name == "siteinfo")
             {
                 ParseSiteInfo(reader);
+                break;
             }
         }
     }
