@@ -15,7 +15,8 @@ jobs:
             Solution_Name: CrossWikiEditor.sln
             Project_Directory: CrossWikiEditor
             Project_Path: CrossWikiEditor/CrossWikiEditor.csproj
-            Publish_Profile_Path: CrossWikiEditor/Properties/PublishProfiles/MacArm.pubxml
+            Publish_Profile_M1_Path: CrossWikiEditor/Properties/PublishProfiles/MacArm.pubxml
+            Publish_Profile_Intel_Path: CrossWikiEditor/Properties/PublishProfiles/MacIntel.pubxml
         
         steps:
             - name: Checkout
@@ -29,10 +30,12 @@ jobs:
               with:
                   dotnet-version: 7.0.x
                   dotnet-quality: 'preview'
+
+            - name: Publish M1 version
+              run: dotnet publish ${{ env.Project_Path }} -p:PublishProfile=${{ env.Publish_Profile_M1_Path }}
             
-            # Create the app exe
-            - name: Create the app exe
-              run: dotnet publish ${{ env.Project_Path }} -p:PublishProfile=${{ env.Publish_Profile_Path }}
+            - name: Publish Intel version
+              run: dotnet publish ${{ env.Project_Path }} -p:PublishProfile=${{ env.Publish_Profile_Intel_Path }}
             
             # Upload the app: https://github.com/marketplace/actions/upload-a-build-artifact
             - name: Upload build artifacts
@@ -40,6 +43,12 @@ jobs:
               with:
                   name: Mac M1
                   path: ${{ env.Project_Directory }}/bin/publish/mac-arm/CrossWikiEditor
+                  
+            - name: Upload build artifacts
+              uses: actions/upload-artifact@v3
+              with:
+                  name: Mac Intel
+                  path: ${{ env.Project_Directory }}/bin/publish/mac-intel/CrossWikiEditor
 
             - name: Upload Artifacts TO Google Drive
               uses: ashotjanibekyan/Upload_Github_Artifacts_TO_GDrive@master
@@ -47,5 +56,14 @@ jobs:
                   target: ${{ env.Project_Directory }}/bin/publish/mac-arm/CrossWikiEditor
                   credentials: ${{ secrets.GOOGLEDRIVEUPLOAD }}
                   parent_folder_id: '1c4CnqaQQFjeTcd6ydpBPLAsVQ-YgPNYa'
-                  name: 'CrossWikiEditor-Mac'
+                  name: 'CrossWikiEditor-MacM1'
+                  override: true
+
+            - name: Upload Artifacts TO Google Drive
+              uses: ashotjanibekyan/Upload_Github_Artifacts_TO_GDrive@master
+              with:
+                  target: ${{ env.Project_Directory }}/bin/publish/mac-intel/CrossWikiEditor
+                  credentials: ${{ secrets.GOOGLEDRIVEUPLOAD }}
+                  parent_folder_id: '1c4CnqaQQFjeTcd6ydpBPLAsVQ-YgPNYa'
+                  name: 'CrossWikiEditor-MacIntel'
                   override: true
