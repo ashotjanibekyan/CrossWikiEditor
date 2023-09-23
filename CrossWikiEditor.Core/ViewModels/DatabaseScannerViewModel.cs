@@ -29,6 +29,12 @@ public sealed partial class DatabaseScannerViewModel(WikiSite wikiSite,
     [ObservableProperty] private string _base = string.Empty;
     [ObservableProperty] private string _generator = string.Empty;
     [ObservableProperty] private string _case = string.Empty;
+
+    [ObservableProperty] private bool _isSearchDateChecked;
+    [ObservableProperty] private DateTimeOffset _selectedStartDate;
+    [ObservableProperty] private DateTimeOffset _selectedEndDate;
+    [ObservableProperty] private DateTimeOffset _minStartYear = new(new DateTime(2000, 1, 1));
+    [ObservableProperty] private DateTimeOffset _minEndYear = new(new DateTime(2000, 1, 1));
     
     [ObservableProperty] private string _convertedText = string.Empty;
     [ObservableProperty] private bool _isAlphabetisedHeading;
@@ -154,6 +160,11 @@ public sealed partial class DatabaseScannerViewModel(WikiSite wikiSite,
             return false;
         }
 
+        if (ViolatesRevisionDateRange(page))
+        {
+            return false;
+        }
+
         return true;
     }
 
@@ -195,12 +206,11 @@ public sealed partial class DatabaseScannerViewModel(WikiSite wikiSite,
         }
         
         string? currentText = page.Revision.Last().Text;
-        if (currentText == null)
-        {
-            return false;
-        }
-        return currentText.Contains(TitleNotContains, IsTitleContainsRegex, IsTitleContainsCaseSensitive);
+        return currentText != null && currentText.Contains(TitleNotContains, IsTitleContainsRegex, IsTitleContainsCaseSensitive);
     }
+
+    private bool ViolatesRevisionDateRange(DbPage page) =>
+        IsSearchDateChecked && page.Revision.All(rev => rev.Timestamp <= SelectedStartDate || rev.Timestamp >= SelectedEndDate);
 
     private DbPage ParsePageElement(XmlReader reader)
     {
