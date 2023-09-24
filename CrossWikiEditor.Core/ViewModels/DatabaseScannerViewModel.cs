@@ -2,7 +2,8 @@ using System.Diagnostics;
 
 namespace CrossWikiEditor.Core.ViewModels;
 
-public sealed partial class DatabaseScannerViewModel(WikiSite wikiSite,
+public sealed partial class DatabaseScannerViewModel(IUserPreferencesService userPreferencesService,
+    IWikiClientCache wikiClientCache,
     IFileDialogService fileDialogService) : ViewModelBase
 {
     private Task? _scannerTask;
@@ -79,9 +80,10 @@ public sealed partial class DatabaseScannerViewModel(WikiSite wikiSite,
         
         _updateUiTask = Task.Run(async () =>
         {
+            WikiSite wikiSite = await wikiClientCache.GetWikiSite(userPreferencesService.CurrentApiUrl);
             while (_scannerTask != null)
             {
-                UpdateUi();
+                UpdateUi(wikiSite);
                 await Task.Delay(1000);
             }
         });
@@ -421,7 +423,7 @@ public sealed partial class DatabaseScannerViewModel(WikiSite wikiSite,
     }
     private void MakeAlphabetisedList() => _convertedTextChanged?.Invoke(this, Pages.ToWikiListAlphabetically(IsNumericList));
     private void MakeNumericList() => _convertedTextChanged?.Invoke(this, Pages.ToWikiList(IsNumericList, NumberOfPagesOnEachSection));
-    private void UpdateUi()
+    private void UpdateUi(WikiSite wikiSite)
     {
         while (!_titlesQueue.IsEmpty)
         {

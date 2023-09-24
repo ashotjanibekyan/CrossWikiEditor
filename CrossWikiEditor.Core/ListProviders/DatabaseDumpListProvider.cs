@@ -8,7 +8,8 @@ public sealed class DatabaseDumpListProvider(IDialogService dialogService, IView
 
     public override async Task<Result<List<WikiPageModel>>> MakeList()
     {
-        List<WikiPageModel> result = await dialogService.ShowDialog<List<WikiPageModel>?>(await viewModelFactory.GetDatabaseScannerViewModel()) ?? new List<WikiPageModel>();
+        List<WikiPageModel> result = await dialogService.ShowDialog<List<WikiPageModel>?>(viewModelFactory.GetDatabaseScannerViewModel()) ??
+                                     new List<WikiPageModel>();
         return Result<List<WikiPageModel>>.Success(result);
     }
 }

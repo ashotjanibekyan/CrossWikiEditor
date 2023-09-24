@@ -8,7 +8,7 @@ public interface IViewModelFactory
     Task<SelectNamespacesViewModel> GetSelectNamespacesViewModel(bool isMultiselect = true);
     Task<SelectNamespacesAndRedirectFilterViewModel> GetSelectNamespacesAndRedirectFilterViewModel(bool isIncludeRedirectsVisible = true);
     SelectProtectionSelectionPageViewModel GetSelectProtectionSelectionPageViewModel();
-    Task<DatabaseScannerViewModel> GetDatabaseScannerViewModel();
+    DatabaseScannerViewModel GetDatabaseScannerViewModel();
 }
 
 public sealed class ViewModelFactory(IFileDialogService fileDialogService,
@@ -64,8 +64,8 @@ public sealed class ViewModelFactory(IFileDialogService fileDialogService,
         return new SelectProtectionSelectionPageViewModel();
     }
 
-    public async Task<DatabaseScannerViewModel> GetDatabaseScannerViewModel()
+    public DatabaseScannerViewModel GetDatabaseScannerViewModel()
     {
-        return new DatabaseScannerViewModel(await wikiClientCache.GetWikiSite(userPreferencesService.CurrentApiUrl), fileDialogService);
+        return new DatabaseScannerViewModel(userPreferencesService, wikiClientCache, fileDialogService);
     }
 }
