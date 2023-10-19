@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
         <TargetFramework>net7.0</TargetFramework>
@@ -29,7 +29,7 @@
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.4"/>
         <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.4"/>
         <PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.0.2" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0-rc.1.23419.4" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0-rc.2.23479.6" />
     </ItemGroup>
 
     <ItemGroup>
