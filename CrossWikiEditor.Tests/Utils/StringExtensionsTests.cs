@@ -101,4 +101,32 @@ public sealed class StringExtensionsTests
         // Assert
         result.Should().BeFalse();
     }
+
+    [TestCase("this is the main string", "the main", ExpectedResult = true)]
+    [TestCase("this is the main string", "the main f", ExpectedResult = false)]
+    [TestCase("this is the main string", "the Main", ExpectedResult = false)]
+    public bool Contains_Substring_CaseSensitive(string text, string substring)
+    {
+        // arrange
+
+        // act
+        bool result = text.Contains(substring, isRegex: false, isCaseSensitive: true);
+
+        // assert
+        return result;
+    }
+
+    [TestCase("this is the main string", "the main", ExpectedResult = true)]
+    [TestCase("this is the main string", "the main f", ExpectedResult = false)]
+    [TestCase("this is the main string", "the Main", ExpectedResult = true)]
+    public bool Contains_Substring_CaseSensitivity(string text, string substring)
+    {
+        // arrange
+
+        // act
+        bool result = text.Contains(substring, isRegex: false, isCaseSensitive: false);
+
+        // assert
+        return result;
+    }
 }
