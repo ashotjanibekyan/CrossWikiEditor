@@ -1,3 +1,4 @@
+using CrossWikiEditor.Core.Services;
 using CrossWikiEditor.Core.ViewModels;
 using CrossWikiEditor.Core.ViewModels.ControlViewModels;
 using CrossWikiEditor.Core.ViewModels.MenuViewModels;
@@ -19,7 +20,9 @@ public static class ViewModelsModule
         services.AddTransient<MakeListViewModel>();
         services.AddTransient<MenuViewModel>();
         services.AddTransient<MoreViewModel>();
-        services.AddTransient<OptionsViewModel>();
+        services.AddSingleton<OptionsViewModel>(sp =>
+            new OptionsViewModel(sp.GetRequiredService<ISettingsService>().GetDefaultSettings().NormalFindAndReplaceRules,
+                sp.GetRequiredService<IDialogService>()));
         services.AddTransient<PageLogsViewModel>();
         services.AddTransient<SkipViewModel>();
         services.AddTransient<StartViewModel>();

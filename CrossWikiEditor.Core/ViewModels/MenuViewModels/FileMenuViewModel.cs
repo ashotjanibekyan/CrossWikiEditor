@@ -1,10 +1,13 @@
-﻿namespace CrossWikiEditor.Core.ViewModels.MenuViewModels;
+﻿using System.Text.Json;
+
+namespace CrossWikiEditor.Core.ViewModels.MenuViewModels;
 
 public sealed partial class FileMenuViewModel(
     IViewModelFactory viewModelFactory,
     IFileDialogService fileDialogService,
     IUserPreferencesService userPreferencesService,
-    IDialogService dialogService)
+    IDialogService dialogService,
+    ISettingsService settingsService)
 {
     [RelayCommand]
     private void ResetToDefaultSettings()
@@ -34,7 +37,7 @@ public sealed partial class FileMenuViewModel(
     [RelayCommand]
     private void SaveSettings()
     {
-        throw new NotImplementedException();
+        settingsService.SaveCurrentSettings();
     }
 
     [RelayCommand]

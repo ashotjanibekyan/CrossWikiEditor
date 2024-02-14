@@ -19,15 +19,13 @@ public sealed class MessengerWrapper(IMessenger messenger) : IMessengerWrapper
     {
         return messenger.Send(message);
     }
-    
+
     public void Register<TMessage>(object recipient, MessageHandler<object, TMessage> handler)
         where TMessage : class
     {
         messenger.Register(recipient, handler);
-        
-        messenger.Unregister<TMessage>(recipient);
     }
-    
+
     public void Unregister<TMessage>(object recipient)
         where TMessage : class
     {

@@ -47,5 +47,6 @@ public static class ServicesModule
         services.AddSingleton<IMessengerWrapper>(sp => new MessengerWrapper(StrongReferenceMessenger.Default));
         services.AddTransient<SimpleHtmlParser>();
         services.AddTransient<HtmlAgilityPackParser>();
+        services.AddSingleton<ISettingsService, SettingsService>();
     }
 }
