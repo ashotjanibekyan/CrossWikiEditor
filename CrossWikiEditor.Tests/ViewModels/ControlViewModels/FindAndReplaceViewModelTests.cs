@@ -10,7 +10,7 @@ public class FindAndReplaceViewModelTests : BaseTest
     public void SetUp()
     {
         SetUpServices();
-        _sut = new FindAndReplaceViewModel();
+        _sut = new FindAndReplaceViewModel(new NormalFindAndReplaceRules());
     }
     
     [Test]

@@ -20,4 +20,16 @@ public sealed partial class StartViewModel(IMessengerWrapper messenger) : ViewMo
     {
         messenger.Send(new StopBotMessage());
     }
+
+    [RelayCommand]
+    private void Save()
+    {
+        messenger.Send(new SaveOrSkipPageMessage(shouldSavePage: true));
+    }
+
+    [RelayCommand]
+    private void Skip()
+    {
+        messenger.Send(new SaveOrSkipPageMessage(shouldSavePage: false));
+    }
 }

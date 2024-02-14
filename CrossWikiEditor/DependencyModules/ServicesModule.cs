@@ -44,7 +44,7 @@ public static class ServicesModule
         services.AddTransient<IClipboard>(sp => TopLevel.GetTopLevel(mainWindow)!.Clipboard!);
         services.AddSingleton<IStringEncryptionService>(sp => stringEncryptionService);
         services.AddSingleton<ILogger>(sp => logger);
-        services.AddSingleton<IMessengerWrapper>(sp => new MessengerWrapper(WeakReferenceMessenger.Default));
+        services.AddSingleton<IMessengerWrapper>(sp => new MessengerWrapper(StrongReferenceMessenger.Default));
         services.AddTransient<SimpleHtmlParser>();
         services.AddTransient<HtmlAgilityPackParser>();
     }

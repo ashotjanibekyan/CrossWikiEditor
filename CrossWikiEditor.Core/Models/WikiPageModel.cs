@@ -2,20 +2,24 @@
 
 public sealed class WikiPageModel : IEquatable<WikiPageModel>, IComparable<WikiPageModel>, IAsyncInitialization
 {
+    private readonly string _apiRoot;
+    private readonly IWikiClientCache? _wikiClientCache;
     private WikiPage? _wikiPage;
 
     public WikiPageModel(WikiPage wikiPage)
     {
+        _initAsync = Task.CompletedTask;
         _wikiPage = wikiPage;
+        _apiRoot = wikiPage.Site.ApiEndpoint;
         Title = wikiPage.Title;
         NamespaceId = wikiPage.NamespaceId;
-        InitAsync = Task.CompletedTask;
     }
 
     public WikiPageModel(string title, string apiRoot, IWikiClientCache wikiClientCache)
     {
+        _apiRoot = apiRoot;
+        _wikiClientCache = wikiClientCache;
         Title = title;
-        InitAsync = InitializeAsync(title, apiRoot, wikiClientCache);
     }
     
     private async Task InitializeAsync(string title, string apiRoot, IWikiClientCache wikiClientCache)
@@ -26,8 +30,10 @@ public sealed class WikiPageModel : IEquatable<WikiPageModel>, IComparable<WikiP
         await _wikiPage.RefreshAsync();
         NamespaceId = _wikiPage.NamespaceId;
     }
-    
-    public Task InitAsync { get; }
+
+    private Task? _initAsync = null;
+
+    public Task InitAsync => _initAsync ??= InitializeAsync(Title, _apiRoot, _wikiClientCache!);
 
     public string Title { get; }
 
@@ -43,6 +49,12 @@ public sealed class WikiPageModel : IEquatable<WikiPageModel>, IComparable<WikiP
     {
         await InitAsync;
         _wikiPage!.Content = content;
+    }
+
+    public async Task UpdateContent(string summary = "")
+    {
+        await InitAsync;
+        await _wikiPage!.UpdateContentAsync(summary);
     }
 
     public async Task<bool> Exists()

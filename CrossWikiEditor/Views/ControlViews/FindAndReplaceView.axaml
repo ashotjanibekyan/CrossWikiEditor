@@ -30,7 +30,7 @@
             </Grid>
             <Button Grid.Column="2" Grid.Row="0" Content="Ok" Command="{Binding SaveCommand}" CommandParameter="{Binding #This}" />
             <Button Grid.Column="3" Grid.Row="0" Content="Cancel" />
-            <Button Grid.Column="3" Grid.Row="1" Content="Clear" />
+            <Button Grid.Column="3" Grid.Row="1" Content="Clear" Command="{Binding CleanCommand}" />
         </Grid>
         <DataGrid Grid.Row="1" MinHeight="200" ItemsSource="{Binding NormalFindAndReplaceRules}" CanUserResizeColumns="True" CanUserSortColumns="False">
             <DataGrid.Columns>

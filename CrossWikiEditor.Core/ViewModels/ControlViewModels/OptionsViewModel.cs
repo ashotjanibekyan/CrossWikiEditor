@@ -7,7 +7,7 @@ public sealed partial class OptionsViewModel(IDialogService dialogService) : Vie
     [RelayCommand]
     private async Task OpenNormalFindAndReplaceDialog()
     {
-        NormalFindAndReplaceRules? result = await dialogService.ShowDialog<NormalFindAndReplaceRules>(new FindAndReplaceViewModel());
+        NormalFindAndReplaceRules? result = await dialogService.ShowDialog<NormalFindAndReplaceRules>(new FindAndReplaceViewModel(NormalFindAndReplaceRules));
         if (result is not null)
         {
             NormalFindAndReplaceRules = result;

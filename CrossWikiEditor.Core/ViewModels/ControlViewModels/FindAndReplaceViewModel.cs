@@ -2,16 +2,26 @@
 
 public partial class FindAndReplaceViewModel : ViewModelBase
 {
-    public FindAndReplaceViewModel()
+    public FindAndReplaceViewModel(NormalFindAndReplaceRules normalFindAndReplaceRules)
     {
-        var list = new List<NormalFindAndReplaceRule> { new() };
-        NormalFindAndReplaceRules = list.ToObservableCollection();
+        NormalFindAndReplaceRules = normalFindAndReplaceRules.ToObservableCollection();
         foreach (NormalFindAndReplaceRule model in NormalFindAndReplaceRules)
         {
             model.PropertyChanged += OnModelPropertyChanged;
         }
+        AddNewRow();
+        IgnoreLinks = normalFindAndReplaceRules.IgnoreLinks;
+        IgnoreMore = normalFindAndReplaceRules.IgnoreMore;
+        AddToSummary = normalFindAndReplaceRules.AddToSummary;
     }
 
+    [RelayCommand]
+    private void Clean()
+    {
+        NormalFindAndReplaceRules.Clear();
+        AddNewRow();
+    }
+    
     [RelayCommand]
     private void Save(IDialog dialog)
     {
@@ -41,6 +51,11 @@ public partial class FindAndReplaceViewModel : ViewModelBase
         {
             return;
         }
+        AddNewRow();
+    }
+
+    private void AddNewRow()
+    {
         var newModel = new NormalFindAndReplaceRule();
         newModel.PropertyChanged += OnModelPropertyChanged;
         NormalFindAndReplaceRules.Add(newModel);

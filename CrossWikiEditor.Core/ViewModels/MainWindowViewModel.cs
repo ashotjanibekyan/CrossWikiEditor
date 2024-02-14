@@ -3,6 +3,7 @@
 public sealed class MainWindowViewModel : ViewModelBase
 {
     private Task? _myBot;
+    private PageListProcessor? _listProcessor;
     public MainWindowViewModel(StatusBarViewModel statusBarViewModel,
         MakeListViewModel makeListViewModel,
         OptionsViewModel optionsViewModel,
@@ -33,11 +34,11 @@ public sealed class MainWindowViewModel : ViewModelBase
         PageLogsViewModel = pageLogsViewModel;
         messenger.Register<StartBotMessage>(this, (recipient, message) =>
         {
-            _myBot = Task.Run((Func<Task?>) (async () =>
+            _myBot = Task.Run(async () =>
             {
-                var pageProcessor = new PageListProcessor(messenger, MakeListViewModel.Pages.ToList<WikiPageModel>(), OptionsViewModel.NormalFindAndReplaceRules);
-                await pageProcessor.Start();
-            }));
+                _listProcessor ??= new PageListProcessor(messenger, MakeListViewModel.Pages.ToList(), OptionsViewModel.NormalFindAndReplaceRules);
+                await _listProcessor.Start();
+            });
         });
     }
 

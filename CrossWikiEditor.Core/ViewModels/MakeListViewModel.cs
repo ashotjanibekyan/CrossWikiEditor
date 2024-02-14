@@ -38,6 +38,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
         SelectedListProvider = ListProviders[0];
 
         messenger.Register<PageUpdatedMessage>(this, (recipient, message) => Pages.Remove(message.Page));
+        messenger.Register<PageSkippedMessage>(this, (recipient, message) => Pages.Remove(message.Page));
     }
 
     [RelayCommand]
@@ -107,7 +108,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
 
         foreach (WikiPageModel selectedPage in SelectedPages)
         {
-            _systemService.OpenLinkInBrowser($"{_userPreferencesService.GetCurrentPref().UrlIndex()}title={selectedPage.Title}");
+            _systemService.OpenLinkInBrowser($"{_userPreferencesService.GetCurrentPref().UrlIndex()}title={HttpUtility.UrlEncode(selectedPage.Title)}");
         }
     }
 

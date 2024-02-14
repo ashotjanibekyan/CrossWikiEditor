@@ -7,6 +7,9 @@ public interface IMessengerWrapper
 
     void Register<TMessage>(object recipient, MessageHandler<object, TMessage> handler)
         where TMessage : class;
+
+    void Unregister<TMessage>(object recipient)
+        where TMessage : class;
 }
 
 public sealed class MessengerWrapper(IMessenger messenger) : IMessengerWrapper
@@ -21,5 +24,13 @@ public sealed class MessengerWrapper(IMessenger messenger) : IMessengerWrapper
         where TMessage : class
     {
         messenger.Register(recipient, handler);
+        
+        messenger.Unregister<TMessage>(recipient);
+    }
+    
+    public void Unregister<TMessage>(object recipient)
+        where TMessage : class
+    {
+        messenger.Unregister<TMessage>(recipient);
     }
 }

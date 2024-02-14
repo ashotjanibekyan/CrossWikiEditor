@@ -69,8 +69,8 @@
                     <Button Grid.Column="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Delete</Button>
                 </Grid>
 
-                <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Skip</Button>
-                <Button Background="Green" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Save</Button>
+                <Button Command="{Binding SkipCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Skip</Button>
+                <Button Command="{Binding SaveCommand}" Background="Green" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Save</Button>
                 <HeaderedContentControl Header="Find" Background="Black" HorizontalAlignment="Stretch"
                                         VerticalAlignment="Stretch">
                     <StackPanel>

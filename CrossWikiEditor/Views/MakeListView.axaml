@@ -66,7 +66,7 @@
                             <MenuItem Header="Non-main space" Command="{Binding RemoveNonMainSpaceCommand}" />
                         </MenuItem>
                         <Separator />
-                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Header="Add selected tolist from...">
+                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}" Header="Add selected to list from...">
                             <MenuItem Header="temp" />
                             <MenuItem Header="temp" />
                             <MenuItem Header="temp" />
