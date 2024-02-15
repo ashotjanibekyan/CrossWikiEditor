@@ -1,8 +1,8 @@
-# **This project is under construction. You are free to contribute but don't use the app just** yet.
+# The project is still in the works, and I'd love your contributions. However, I recommend holding off on using the app for now. Thanks for your understanding!
 
 ## CrossWikiEditor
 
-This project aims to recreate [AutoWikiBrowser](https://en.wikipedia.org/wiki/Wikipedia:AutoWikiBrowser) using .NET 8 and [AvaloniaUI](https://avaloniaui.net/). This will make future improvements much easier and most importantly, it will work on Linux distributions without the Wine compatibility layer.
+Hey there! I'm working on creating a cross-platform version of [AutoWikiBrowser](https://en.wikipedia.org/wiki/Wikipedia:AutoWikiBrowser). I'm using [AvaloniaUI](https://avaloniaui.net/) for the user interface and [WikiClientLibrary](https://github.com/CXuesong/WikiClientLibrary) to connect with the MediaWiki API. The goal is to make it run seamlessly on Windows, Linux, and OSX (without needing Wine).
 
 ![2023-09-06 version](Screenshot_2023-09-06.png "Screenshot")
 
