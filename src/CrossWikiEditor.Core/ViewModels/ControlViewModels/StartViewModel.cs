@@ -1,7 +1,21 @@
 ﻿namespace CrossWikiEditor.Core.ViewModels.ControlViewModels;
 
-public sealed partial class StartViewModel(IMessengerWrapper messenger) : ViewModelBase
+public sealed partial class StartViewModel : ViewModelBase
 {
+    private readonly IMessengerWrapper _messenger;
+    private bool _isProcessing = false;
+    private bool _isSaving = false;
+    public StartViewModel(IMessengerWrapper messenger)
+    {
+        _messenger = messenger;
+        _messenger.Register<PageProcessingMessage>(this, (r, m) => _isProcessing = true);
+        _messenger.Register<PageProcessedMessage>(this, (r, m) => _isProcessing = false);
+        _messenger.Register<PageSavingMessage>(this, (r, m) => _isSaving = true);
+        _messenger.Register<PageSavingMessage>(this, (r, m) => _isSaving = false);
+    }
+
+    private bool IsBusy => _isProcessing || _isSaving;
+
     public int WordsStats { get; set; }
     public int LinksStats { get; set; }
     public int ImagesStats { get; set; }
@@ -12,24 +26,30 @@ public sealed partial class StartViewModel(IMessengerWrapper messenger) : ViewMo
     [RelayCommand]
     private void Start()
     {
-        messenger.Send(new StartBotMessage());
+        _messenger.Send(new StartBotMessage());
     }
 
     [RelayCommand]
     private void Stop()
     {
-        messenger.Send(new StopBotMessage());
+        _messenger.Send(new StopBotMessage());
     }
 
     [RelayCommand]
     private void Save()
     {
-        messenger.Send(new SaveOrSkipPageMessage(shouldSavePage: true));
+        if (!IsBusy)
+        {
+            _messenger.Send(new SaveOrSkipPageMessage(shouldSavePage: true));
+        }
     }
 
     [RelayCommand]
     private void Skip()
     {
-        messenger.Send(new SaveOrSkipPageMessage(shouldSavePage: false));
+        if (!IsBusy)
+        {
+            _messenger.Send(new SaveOrSkipPageMessage(shouldSavePage: false));
+        }
     }
 }
