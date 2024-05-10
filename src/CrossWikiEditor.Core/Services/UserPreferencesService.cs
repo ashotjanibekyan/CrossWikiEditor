@@ -1,41 +1,45 @@
-﻿namespace CrossWikiEditor.Core.Services;
+﻿using System.Text.Json;
+
+namespace CrossWikiEditor.Core.Services;
 
 public interface IUserPreferencesService
 {
-    UserPrefs GetUserPref(string path);
-    UserPrefs GetCurrentPref();
+    UserSettings? GetUserSettings(string path);
+    UserSettings GetCurrentSettings();
+    void SetCurrentPref(UserSettings userSettings);
     string CurrentApiUrl { get; }
-    void SetCurrentPref(UserPrefs userPrefs);
 }
 
 public sealed class UserPreferencesService : IUserPreferencesService
 {
-    private UserPrefs _currentPref;
+    private UserSettings _currentSettings;
 
     public UserPreferencesService(IMessengerWrapper messenger)
     {
-        _currentPref = new UserPrefs();
-        messenger.Register<LanguageCodeChangedMessage>(this, (r, m) => _currentPref.LanguageCode = m.Value);
-        messenger.Register<ProjectChangedMessage>(this, (r, m) => _currentPref.Project = m.Value);
+        _currentSettings = new UserSettings();
+        messenger.Register<LanguageCodeChangedMessage>(this, (r, m) => _currentSettings.UserWiki!.LanguageCode = m.Value);
+        messenger.Register<ProjectChangedMessage>(this, (r, m) => _currentSettings.UserWiki!.Project = m.Value);
     }
 
-    public UserPrefs GetUserPref(string path)
+    public UserSettings? GetUserSettings(string path)
     {
-        string settings = File.ReadAllText(path, Encoding.UTF8);
-        settings = Regex.Replace(settings, @"<(/?)\s*SourceIndex>", "<$1SelectedProvider>");
-        var xs = new XmlSerializer(typeof(UserPrefs));
-        return (UserPrefs) (xs.Deserialize(new StringReader(settings)) ?? throw new InvalidOperationException());
+        if (string.IsNullOrEmpty(path))
+        {
+            return null;
+        }
+        string json = File.ReadAllText(path, Encoding.UTF8);
+        return JsonSerializer.Deserialize<UserSettings>(json);
     }
 
-    public string CurrentApiUrl => _currentPref.UrlApi();
-
-    public void SetCurrentPref(UserPrefs userPrefs)
+    public UserSettings GetCurrentSettings()
     {
-        _currentPref = userPrefs;
+        return _currentSettings;
     }
 
-    public UserPrefs GetCurrentPref()
+    public string CurrentApiUrl => _currentSettings.UserWiki.GetApiUrl();
+
+    public void SetCurrentPref(UserSettings userSettings)
     {
-        return _currentPref;
+        _currentSettings = userSettings;
     }
 }

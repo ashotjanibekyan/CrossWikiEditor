@@ -30,6 +30,7 @@ public abstract class BaseTest
         _dialogService = Substitute.For<IDialogService>();
         _profileRepository = Substitute.For<IProfileRepository>();
         _userPreferencesService = Substitute.For<IUserPreferencesService>();
+        _userPreferencesService.GetCurrentSettings().Returns(new UserSettings());
         _viewModelFactory = Substitute.For<IViewModelFactory>();
         _dialog = Substitute.For<IDialog>();
         _messenger = Substitute.For<IMessengerWrapper>();

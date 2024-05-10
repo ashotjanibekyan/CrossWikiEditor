@@ -6,9 +6,9 @@ public sealed class ImageFileLinksListProviderTests : ListProvidersBaseTest<Imag
     public void SetUp()
     {
         SetUpServices();
-        SetUpUserPrefs("hyw", ProjectEnum.Wikipedia);
+        SetUpUserSettings("hyw", ProjectEnum.Wikipedia);
         _sut = new ImageFileLinksListProvider(_dialogService, _pageService, _userPreferencesService);
-        _expectedPages = Fakers.GetWikiPageModelFaker(_userPrefs.UrlApi(), _wikiClientCache).Generate(4);
+        _expectedPages = Fakers.GetWikiPageModelFaker(_userSettings.GetApiUrl(), _wikiClientCache).Generate(4);
     }
 
     [Test] public new void CanMake_ShouldBeFalse_WhenParamIsEmpty() => base.CanMake_ShouldBeFalse_WhenParamIsEmpty();

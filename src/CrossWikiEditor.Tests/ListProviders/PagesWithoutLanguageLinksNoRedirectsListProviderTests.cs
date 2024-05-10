@@ -6,7 +6,7 @@ public sealed class PagesWithoutLanguageLinksNoRedirectsListProviderTests : List
     public void SetUp()
     {
         SetUpServices();
-        SetUpUserPrefs("hyw", ProjectEnum.Wikipedia);
+        SetUpUserSettings("hyw", ProjectEnum.Wikipedia);
         _selectNamespacesViewModel = new SelectNamespacesViewModel(new List<WikiNamespace>(), false);
         _sut = new PagesWithoutLanguageLinksNoRedirectsListProvider(_dialogService, _pageService, _userPreferencesService, _viewModelFactory)
         {
@@ -14,7 +14,7 @@ public sealed class PagesWithoutLanguageLinksNoRedirectsListProviderTests : List
         };
         _dialogService.ShowDialog<int[]?>(_selectNamespacesViewModel).Returns(new[] {7, 2, 3, 9});
         _viewModelFactory.GetSelectNamespacesViewModel(false).Returns(_selectNamespacesViewModel);
-        _expectedPages = Fakers.GetWikiPageModelFaker(_userPrefs.UrlApi(), _wikiClientCache).Generate(4);
+        _expectedPages = Fakers.GetWikiPageModelFaker(_userSettings.GetApiUrl(), _wikiClientCache).Generate(4);
     }
 
     [Test]
@@ -33,7 +33,7 @@ public sealed class PagesWithoutLanguageLinksNoRedirectsListProviderTests : List
     public async Task MakeList_ShouldReturnPageServiceResults()
     {
         // arrange
-        _pageService.GetAllPages(_userPrefs.UrlApi(), _sut.Param, 7, PropertyFilterOption.WithoutProperty, PropertyFilterOption.WithoutProperty, 73)
+        _pageService.GetAllPages(_userSettings.GetApiUrl(), _sut.Param, 7, PropertyFilterOption.WithoutProperty, PropertyFilterOption.WithoutProperty, 73)
             .Returns(Result<List<WikiPageModel>>.Success(_expectedPages));
 
         await MakeList_ShouldReturnServiceResults(_expectedPages);
@@ -43,7 +43,7 @@ public sealed class PagesWithoutLanguageLinksNoRedirectsListProviderTests : List
     public async Task MakeList_ShouldReturnUnsuccessfulResult_WhenPageServiceReturnsUnsuccessfulResult()
     {
         // arrange
-        _pageService.GetAllPages(_userPrefs.UrlApi(), _sut.Param, 7, PropertyFilterOption.WithoutProperty, PropertyFilterOption.WithoutProperty, 73)
+        _pageService.GetAllPages(_userSettings.GetApiUrl(), _sut.Param, 7, PropertyFilterOption.WithoutProperty, PropertyFilterOption.WithoutProperty, 73)
             .Returns(Result<List<WikiPageModel>>.Failure("failed to get pages"));
 
         // act

@@ -6,13 +6,13 @@ public sealed class LinksOnPageListProviderTests : ListProvidersBaseTest<LinksOn
     public void SetUp()
     {
         SetUpServices();
-        SetUpUserPrefs("hyw", ProjectEnum.Wikipedia);
+        SetUpUserSettings("hyw", ProjectEnum.Wikipedia);
         _selectNamespacesViewModel = new SelectNamespacesViewModel(new List<WikiNamespace>(), false);
         _sut = new LinksOnPageListProvider(_dialogService, _pageService, _userPreferencesService)
         {
             Param = "start from here"
         };
-        _expectedPages = Fakers.GetWikiPageModelFaker(_userPrefs.UrlApi(), _wikiClientCache).Generate(4);
+        _expectedPages = Fakers.GetWikiPageModelFaker(_userSettings.GetApiUrl(), _wikiClientCache).Generate(4);
     }
     
     [Test] public new void CanMake_ShouldBeFalse_WhenParamIsEmpty() => base.CanMake_ShouldBeFalse_WhenParamIsEmpty();
@@ -22,7 +22,7 @@ public sealed class LinksOnPageListProviderTests : ListProvidersBaseTest<LinksOn
     public async Task MakeList_ShouldReturnPageServiceResults()
     {
         // arrange
-        _pageService.LinksOnPage(_userPrefs.UrlApi(), _sut.Param, 73)
+        _pageService.LinksOnPage(_userSettings.GetApiUrl(), _sut.Param, 73)
             .Returns(Result<List<WikiPageModel>>.Success(_expectedPages));
 
         await MakeList_ShouldReturnServiceResults(_expectedPages);
@@ -32,7 +32,7 @@ public sealed class LinksOnPageListProviderTests : ListProvidersBaseTest<LinksOn
     public async Task MakeList_ShouldReturnUnsuccessfulResult_WhenPageServiceReturnsUnsuccessfulResult()
     {
         // arrange
-        _pageService.LinksOnPage(_userPrefs.UrlApi(), _sut.Param, 73)
+        _pageService.LinksOnPage(_userSettings.GetApiUrl(), _sut.Param, 73)
             .Returns(Result<List<WikiPageModel>>.Failure("failed to get pages"));
 
         // act

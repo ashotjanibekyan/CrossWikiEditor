@@ -6,19 +6,19 @@ public sealed class DisambiguationPagesListProviderTests : ListProvidersBaseTest
     public void SetUp()
     {
         SetUpServices();
-        SetUpUserPrefs("hyw", ProjectEnum.Wikipedia);
+        SetUpUserSettings("hyw", ProjectEnum.Wikipedia);
         _sut = new DisambiguationPagesListProvider(_dialogService, _pageService, _userPreferencesService)
         {
             Param = "start from here"
         };
-        _expectedPages = Fakers.GetWikiPageModelFaker(_userPrefs.UrlApi(), _wikiClientCache).Generate(4);
+        _expectedPages = Fakers.GetWikiPageModelFaker(_userSettings.GetApiUrl(), _wikiClientCache).Generate(4);
     }
 
     [Test]
     public async Task MakeList_ShouldReturnPageServiceResults()
     {
         // arrange
-        _pageService.GetPagesWithProp(_userPrefs.UrlApi(), "disambiguation", 73)
+        _pageService.GetPagesWithProp(_userSettings.GetApiUrl(), "disambiguation", 73)
             .Returns(Result<List<WikiPageModel>>.Success(_expectedPages));
 
         await MakeList_ShouldReturnServiceResults(_expectedPages);
@@ -28,7 +28,7 @@ public sealed class DisambiguationPagesListProviderTests : ListProvidersBaseTest
     public async Task MakeList_ShouldReturnUnsuccessfulResult_WhenPageServiceReturnsUnsuccessfulResult()
     {
         // arrange
-        _pageService.GetPagesWithProp(_userPrefs.UrlApi(), "disambiguation", 73).Returns(Result<List<WikiPageModel>>.Failure("failed to get pages"));
+        _pageService.GetPagesWithProp(_userSettings.GetApiUrl(), "disambiguation", 73).Returns(Result<List<WikiPageModel>>.Failure("failed to get pages"));
 
         // act
         Result<List<WikiPageModel>> result = await _sut.MakeList(73);

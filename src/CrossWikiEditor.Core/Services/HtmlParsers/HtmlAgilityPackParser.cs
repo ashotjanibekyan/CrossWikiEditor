@@ -4,8 +4,8 @@ public sealed class HtmlAgilityPackParser(ILogger logger, IUserPreferencesServic
 {
     public List<WikiPageModel> GetPages(string html)
     {
-        string baseUrl = userPreferencesService.GetCurrentPref().UrlBase();
-        string apiUrl = userPreferencesService.GetCurrentPref().UrlApi();
+        string baseUrl = userPreferencesService.GetCurrentSettings().GetBaseUrl();
+        string apiUrl = userPreferencesService.GetCurrentSettings().GetApiUrl();
         var doc = new HtmlDocument();
         doc.LoadHtml(html);
 

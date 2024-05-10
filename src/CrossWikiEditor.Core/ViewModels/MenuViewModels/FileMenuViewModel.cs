@@ -22,7 +22,7 @@ public sealed partial class FileMenuViewModel(
             string newSettingsPath = result[0];
             try
             {
-                UserPrefs newUserPref = userPreferencesService.GetUserPref(newSettingsPath);
+                UserSettings? newUserPref = userPreferencesService.GetUserSettings(newSettingsPath) ?? throw new InvalidOperationException("Failed to load the settings");
                 userPreferencesService.SetCurrentPref(newUserPref);
             }
             catch (InvalidOperationException)

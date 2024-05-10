@@ -18,8 +18,8 @@ public sealed partial class PreferencesViewModel : ViewModelBase
             SeeAlsoOutOfPlace = true
         };
 
-        SelectedLanguage = userPreferencesService.GetCurrentPref().LanguageCode;
-        SelectedProject = userPreferencesService.GetCurrentPref().Project;
+        SelectedLanguage = userPreferencesService.GetCurrentSettings().UserWiki.LanguageCode ?? "";
+        SelectedProject = userPreferencesService.GetCurrentSettings().UserWiki.Project;
     }
 
     [ObservableProperty] private bool _minimizeToSystray;

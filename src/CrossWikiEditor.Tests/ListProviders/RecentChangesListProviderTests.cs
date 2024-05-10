@@ -6,7 +6,7 @@ public sealed class RecentChangesListProviderTests : ListProvidersBaseTest<Recen
     public void SetUp()
     {
         SetUpServices();
-        SetUpUserPrefs("hyw", ProjectEnum.Wikipedia);
+        SetUpUserSettings("hyw", ProjectEnum.Wikipedia);
         _selectNamespacesViewModel = new SelectNamespacesViewModel(new List<WikiNamespace>(), false);
         _sut = new RecentChangesListProvider(_dialogService, _pageService, _userPreferencesService, _viewModelFactory)
         {
@@ -14,7 +14,7 @@ public sealed class RecentChangesListProviderTests : ListProvidersBaseTest<Recen
         };
         _dialogService.ShowDialog<int[]?>(_selectNamespacesViewModel).Returns(new[] {7, 2, 3, 9});
         _viewModelFactory.GetSelectNamespacesViewModel(true).Returns(_selectNamespacesViewModel);
-        _expectedPages = Fakers.GetWikiPageModelFaker(_userPrefs.UrlApi(), _wikiClientCache).Generate(4);
+        _expectedPages = Fakers.GetWikiPageModelFaker(_userSettings.GetApiUrl(), _wikiClientCache).Generate(4);
     }
 
     [Test]
@@ -33,7 +33,7 @@ public sealed class RecentChangesListProviderTests : ListProvidersBaseTest<Recen
     public async Task MakeList_ShouldReturnPageServiceResults()
     {
         // arrange
-        _pageService.GetRecentlyChangedPages(_userPrefs.UrlApi(), Arg.Is<int[]>(x => x.SequenceEqual(new[] {7, 2, 3, 9})), 73)
+        _pageService.GetRecentlyChangedPages(_userSettings.GetApiUrl(), Arg.Is<int[]>(x => x.SequenceEqual(new[] {7, 2, 3, 9})), 73)
             .Returns(Result<List<WikiPageModel>>.Success(_expectedPages));
 
         await MakeList_ShouldReturnServiceResults(_expectedPages);
@@ -43,7 +43,7 @@ public sealed class RecentChangesListProviderTests : ListProvidersBaseTest<Recen
     public async Task MakeList_ShouldReturnUnsuccessfulResult_WhenPageServiceReturnsUnsuccessfulResult()
     {
         // arrange
-        _pageService.GetRecentlyChangedPages(_userPrefs.UrlApi(), Arg.Is<int[]>(x => x.SequenceEqual(new[] {7, 2, 3, 9})), 73)
+        _pageService.GetRecentlyChangedPages(_userSettings.GetApiUrl(), Arg.Is<int[]>(x => x.SequenceEqual(new[] {7, 2, 3, 9})), 73)
             .Returns(Result<List<WikiPageModel>>.Failure("failed to get pages"));
 
         // act

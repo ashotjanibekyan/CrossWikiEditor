@@ -6,7 +6,7 @@ public sealed class RandomListProviderTests : ListProvidersBaseTest<RandomListPr
     public void SetUp()
     {
         SetUpServices();
-        SetUpUserPrefs("hyw", ProjectEnum.Wikipedia);
+        SetUpUserSettings("hyw", ProjectEnum.Wikipedia);
         _selectNamespacesAndRedirectFilterViewModel = new SelectNamespacesAndRedirectFilterViewModel(new List<WikiNamespace>()
         {
             new(0, ""),
@@ -22,7 +22,7 @@ public sealed class RandomListProviderTests : ListProvidersBaseTest<RandomListPr
         _dialogService.ShowDialog<NamespacesAndRedirectFilterOptions>(_selectNamespacesAndRedirectFilterViewModel)
             .Returns(new NamespacesAndRedirectFilterOptions(new []{3, 4}, true, RedirectFilter.All));
         _viewModelFactory.GetSelectNamespacesAndRedirectFilterViewModel(false).Returns(_selectNamespacesAndRedirectFilterViewModel);
-        _expectedPages = Fakers.GetWikiPageModelFaker(_userPrefs.UrlApi(), _wikiClientCache).Generate(4);
+        _expectedPages = Fakers.GetWikiPageModelFaker(_userSettings.GetApiUrl(), _wikiClientCache).Generate(4);
     }
 
     [Test]
@@ -73,7 +73,7 @@ public sealed class RandomListProviderTests : ListProvidersBaseTest<RandomListPr
         // arrange
         _dialogService.ShowDialog<NamespacesAndRedirectFilterOptions>(_selectNamespacesAndRedirectFilterViewModel)
             .Returns(new NamespacesAndRedirectFilterOptions(new []{3, 4}, allowRedirectLinks, redirectFilter));
-        _pageService.GetRandomPages(_userPrefs.UrlApi(), Arg.Is<int[]>(x => x.SequenceEqual(new []{3, 4})), filterRedirects, 73)
+        _pageService.GetRandomPages(_userSettings.GetApiUrl(), Arg.Is<int[]>(x => x.SequenceEqual(new []{3, 4})), filterRedirects, 73)
             .Returns(Result<List<WikiPageModel>>.Success(_expectedPages));
 
         await MakeList_ShouldReturnServiceResults(_expectedPages);
@@ -92,7 +92,7 @@ public sealed class RandomListProviderTests : ListProvidersBaseTest<RandomListPr
         // arrange
         _dialogService.ShowDialog<NamespacesAndRedirectFilterOptions>(_selectNamespacesAndRedirectFilterViewModel)
             .Returns(new NamespacesAndRedirectFilterOptions([3, 4], allowRedirectLinks, redirectFilter));
-        _pageService.GetRandomPages(_userPrefs.UrlApi(), Arg.Is<int[]>(x => x.SequenceEqual(new []{3, 4})), filterRedirects, 73)
+        _pageService.GetRandomPages(_userSettings.GetApiUrl(), Arg.Is<int[]>(x => x.SequenceEqual(new []{3, 4})), filterRedirects, 73)
             .Returns(Result<List<WikiPageModel>>.Failure("failed to get pages"));
 
         // act

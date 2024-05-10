@@ -23,10 +23,9 @@ public sealed class MakeListViewModelTests : BaseTest
         };
         _sut = new MakeListViewModel(_messenger, _logger, _dialogService, _wikiClientCache, _pageService, _systemService, _viewModelFactory,
             _fileDialogService, _userPreferencesService, listProviders);
-        _userPreferencesService.GetCurrentPref().Returns(new UserPrefs()
+        _userPreferencesService.GetCurrentSettings().Returns(new UserSettings()
         {
-            LanguageCode = "hy",
-            Project = ProjectEnum.Wikipedia
+            UserWiki = new("hy", ProjectEnum.Wikipedia)
         });
         _userPreferencesService.CurrentApiUrl.Returns(ApiRoot);
         _wikiClientCache.GetWikiSite(Arg.Any<string>()).Returns(new WikiSite(_wikiClient, ApiRoot));
@@ -305,10 +304,9 @@ public sealed class MakeListViewModelTests : BaseTest
     {
         // arrange
         _sut.SelectedPages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(4).ToObservableCollection();
-        _userPreferencesService.GetCurrentPref().Returns(new UserPrefs
+        _userPreferencesService.GetCurrentSettings().Returns(new UserSettings
         {
-            LanguageCode = "hy",
-            Project = ProjectEnum.Wikipedia
+            UserWiki = new("hy", ProjectEnum.Wikipedia)
         });
         _systemService.OpenLinkInBrowser(Arg.Any<string>()).Returns(Result.Success());
 
@@ -345,10 +343,9 @@ public sealed class MakeListViewModelTests : BaseTest
     {
         // arrange
         _sut.SelectedPages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(4).ToObservableCollection();
-        _userPreferencesService.GetCurrentPref().Returns(new UserPrefs
+        _userPreferencesService.GetCurrentSettings().Returns(new UserSettings
         {
-            LanguageCode = "hy",
-            Project = ProjectEnum.Wikipedia
+            UserWiki = new("hy", ProjectEnum.Wikipedia)
         });
         _systemService.OpenLinkInBrowser(Arg.Any<string>()).Returns(Result.Success());
 

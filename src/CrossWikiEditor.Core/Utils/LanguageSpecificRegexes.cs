@@ -29,8 +29,8 @@ public sealed class LanguageSpecificRegexes : IAsyncInitialization
 
     private void MakeRegexes()
     {
-        string? url = _userPreferencesService.GetCurrentPref().UrlBase();
-        string? urlLong = _userPreferencesService.GetCurrentPref().UrlBaseLong();
+        string? url = _userPreferencesService.GetCurrentSettings().GetBaseUrl();
+        string? urlLong = _userPreferencesService.GetCurrentSettings().GetLongBaseUrl();
 
         int pos = Tools.FirstDifference(url, urlLong);
         string s = Regex.Escape(urlLong[..pos]).Replace(@"https://", @"https?://");

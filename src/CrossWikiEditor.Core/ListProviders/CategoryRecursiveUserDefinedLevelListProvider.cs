@@ -18,8 +18,8 @@ public sealed class CategoryRecursiveUserDefinedLevelListProvider(ICategoryServi
             return Result<List<WikiPageModel>>.Failure("Please select recursive level.");
         }
 
-        UserPrefs userPrefs = userPreferencesService.GetCurrentPref();
-        Result<List<WikiPageModel>> result = await categoryService.GetPagesOfCategory(userPrefs.UrlApi(), Param, limit, (int) _recursionLevel);
+        UserSettings userSettings = userPreferencesService.GetCurrentSettings();
+        Result<List<WikiPageModel>> result = await categoryService.GetPagesOfCategory(userSettings.GetApiUrl(), Param, limit, (int) _recursionLevel);
         _recursionLevel = null;
         return result;
     }

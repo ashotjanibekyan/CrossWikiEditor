@@ -6,7 +6,7 @@ public sealed class ProtectedPagesListProviderTests : ListProvidersBaseTest<Prot
     public void SetUp()
     {
         SetUpServices();
-        SetUpUserPrefs("hyw", ProjectEnum.Wikipedia);
+        SetUpUserSettings("hyw", ProjectEnum.Wikipedia);
         _selectProtectionSelectionPageViewModel = new SelectProtectionSelectionPageViewModel();
         _sut = new ProtectedPagesListProvider(_dialogService, _pageService, _userPreferencesService, _viewModelFactory)
         {
@@ -14,7 +14,7 @@ public sealed class ProtectedPagesListProviderTests : ListProvidersBaseTest<Prot
         };
         _dialogService.ShowDialog<(string, string)>(_selectProtectionSelectionPageViewModel).Returns(("edit", "autoconfirmed"));
         _viewModelFactory.GetSelectProtectionSelectionPageViewModel().Returns(_selectProtectionSelectionPageViewModel);
-        _expectedPages = Fakers.GetWikiPageModelFaker(_userPrefs.UrlApi(), _wikiClientCache).Generate(4);
+        _expectedPages = Fakers.GetWikiPageModelFaker(_userSettings.GetApiUrl(), _wikiClientCache).Generate(4);
     }
 
     [Test]
@@ -54,7 +54,7 @@ public sealed class ProtectedPagesListProviderTests : ListProvidersBaseTest<Prot
     public async Task MakeList_ShouldReturnPageServiceResults()
     {
         // arrange
-        _pageService.GetProtectedPages(_userPrefs.UrlApi(), "edit", "autoconfirmed", 73)
+        _pageService.GetProtectedPages(_userSettings.GetApiUrl(), "edit", "autoconfirmed", 73)
             .Returns(Result<List<WikiPageModel>>.Success(_expectedPages));
 
         await MakeList_ShouldReturnServiceResults(_expectedPages);
@@ -64,7 +64,7 @@ public sealed class ProtectedPagesListProviderTests : ListProvidersBaseTest<Prot
     public async Task MakeList_ShouldReturnUnsuccessfulResult_WhenPageServiceReturnsUnsuccessfulResult()
     {
         // arrange
-        _pageService.GetProtectedPages(_userPrefs.UrlApi(), "edit", "autoconfirmed", 73)
+        _pageService.GetProtectedPages(_userSettings.GetApiUrl(), "edit", "autoconfirmed", 73)
             .Returns(Result<List<WikiPageModel>>.Failure("failed to get pages"));
 
         // act

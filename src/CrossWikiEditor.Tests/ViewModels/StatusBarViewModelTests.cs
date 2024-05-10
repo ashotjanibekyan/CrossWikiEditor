@@ -66,10 +66,9 @@ public sealed class StatusBarViewModelTests : BaseTest
     public void CurrentWiki_ShouldComeFromCurrentPref()
     {
         // arrange
-        _userPreferencesService.GetCurrentPref().Returns(new UserPrefs
+        _userPreferencesService.GetCurrentSettings().Returns(new UserSettings
         {
-            Project = ProjectEnum.Wikipedia,
-            LanguageCode = "hyw"
+            UserWiki = new("hyw", ProjectEnum.Wikipedia)
         });
 
         // act

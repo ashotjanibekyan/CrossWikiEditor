@@ -2,7 +2,7 @@
 
 public sealed class NormalFindAndReplaceRules : List<NormalFindAndReplaceRule>
 {
-    public NormalFindAndReplaceRules() { }
+    public NormalFindAndReplaceRules() : base() { }
 
     public NormalFindAndReplaceRules(IEnumerable<NormalFindAndReplaceRule> collection) : base(collection) { }
 

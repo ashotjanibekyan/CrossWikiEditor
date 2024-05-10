@@ -7,7 +7,7 @@ public sealed class SimpleHtmlParser(ILogger logger, IUserPreferencesService use
     
     public async Task<List<WikiPageModel>> GetPages(string html)
     {
-        string[] results = html.Split(userPreferencesService.GetCurrentPref().UrlBase());
+        string[] results = html.Split(userPreferencesService.GetCurrentSettings().GetBaseUrl());
         return await GetWikiPageModels(results);
     }
     
@@ -31,8 +31,8 @@ public sealed class SimpleHtmlParser(ILogger logger, IUserPreferencesService use
 
     private async Task<WikiPageModel> TryGetWikiPageModel(string urlStart)
     {
-        string baseUrl = userPreferencesService.GetCurrentPref().UrlBase();
-        string apiUrl = userPreferencesService.GetCurrentPref().UrlApi();
+        string baseUrl = userPreferencesService.GetCurrentSettings().GetBaseUrl();
+        string apiUrl = userPreferencesService.GetCurrentSettings().GetApiUrl();
         string url = urlStart;
         int i = urlStart.IndexOfAny(_terminationChars);
         if (i != -1)

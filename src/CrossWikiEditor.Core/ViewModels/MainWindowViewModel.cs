@@ -20,7 +20,8 @@ public sealed class MainWindowViewModel : ViewModelBase
         WhatLinksHereViewModel whatLinksHereViewModel,
         LogsViewModel logsViewModel,
         PageLogsViewModel pageLogsViewModel,
-        IMessengerWrapper messenger)
+        IMessengerWrapper messenger,
+        IUserPreferencesService userPreferencesService)
     {
         Instance = this;
         StatusBarViewModel = statusBarViewModel;
@@ -41,7 +42,7 @@ public sealed class MainWindowViewModel : ViewModelBase
             _myBot = Task.Run(async () =>
             {
                 _listProcessor?.Stop();
-                _listProcessor = new PageListProcessor(messenger, MakeListViewModel.Pages.ToList(), OptionsViewModel.NormalFindAndReplaceRules);
+                _listProcessor = new PageListProcessor(messenger, userPreferencesService, MakeListViewModel.Pages.ToList(), OptionsViewModel.NormalFindAndReplaceRules);
                 await _listProcessor.Start();
             });
         });

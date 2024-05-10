@@ -1,23 +1,11 @@
-﻿namespace CrossWikiEditor.Core.Settings;
+namespace CrossWikiEditor.Core.Settings;
 
-[Serializable]
-[XmlRoot("AutoWikiBrowserPreferences")]
-public struct UserPrefs(string version, ProjectEnum project, string languageCode, string customProject, string protocol, string loginDomain)
+public sealed class UserWiki(string? languageCode, ProjectEnum project)
 {
-    [XmlAttribute("xml:space")] public string SpacePreserve = "preserve";
-
-    public UserPrefs() : this("0.0.1", ProjectEnum.Wikipedia, "hy", "", "http://", "")
-    {
-    }
-
-    [XmlAttribute] public string Version { get; set; } = version;
+    public string? LanguageCode { get; set; } = languageCode;
     public ProjectEnum Project { get; set; } = project;
-    public string LanguageCode { get; set; } = languageCode;
-    public string CustomProject { get; set; } = customProject;
-    public string Protocol { get; set; } = protocol;
-    public string LoginDomain { get; set; } = loginDomain;
 
-    public string UrlBase()
+    public string GetBaseUrl()
     {
         if (!string.IsNullOrEmpty(LanguageCode) && new[]
             {
@@ -37,7 +25,7 @@ public struct UserPrefs(string version, ProjectEnum project, string languageCode
         throw new NotImplementedException();
     }
 
-    public string UrlBaseLong()
+    public string GetLongBaseUrl()
     {
         if (!string.IsNullOrEmpty(LanguageCode) && new[]
             {
@@ -57,7 +45,7 @@ public struct UserPrefs(string version, ProjectEnum project, string languageCode
         throw new NotImplementedException();
     }
 
-    public string UrlApi()
+    public string GetApiUrl()
     {
         if (!string.IsNullOrEmpty(LanguageCode) && new[]
             {
@@ -77,7 +65,7 @@ public struct UserPrefs(string version, ProjectEnum project, string languageCode
         throw new NotImplementedException();
     }
 
-    public string UrlIndex()
+    public string GetIndexUrl()
     {
         if (!string.IsNullOrEmpty(LanguageCode) && new[]
             {

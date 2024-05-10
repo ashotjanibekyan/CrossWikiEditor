@@ -6,13 +6,13 @@ public sealed class AllPagesWithPrefixListProviderTests : ListProvidersBaseTest<
     public void SetUp()
     {
         SetUpServices();
-        SetUpUserPrefs("hyw", ProjectEnum.Wikipedia);
+        SetUpUserSettings("hyw", ProjectEnum.Wikipedia);
         _sut = new AllPagesWithPrefixListProvider(_dialogService, _pageService, _userPreferencesService, _viewModelFactory)
         {
             Param = "my prefix"
         };
         _dialogService.ShowDialog<int[]?>(_selectNamespacesViewModel).Returns(new[] {7, 2, 3, 9});
-        _expectedPages = Fakers.GetWikiPageModelFaker(_userPrefs.UrlApi(), _wikiClientCache).Generate(4);
+        _expectedPages = Fakers.GetWikiPageModelFaker(_userSettings.GetApiUrl(), _wikiClientCache).Generate(4);
     }
     
     [Test]
@@ -31,7 +31,7 @@ public sealed class AllPagesWithPrefixListProviderTests : ListProvidersBaseTest<
     public async Task MakeList_ShouldReturnPageServiceResults()
     {
         // arrange
-        _pageService.GetAllPagesWithPrefix(_userPrefs.UrlApi(), _sut.Param,  7, 73)
+        _pageService.GetAllPagesWithPrefix(_userSettings.GetApiUrl(), _sut.Param,  7, 73)
             .Returns(Result<List<WikiPageModel>>.Success(_expectedPages));
 
         await MakeList_ShouldReturnServiceResults(_expectedPages);
@@ -41,7 +41,7 @@ public sealed class AllPagesWithPrefixListProviderTests : ListProvidersBaseTest<
     public async Task MakeList_ShouldReturnUnsuccessfulResult_WhenPageServiceReturnsUnsuccessfulResult()
     {
         // arrange
-        _pageService.GetAllPagesWithPrefix(_userPrefs.UrlApi(), _sut.Param, 7, 73)
+        _pageService.GetAllPagesWithPrefix(_userSettings.GetApiUrl(), _sut.Param, 7, 73)
             .Returns(Result<List<WikiPageModel>>.Failure("failed to get pages"));
 
         // act

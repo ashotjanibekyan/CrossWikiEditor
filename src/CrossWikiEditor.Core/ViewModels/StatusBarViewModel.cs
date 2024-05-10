@@ -15,9 +15,9 @@ public sealed partial class StatusBarViewModel : ViewModelBase
         messenger.Register<NewAccountLoggedInMessage>(this, (_, m) => Username = m.Value.Username);
         messenger.Register<ProjectChangedMessage>(this, (_, m) => Project = m.Value.ToString());
         messenger.Register<LanguageCodeChangedMessage>(this, (_, m) => LanguageCode = m.Value);
-        UserPrefs currentPref = userPreferencesService.GetCurrentPref();
-        Project = currentPref.Project.ToString();
-        LanguageCode = currentPref.LanguageCode;
+        UserSettings currentPref = userPreferencesService.GetCurrentSettings();
+        Project = currentPref.UserWiki.Project.ToString();
+        LanguageCode = currentPref.UserWiki.LanguageCode ?? "";
     }
 
     public string CurrentWiki => $"{LanguageCode}:{Project}";

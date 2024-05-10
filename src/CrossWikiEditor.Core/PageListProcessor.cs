@@ -3,6 +3,7 @@
 public sealed class PageListProcessor
 {
     private readonly IMessengerWrapper _messenger;
+    private readonly IUserPreferencesService _userPreferencesService;
     private readonly NormalFindAndReplaceRules _normalFindAndReplaceRules;
     private readonly List<WikiPageModel> _pages;
     private bool _isAlive = true;
@@ -10,10 +11,12 @@ public sealed class PageListProcessor
 
     public PageListProcessor(
         IMessengerWrapper messenger,
+        IUserPreferencesService userPreferencesService,
         List<WikiPageModel> pages,
         NormalFindAndReplaceRules normalFindAndReplaceRules)
     {
         _messenger = messenger;
+        _userPreferencesService = userPreferencesService;
         _pages = pages;
         _normalFindAndReplaceRules = normalFindAndReplaceRules;
         messenger.Register<SaveOrSkipPageMessage>(this,
@@ -26,7 +29,7 @@ public sealed class PageListProcessor
         {
             try
             {
-                await ProcessPage(page);
+                await TreatPage(page);
             }
             catch (Exception)
             {
@@ -35,50 +38,31 @@ public sealed class PageListProcessor
         }
     }
 
-    private async Task ProcessPage(WikiPageModel page)
+    private async Task TreatPage(WikiPageModel page)
     {
-        Console.WriteLine($"Prccessing {page.Title}");
-        if (string.IsNullOrEmpty(await page.GetContent()))
+        var (initialContent, newContent, replacements) = await ProcessPage(page);
+        if (initialContent is null || newContent is null || replacements is null)
         {
-            await page.RefreshAsync(PageQueryOptions.FetchContent);
-        }
-
-        string initialContent = await page.GetContent();
-        string newContent = await page.GetContent();
-        var replacements = new List<Tuple<string, string>>();
-        foreach (NormalFindAndReplaceRule normalFindAndReplaceRule in _normalFindAndReplaceRules)
-        {
-            if (!normalFindAndReplaceRule.Regex)
-            {
-                newContent = newContent.Replace(normalFindAndReplaceRule.Find, normalFindAndReplaceRule.ReplaceWith);
-            }
-            else
-            {
-                var regex = new Regex(normalFindAndReplaceRule.Find);
-                newContent = regex.Replace(newContent, match =>
-                {
-                    string replacedValue = normalFindAndReplaceRule.ReplaceWith;
-                    replacedValue = Regex.Replace(replacedValue, @"\$([1-9])", groupReference => match.Groups[int.Parse(groupReference.Groups[1].Value)].Value);
-                    replacements.Add(Tuple.Create(match.Value, replacedValue));
-                    return replacedValue;
-                });
-            }
+            _messenger.Send(new PageSkippedMessage(page, SkipReason.ErrorProcessing));
+            return;
         }
 
         if (initialContent == newContent)
         {
-            _messenger.Send(new PageSkippedMessage(page, "No changes"));
+            _messenger.Send(new PageSkippedMessage(page, SkipReason.NoChanges));
             _messenger.Send(new PageUpdatingMessage(page, initialContent, newContent));
             return;
         }
+        
 
-        if (true) // TODO: check if bot mode is not enabled
+
+        if (!_userPreferencesService.GetCurrentSettings().IsBotMode)
         {
             _shouldSaveTaskCompletionSource = new TaskCompletionSource<bool>();
             _messenger.Send(new PageUpdatingMessage(page, initialContent, newContent));
             if (!await _shouldSaveTaskCompletionSource.Task)
             {
-                _messenger.Send(new PageSkippedMessage(page, "Manual skip"));
+                _messenger.Send(new PageSkippedMessage(page, SkipReason.Manual));
                 return;
             }
         }
@@ -99,6 +83,46 @@ public sealed class PageListProcessor
         catch (Exception e)
         {
             Console.WriteLine(e);
+        }
+    }
+
+    private async Task<(string? initialTxt, string? newTxt, List<Tuple<string, string>>? repls)> ProcessPage(WikiPageModel page)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(await page.GetContent()))
+            {
+                await page.RefreshAsync(PageQueryOptions.FetchContent);
+            }
+
+            string initialContent = await page.GetContent();
+            string newContent = await page.GetContent();
+            var replacements = new List<Tuple<string, string>>();
+            foreach (NormalFindAndReplaceRule normalFindAndReplaceRule in _normalFindAndReplaceRules)
+            {
+                if (!normalFindAndReplaceRule.Regex)
+                {
+                    newContent = newContent.Replace(normalFindAndReplaceRule.Find, normalFindAndReplaceRule.ReplaceWith);
+                }
+                else
+                {
+                    var regex = new Regex(normalFindAndReplaceRule.Find);
+                    newContent = regex.Replace(newContent, match =>
+                    {
+                        string replacedValue = normalFindAndReplaceRule.ReplaceWith;
+                        replacedValue = Regex.Replace(replacedValue, @"\$([1-9])", groupReference => match.Groups[int.Parse(groupReference.Groups[1].Value)].Value);
+                        replacements.Add(Tuple.Create(match.Value, replacedValue));
+                        return replacedValue;
+                    });
+                }
+            }
+            _messenger.Send(new PageProcessedMessage(page, true));
+            return (initialContent, newContent, replacements);
+        }
+        catch(Exception)
+        {
+            _messenger.Send(new PageProcessedMessage(page, false));
+            return (null, null, null);
         }
     }
 

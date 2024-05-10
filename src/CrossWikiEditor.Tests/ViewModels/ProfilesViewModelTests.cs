@@ -23,7 +23,7 @@ public sealed class ProfilesViewModelTests : BaseTest
         _sut.LoginCommand.Execute(null);
 
         // assert
-        _userPreferencesService.Received(0).GetCurrentPref();
+        _userPreferencesService.Received(0).GetCurrentSettings();
         _userService.Received(0).Login(Arg.Any<Profile>(), Arg.Any<string>());
     }
 
@@ -37,10 +37,9 @@ public sealed class ProfilesViewModelTests : BaseTest
             Password = "password"
         };
         _sut.SelectedProfile = profile;
-        _userPreferencesService.GetCurrentPref().Returns(new UserPrefs()
+        _userPreferencesService.GetCurrentSettings().Returns(new UserSettings()
         {
-            LanguageCode = "hy",
-            Project = ProjectEnum.Wikipedia
+            UserWiki = new("hy", ProjectEnum.Wikipedia)
         });
         _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Result.Success());
 
@@ -65,12 +64,11 @@ public sealed class ProfilesViewModelTests : BaseTest
             DefaultSettingsPath = "some/settings/path/file.xml"
         };
         _sut.SelectedProfile = profile;
-        var userPrefs = new UserPrefs()
+        var userSettings = new UserSettings()
         {
-            LanguageCode = "hy",
-            Project = ProjectEnum.Wikipedia
+            UserWiki = new("hy", ProjectEnum.Wikipedia)
         };
-        _userPreferencesService.GetUserPref(profile.DefaultSettingsPath).Returns(userPrefs);
+        _userPreferencesService.GetUserSettings(profile.DefaultSettingsPath).Returns(userSettings);
         _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Result.Success());
 
         // act
@@ -78,7 +76,7 @@ public sealed class ProfilesViewModelTests : BaseTest
 
         // assert
         _userPreferencesService.Received(1)
-            .SetCurrentPref(userPrefs);
+            .SetCurrentPref(userSettings);
         _userService.Received(1).Login(Arg.Is<Profile>(p => p.Username == profile.Username && p.Password == profile.Password),
             "https://hy.wikipedia.org/w/api.php?");
         _dialogService.Received(0).Alert(Arg.Any<string>(), Arg.Any<string>());
@@ -95,10 +93,9 @@ public sealed class ProfilesViewModelTests : BaseTest
             Password = "password"
         };
         _sut.SelectedProfile = profile;
-        _userPreferencesService.GetCurrentPref().Returns(new UserPrefs()
+        _userPreferencesService.GetCurrentSettings().Returns(new UserSettings()
         {
-            LanguageCode = "hy",
-            Project = ProjectEnum.Wikipedia
+            UserWiki = new("hy", ProjectEnum.Wikipedia)
         });
         _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Result.Failure(string.Empty));
 
@@ -122,10 +119,9 @@ public sealed class ProfilesViewModelTests : BaseTest
             Password = "password"
         };
         _sut.SelectedProfile = profile;
-        _userPreferencesService.GetCurrentPref().Returns(new UserPrefs()
+        _userPreferencesService.GetCurrentSettings().Returns(new UserSettings()
         {
-            LanguageCode = "hy",
-            Project = ProjectEnum.Wikipedia
+            UserWiki = new("hy", ProjectEnum.Wikipedia)
         });
         _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Result.Failure("this is an error message"));
 
@@ -285,10 +281,9 @@ public sealed class ProfilesViewModelTests : BaseTest
         // arrange
         _sut.Username = "username";
         _sut.Password = "Qwer1234";
-        _userPreferencesService.GetCurrentPref().Returns(new UserPrefs()
+        _userPreferencesService.GetCurrentSettings().Returns(new UserSettings()
         {
-            LanguageCode = "hyw",
-            Project = ProjectEnum.Wikipedia
+            UserWiki = new("hyw", ProjectEnum.Wikipedia)
         });
         _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Result.Success());
 
@@ -329,10 +324,9 @@ public sealed class ProfilesViewModelTests : BaseTest
         // arrange
         _sut.Username = "username";
         _sut.Password = "Qwer1234";
-        _userPreferencesService.GetCurrentPref().Returns(new UserPrefs()
+        _userPreferencesService.GetCurrentSettings().Returns(new UserSettings()
         {
-            LanguageCode = "hyw",
-            Project = ProjectEnum.Wikipedia
+            UserWiki = new("hyw", ProjectEnum.Wikipedia)
         });
         _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Result.Success());
 
@@ -350,10 +344,9 @@ public sealed class ProfilesViewModelTests : BaseTest
         // arrange
         _sut.Username = "username";
         _sut.Password = "Qwer1234";
-        _userPreferencesService.GetCurrentPref().Returns(new UserPrefs()
+        _userPreferencesService.GetCurrentSettings().Returns(new UserSettings()
         {
-            LanguageCode = "hyw",
-            Project = ProjectEnum.Wikipedia
+            UserWiki = new("hyw", ProjectEnum.Wikipedia)
         });
         _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Result.Failure("Password is wrong"));
 
@@ -371,10 +364,9 @@ public sealed class ProfilesViewModelTests : BaseTest
         // arrange
         _sut.Username = "username";
         _sut.Password = "Qwer1234";
-        _userPreferencesService.GetCurrentPref().Returns(new UserPrefs()
+        _userPreferencesService.GetCurrentSettings().Returns(new UserSettings()
         {
-            LanguageCode = "hyw",
-            Project = ProjectEnum.Wikipedia
+            UserWiki = new("hy", ProjectEnum.Wikipedia)
         });
         _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Result.Failure(errorMessage));
 

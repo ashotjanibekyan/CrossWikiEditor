@@ -12,10 +12,9 @@ public sealed class LanguageSpecificRegexesTests : BaseTest
         SetUpServices();
         string apiRoot = "https://en.wikipedia.org/w/api.php?";
         _userPreferencesService.CurrentApiUrl.Returns(apiRoot);
-        _userPreferencesService.GetCurrentPref().Returns(new UserPrefs()
+        _userPreferencesService.GetCurrentSettings().Returns(new UserSettings()
         {
-            LanguageCode = "en",
-            Project = ProjectEnum.Wikipedia
+            UserWiki = new("en", ProjectEnum.Wikipedia)
         });
         var enWiki = new WikiSite(new WikiClient(), apiRoot);
         await enWiki.Initialization;

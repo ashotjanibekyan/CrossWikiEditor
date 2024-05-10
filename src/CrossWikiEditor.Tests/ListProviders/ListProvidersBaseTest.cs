@@ -2,7 +2,7 @@ namespace CrossWikiEditor.Tests.ListProviders;
 
 public abstract class ListProvidersBaseTest<T> : BaseTest where T : ListProviderBase
 {
-    protected UserPrefs _userPrefs;
+    protected UserSettings _userSettings;
     protected SelectNamespacesViewModel _selectNamespacesViewModel;
     protected SelectProtectionSelectionPageViewModel _selectProtectionSelectionPageViewModel;
     protected SelectNamespacesAndRedirectFilterViewModel _selectNamespacesAndRedirectFilterViewModel;
@@ -46,15 +46,14 @@ public abstract class ListProvidersBaseTest<T> : BaseTest where T : ListProvider
         result.Should().Be(42);
     }
 
-    protected void SetUpUserPrefs(string languageCode, ProjectEnum project)
+    protected void SetUpUserSettings(string languageCode, ProjectEnum project)
     {
-        _userPrefs = new UserPrefs
+        _userSettings = new UserSettings
         {
-            LanguageCode = languageCode,
-            Project = project
+            UserWiki = new(languageCode, project)
         };
-        _userPreferencesService.GetCurrentPref().Returns(_userPrefs);
-        _userPreferencesService.CurrentApiUrl.Returns(_userPrefs.UrlApi());
+        _userPreferencesService.GetCurrentSettings().Returns(_userSettings);
+        _userPreferencesService.CurrentApiUrl.Returns(_userSettings.GetApiUrl());
     }
 
     protected async Task MakeList_ShouldReturnServiceResults(List<WikiPageModel> expectedPages)

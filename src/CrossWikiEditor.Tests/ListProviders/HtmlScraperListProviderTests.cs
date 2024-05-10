@@ -33,7 +33,7 @@ public sealed class HtmlScraperListProviderTests : ListProvidersBaseTest<HtmlScr
     public void SetUp()
     {
         SetUpServices();
-        SetUpUserPrefs("hy", ProjectEnum.Wikipedia);
+        SetUpUserSettings("hy", ProjectEnum.Wikipedia);
         _httpClientFactory = Substitute.For<IHttpClientFactory>();
         _mockHttpMessageHandler = new MockHttpMessageHandler();
         _sut = new HtmlScraperListProvider(new HtmlAgilityPackParser(_logger, _userPreferencesService, _wikiClientCache), _httpClientFactory, _logger,

@@ -103,7 +103,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
     {
         foreach (WikiPageModel selectedPage in SelectedPages)
         {
-            _systemService.OpenLinkInBrowser($"{_userPreferencesService.GetCurrentPref().UrlIndex()}title={HttpUtility.UrlEncode(selectedPage.Title)}");
+            _systemService.OpenLinkInBrowser($"{_userPreferencesService.GetCurrentSettings().GetIndexUrl()}title={HttpUtility.UrlEncode(selectedPage.Title)}");
         }
     }
 
@@ -117,7 +117,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
 
         foreach (WikiPageModel selectedPage in SelectedPages)
         {
-            _systemService.OpenLinkInBrowser($"{_userPreferencesService.GetCurrentPref().UrlIndex()}title={selectedPage.Title}&action=history");
+            _systemService.OpenLinkInBrowser($"{_userPreferencesService.GetCurrentSettings().GetIndexUrl()}title={selectedPage.Title}&action=history");
         }
     }
 

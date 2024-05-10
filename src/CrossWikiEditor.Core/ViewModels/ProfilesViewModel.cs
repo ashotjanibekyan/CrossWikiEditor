@@ -88,17 +88,16 @@ public sealed partial class ProfilesViewModel(IFileDialogService fileDialogServi
 
     private async Task Login(Profile profile, IDialog dialog)
     {
-        UserPrefs currentUserPref = string.IsNullOrEmpty(profile.DefaultSettingsPath)
-            ? userPreferencesService.GetCurrentPref()
-            : userPreferencesService.GetUserPref(profile.DefaultSettingsPath);
+        UserSettings? currentUserSettings = userPreferencesService.GetUserSettings(profile.DefaultSettingsPath);
+        currentUserSettings ??= userPreferencesService.GetCurrentSettings();
 
-        Result loginResult = await userService.Login(profile, currentUserPref.UrlApi());
+        Result loginResult = await userService.Login(profile, currentUserSettings.GetApiUrl());
         if (loginResult is { IsSuccessful: true })
         {
             messenger.Send(new NewAccountLoggedInMessage(profile));
             if (!string.IsNullOrEmpty(profile.DefaultSettingsPath))
             {
-                userPreferencesService.SetCurrentPref(currentUserPref);
+                userPreferencesService.SetCurrentPref(currentUserSettings);
             }
 
             dialog.Close(true);
