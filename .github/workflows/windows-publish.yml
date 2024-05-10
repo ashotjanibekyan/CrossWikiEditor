@@ -1,14 +1,12 @@
 name: CrossWikiEditor-Windows-latest
 
-on:
-    push:
-        branches: [ "master" ]
+on: workflow_dispatch
 
 jobs:
     
     build:
         
-        runs-on: self-hosted  # For a list of available runner types, refer to
+        runs-on: windows-latest  # For a list of available runner types, refer to
         # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
         
         env:
