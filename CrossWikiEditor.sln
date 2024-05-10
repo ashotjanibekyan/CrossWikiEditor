@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrossWikiEditor", "CrossWikiEditor\CrossWikiEditor.csproj", "{620449B9-AC52-4B1F-AAB6-C11A34082CC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrossWikiEditor", "src\CrossWikiEditor\CrossWikiEditor.csproj", "{DF572E6C-26CF-4790-ACC0-3659A4476E57}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrossWikiEditor.Tests", "CrossWikiEditor.Tests\CrossWikiEditor.Tests.csproj", "{845C2F9C-3205-490A-9841-0AD3CC2D0EE0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrossWikiEditor.Core", "src\CrossWikiEditor.Core\CrossWikiEditor.Core.csproj", "{16FBE379-E05B-41B6-B0FB-3D17D05309CB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrossWikiEditor.Core", "CrossWikiEditor.Core\CrossWikiEditor.Core.csproj", "{30DDB5A4-F979-4DDC-8980-4936F65895FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrossWikiEditor.Tests", "src\CrossWikiEditor.Tests\CrossWikiEditor.Tests.csproj", "{50CD59DD-3158-405A-B082-509978004F42}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,18 +15,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{620449B9-AC52-4B1F-AAB6-C11A34082CC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{620449B9-AC52-4B1F-AAB6-C11A34082CC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{620449B9-AC52-4B1F-AAB6-C11A34082CC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{620449B9-AC52-4B1F-AAB6-C11A34082CC9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{845C2F9C-3205-490A-9841-0AD3CC2D0EE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{845C2F9C-3205-490A-9841-0AD3CC2D0EE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{845C2F9C-3205-490A-9841-0AD3CC2D0EE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{845C2F9C-3205-490A-9841-0AD3CC2D0EE0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{30DDB5A4-F979-4DDC-8980-4936F65895FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{30DDB5A4-F979-4DDC-8980-4936F65895FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{30DDB5A4-F979-4DDC-8980-4936F65895FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{30DDB5A4-F979-4DDC-8980-4936F65895FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF572E6C-26CF-4790-ACC0-3659A4476E57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF572E6C-26CF-4790-ACC0-3659A4476E57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF572E6C-26CF-4790-ACC0-3659A4476E57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF572E6C-26CF-4790-ACC0-3659A4476E57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16FBE379-E05B-41B6-B0FB-3D17D05309CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16FBE379-E05B-41B6-B0FB-3D17D05309CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16FBE379-E05B-41B6-B0FB-3D17D05309CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16FBE379-E05B-41B6-B0FB-3D17D05309CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50CD59DD-3158-405A-B082-509978004F42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50CD59DD-3158-405A-B082-509978004F42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50CD59DD-3158-405A-B082-509978004F42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50CD59DD-3158-405A-B082-509978004F42}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

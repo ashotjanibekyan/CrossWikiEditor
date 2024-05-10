@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
 using WikiClientLibrary.Pages.Queries;
-using WikiClientLibrary.Pages.Queries.Properties;
 
 namespace CrossWikiEditor.Core.WikiClientLibraryUtils.Generators;
 
@@ -176,7 +175,7 @@ public sealed class UserContributionsGenerator : WikiList<UserContributionResult
         var wikiPage = new WikiPage(Site, (string) json["title"]);
         MediaWikiHelper.PopulatePageFromJson(wikiPage, (JObject)json, new WikiPageQueryProvider()
         {
-            Properties = new List<IWikiPagePropertyProvider<IWikiPagePropertyGroup>>()
+            Properties = []
         });
         return new UserContributionResultItem(wikiPage);
     }
@@ -185,16 +184,16 @@ public sealed class UserContributionsGenerator : WikiList<UserContributionResult
     private string PrepareUcProp()
     {
         var props = new List<string>();
-        if (IncludeIds) props.Add("ids");
-        if (IncludeTitle) props.Add("title");
-        if (IncludeTimestamp) props.Add("timestamp");
-        if (IncludeComment) props.Add("comment");
-        if (IncludeParsedComment) props.Add("parsedcomment");
-        if (IncludeSize) props.Add("size");
-        if (IncludeSizeDiff) props.Add("sizediff");
-        if (IncludeFlags) props.Add("flags");
-        if (IncludePatrolled) props.Add("patrolled");
-        if (IncludeTags) props.Add("tags");
+        props.AddIf("ids", IncludeIds);
+        props.AddIf("title", IncludeTitle);
+        props.AddIf("timestamp", IncludeTimestamp);
+        props.AddIf("comment", IncludeComment);
+        props.AddIf("parsedcomment", IncludeParsedComment);
+        props.AddIf("size", IncludeSize);
+        props.AddIf("sizediff", IncludeSizeDiff);
+        props.AddIf("flags", IncludeFlags);
+        props.AddIf("patrolled", IncludePatrolled);
+        props.AddIf("tags", IncludeTags);
         return string.Join('|', props);
     }
 

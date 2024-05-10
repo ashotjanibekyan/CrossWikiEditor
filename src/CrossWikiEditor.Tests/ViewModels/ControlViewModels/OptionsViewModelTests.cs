@@ -10,7 +10,7 @@ public class OptionsViewModelTests : BaseTest
     public void SetUp()
     {
         SetUpServices();
-        _sut = new OptionsViewModel(_dialogService);
+        _sut = new OptionsViewModel(new(), _dialogService);
     }
 
     [Test]

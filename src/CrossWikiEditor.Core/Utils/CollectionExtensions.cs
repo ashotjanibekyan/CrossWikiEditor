@@ -45,4 +45,12 @@ public static class CollectionExtensions
             obj.Add(item);
         }
     }
+
+    public static void AddIf<T>(this ICollection<T> obj, T value, bool condition)
+    {
+        if (condition)
+        {
+            obj.Add(value);
+        }
+    }
 }
