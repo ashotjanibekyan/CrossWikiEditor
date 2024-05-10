@@ -1,5 +1,5 @@
-using System.Threading.Tasks;
 using Avalonia.Controls;
+
 using CrossWikiEditor.Core;
 
 namespace CrossWikiEditor;

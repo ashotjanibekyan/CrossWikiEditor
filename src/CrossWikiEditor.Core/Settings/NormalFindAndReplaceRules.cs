@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace CrossWikiEditor.Core.Settings;
+﻿namespace CrossWikiEditor.Core.Settings;
 
 public sealed class NormalFindAndReplaceRules : List<NormalFindAndReplaceRule>
 {
