@@ -1,5 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Text;
+using System.Web;
+
 using CommunityToolkit.Mvvm.Messaging;
 
 namespace CrossWikiEditor.Tests.ViewModels;
@@ -289,7 +291,7 @@ public sealed class MakeListViewModelTests : BaseTest
     public void OpenInBrowserCommand_ShouldDoNothing_WhenThereIsNoSelectedPage()
     {
         // arrange
-        _sut.SelectedPages = new ObservableCollection<WikiPageModel>();
+        _sut.SelectedPages = [];
 
         // act
         _sut.OpenInBrowserCommand.Execute(null);
@@ -316,10 +318,10 @@ public sealed class MakeListViewModelTests : BaseTest
         // assert
         Received.InOrder(() =>
         {
-            _systemService.OpenLinkInBrowser($"https://hy.wikipedia.org/w/index.php?title={_sut.SelectedPages[0].Title}");
-            _systemService.OpenLinkInBrowser($"https://hy.wikipedia.org/w/index.php?title={_sut.SelectedPages[1].Title}");
-            _systemService.OpenLinkInBrowser($"https://hy.wikipedia.org/w/index.php?title={_sut.SelectedPages[2].Title}");
-            _systemService.OpenLinkInBrowser($"https://hy.wikipedia.org/w/index.php?title={_sut.SelectedPages[3].Title}");
+            _systemService.OpenLinkInBrowser($"https://hy.wikipedia.org/w/index.php?title={HttpUtility.UrlEncode(_sut.SelectedPages[0].Title)}");
+            _systemService.OpenLinkInBrowser($"https://hy.wikipedia.org/w/index.php?title={HttpUtility.UrlEncode(_sut.SelectedPages[1].Title)}");
+            _systemService.OpenLinkInBrowser($"https://hy.wikipedia.org/w/index.php?title={HttpUtility.UrlEncode(_sut.SelectedPages[2].Title)}");
+            _systemService.OpenLinkInBrowser($"https://hy.wikipedia.org/w/index.php?title={HttpUtility.UrlEncode(_sut.SelectedPages[3].Title)}");
         });
     }
     #endregion

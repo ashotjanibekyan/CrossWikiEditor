@@ -1,6 +1,6 @@
 namespace CrossWikiEditor.Tests.ListProviders;
 
-public class ListProvidersBaseTest<T> : BaseTest where T : ListProviderBase
+public abstract class ListProvidersBaseTest<T> : BaseTest where T : ListProviderBase
 {
     protected UserPrefs _userPrefs;
     protected SelectNamespacesViewModel _selectNamespacesViewModel;

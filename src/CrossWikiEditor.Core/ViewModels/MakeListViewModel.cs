@@ -101,11 +101,6 @@ public sealed partial class MakeListViewModel : ViewModelBase
     [RelayCommand]
     private void OpenInBrowser()
     {
-        if (!SelectedPages.Any())
-        {
-            return;
-        }
-
         foreach (WikiPageModel selectedPage in SelectedPages)
         {
             _systemService.OpenLinkInBrowser($"{_userPreferencesService.GetCurrentPref().UrlIndex()}title={HttpUtility.UrlEncode(selectedPage.Title)}");
