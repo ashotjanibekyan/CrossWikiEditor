@@ -12,23 +12,23 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <AvaloniaResource Include="Assets\**"/>
+        <AvaloniaResource Include="Assets\**" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectCapability Include="Avalonia"/>
-        <TrimmerRootAssembly Include="Avalonia.Themes.Fluent"/>
+        <ProjectCapability Include="Avalonia" />
+        <TrimmerRootAssembly Include="Avalonia.Themes.Fluent" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="11.0.10"/>
+        <PackageReference Include="Avalonia" Version="11.0.10" />
         <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.0.6" />
-        <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.0.10"/>
-        <PackageReference Include="Avalonia.Desktop" Version="11.0.10"/>
+        <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.0.10" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.0.10" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.10" />
         <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.10" />
-        <PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.0.10.2" />
+        <PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.0.10.9" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     </ItemGroup>
 
@@ -120,16 +120,16 @@
     </ItemGroup>
 
     <ItemGroup>
-        <AdditionalFiles Include="Views\ControlViews\DisambigView.axaml"/>
-        <AdditionalFiles Include="Views\ControlViews\MoreView.axaml"/>
-        <AdditionalFiles Include="Views\ControlViews\OptionsView.axaml"/>
-        <AdditionalFiles Include="Views\ControlViews\SkipView.axaml"/>
-        <AdditionalFiles Include="Views\ControlViews\StartView.axaml"/>
-        <AdditionalFiles Include="Views\ReportViews\EditBoxView.axaml"/>
-        <AdditionalFiles Include="Views\ReportViews\HistoryView.axaml"/>
-        <AdditionalFiles Include="Views\ReportViews\LogsView.axaml"/>
-        <AdditionalFiles Include="Views\ReportViews\PageLogsView.axaml"/>
-        <AdditionalFiles Include="Views\ReportViews\WhatLinksHereView.axaml"/>
+        <AdditionalFiles Include="Views\ControlViews\DisambigView.axaml" />
+        <AdditionalFiles Include="Views\ControlViews\MoreView.axaml" />
+        <AdditionalFiles Include="Views\ControlViews\OptionsView.axaml" />
+        <AdditionalFiles Include="Views\ControlViews\SkipView.axaml" />
+        <AdditionalFiles Include="Views\ControlViews\StartView.axaml" />
+        <AdditionalFiles Include="Views\ReportViews\EditBoxView.axaml" />
+        <AdditionalFiles Include="Views\ReportViews\HistoryView.axaml" />
+        <AdditionalFiles Include="Views\ReportViews\LogsView.axaml" />
+        <AdditionalFiles Include="Views\ReportViews\PageLogsView.axaml" />
+        <AdditionalFiles Include="Views\ReportViews\WhatLinksHereView.axaml" />
     </ItemGroup>
 
     <ItemGroup>
