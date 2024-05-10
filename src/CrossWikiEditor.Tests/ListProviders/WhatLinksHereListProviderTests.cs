@@ -34,7 +34,7 @@ public sealed class WhatLinksHereListProviderTests : ListProvidersBaseTest<WhatL
     {
         // arrange
         _dialogService.ShowDialog<NamespacesAndRedirectFilterOptions>(_selectNamespacesAndRedirectFilterViewModel)
-            .Returns((NamespacesAndRedirectFilterOptions) null);
+            .Returns((NamespacesAndRedirectFilterOptions?) null);
         _sut.Param = "not empty";
 
         // act
@@ -86,8 +86,8 @@ public sealed class WhatLinksHereListProviderTests : ListProvidersBaseTest<WhatL
     {
         // arrange
         _dialogService.ShowDialog<NamespacesAndRedirectFilterOptions>(_selectNamespacesAndRedirectFilterViewModel)
-            .Returns(new NamespacesAndRedirectFilterOptions(new []{3, 4}, allowRedirectLinks, redirectFilter));
-        _pageService.GetPagesLinkedTo(_userPrefs.UrlApi(), _sut.Param, Arg.Is<int[]?>(x => x.SequenceEqual(new []{3, 4})), allowRedirectLinks, filterRedirects, 73)
+            .Returns(new NamespacesAndRedirectFilterOptions([3, 4], allowRedirectLinks, redirectFilter));
+        _pageService.GetPagesLinkedTo(_userPrefs.UrlApi(), _sut.Param, Arg.Is<int[]>(x => x.SequenceEqual(new []{3, 4})), allowRedirectLinks, filterRedirects, 73)
             .Returns(Result<List<WikiPageModel>>.Success(_expectedPages));
 
         await MakeList_ShouldReturnServiceResults(_expectedPages);
@@ -105,8 +105,8 @@ public sealed class WhatLinksHereListProviderTests : ListProvidersBaseTest<WhatL
     {
         // arrange
         _dialogService.ShowDialog<NamespacesAndRedirectFilterOptions>(_selectNamespacesAndRedirectFilterViewModel)
-            .Returns(new NamespacesAndRedirectFilterOptions(new []{3, 4}, allowRedirectLinks, redirectFilter));
-        _pageService.GetPagesLinkedTo(_userPrefs.UrlApi(), _sut.Param, Arg.Is<int[]?>(x => x.SequenceEqual(new []{3, 4})), allowRedirectLinks, filterRedirects, 73)
+            .Returns(new NamespacesAndRedirectFilterOptions([3, 4], allowRedirectLinks, redirectFilter));
+        _pageService.GetPagesLinkedTo(_userPrefs.UrlApi(), _sut.Param, Arg.Is<int[]>(x => x.SequenceEqual(new []{3, 4})), allowRedirectLinks, filterRedirects, 73)
             .Returns(Result<List<WikiPageModel>>.Failure("failed to get pages"));
 
         // act

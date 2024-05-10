@@ -122,8 +122,6 @@ public sealed class StatusBarViewModelTests : BaseTest
     [Test]
     public void Constructor_ShouldSubscribeToNewAccountLoggedInMessage()
     {
-        MessageHandler<object, NewAccountLoggedInMessage> handler = null;
-
         // Act
         var vm = new StatusBarViewModel(_viewModelFactory, _dialogService, _userPreferencesService, _messenger);
 
@@ -134,8 +132,6 @@ public sealed class StatusBarViewModelTests : BaseTest
     [Test]
     public void Constructor_ShouldSubscribeToProjectChangedMessage()
     {
-        MessageHandler<object, ProjectChangedMessage> handler = null;
-
         // Act
         var vm = new StatusBarViewModel(_viewModelFactory, _dialogService, _userPreferencesService, _messenger);
 
@@ -146,8 +142,6 @@ public sealed class StatusBarViewModelTests : BaseTest
     [Test]
     public void Constructor_ShouldSubscribeToLanguageCodeChangedMessage()
     {
-        MessageHandler<object, LanguageCodeChangedMessage> handler = null;
-
         // Act
         var vm = new StatusBarViewModel(_viewModelFactory, _dialogService, _userPreferencesService, _messenger);
 

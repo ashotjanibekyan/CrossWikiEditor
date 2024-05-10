@@ -34,7 +34,7 @@ public sealed class TextFileListProviderTests : ListProvidersBaseTest<TextFileLi
         // assert
         result.IsSuccessful.Should().BeTrue();
         result.Value.Should().NotBeNull();
-        result.Value[0].Title.Should().Be("title1");
+        result.Value![0].Title.Should().Be("title1");
         result.Value[1].Title.Should().Be("Category:title (f e )2");
         result.Value[2].Title.Should().Be("title3");
         result.Value[3].Title.Should().Be("titl e3");
@@ -63,7 +63,7 @@ public sealed class TextFileListProviderTests : ListProvidersBaseTest<TextFileLi
         // assert
         result.IsSuccessful.Should().BeTrue();
         result.Value.Should().NotBeNull();
-        result.Value[0].Title.Should().Be("title1");
+        result.Value![0].Title.Should().Be("title1");
         result.Value[1].Title.Should().Be("Category:title (f e )2");
         result.Value[2].Title.Should().Be("title3");
         result.Value[3].Title.Should().Be("titl e3");
@@ -89,7 +89,7 @@ public sealed class TextFileListProviderTests : ListProvidersBaseTest<TextFileLi
         // assert
         result.IsSuccessful.Should().BeTrue();
         result.Value.Should().NotBeNull();
-        result.Value[0].Title.Should().Be("title1");
+        result.Value![0].Title.Should().Be("title1");
         result.Value[1].Title.Should().Be("title2");
         result.Value[2].Title.Should().Be("title3");
     }

@@ -101,7 +101,7 @@ public sealed class WikiClientCacheTests : BaseTest
         // assert
         result.IsSuccessful.Should().BeTrue();
         result.Value.Should().NotBeNull();
-        result.Value.Title.Should().Be("Վիքիպեդիա:Խորհրդարան");
+        result.Value!.Title.Should().Be("Վիքիպեդիա:Խորհրդարան");
         result.Value.NamespaceId.Should().Be(4);
     }
 

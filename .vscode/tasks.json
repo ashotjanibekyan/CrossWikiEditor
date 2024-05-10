@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/CrossWikiEditor/CrossWikiEditor.csproj",
+                "${workspaceFolder}/src/CrossWikiEditor/CrossWikiEditor.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],

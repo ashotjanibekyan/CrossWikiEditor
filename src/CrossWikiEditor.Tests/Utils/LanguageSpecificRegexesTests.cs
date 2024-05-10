@@ -27,6 +27,12 @@ public sealed class LanguageSpecificRegexesTests : BaseTest
     [Test]
     public void ExtractTitleTests()
     {
+        if (_sut.ExtractTitle is null)
+        {
+            Assert.Fail("LanguageSpecificRegexes isn't initialized properly");
+            return;
+        }
+        
         IsMatch(_sut.ExtractTitle, @"https://en.wikipedia.org/wiki/Foo");
         IsMatch(_sut.ExtractTitle, @"https://en.wikipedia.org/wiki/Foo_bar");
             

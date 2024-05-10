@@ -78,7 +78,7 @@ public sealed class HtmlScraperListProviderTests : ListProvidersBaseTest<HtmlScr
         // assert
         result.IsSuccessful.Should().BeTrue();
         result.Value.Should().NotBeNull();
-        result.Value[0].Title.Should().Be("Kotlin");
+        result.Value![0].Title.Should().Be("Kotlin");
         result.Value[1].Title.Should().Be("Ռեո դղյակ");
     }
     

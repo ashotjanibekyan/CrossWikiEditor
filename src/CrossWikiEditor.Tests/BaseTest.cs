@@ -23,7 +23,6 @@ public abstract class BaseTest
     protected ICategoryService _categoryService;
     protected IWikiClientCache _wikiClientCache;
 
-
     protected void SetUpServices()
     {
         _fileDialogService = Substitute.For<IFileDialogService>();

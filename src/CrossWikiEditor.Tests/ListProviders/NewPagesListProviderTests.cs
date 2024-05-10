@@ -33,7 +33,7 @@ public sealed class NewPagesListProviderTests : ListProvidersBaseTest<NewPagesLi
     public async Task MakeList_ShouldReturnPageServiceResults()
     {
         // arrange
-        _pageService.GetNewPages(_userPrefs.UrlApi(), Arg.Is<int[]?>(x => x.SequenceEqual(new[] {7, 2, 3, 9})), 73)
+        _pageService.GetNewPages(_userPrefs.UrlApi(), Arg.Is<int[]>(x => x.SequenceEqual(new[] {7, 2, 3, 9})), 73)
             .Returns(Result<List<WikiPageModel>>.Success(_expectedPages));
 
         await MakeList_ShouldReturnServiceResults(_expectedPages);
@@ -43,7 +43,7 @@ public sealed class NewPagesListProviderTests : ListProvidersBaseTest<NewPagesLi
     public async Task MakeList_ShouldReturnUnsuccessfulResult_WhenPageServiceReturnsUnsuccessfulResult()
     {
         // arrange
-        _pageService.GetNewPages(_userPrefs.UrlApi(), Arg.Is<int[]?>(x => x.SequenceEqual(new[] {7, 2, 3, 9})), 73)
+        _pageService.GetNewPages(_userPrefs.UrlApi(), Arg.Is<int[]>(x => x.SequenceEqual(new[] {7, 2, 3, 9})), 73)
             .Returns(Result<List<WikiPageModel>>.Failure("failed to get pages"));
 
         // act

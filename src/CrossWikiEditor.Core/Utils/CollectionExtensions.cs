@@ -9,7 +9,7 @@ public static class CollectionExtensions
         return new ObservableCollection<T>(enumerable);
     }
 
-    public static List<T> RandomSubset<T>(this List<T> sourceList, int count)
+    public static List<T> RandomSubset<T>(this List<T>? sourceList, int count)
     {
         ArgumentNullException.ThrowIfNull(sourceList);
 

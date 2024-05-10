@@ -118,7 +118,7 @@ public sealed class PetscanListProviderTests : ListProvidersBaseTest<PetscanList
         // assert
         result.IsSuccessful.Should().BeTrue();
         result.Value.Should().NotBeNull();
-        result.Value[0].Title.Should().Be("pagetitle1");
+        result.Value![0].Title.Should().Be("pagetitle1");
         result.Value[1].Title.Should().Be("pagetitle2");
         result.Value[2].Title.Should().Be("pagetitle3");
     }

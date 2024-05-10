@@ -14,8 +14,8 @@ jobs:
 
             - uses: actions/setup-dotnet@v3
               with:
-                  dotnet-version: 8.0.x
+                  dotnet-version: 9.0.x
                   dotnet-quality: 'preview'
 
             - name: CrossWikiEditor unit tests
-              run: dotnet test CrossWikiEditor.Tests/CrossWikiEditor.Tests.csproj -c Release --logger:nunit
+              run: dotnet test src/CrossWikiEditor.Tests/CrossWikiEditor.Tests.csproj -c Release --logger:nunit

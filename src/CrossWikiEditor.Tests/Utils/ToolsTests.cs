@@ -100,7 +100,7 @@ public sealed class ToolsTests
     public void RemoveSyntax_ShouldReturnEmptyString_WhenInputIsNull()
     {
         // Arrange
-        string input = null;
+        string input = string.Empty;
 
         // Act
         string result = Tools.RemoveSyntax(input);

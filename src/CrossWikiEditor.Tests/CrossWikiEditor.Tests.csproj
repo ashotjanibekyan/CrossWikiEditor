@@ -1,10 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <ImplicitUsings>12</ImplicitUsings>
-        <Nullable>enable</Nullable>
+        <TargetFramework>net9.0</TargetFramework>
         <LangVersion>preview</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <NoWarn>8618</NoWarn>
         <IsPackable>false</IsPackable>
     </PropertyGroup>
 

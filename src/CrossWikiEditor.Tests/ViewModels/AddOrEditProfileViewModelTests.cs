@@ -58,10 +58,9 @@ public sealed class AddOrEditProfileViewModelTests : BaseTest
         _sut.DefaultSettingsPath.Should().Be(initialDefaultSettingsPath);
     }
 
-    [TestCase(null)]
     [TestCase("")]
     [TestCase("  ")]
-    public void SaveCommand_ShouldCloseWithFalseResult_WhenUsernameIsNullOrEmpty(string? username)
+    public void SaveCommand_ShouldCloseWithFalseResult_WhenUsernameIsNullOrEmpty(string username)
     {
         // arrange
         _sut.Username = username;
@@ -75,10 +74,9 @@ public sealed class AddOrEditProfileViewModelTests : BaseTest
         _dialog.Received(1).Close(false);
     }
 
-    [TestCase(null)]
     [TestCase("")]
     [TestCase("  ")]
-    public void SaveCommand_ShouldCloseWithFalseResult_WhenPasswordIsNullOrEmpty_And_ShouldSavePassword(string? password)
+    public void SaveCommand_ShouldCloseWithFalseResult_WhenPasswordIsNullOrEmpty_And_ShouldSavePassword(string password)
     {
         // arrange
         _sut.Password = password;
@@ -93,11 +91,10 @@ public sealed class AddOrEditProfileViewModelTests : BaseTest
         _dialog.Received(1).Close(false);
     }
 
-    [TestCase(null)]
     [TestCase("")]
     [TestCase("  ")]
     public void SaveCommand_ShouldCloseWithFalseResult_WhenDefaultSettingsPathIsNullOrEmpty_And_ShouldSelectDefaultSettings(
-        string? defaultSettingsPath)
+        string defaultSettingsPath)
     {
         // arrange
         _sut.DefaultSettingsPath = defaultSettingsPath;

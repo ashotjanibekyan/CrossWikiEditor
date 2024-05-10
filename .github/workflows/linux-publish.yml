@@ -13,9 +13,9 @@ jobs:
         
         env:
             Solution_Name: CrossWikiEditor.sln
-            Project_Directory: CrossWikiEditor
-            Project_Path: CrossWikiEditor/CrossWikiEditor.csproj
-            Publish_Profile_Path: CrossWikiEditor/Properties/PublishProfiles/Linux64.pubxml
+            Project_Directory: src/CrossWikiEditor
+            Project_Path: src/CrossWikiEditor/CrossWikiEditor.csproj
+            Publish_Profile_Path: src/CrossWikiEditor/Properties/PublishProfiles/Linux64.pubxml
         
         steps:
             - name: Checkout

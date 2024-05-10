@@ -37,7 +37,7 @@ public sealed class RandomListProviderTests : ListProvidersBaseTest<RandomListPr
     {
         // arrange
         _dialogService.ShowDialog<NamespacesAndRedirectFilterOptions>(_selectNamespacesAndRedirectFilterViewModel)
-            .Returns((NamespacesAndRedirectFilterOptions) null);
+            .Returns((NamespacesAndRedirectFilterOptions?) null);
 
         // act
         await _sut.GetAdditionalParams();
@@ -73,7 +73,7 @@ public sealed class RandomListProviderTests : ListProvidersBaseTest<RandomListPr
         // arrange
         _dialogService.ShowDialog<NamespacesAndRedirectFilterOptions>(_selectNamespacesAndRedirectFilterViewModel)
             .Returns(new NamespacesAndRedirectFilterOptions(new []{3, 4}, allowRedirectLinks, redirectFilter));
-        _pageService.GetRandomPages(_userPrefs.UrlApi(), Arg.Is<int[]?>(x => x.SequenceEqual(new []{3, 4})), filterRedirects, 73)
+        _pageService.GetRandomPages(_userPrefs.UrlApi(), Arg.Is<int[]>(x => x.SequenceEqual(new []{3, 4})), filterRedirects, 73)
             .Returns(Result<List<WikiPageModel>>.Success(_expectedPages));
 
         await MakeList_ShouldReturnServiceResults(_expectedPages);
@@ -91,8 +91,8 @@ public sealed class RandomListProviderTests : ListProvidersBaseTest<RandomListPr
     {
         // arrange
         _dialogService.ShowDialog<NamespacesAndRedirectFilterOptions>(_selectNamespacesAndRedirectFilterViewModel)
-            .Returns(new NamespacesAndRedirectFilterOptions(new []{3, 4}, allowRedirectLinks, redirectFilter));
-        _pageService.GetRandomPages(_userPrefs.UrlApi(), Arg.Is<int[]?>(x => x.SequenceEqual(new []{3, 4})), filterRedirects, 73)
+            .Returns(new NamespacesAndRedirectFilterOptions([3, 4], allowRedirectLinks, redirectFilter));
+        _pageService.GetRandomPages(_userPrefs.UrlApi(), Arg.Is<int[]>(x => x.SequenceEqual(new []{3, 4})), filterRedirects, 73)
             .Returns(Result<List<WikiPageModel>>.Failure("failed to get pages"));
 
         // act

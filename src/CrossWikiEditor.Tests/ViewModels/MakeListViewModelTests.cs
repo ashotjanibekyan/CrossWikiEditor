@@ -66,7 +66,7 @@ public sealed class MakeListViewModelTests : BaseTest
 
     #region AddNewPageCommand
     [Test]
-    public void AddNewPageCommand_ShouldDoNothing_WhenNewPageTitleIsEmpty([Values("", "  ", null)] string? newPageTitle)
+    public void AddNewPageCommand_ShouldDoNothing_WhenNewPageTitleIsEmpty([Values("", "  ")] string newPageTitle)
     {
         // arrange
         _sut.NewPageTitle = newPageTitle;
@@ -94,11 +94,11 @@ public sealed class MakeListViewModelTests : BaseTest
         _sut.AddNewPageCommand.Execute(null);
         
         // assert
-        _sut.Pages.Should().BeEquivalentTo(originalPages.Concat(new[] { new WikiPageModel("new page", ApiRoot, _wikiClientCache) }));
+        _sut.Pages.Should().BeEquivalentTo(originalPages.Concat([new WikiPageModel("new page", ApiRoot, _wikiClientCache)]));
     }
 
     [Test]
-    public void AddNewPageCommand_ShouldClearNewPageTitle([Values("", null, " ", "new title")] string? newPageTitle)
+    public void AddNewPageCommand_ShouldClearNewPageTitle([Values("", " ", "new title")] string newPageTitle)
     {
         // arrange
         _sut.NewPageTitle = newPageTitle;

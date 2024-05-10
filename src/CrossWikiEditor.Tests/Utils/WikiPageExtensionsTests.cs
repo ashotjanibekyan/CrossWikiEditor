@@ -5,7 +5,6 @@ namespace CrossWikiEditor.Tests.Utils;
 
 public class WikiPageExtensionsTests : BaseTest
 {
-    private WikiClientCache _wikiClientCache;
     private const string ApiRoot = "https://hy.wikipedia.org/w/api.php?";
 
     [OneTimeSetUp]

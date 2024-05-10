@@ -13,10 +13,10 @@ jobs:
         
         env:
             Solution_Name: CrossWikiEditor.sln
-            Project_Directory: CrossWikiEditor
-            Project_Path: CrossWikiEditor/CrossWikiEditor.csproj
-            Publish_Profile_M1_Path: CrossWikiEditor/Properties/PublishProfiles/MacArm.pubxml
-            Publish_Profile_Intel_Path: CrossWikiEditor/Properties/PublishProfiles/MacIntel.pubxml
+            Project_Directory: src/CrossWikiEditor
+            Project_Path: src/CrossWikiEditor/CrossWikiEditor.csproj
+            Publish_Profile_M1_Path: src/CrossWikiEditor/Properties/PublishProfiles/MacArm.pubxml
+            Publish_Profile_Intel_Path: src/CrossWikiEditor/Properties/PublishProfiles/MacIntel.pubxml
         
         steps:
             - name: Checkout
