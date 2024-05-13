@@ -89,7 +89,7 @@ public sealed class MakeListViewModelTests : BaseTest
         List<WikiPageModel>? originalPages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(3);
         _sut.Pages = originalPages.ToObservableCollection();
         _wikiClientCache.GetWikiPageModel(ApiRoot, "new page")
-            .Returns(args => Result<WikiPageModel>.Success(new WikiPageModel("new page", ApiRoot, _wikiClientCache)));
+            .Returns(args => new WikiPageModel("new page", ApiRoot, _wikiClientCache));
 
         // act
         _sut.AddNewPageCommand.Execute(null);
@@ -117,7 +117,7 @@ public sealed class MakeListViewModelTests : BaseTest
         // arrange
         _sut.NewPageTitle = "    new page title   ";
         _wikiClientCache.GetWikiPageModel(ApiRoot, Arg.Any<string>())
-            .Returns(args => Result<WikiPageModel>.Success(new WikiPageModel("new page title", ApiRoot, _wikiClientCache)));
+            .Returns(args => new WikiPageModel("new page title", ApiRoot, _wikiClientCache));
         
         // act
         _sut.AddNewPageCommand.Execute(null);
@@ -202,7 +202,7 @@ public sealed class MakeListViewModelTests : BaseTest
         listProvider.CanMake.Returns(true);
         listProvider.GetLimit().Returns(42);
         List<WikiPageModel>? pages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(42);
-        listProvider.MakeList(42).Returns(Result<List<WikiPageModel>>.Success(pages));
+        listProvider.MakeList(42).Returns(pages);
         
         // act
         _sut.MakeListCommand.Execute(42);
@@ -242,7 +242,7 @@ public sealed class MakeListViewModelTests : BaseTest
         listProvider.CanMake.Returns(true);
 
         List<WikiPageModel>? newPages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(10);
-        listProvider.MakeList().Returns(Result<List<WikiPageModel>>.Success(newPages));
+        listProvider.MakeList().Returns(newPages);
 
         // act
         _sut.MakeListCommand.Execute(null);
@@ -258,7 +258,7 @@ public sealed class MakeListViewModelTests : BaseTest
         IUnlimitedListProvider listProvider = Substitute.For<IUnlimitedListProvider>();
         _sut.SelectedListProvider = listProvider;
         listProvider.CanMake.Returns(true);
-        listProvider.MakeList().Returns(Result<List<WikiPageModel>>.Failure("error message"));
+        listProvider.MakeList().Returns(new Exception("error message"));
         List<WikiPageModel>? existingPages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(10);
         _sut.Pages = existingPages.ToObservableCollection();
 
@@ -308,7 +308,7 @@ public sealed class MakeListViewModelTests : BaseTest
         {
             UserWiki = new("hy", ProjectEnum.Wikipedia)
         });
-        _systemService.OpenLinkInBrowser(Arg.Any<string>()).Returns(Result.Success());
+        _systemService.OpenLinkInBrowser(Arg.Any<string>()).Returns(Unit.Default);
 
         // act
         _sut.OpenInBrowserCommand.Execute(null);
@@ -347,7 +347,7 @@ public sealed class MakeListViewModelTests : BaseTest
         {
             UserWiki = new("hy", ProjectEnum.Wikipedia)
         });
-        _systemService.OpenLinkInBrowser(Arg.Any<string>()).Returns(Result.Success());
+        _systemService.OpenLinkInBrowser(Arg.Any<string>()).Returns(Unit.Default);
 
         // act
         _sut.OpenHistoryInBrowserCommand.Execute(null);
@@ -524,7 +524,7 @@ public sealed class MakeListViewModelTests : BaseTest
         _systemService.GetClipboardTextAsync()
             .Returns($"page3{Environment.NewLine}fewfew{Environment.NewLine}ofiewf203{Environment.NewLine} foiwej   ");
         _wikiClientCache.GetWikiPageModel(ApiRoot, Arg.Any<string>())
-            .Returns(args => Result<WikiPageModel>.Success(new WikiPageModel(((string) args[1]).Trim(), ApiRoot, _wikiClientCache)));
+            .Returns(args => new WikiPageModel(((string) args[1]).Trim(), ApiRoot, _wikiClientCache));
         
         // act
         _sut.PasteCommand.Execute(null);
@@ -686,7 +686,7 @@ public sealed class MakeListViewModelTests : BaseTest
         List<WikiPageModel>? talkPages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(10);
         _sut.Pages = pages.ToObservableCollection();
         _pageService.ConvertToTalk(Arg.Is<List<WikiPageModel>>(argPages => argPages.SequenceEqual(pages)))
-                    .Returns(Result<List<WikiPageModel>>.Success(talkPages));
+                    .Returns(talkPages);
 
         // act
         _sut.ConvertToTalkPagesCommand.Execute(null);
@@ -703,7 +703,7 @@ public sealed class MakeListViewModelTests : BaseTest
         List<WikiPageModel>? pages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(10);
         _sut.Pages = pages.ToObservableCollection();
         _pageService.ConvertToTalk(Arg.Is<List<WikiPageModel>>(argPages => argPages.SequenceEqual(pages)))
-            .Returns(Result<List<WikiPageModel>>.Failure("can not convert"));
+            .Returns(new Exception("can not convert"));
 
         // act
         _sut.ConvertToTalkPagesCommand.Execute(null);
@@ -722,7 +722,7 @@ public sealed class MakeListViewModelTests : BaseTest
         List<WikiPageModel>? talkPages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(10);
         _sut.Pages = pages.ToObservableCollection();
         _pageService.ConvertToSubject(Arg.Is<List<WikiPageModel>>(argPages => argPages.SequenceEqual(pages)))
-            .Returns(Result<List<WikiPageModel>>.Success(talkPages));
+            .Returns(talkPages);
 
         // act
         _sut.ConvertFromTalkPagesCommand.Execute(null);
@@ -739,7 +739,7 @@ public sealed class MakeListViewModelTests : BaseTest
         List<WikiPageModel>? pages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(10);
         _sut.Pages = pages.ToObservableCollection();
         _pageService.ConvertToSubject(Arg.Is<List<WikiPageModel>>(argPages => argPages.SequenceEqual(pages)))
-            .Returns(Result<List<WikiPageModel>>.Failure("can not convert"));
+            .Returns(new Exception("can not convert"));
 
         // act
         _sut.ConvertFromTalkPagesCommand.Execute(null);

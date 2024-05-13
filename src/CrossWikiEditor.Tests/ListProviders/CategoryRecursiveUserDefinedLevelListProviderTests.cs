@@ -47,7 +47,7 @@ public sealed class CategoryRecursiveUserDefinedLevelListProviderTests : ListPro
     {
         // arrange
         _categoryService.GetPagesOfCategory(_userSettings.GetApiUrl(), _sut.Param, 73, 12)
-            .Returns(Result<List<WikiPageModel>>.Success(_expectedPages));
+            .Returns(_expectedPages);
 
         await MakeList_ShouldReturnServiceResults(_expectedPages);
     }
@@ -57,7 +57,7 @@ public sealed class CategoryRecursiveUserDefinedLevelListProviderTests : ListPro
     {
         // arrange
         _categoryService.GetPagesOfCategory(_userSettings.GetApiUrl(), _sut.Param, 73, 12)
-            .Returns(Result<List<WikiPageModel>>.Failure("failed to get pages"));
+            .Returns(new Exception("failed to get pages"));
 
         // act
         await _sut.GetAdditionalParams();
@@ -65,7 +65,7 @@ public sealed class CategoryRecursiveUserDefinedLevelListProviderTests : ListPro
 
         // assert
         result.IsSuccessful.Should().BeFalse();
-        result.Error.Should().Be("failed to get pages");
+        result.ErrorMessage.Should().Be("failed to get pages");
     }
 
     [Test]
@@ -78,7 +78,7 @@ public sealed class CategoryRecursiveUserDefinedLevelListProviderTests : ListPro
 
         // assert
         result.IsSuccessful.Should().BeFalse();
-        result.Error.Should().Be("Please select recursive level.");
+        result.ErrorMessage.Should().Be("Please select recursive level.");
     }
 
     [TearDown]

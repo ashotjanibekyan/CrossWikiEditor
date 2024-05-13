@@ -91,7 +91,7 @@ public sealed partial class ProfilesViewModel(IFileDialogService fileDialogServi
         UserSettings? currentUserSettings = userPreferencesService.GetUserSettings(profile.DefaultSettingsPath);
         currentUserSettings ??= userPreferencesService.GetCurrentSettings();
 
-        Result loginResult = await userService.Login(profile, currentUserSettings.GetApiUrl());
+        Result<Unit> loginResult = await userService.Login(profile, currentUserSettings.GetApiUrl());
         if (loginResult is { IsSuccessful: true })
         {
             messenger.Send(new NewAccountLoggedInMessage(profile));
@@ -104,9 +104,9 @@ public sealed partial class ProfilesViewModel(IFileDialogService fileDialogServi
         }
         else
         {
-            if (!string.IsNullOrWhiteSpace(loginResult?.Error))
+            if (!string.IsNullOrWhiteSpace(loginResult.ErrorMessage))
             {
-                await dialogService.Alert("Login Attempt Unsuccessful", loginResult.Error);
+                await dialogService.Alert("Login Attempt Unsuccessful", loginResult.ErrorMessage);
             }
             else
             {

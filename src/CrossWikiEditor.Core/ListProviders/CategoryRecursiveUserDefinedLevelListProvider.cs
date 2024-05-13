@@ -15,7 +15,7 @@ public sealed class CategoryRecursiveUserDefinedLevelListProvider(ICategoryServi
     {
         if (_recursionLevel is null)
         {
-            return Result<List<WikiPageModel>>.Failure("Please select recursive level.");
+            return new Exception("Please select recursive level.");
         }
 
         UserSettings userSettings = userPreferencesService.GetCurrentSettings();

@@ -16,6 +16,6 @@ public sealed class LinksOnPageBlueListProvider(IDialogService dialogService,
         }
 
         bool[] existsTable = await Task.WhenAll(result.Value.Select(p => p.Exists()));
-        return Result<List<WikiPageModel>>.Success(result.Value.Where((_, index) => existsTable[index]).ToList());
+        return result.Value.Where((_, index) => existsTable[index]).ToList();
     }
 }

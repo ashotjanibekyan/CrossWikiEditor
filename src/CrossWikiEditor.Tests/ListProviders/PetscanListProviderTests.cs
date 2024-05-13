@@ -58,7 +58,7 @@ public sealed class PetscanListProviderTests : ListProvidersBaseTest<PetscanList
         // assert
         result.IsSuccessful.Should().BeFalse();
         result.Value.Should().BeNull();
-        result.Error.Should().Be("exception message");
+        result.ErrorMessage.Should().Be("exception message");
     }
     
     [Test]
@@ -78,7 +78,7 @@ public sealed class PetscanListProviderTests : ListProvidersBaseTest<PetscanList
         // assert
         result.IsSuccessful.Should().BeFalse();
         result.Value.Should().BeNull();
-        result.Error.Should().Be("Could not get the list. \nerror message");
+        result.ErrorMessage.Should().Be("Could not get the list. \nerror message");
     }
 
     [Test]
@@ -98,7 +98,7 @@ public sealed class PetscanListProviderTests : ListProvidersBaseTest<PetscanList
         // assert
         result.IsSuccessful.Should().BeFalse();
         result.Value.Should().BeNull();
-        result.Error.Should().Be("fwe is not a valid PSID");
+        result.ErrorMessage.Should().Be("fwe is not a valid PSID");
     }
 
     [Test]

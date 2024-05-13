@@ -19,7 +19,7 @@ public sealed class DisambiguationPagesListProviderTests : ListProvidersBaseTest
     {
         // arrange
         _pageService.GetPagesWithProp(_userSettings.GetApiUrl(), "disambiguation", 73)
-            .Returns(Result<List<WikiPageModel>>.Success(_expectedPages));
+            .Returns(_expectedPages);
 
         await MakeList_ShouldReturnServiceResults(_expectedPages);
     }
@@ -28,14 +28,14 @@ public sealed class DisambiguationPagesListProviderTests : ListProvidersBaseTest
     public async Task MakeList_ShouldReturnUnsuccessfulResult_WhenPageServiceReturnsUnsuccessfulResult()
     {
         // arrange
-        _pageService.GetPagesWithProp(_userSettings.GetApiUrl(), "disambiguation", 73).Returns(Result<List<WikiPageModel>>.Failure("failed to get pages"));
+        _pageService.GetPagesWithProp(_userSettings.GetApiUrl(), "disambiguation", 73).Returns(new Exception("failed to get pages"));
 
         // act
         Result<List<WikiPageModel>> result = await _sut.MakeList(73);
 
         // assert
         result.IsSuccessful.Should().BeFalse();
-        result.Error.Should().Be("failed to get pages");
+        result.ErrorMessage.Should().Be("failed to get pages");
     }
 
     [TearDown]

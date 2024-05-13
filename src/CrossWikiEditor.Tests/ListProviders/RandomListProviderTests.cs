@@ -74,7 +74,7 @@ public sealed class RandomListProviderTests : ListProvidersBaseTest<RandomListPr
         _dialogService.ShowDialog<NamespacesAndRedirectFilterOptions>(_selectNamespacesAndRedirectFilterViewModel)
             .Returns(new NamespacesAndRedirectFilterOptions(new []{3, 4}, allowRedirectLinks, redirectFilter));
         _pageService.GetRandomPages(_userSettings.GetApiUrl(), Arg.Is<int[]>(x => x.SequenceEqual(new []{3, 4})), filterRedirects, 73)
-            .Returns(Result<List<WikiPageModel>>.Success(_expectedPages));
+            .Returns(_expectedPages);
 
         await MakeList_ShouldReturnServiceResults(_expectedPages);
     }
@@ -93,7 +93,7 @@ public sealed class RandomListProviderTests : ListProvidersBaseTest<RandomListPr
         _dialogService.ShowDialog<NamespacesAndRedirectFilterOptions>(_selectNamespacesAndRedirectFilterViewModel)
             .Returns(new NamespacesAndRedirectFilterOptions([3, 4], allowRedirectLinks, redirectFilter));
         _pageService.GetRandomPages(_userSettings.GetApiUrl(), Arg.Is<int[]>(x => x.SequenceEqual(new []{3, 4})), filterRedirects, 73)
-            .Returns(Result<List<WikiPageModel>>.Failure("failed to get pages"));
+            .Returns(new Exception("failed to get pages"));
 
         // act
         await _sut.GetAdditionalParams();
@@ -101,7 +101,7 @@ public sealed class RandomListProviderTests : ListProvidersBaseTest<RandomListPr
 
         // assert
         result.IsSuccessful.Should().BeFalse();
-        result.Error.Should().Be("failed to get pages");
+        result.ErrorMessage.Should().Be("failed to get pages");
     }
     
     [TearDown]

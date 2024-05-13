@@ -21,19 +21,19 @@ public sealed class PetscanListProvider(IHttpClientFactory httpClientFactory, IU
                 }
                 else
                 {
-                    return Result<List<WikiPageModel>>.Failure($"Could not get the list. \n{await result.Content.ReadAsStringAsync()}");
+                    return new Exception($"Could not get the list. \n{await result.Content.ReadAsStringAsync()}");
                 }
             }
             else
             {
-                return Result<List<WikiPageModel>>.Failure($"{Param} is not a valid PSID");
+                return new Exception($"{Param} is not a valid PSID");
             }
             
-            return Result<List<WikiPageModel>>.Success(wikiPageModels);
+            return wikiPageModels;
         }
         catch (Exception e)
         {
-            return Result<List<WikiPageModel>>.Failure(e.Message);
+            return e;
         }
     }
 }

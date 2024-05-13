@@ -1,46 +1,42 @@
-﻿namespace CrossWikiEditor.Core.Utils;
+﻿using System.Diagnostics.CodeAnalysis;
 
-public sealed class Result
+namespace CrossWikiEditor.Core.Utils;
+
+public readonly struct Result<TResult> : IEquatable<Result<TResult>>
 {
-    private Result()
+    public Result(TResult result)
     {
+        IsSuccessful = true;
+        Value = result;
+        Exception = default;
+        ErrorMessage = string.Empty;
     }
 
-    public static Result Failure(string failureMessage)
+    public Result(Exception exception)
     {
-        return new Result { IsSuccessful = false, Error = failureMessage };
+        IsSuccessful = false;
+        Value = default;
+        Exception = exception;
+        ErrorMessage = Exception.Message;
     }
 
-    public static Result Success()
-    {
-        return new Result { IsSuccessful = true };
-    }
+    [MemberNotNullWhen(returnValue: true, nameof(Value))]
+    public bool IsSuccessful { get; }
 
-    public bool IsSuccessful { get; private init; } = true;
+    [MemberNotNullWhen(returnValue: true, nameof(ErrorMessage))]
+    public bool IsError => !IsSuccessful;
 
-    public string Error { get; private init; } = string.Empty;
-}
+    public TResult? Value { get; }
 
-public sealed class Result<T>
-{
-    private Result(bool isSuccessful, T? value, string? error)
-    {
-        IsSuccessful = isSuccessful;
-        Value = value;
-        Error = error?.Trim();
-    }
+    public Exception? Exception { get; }
+    public string ErrorMessage { get; }
 
-    public static Result<T> Success(T result)
-    {
-        return new Result<T>(true, result, null);
-    }
+    public bool Equals(Result<TResult> other) => IsSuccessful && other.IsSuccessful && Equals(Value, other.Value);
+    public override bool Equals(object? obj) => obj is Result<TResult> && Equals((Result<TResult>) obj);
+    public static bool operator ==(Result<TResult> left, Result<TResult> right) => left.Equals(right);
+    public static bool operator !=(Result<TResult> left, Result<TResult> right) => !(left == right);
+    public override int GetHashCode() => HashCode.Combine(IsSuccessful, Value, Exception, ErrorMessage);
 
-    public static Result<T> Failure(string errorMessage)
-    {
-        return new Result<T>(false, default, errorMessage);
-    }
-
-    public bool IsSuccessful { get; private init; }
-    public T? Value { get; private init; }
-    public string? Error { get; set; }
+    public static implicit operator Result<TResult>(TResult value) => new(value);
+    public static implicit operator Result<TResult>(Exception value) => new(value);
 }

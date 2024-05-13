@@ -12,7 +12,7 @@ namespace CrossWikiEditor.Services;
 
 public sealed class SystemService(IClipboard clipboard, ILogger logger) : ISystemService
 {
-    public Result OpenLinkInBrowser(string url)
+    public Result<Unit> OpenLinkInBrowser(string url)
     {
         try
         {
@@ -22,12 +22,12 @@ public sealed class SystemService(IClipboard clipboard, ILogger logger) : ISyste
                 UseShellExecute = true
             };
             Process.Start(psi);
-            return Result.Success();
+            return Unit.Default;
         }
         catch (Exception e)
         {
             logger.Fatal(e, "Failed to open link in browser");
-            return Result.Failure(e.Message);
+            return e;
         }
     }
 

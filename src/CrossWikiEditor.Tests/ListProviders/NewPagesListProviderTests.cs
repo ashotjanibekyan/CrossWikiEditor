@@ -34,7 +34,7 @@ public sealed class NewPagesListProviderTests : ListProvidersBaseTest<NewPagesLi
     {
         // arrange
         _pageService.GetNewPages(_userSettings.GetApiUrl(), Arg.Is<int[]>(x => x.SequenceEqual(new[] {7, 2, 3, 9})), 73)
-            .Returns(Result<List<WikiPageModel>>.Success(_expectedPages));
+            .Returns(_expectedPages);
 
         await MakeList_ShouldReturnServiceResults(_expectedPages);
     }
@@ -44,7 +44,7 @@ public sealed class NewPagesListProviderTests : ListProvidersBaseTest<NewPagesLi
     {
         // arrange
         _pageService.GetNewPages(_userSettings.GetApiUrl(), Arg.Is<int[]>(x => x.SequenceEqual(new[] {7, 2, 3, 9})), 73)
-            .Returns(Result<List<WikiPageModel>>.Failure("failed to get pages"));
+            .Returns(new Exception("failed to get pages"));
 
         // act
         await _sut.GetAdditionalParams();
@@ -52,7 +52,7 @@ public sealed class NewPagesListProviderTests : ListProvidersBaseTest<NewPagesLi
 
         // assert
         result.IsSuccessful.Should().BeFalse();
-        result.Error.Should().Be("failed to get pages");
+        result.ErrorMessage.Should().Be("failed to get pages");
     }
     
     [TearDown]

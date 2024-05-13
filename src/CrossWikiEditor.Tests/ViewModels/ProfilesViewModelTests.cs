@@ -1,3 +1,5 @@
+using CrossWikiEditor.Core.Utils;
+
 namespace CrossWikiEditor.Tests.ViewModels;
 
 public sealed class ProfilesViewModelTests : BaseTest
@@ -41,7 +43,7 @@ public sealed class ProfilesViewModelTests : BaseTest
         {
             UserWiki = new("hy", ProjectEnum.Wikipedia)
         });
-        _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Result.Success());
+        _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Unit.Default);
 
         // act
         _sut.LoginCommand.Execute(_dialog);
@@ -69,7 +71,7 @@ public sealed class ProfilesViewModelTests : BaseTest
             UserWiki = new("hy", ProjectEnum.Wikipedia)
         };
         _userPreferencesService.GetUserSettings(profile.DefaultSettingsPath).Returns(userSettings);
-        _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Result.Success());
+        _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Unit.Default);
 
         // act
         _sut.LoginCommand.Execute(_dialog);
@@ -97,7 +99,7 @@ public sealed class ProfilesViewModelTests : BaseTest
         {
             UserWiki = new("hy", ProjectEnum.Wikipedia)
         });
-        _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Result.Failure(string.Empty));
+        _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(new Exception(string.Empty));
 
         // act
         _sut.LoginCommand.Execute(_dialog);
@@ -123,7 +125,7 @@ public sealed class ProfilesViewModelTests : BaseTest
         {
             UserWiki = new("hy", ProjectEnum.Wikipedia)
         });
-        _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Result.Failure("this is an error message"));
+        _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(new Exception("this is an error message"));
 
         // act
         _sut.LoginCommand.Execute(_dialog);
@@ -285,7 +287,7 @@ public sealed class ProfilesViewModelTests : BaseTest
         {
             UserWiki = new("hyw", ProjectEnum.Wikipedia)
         });
-        _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Result.Success());
+        _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Unit.Default);
 
         // act
         _sut.QuickLoginCommand.Execute(_dialog);
@@ -328,7 +330,7 @@ public sealed class ProfilesViewModelTests : BaseTest
         {
             UserWiki = new("hyw", ProjectEnum.Wikipedia)
         });
-        _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Result.Success());
+        _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Unit.Default);
 
         // act
         _sut.QuickLoginCommand.Execute(_dialog);
@@ -348,7 +350,7 @@ public sealed class ProfilesViewModelTests : BaseTest
         {
             UserWiki = new("hyw", ProjectEnum.Wikipedia)
         });
-        _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Result.Failure("Password is wrong"));
+        _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(new Exception("Password is wrong"));
 
         // act
         _sut.QuickLoginCommand.Execute(_dialog);
@@ -368,7 +370,7 @@ public sealed class ProfilesViewModelTests : BaseTest
         {
             UserWiki = new("hy", ProjectEnum.Wikipedia)
         });
-        _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Result.Failure(errorMessage));
+        _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(new Exception(errorMessage));
 
         // act
         _sut.QuickLoginCommand.Execute(_dialog);

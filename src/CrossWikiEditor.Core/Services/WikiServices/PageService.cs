@@ -10,12 +10,12 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
             WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
             var gen = new FilesGenerator(site, pageName);
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
-            return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
+            return result.Select(x => new WikiPageModel(x)).ToList();
         }
         catch (Exception e)
         {
             logger.Fatal(e, "Failed to get pages. Site {Site}, page: {Page}, limit: {Limit}", apiRoot, pageName, limit);
-            return Result<List<WikiPageModel>>.Failure(e.Message);
+            return e;
         }
     }
 
@@ -36,12 +36,12 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
                 }
             };
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
-            return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
+            return result.Select(x => new WikiPageModel(x)).ToList();
         }
         catch (Exception e)
         {
             logger.Fatal(e, "Failed to get pages. Site {Root}, namespaces: {Namespaces}, limit: {Limit}", apiRoot, namespaces, limit);
-            return Result<List<WikiPageModel>>.Failure(e.Message);
+            return e;
         }
     }
 
@@ -57,12 +57,12 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
             WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
             var gen = new FileUsageGenerator(site, fileName);
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
-            return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
+            return result.Select(x => new WikiPageModel(x)).ToList();
         }
         catch (Exception e)
         {
             logger.Fatal(e, "Failed to get pages. Site {Site}, file: {File}, limit: {Limit}", apiRoot, fileName, limit);
-            return Result<List<WikiPageModel>>.Failure(e.Message);
+            return e;
         }
     }
 
@@ -73,12 +73,12 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
             WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
             var gen = new LinksGenerator(site, pageName);
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
-            return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
+            return result.Select(x => new WikiPageModel(x)).ToList();
         }
         catch (Exception e)
         {
             logger.Fatal(e, "Failed to get pages. Site {Site}, page: {Page}, limit: {Limit}", apiRoot, pageName, limit);
-            return Result<List<WikiPageModel>>.Failure(e.Message);
+            return e;
         }
     }
 
@@ -94,12 +94,12 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
                 NamespaceIds = namespaces
             };
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
-            return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
+            return result.Select(x => new WikiPageModel(x)).ToList();
         }
         catch (Exception e)
         {
             logger.Fatal(e, "Failed to get pages. Site {Site}, limit: {Limit}", apiRoot, limit);
-            return Result<List<WikiPageModel>>.Failure(e.Message);
+            return e;
         }
     }
 
@@ -113,12 +113,12 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
                 PaginationSize = 500
             };
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
-            return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
+            return result.Select(x => new WikiPageModel(x)).ToList();
         }
         catch (Exception e)
         {
             logger.Fatal(e, "Failed to get pages. Site {Site}, page: {Page}, limit: {Limit}", apiRoot, pageName, limit);
-            return Result<List<WikiPageModel>>.Failure(e.Message);
+            return e;
         }
     }
 
@@ -133,12 +133,12 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
                 NamespaceIds = namespaces
             };
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
-            return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
+            return result.Select(x => new WikiPageModel(x)).ToList();
         }
         catch (Exception e)
         {
             logger.Fatal(e, "Failed to get pages. Site {Site}, page: {Page}, namespaces: {Namespaces}, limit: {Limit}", apiRoot, pageName, namespaces, limit);
-            return Result<List<WikiPageModel>>.Failure(e.Message);
+            return e;
         }
     }
 
@@ -165,14 +165,14 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
                 AllowRedirectedLinks = allowRedirectLinks
             };
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
-            return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
+            return result.Select(x => new WikiPageModel(x)).ToList();
         }
         catch (Exception e)
         {
             logger.Fatal(e,
                 "Failed to get pages. Site {Site}, title: {Title}, namespaces: {Namespaces}, allowRedirectLinks: {AllowRedirectLinks}, filterRedirects: {FilterRedirects}, limit: {Limit}",
                 apiRoot, title, namespaces, allowRedirectLinks, filterRedirects, limit);
-            return Result<List<WikiPageModel>>.Failure(e.Message);
+            return e;
         }
     }
 
@@ -183,12 +183,12 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
             WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
             var gen = new PagesWithPropGenerator(site, param);
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
-            return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
+            return result.Select(x => new WikiPageModel(x)).ToList();
         }
         catch (Exception e)
         {
             logger.Fatal(e, "Failed to get pages. Site {Site}, property name: {Keyword}, limit: {Limit}", apiRoot, param, limit);
-            return Result<List<WikiPageModel>>.Failure(e.Message);
+            return e;
         }
     }
 
@@ -223,13 +223,13 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
                 ProtectionLevel = protectLevel
             };
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
-            return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
+            return result.Select(x => new WikiPageModel(x)).ToList();
         }
         catch (Exception e)
         {
             logger.Fatal(e, "Failed to get pages. Site {Site}, protectType: {ProtectType}, protectLevel: {ProtectLevel}, limit: {Limit}", apiRoot,
                 protectType, protectLevel, limit);
-            return Result<List<WikiPageModel>>.Failure(e.Message);
+            return e;
         }
     }
     
@@ -244,12 +244,12 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
                 PaginationSize = Math.Min(limit, 500)
             };
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
-            return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
+            return result.Select(x => new WikiPageModel(x)).ToList();
         }
         catch (Exception e)
         {
             logger.Fatal(e, "Failed to get pages. Site {Site}, keyword: {Keyword}, namespaces: {Namespaces}, limit: {Limit}", apiRoot, keyword, namespaces, limit);
-            return Result<List<WikiPageModel>>.Failure(e.Message);
+            return e;
         }
     }
 
@@ -263,12 +263,12 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
                 NamespaceIds = namespaces
             };
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
-            return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
+            return result.Select(x => new WikiPageModel(x)).ToList();
         }
         catch (Exception e)
         {
             logger.Fatal(e, "Failed to get pages. Site: {ApiRoot}, namespaces: {Namespaces}, limit: {Limit}", apiRoot, namespaces, limit);
-            return Result<List<WikiPageModel>>.Failure(e.Message);
+            return e;
         }
     }
 
@@ -283,12 +283,12 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
             };
 
             List<ExternalUrlUsageItem> result = await gen.EnumItemsAsync().Take(limit).ToListAsync();
-            return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(new WikiPage(wikiSite, x.Title, x.NamespaceId))).ToList());
+            return result.Select(x => new WikiPageModel(new WikiPage(wikiSite, x.Title, x.NamespaceId))).ToList();
         }
         catch (Exception e)
         {
             logger.Fatal(e, "Failed to get pages. Site: {ApiRoot}, Url: {Url} limit: {Limit}", apiRoot, url, limit);
-            return Result<List<WikiPageModel>>.Failure(e.Message);
+            return e;
         }
     }
 
@@ -321,13 +321,13 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
                 gen.Prefix = prefix;
             }
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
-            return Result<List<WikiPageModel>>.Success(result.Select(x => new WikiPageModel(x)).ToList());
+            return result.Select(x => new WikiPageModel(x)).ToList();
         }
         catch (Exception e)
         {
             logger.Fatal(e, "Failed to get pages. Site {Site}, start title: {StartTitle}, prefix: {Prefix}, namespace: {NamespaceId}, redirectsFilter {RedirectsFilter}, limit: {Limit}", apiRoot,
                 startTitle, prefix, namespaceId, redirectsFilter, limit);
-            return Result<List<WikiPageModel>>.Failure(e.Message);
+            return e;
         }
     }
 
@@ -339,7 +339,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
             where subjectPageResult is {IsSuccessful: true, Value: not null}
             select subjectPageResult.Value).ToList();
 
-        return Result<List<WikiPageModel>>.Success(result);
+        return result;
     }
 
     public Result<List<WikiPageModel>> ConvertToTalk(List<WikiPageModel> pages)
@@ -350,19 +350,19 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
             where talkPageResult is {IsSuccessful: true, Value: not null}
             select talkPageResult.Value).ToList();
 
-        return Result<List<WikiPageModel>>.Success(result);
+        return result;
     }
 
     private Result<WikiPageModel> ConvertToSubject(WikiPageModel page)
     {
         try
         {
-            return Result<WikiPageModel>.Success(page.ToSubjectPage());
+            return page.ToSubjectPage();
         }
         catch (Exception e)
         {
             logger.Fatal(e, "Failed to get pages. {WikiPageModel}", page);
-            return Result<WikiPageModel>.Failure(e.Message);
+            return e;
         }
     }
 
@@ -370,12 +370,12 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
     {
         try
         {
-            return Result<WikiPageModel>.Success(page.ToTalkPage());
+            return page.ToTalkPage();
         }
         catch (Exception e)
         {
             logger.Fatal(e, "Failed to get pages. {WikiPageModel}", page);
-            return Result<WikiPageModel>.Failure(e.Message);
+            return e;
         }
     }
 }

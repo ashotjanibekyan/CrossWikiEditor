@@ -18,8 +18,7 @@ public sealed class AllCategoriesListProviderTests : ListProvidersBaseTest<AllCa
     public async Task MakeList_ShouldReturnPageServiceResults()
     {
         // arrange
-        _categoryService.GetAllCategories(_userSettings.GetApiUrl(), _sut.Param, 73)
-            .Returns(Result<List<WikiPageModel>>.Success(_expectedPages));
+        _categoryService.GetAllCategories(_userSettings.GetApiUrl(), _sut.Param, 73).Returns(_expectedPages);
 
         await MakeList_ShouldReturnServiceResults(_expectedPages);
     }
@@ -28,14 +27,14 @@ public sealed class AllCategoriesListProviderTests : ListProvidersBaseTest<AllCa
     public async Task MakeList_ShouldReturnUnsuccessfulResult_WhenPageServiceReturnsUnsuccessfulResult()
     {
         // arrange
-        _categoryService.GetAllCategories(_userSettings.GetApiUrl(), _sut.Param, 73).Returns(Result<List<WikiPageModel>>.Failure("failed to get pages"));
+        _categoryService.GetAllCategories(_userSettings.GetApiUrl(), _sut.Param, 73).Returns(new Exception("failed to get pages"));
 
         // act
         Result<List<WikiPageModel>> result = await _sut.MakeList(73);
 
         // assert
         result.IsSuccessful.Should().BeFalse();
-        result.Error.Should().Be("failed to get pages");
+        result.ErrorMessage.Should().Be("failed to get pages");
     }
 
     [TearDown]

@@ -39,12 +39,12 @@ public sealed class WikiClientCache(ILogger logger) : IWikiClientCache
         try
         {
             var page = new WikiPage(await GetWikiSite(apiRoot), title);
-            return Result<WikiPageModel>.Success(new WikiPageModel(page));
+            return new WikiPageModel(page);
         }
         catch (Exception e)
         {
             logger.Information(e, "Failed to create WikiPage for {} on {}", title, apiRoot);
-            return Result<WikiPageModel>.Failure(e.Message);
+            return e;
         }
     }
 }

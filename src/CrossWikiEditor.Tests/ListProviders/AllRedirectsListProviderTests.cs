@@ -35,7 +35,7 @@ public sealed class AllRedirectsListProviderTests : ListProvidersBaseTest<AllRed
     {
         // arrange
         _pageService.GetAllPages(_userSettings.GetApiUrl(), _sut.Param, 7, PropertyFilterOption.WithProperty, PropertyFilterOption.Disable, 73)
-            .Returns(Result<List<WikiPageModel>>.Success(_expectedPages));
+            .Returns(_expectedPages);
 
         await MakeList_ShouldReturnServiceResults(_expectedPages);
     }
@@ -45,7 +45,7 @@ public sealed class AllRedirectsListProviderTests : ListProvidersBaseTest<AllRed
     {
         // arrange
         _pageService.GetAllPages(_userSettings.GetApiUrl(), _sut.Param, 7, PropertyFilterOption.WithProperty, PropertyFilterOption.Disable, 73)
-            .Returns(Result<List<WikiPageModel>>.Failure("failed to get pages"));
+            .Returns(new Exception("failed to get pages"));
 
         // act
         await _sut.GetAdditionalParams();
@@ -53,7 +53,7 @@ public sealed class AllRedirectsListProviderTests : ListProvidersBaseTest<AllRed
 
         // assert
         result.IsSuccessful.Should().BeFalse();
-        result.Error.Should().Be("failed to get pages");
+        result.ErrorMessage.Should().Be("failed to get pages");
     }
 
     [TearDown]

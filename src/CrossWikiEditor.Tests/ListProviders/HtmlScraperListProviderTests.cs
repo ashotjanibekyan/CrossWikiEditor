@@ -59,7 +59,7 @@ public sealed class HtmlScraperListProviderTests : ListProvidersBaseTest<HtmlScr
         // assert
         result.IsSuccessful.Should().BeFalse();
         result.Value.Should().BeNull();
-        result.Error.Should().Be("Response status code does not indicate success: 302 (Found).");
+        result.ErrorMessage.Should().Be("Response status code does not indicate success: 302 (Found).");
     }
     
     [Test]

@@ -16,7 +16,7 @@ public sealed class MyWatchlistListProviderTests : ListProvidersBaseTest<MyWatch
     {
         // arrange
         _userService.GetWatchlistPages(73)
-            .Returns(Result<List<WikiPageModel>>.Success(_expectedPages));
+            .Returns(_expectedPages);
 
         await MakeList_ShouldReturnServiceResults(_expectedPages);
     }
@@ -25,14 +25,14 @@ public sealed class MyWatchlistListProviderTests : ListProvidersBaseTest<MyWatch
     public async Task MakeList_ShouldReturnUnsuccessfulResult_WhenPageServiceReturnsUnsuccessfulResult()
     {
         // arrange
-        _userService.GetWatchlistPages(73).Returns(Result<List<WikiPageModel>>.Failure("failed to get pages"));
+        _userService.GetWatchlistPages(73).Returns(new Exception("failed to get pages"));
 
         // act
         Result<List<WikiPageModel>> result = await _sut.MakeList(73);
 
         // assert
         result.IsSuccessful.Should().BeFalse();
-        result.Error.Should().Be("failed to get pages");
+        result.ErrorMessage.Should().Be("failed to get pages");
     }
 
     [TearDown]

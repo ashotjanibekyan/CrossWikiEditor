@@ -23,7 +23,7 @@ public sealed class WhatTranscludesHereListProviderTests : ListProvidersBaseTest
     {
         // arrange
         _pageService.GetTransclusionsOf(_userSettings.GetApiUrl(), _sut.Param, Arg.Is<int[]>(x => x[0] == 0), 73)
-            .Returns(Result<List<WikiPageModel>>.Success(_expectedPages));
+            .Returns(_expectedPages);
 
         await MakeList_ShouldReturnServiceResults(_expectedPages);
     }
@@ -33,14 +33,14 @@ public sealed class WhatTranscludesHereListProviderTests : ListProvidersBaseTest
     {
         // arrange
         _pageService.GetTransclusionsOf(_userSettings.GetApiUrl(), _sut.Param, Arg.Is<int[]>(x => x[0] == 0), 73)
-            .Returns(Result<List<WikiPageModel>>.Failure("failed to get pages"));
+            .Returns(new Exception("failed to get pages"));
 
         // act
         Result<List<WikiPageModel>> result = await _sut.MakeList(73);
 
         // assert
         result.IsSuccessful.Should().BeFalse();
-        result.Error.Should().Be("failed to get pages");
+        result.ErrorMessage.Should().Be("failed to get pages");
     }
     
     [TearDown]

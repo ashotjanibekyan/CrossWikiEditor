@@ -15,12 +15,12 @@ public sealed class HtmlScraperListProvider(HtmlAgilityPackParser htmlAgilityPac
             var urls = new List<WikiPageModel>();
             urls.AddRange(await simpleHtmlParser.GetPages(html));
             urls.AddRange(htmlAgilityPackParser.GetPages(html));
-            return Result<List<WikiPageModel>>.Success(urls.Distinct().ToList());
+            return urls.Distinct().ToList();
         }
         catch (Exception e)
         {
             logger.Fatal(e, $"{nameof(HtmlScraperListProvider)} failed to make a list");
-            return Result<List<WikiPageModel>>.Failure(e.Message);
+            return e;
         }
     }
 }

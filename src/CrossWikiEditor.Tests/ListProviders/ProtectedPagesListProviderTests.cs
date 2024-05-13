@@ -55,7 +55,7 @@ public sealed class ProtectedPagesListProviderTests : ListProvidersBaseTest<Prot
     {
         // arrange
         _pageService.GetProtectedPages(_userSettings.GetApiUrl(), "edit", "autoconfirmed", 73)
-            .Returns(Result<List<WikiPageModel>>.Success(_expectedPages));
+            .Returns(_expectedPages);
 
         await MakeList_ShouldReturnServiceResults(_expectedPages);
     }
@@ -65,7 +65,7 @@ public sealed class ProtectedPagesListProviderTests : ListProvidersBaseTest<Prot
     {
         // arrange
         _pageService.GetProtectedPages(_userSettings.GetApiUrl(), "edit", "autoconfirmed", 73)
-            .Returns(Result<List<WikiPageModel>>.Failure("failed to get pages"));
+            .Returns(new Exception("failed to get pages"));
 
         // act
         await _sut.GetAdditionalParams();
@@ -73,7 +73,7 @@ public sealed class ProtectedPagesListProviderTests : ListProvidersBaseTest<Prot
 
         // assert
         result.IsSuccessful.Should().BeFalse();
-        result.Error.Should().Be("failed to get pages");
+        result.ErrorMessage.Should().Be("failed to get pages");
     }
     
     [TearDown]

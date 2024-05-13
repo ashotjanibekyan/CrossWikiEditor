@@ -37,7 +37,7 @@ public sealed class TextFileListProvider(IFileDialogService fileDialogService,
         var result = titles.Select(title => new WikiPageModel(title, userPreferencesService.CurrentApiUrl, wikiClientCache)).ToList();
 
         _textFiles.Clear();
-        return Result<List<WikiPageModel>>.Success(result);
+        return result;
     }
 
     public async Task GetAdditionalParams()

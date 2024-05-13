@@ -34,7 +34,7 @@ public sealed class RecentChangesListProviderTests : ListProvidersBaseTest<Recen
     {
         // arrange
         _pageService.GetRecentlyChangedPages(_userSettings.GetApiUrl(), Arg.Is<int[]>(x => x.SequenceEqual(new[] {7, 2, 3, 9})), 73)
-            .Returns(Result<List<WikiPageModel>>.Success(_expectedPages));
+            .Returns(_expectedPages);
 
         await MakeList_ShouldReturnServiceResults(_expectedPages);
     }
@@ -44,7 +44,7 @@ public sealed class RecentChangesListProviderTests : ListProvidersBaseTest<Recen
     {
         // arrange
         _pageService.GetRecentlyChangedPages(_userSettings.GetApiUrl(), Arg.Is<int[]>(x => x.SequenceEqual(new[] {7, 2, 3, 9})), 73)
-            .Returns(Result<List<WikiPageModel>>.Failure("failed to get pages"));
+            .Returns(new Exception("failed to get pages"));
 
         // act
         await _sut.GetAdditionalParams();
@@ -52,7 +52,7 @@ public sealed class RecentChangesListProviderTests : ListProvidersBaseTest<Recen
 
         // assert
         result.IsSuccessful.Should().BeFalse();
-        result.Error.Should().Be("failed to get pages");
+        result.ErrorMessage.Should().Be("failed to get pages");
     }
     
     [TearDown]

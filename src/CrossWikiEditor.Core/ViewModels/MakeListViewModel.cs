@@ -94,7 +94,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
         else
         {
             await _dialogService.Alert("Failed to get the list",
-                result.Error ?? "Failed to get the list. Please make sure you have internet access.");
+                result.ErrorMessage ?? "Failed to get the list. Please make sure you have internet access.");
         }
     }
 
