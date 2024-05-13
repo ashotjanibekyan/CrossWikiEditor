@@ -4,7 +4,7 @@ public sealed class PageListProcessor
 {
     private readonly IMessengerWrapper _messenger;
     private readonly IUserPreferencesService _userPreferencesService;
-    private readonly NormalFindAndReplaceRules _normalFindAndReplaceRules;
+    private readonly UserSettings _userSettings;
     private readonly List<WikiPageModel> _pages;
     private bool _isAlive = true;
     private TaskCompletionSource<bool>? _shouldSaveTaskCompletionSource;
@@ -17,8 +17,8 @@ public sealed class PageListProcessor
     {
         _messenger = messenger;
         _userPreferencesService = userPreferencesService;
+        _userSettings = userPreferencesService.GetCurrentSettings();
         _pages = pages;
-        _normalFindAndReplaceRules = normalFindAndReplaceRules;
         messenger.Register<SaveOrSkipPageMessage>(this,
             (recipient, message) => _shouldSaveTaskCompletionSource?.TrySetResult(message.ShouldSavePage));
     }
@@ -47,16 +47,13 @@ public sealed class PageListProcessor
             return;
         }
 
-        if (initialContent == newContent)
+        if (initialContent == newContent && _userSettings.SkipOptions.ShouldSkipIfNoChange)
         {
             _messenger.Send(new PageSkippedMessage(page, SkipReason.NoChanges));
-            _messenger.Send(new PageUpdatingMessage(page, initialContent, newContent));
             return;
         }
-        
 
-
-        if (!_userPreferencesService.GetCurrentSettings().IsBotMode)
+        if (!_userSettings.IsBotMode)
         {
             _shouldSaveTaskCompletionSource = new TaskCompletionSource<bool>();
             _messenger.Send(new PageUpdatingMessage(page, initialContent, newContent));
@@ -67,23 +64,7 @@ public sealed class PageListProcessor
             }
         }
 
-        await page.SetContent(newContent);
-        try
-        {
-            if (_normalFindAndReplaceRules.AddToSummary)
-            {
-                await page.UpdateContent(string.Join(", ", replacements.Select(tp => $"{tp.Item1} \u2192 {tp.Item2}")) + ", օգտվելով CWE");
-            }
-            else
-            {
-                await page.UpdateContent("օգտվելով CWE");
-            }
-            _messenger.Send(new PageUpdatedMessage(page));
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-        }
+        await SavePage(page, newContent, GetSummary(replacements));
     }
 
     private async Task<(string? initialTxt, string? newTxt, List<Tuple<string, string>>? repls)> ProcessPage(WikiPageModel page)
@@ -98,7 +79,7 @@ public sealed class PageListProcessor
             string initialContent = await page.GetContent();
             string newContent = await page.GetContent();
             var replacements = new List<Tuple<string, string>>();
-            foreach (NormalFindAndReplaceRule normalFindAndReplaceRule in _normalFindAndReplaceRules)
+            foreach (NormalFindAndReplaceRule normalFindAndReplaceRule in _userSettings.NormalFindAndReplaceRules)
             {
                 if (!normalFindAndReplaceRule.Regex)
                 {
@@ -119,10 +100,37 @@ public sealed class PageListProcessor
             _messenger.Send(new PageProcessedMessage(page, true));
             return (initialContent, newContent, replacements);
         }
-        catch(Exception)
+        catch (Exception)
         {
             _messenger.Send(new PageProcessedMessage(page, false));
             return (null, null, null);
+        }
+    }
+
+    private async Task SavePage(WikiPageModel page, string newContent, string summary)
+    {
+        _messenger.Send(new PageSavingMessage(page));
+        await page.SetContent(newContent);
+        try
+        {
+            await page.UpdateContent(summary);
+            _messenger.Send(new PageSavedMessage(page, true));
+        }
+        catch (Exception e)
+        {
+            _messenger.Send(new PageSavedMessage(page, false, e));
+        }
+    }
+
+    private string GetSummary(List<Tuple<string, string>> replacements)
+    {
+        if (_userSettings.NormalFindAndReplaceRules.AddToSummary)
+        {
+            return string.Join(", ", replacements.Select(tp => $"{tp.Item1} \u2192 {tp.Item2}")) + ", օգտվելով CWE";
+        }
+        else
+        {
+            return "օգտվելով CWE";
         }
     }
 
