@@ -11,7 +11,7 @@ public sealed partial class StartViewModel : ViewModelBase
         _messenger.Register<PageProcessingMessage>(this, (r, m) => _isProcessing = true);
         _messenger.Register<PageProcessedMessage>(this, (r, m) => _isProcessing = false);
         _messenger.Register<PageSavingMessage>(this, (r, m) => _isSaving = true);
-        _messenger.Register<PageSavingMessage>(this, (r, m) => _isSaving = false);
+        _messenger.Register<PageSavedMessage>(this, (r, m) => _isSaving = false);
     }
 
     private bool IsBusy => _isProcessing || _isSaving;
