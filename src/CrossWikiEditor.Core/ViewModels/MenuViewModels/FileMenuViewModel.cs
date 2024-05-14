@@ -15,7 +15,7 @@ public sealed partial class FileMenuViewModel(
     [RelayCommand]
     private async Task OpenSettings()
     {
-        string[]? result = await fileDialogService.OpenFilePickerAsync("Select settings", false, new List<string> {"*.xml"});
+        string[]? result = await fileDialogService.OpenFilePickerAsync("Select settings", false, ["*.json"]);
         if (result is { Length: 1 })
         {
             string newSettingsPath = result[0];
