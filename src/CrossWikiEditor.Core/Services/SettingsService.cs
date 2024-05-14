@@ -20,7 +20,7 @@ public sealed class SettingsService : ISettingsService
     
     public SettingsService(IMessengerWrapper messenger)
     {
-        _currentSettings = new UserSettings();
+        _currentSettings = GetDefaultSettings(true);
         _jsonSerializerOptions = new JsonSerializerOptions
         {
             WriteIndented = true
@@ -57,11 +57,7 @@ public sealed class SettingsService : ISettingsService
 
     public void SaveCurrentUserSettings()
     {
-        var settings = new UserSettings()
-        {
-            NormalFindAndReplaceRules = MainWindowViewModel.Instance!.OptionsViewModel.NormalFindAndReplaceRules
-        };
-        var json = JsonSerializer.Serialize(settings, options: _jsonSerializerOptions);
+        var json = JsonSerializer.Serialize(_currentSettings, options: _jsonSerializerOptions);
         File.WriteAllText("./settings.json", json);
     }
 

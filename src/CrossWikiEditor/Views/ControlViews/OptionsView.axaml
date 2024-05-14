@@ -10,9 +10,9 @@
     <Grid RowDefinitions="Auto,Auto,Auto" Margin="3">
         <HeaderedContentControl Header="Automatic changes" Margin="3" Grid.Row="0" Background="Black">
             <Grid Margin="3" RowDefinitions="*,*,*" ColumnDefinitions="2*,*">
-                <CheckBox Grid.Row="0" Grid.Column="0" IsChecked="True">Auto tag</CheckBox>
-                <CheckBox Grid.Row="1" Grid.Column="0" IsChecked="True">Apply general fixes</CheckBox>
-                <CheckBox Grid.Row="2" Grid.Column="0" IsChecked="True">Unicodify whole page</CheckBox>
+                <CheckBox Grid.Row="0" Grid.Column="0" IsChecked="{Binding AutoTag}">Auto tag</CheckBox>
+                <CheckBox Grid.Row="1" Grid.Column="0" IsChecked="{Binding ApplyGeneralFixes}">Apply general fixes</CheckBox>
+                <CheckBox Grid.Row="2" Grid.Column="0" IsChecked="{Binding UnicodifyWholePage}">Unicodify whole page</CheckBox>
                 <Grid Grid.Row="0" Grid.RowSpan="3" Grid.Column="1">
                     <Button>
                         <StackPanel Orientation="Vertical">
@@ -25,7 +25,7 @@
         </HeaderedContentControl>
         <Border Margin="3" Grid.Row="1" BorderThickness="1" BorderBrush="Black">
             <Grid Margin="3" RowDefinitions="*,*,*,*,*" ColumnDefinitions="*,*">
-                <CheckBox Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" IsChecked="True">Find and replace</CheckBox>
+                <CheckBox Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" IsChecked="{Binding FindAndReplace}">Find and replace</CheckBox>
                 <Button Grid.Row="0" Grid.Column="1" Command="{Binding OpenNormalFindAndReplaceDialogCommand}">Normal settings</Button>
                 <Button Grid.Row="1" Grid.Column="1">Advanced settings</Button>
                 <Button Grid.Row="2" Grid.Column="1">Template substitution</Button>
@@ -33,8 +33,8 @@
                     <StackPanel Orientation="Horizontal">
                         <Label Margin="3">Skip if</Label>
                         <StackPanel Orientation="Vertical">
-                            <CheckBox IsChecked="True">no replacement</CheckBox>
-                            <CheckBox IsChecked="True">only minor replacement made</CheckBox>
+                            <CheckBox IsChecked="{Binding SkipIfNoReplacement}">no replacement</CheckBox>
+                            <CheckBox IsChecked="{Binding SkipIfOnlyMinorReplacementMade}">only minor replacement made</CheckBox>
                         </StackPanel>
                     </StackPanel>
                 </Grid>
@@ -42,8 +42,8 @@
         </Border>
         <Border Margin="3" Grid.Row="2" BorderThickness="1" BorderBrush="Black">
             <StackPanel Margin="3">
-                <CheckBox IsChecked="True">Regex typo fixing</CheckBox>
-                <CheckBox IsChecked="True">Skip if no typo fixed</CheckBox>
+                <CheckBox IsChecked="{Binding RegexTypoFixing}">Regex typo fixing</CheckBox>
+                <CheckBox IsChecked="{Binding SkipIfNoTypoFixed}">Skip if no typo fixed</CheckBox>
             </StackPanel>
         </Border>
     </Grid>

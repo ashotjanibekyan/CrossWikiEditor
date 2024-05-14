@@ -20,9 +20,7 @@ public static class ViewModelsModule
         services.AddTransient<MakeListViewModel>();
         services.AddTransient<MenuViewModel>();
         services.AddTransient<MoreViewModel>();
-        services.AddSingleton<OptionsViewModel>(sp =>
-            new OptionsViewModel(sp.GetRequiredService<ISettingsService>().GetDefaultSettings().NormalFindAndReplaceRules,
-                sp.GetRequiredService<IDialogService>()));
+        services.AddSingleton<OptionsViewModel>();
         services.AddTransient<PageLogsViewModel>();
         services.AddTransient<SkipViewModel>();
         services.AddTransient<StartViewModel>();

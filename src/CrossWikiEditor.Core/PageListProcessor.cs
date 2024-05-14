@@ -79,7 +79,7 @@ public sealed class PageListProcessor
             string initialContent = await page.GetContent();
             string newContent = await page.GetContent();
             var replacements = new List<Tuple<string, string>>();
-            foreach (NormalFindAndReplaceRule normalFindAndReplaceRule in _userSettings.NormalFindAndReplaceRules)
+            foreach (NormalFindAndReplaceRule normalFindAndReplaceRule in _userSettings.GeneralOptions.NormalFindAndReplaceRules)
             {
                 if (!normalFindAndReplaceRule.Regex)
                 {
@@ -124,7 +124,7 @@ public sealed class PageListProcessor
 
     private string GetSummary(List<Tuple<string, string>> replacements)
     {
-        if (_userSettings.NormalFindAndReplaceRules.AddToSummary)
+        if (_userSettings.GeneralOptions.NormalFindAndReplaceRules.AddToSummary)
         {
             return string.Join(", ", replacements.Select(tp => $"{tp.Item1} \u2192 {tp.Item2}")) + ", օգտվելով CWE";
         }
