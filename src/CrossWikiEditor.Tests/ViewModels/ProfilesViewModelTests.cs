@@ -11,7 +11,7 @@ public sealed class ProfilesViewModelTests : BaseTest
     {
         SetUpServices();
         _profileRepository.GetAll().Returns(new List<Profile>());
-        _sut = new ProfilesViewModel(_fileDialogService, _dialogService, _profileRepository, _userService, _userPreferencesService, _messenger);
+        _sut = new ProfilesViewModel(_fileDialogService, _dialogService, _profileRepository, _userService, _settingsService, _messenger);
         _profileRepository.ClearReceivedCalls();
     }
 
@@ -25,7 +25,7 @@ public sealed class ProfilesViewModelTests : BaseTest
         _sut.LoginCommand.Execute(null);
 
         // assert
-        _userPreferencesService.Received(0).GetCurrentSettings();
+        _settingsService.Received(0).GetCurrentSettings();
         _userService.Received(0).Login(Arg.Any<Profile>(), Arg.Any<string>());
     }
 
@@ -39,7 +39,7 @@ public sealed class ProfilesViewModelTests : BaseTest
             Password = "password"
         };
         _sut.SelectedProfile = profile;
-        _userPreferencesService.GetCurrentSettings().Returns(new UserSettings()
+        _settingsService.GetCurrentSettings().Returns(new UserSettings()
         {
             UserWiki = new("hy", ProjectEnum.Wikipedia)
         });
@@ -70,15 +70,15 @@ public sealed class ProfilesViewModelTests : BaseTest
         {
             UserWiki = new("hy", ProjectEnum.Wikipedia)
         };
-        _userPreferencesService.GetUserSettings(profile.DefaultSettingsPath).Returns(userSettings);
+        _settingsService.GetUserSettingsByPath(profile.DefaultSettingsPath).Returns(userSettings);
         _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Unit.Default);
 
         // act
         _sut.LoginCommand.Execute(_dialog);
 
         // assert
-        _userPreferencesService.Received(1)
-            .SetCurrentPref(userSettings);
+        _settingsService.Received(1)
+            .SetCurrentUserSettings(userSettings);
         _userService.Received(1).Login(Arg.Is<Profile>(p => p.Username == profile.Username && p.Password == profile.Password),
             "https://hy.wikipedia.org/w/api.php?");
         _dialogService.Received(0).Alert(Arg.Any<string>(), Arg.Any<string>());
@@ -95,7 +95,7 @@ public sealed class ProfilesViewModelTests : BaseTest
             Password = "password"
         };
         _sut.SelectedProfile = profile;
-        _userPreferencesService.GetCurrentSettings().Returns(new UserSettings()
+        _settingsService.GetCurrentSettings().Returns(new UserSettings()
         {
             UserWiki = new("hy", ProjectEnum.Wikipedia)
         });
@@ -121,7 +121,7 @@ public sealed class ProfilesViewModelTests : BaseTest
             Password = "password"
         };
         _sut.SelectedProfile = profile;
-        _userPreferencesService.GetCurrentSettings().Returns(new UserSettings()
+        _settingsService.GetCurrentSettings().Returns(new UserSettings()
         {
             UserWiki = new("hy", ProjectEnum.Wikipedia)
         });
@@ -283,7 +283,7 @@ public sealed class ProfilesViewModelTests : BaseTest
         // arrange
         _sut.Username = "username";
         _sut.Password = "Qwer1234";
-        _userPreferencesService.GetCurrentSettings().Returns(new UserSettings()
+        _settingsService.GetCurrentSettings().Returns(new UserSettings()
         {
             UserWiki = new("hyw", ProjectEnum.Wikipedia)
         });
@@ -326,7 +326,7 @@ public sealed class ProfilesViewModelTests : BaseTest
         // arrange
         _sut.Username = "username";
         _sut.Password = "Qwer1234";
-        _userPreferencesService.GetCurrentSettings().Returns(new UserSettings()
+        _settingsService.GetCurrentSettings().Returns(new UserSettings()
         {
             UserWiki = new("hyw", ProjectEnum.Wikipedia)
         });
@@ -346,7 +346,7 @@ public sealed class ProfilesViewModelTests : BaseTest
         // arrange
         _sut.Username = "username";
         _sut.Password = "Qwer1234";
-        _userPreferencesService.GetCurrentSettings().Returns(new UserSettings()
+        _settingsService.GetCurrentSettings().Returns(new UserSettings()
         {
             UserWiki = new("hyw", ProjectEnum.Wikipedia)
         });
@@ -366,7 +366,7 @@ public sealed class ProfilesViewModelTests : BaseTest
         // arrange
         _sut.Username = "username";
         _sut.Password = "Qwer1234";
-        _userPreferencesService.GetCurrentSettings().Returns(new UserSettings()
+        _settingsService.GetCurrentSettings().Returns(new UserSettings()
         {
             UserWiki = new("hy", ProjectEnum.Wikipedia)
         });

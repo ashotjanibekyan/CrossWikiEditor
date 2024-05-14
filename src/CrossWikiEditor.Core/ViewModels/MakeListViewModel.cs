@@ -11,7 +11,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
     private readonly ISystemService _systemService;
     private readonly IViewModelFactory _viewModelFactory;
     private readonly IFileDialogService _fileDialogService;
-    private readonly IUserPreferencesService _userPreferencesService;
+    private readonly ISettingsService _settingsService;
 
     public MakeListViewModel(
         IMessengerWrapper messenger,
@@ -22,7 +22,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
         ISystemService systemService,
         IViewModelFactory viewModelFactory,
         IFileDialogService fileDialogService,
-        IUserPreferencesService userPreferencesService,
+        ISettingsService settingsService,
         IEnumerable<IListProvider> listProviders)
     {
         _logger = logger;
@@ -32,7 +32,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
         _systemService = systemService;
         _viewModelFactory = viewModelFactory;
         _fileDialogService = fileDialogService;
-        _userPreferencesService = userPreferencesService;
+        _settingsService = settingsService;
 
         ListProviders = listProviders.OrderBy(l => l.Title).ToObservableCollection();
         SelectedListProvider = ListProviders[0];
@@ -46,7 +46,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
     {
         if (!string.IsNullOrWhiteSpace(NewPageTitle))
         {
-            Result<WikiPageModel> result = await _clientCache.GetWikiPageModel(_userPreferencesService.CurrentApiUrl, NewPageTitle);
+            Result<WikiPageModel> result = await _clientCache.GetWikiPageModel(_settingsService.CurrentApiUrl, NewPageTitle);
             if (result is {IsSuccessful: true, Value: not null})
             {
                 Pages.Add(result.Value);
@@ -103,7 +103,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
     {
         foreach (WikiPageModel selectedPage in SelectedPages)
         {
-            _systemService.OpenLinkInBrowser($"{_userPreferencesService.GetCurrentSettings().GetIndexUrl()}title={HttpUtility.UrlEncode(selectedPage.Title)}");
+            _systemService.OpenLinkInBrowser($"{_settingsService.GetCurrentSettings().GetIndexUrl()}title={HttpUtility.UrlEncode(selectedPage.Title)}");
         }
     }
 
@@ -117,7 +117,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
 
         foreach (WikiPageModel selectedPage in SelectedPages)
         {
-            _systemService.OpenLinkInBrowser($"{_userPreferencesService.GetCurrentSettings().GetIndexUrl()}title={selectedPage.Title}&action=history");
+            _systemService.OpenLinkInBrowser($"{_settingsService.GetCurrentSettings().GetIndexUrl()}title={selectedPage.Title}&action=history");
         }
     }
 
@@ -153,7 +153,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
         {
             string[] titles = clipboardText.Split(new[] { Environment.NewLine },
                 StringSplitOptions.None);
-            string urlApi = _userPreferencesService.CurrentApiUrl;
+            string urlApi = _settingsService.CurrentApiUrl;
             foreach (string title in titles)
             {
                 Result<WikiPageModel> result = await _clientCache.GetWikiPageModel(urlApi, title);

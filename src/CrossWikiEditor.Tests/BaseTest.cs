@@ -11,7 +11,7 @@ public abstract class BaseTest
     protected ISystemService _systemService;
     protected IDialogService _dialogService;
     protected IProfileRepository _profileRepository;
-    protected IUserPreferencesService _userPreferencesService;
+    protected ISettingsService _settingsService;
     protected IViewModelFactory _viewModelFactory;
     protected IDialog _dialog;
     protected IMessengerWrapper _messenger;
@@ -29,8 +29,8 @@ public abstract class BaseTest
         _systemService = Substitute.For<ISystemService>();
         _dialogService = Substitute.For<IDialogService>();
         _profileRepository = Substitute.For<IProfileRepository>();
-        _userPreferencesService = Substitute.For<IUserPreferencesService>();
-        _userPreferencesService.GetCurrentSettings().Returns(new UserSettings());
+        _settingsService = Substitute.For<ISettingsService>();
+        _settingsService.GetCurrentSettings().Returns(new UserSettings());
         _viewModelFactory = Substitute.For<IViewModelFactory>();
         _dialog = Substitute.For<IDialog>();
         _messenger = Substitute.For<IMessengerWrapper>();

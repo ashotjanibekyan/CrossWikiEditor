@@ -52,8 +52,8 @@ public abstract class ListProvidersBaseTest<T> : BaseTest where T : ListProvider
         {
             UserWiki = new(languageCode, project)
         };
-        _userPreferencesService.GetCurrentSettings().Returns(_userSettings);
-        _userPreferencesService.CurrentApiUrl.Returns(_userSettings.GetApiUrl());
+        _settingsService.GetCurrentSettings().Returns(_userSettings);
+        _settingsService.CurrentApiUrl.Returns(_userSettings.GetApiUrl());
     }
 
     protected async Task MakeList_ShouldReturnServiceResults(List<WikiPageModel> expectedPages)

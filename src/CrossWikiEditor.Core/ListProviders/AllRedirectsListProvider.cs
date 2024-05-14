@@ -2,8 +2,8 @@
 
 public sealed class AllRedirectsListProvider(IDialogService dialogService,
     IPageService pageService,
-    IUserPreferencesService userPreferencesService,
-    IViewModelFactory viewModelFactory) : AllPagesListProviderBase(dialogService, pageService, viewModelFactory, userPreferencesService)
+    ISettingsService settingsService,
+    IViewModelFactory viewModelFactory) : AllPagesListProviderBase(dialogService, pageService, viewModelFactory, settingsService)
 {
     public override string Title => "All Redirects";
 

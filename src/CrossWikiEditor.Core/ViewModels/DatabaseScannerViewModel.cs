@@ -2,7 +2,7 @@ using System.Diagnostics;
 
 namespace CrossWikiEditor.Core.ViewModels;
 
-public sealed partial class DatabaseScannerViewModel(IUserPreferencesService userPreferencesService,
+public sealed partial class DatabaseScannerViewModel(ISettingsService settingsService,
     IWikiClientCache wikiClientCache,
     IFileDialogService fileDialogService) : ViewModelBase
 {
@@ -80,7 +80,7 @@ public sealed partial class DatabaseScannerViewModel(IUserPreferencesService use
         
         _updateUiTask = Task.Run(async () =>
         {
-            WikiSite wikiSite = await wikiClientCache.GetWikiSite(userPreferencesService.CurrentApiUrl);
+            WikiSite wikiSite = await wikiClientCache.GetWikiSite(settingsService.CurrentApiUrl);
             while (_scannerTask != null)
             {
                 UpdateUi(wikiSite);

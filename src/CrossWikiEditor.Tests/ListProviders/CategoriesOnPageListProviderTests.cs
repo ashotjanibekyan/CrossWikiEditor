@@ -7,7 +7,7 @@ public sealed class CategoriesOnPageListProviderTests : ListProvidersBaseTest<Ca
     {
         SetUpServices();
         SetUpUserSettings("hyw", ProjectEnum.Wikipedia);
-        _sut = new CategoriesOnPageListProvider(_categoryService, _dialogService, _userPreferencesService)
+        _sut = new CategoriesOnPageListProvider(_categoryService, _dialogService, _settingsService)
         {
             Param = "page"
         };
@@ -21,7 +21,7 @@ public sealed class CategoriesOnPageListProviderTests : ListProvidersBaseTest<Ca
     public async Task MakeList_ShouldReturnServiceResults()
     {
         // arrange
-        _categoryService.GetCategoriesOf(_userPreferencesService.CurrentApiUrl, _sut.Param, 73)
+        _categoryService.GetCategoriesOf(_settingsService.CurrentApiUrl, _sut.Param, 73)
             .Returns(_expectedPages);
 
         await base.MakeList_ShouldReturnServiceResults(_expectedPages);
@@ -31,7 +31,7 @@ public sealed class CategoriesOnPageListProviderTests : ListProvidersBaseTest<Ca
     public async Task MakeList_ShouldReturnUnsuccessfulResult_WhenServiceReturnsUnsuccessfulResult()
     {
         // arrange
-        _categoryService.GetCategoriesOf(_userPreferencesService.CurrentApiUrl, _sut.Param, 73)
+        _categoryService.GetCategoriesOf(_settingsService.CurrentApiUrl, _sut.Param, 73)
             .Returns(new Exception("failed to get pages"));
 
         // act

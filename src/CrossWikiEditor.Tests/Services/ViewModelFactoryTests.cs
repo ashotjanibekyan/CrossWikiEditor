@@ -8,8 +8,21 @@ public sealed class ViewModelFactoryTests : BaseTest
     public void SetUp()
     {
         SetUpServices();
-        _sut = new ViewModelFactory(_fileDialogService, _dialogService, _profileRepository, _wikiClientCache, _userService, _userPreferencesService,
-            _messenger, new TextFileListProvider(_fileDialogService, _systemService, _userPreferencesService, _wikiClientCache));
+        _sut = new ViewModelFactory(
+            _fileDialogService,
+            _dialogService,
+            _profileRepository,
+            _wikiClientCache,
+            _userService,
+            _settingsService,
+            _messenger,
+            new TextFileListProvider(
+                _fileDialogService,
+                _systemService,
+                _settingsService,
+                _wikiClientCache
+            )
+        );
     }
 
     [Test]

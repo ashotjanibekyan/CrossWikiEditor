@@ -3,9 +3,8 @@
 public sealed partial class FileMenuViewModel(
     IViewModelFactory viewModelFactory,
     IFileDialogService fileDialogService,
-    IUserPreferencesService userPreferencesService,
-    IDialogService dialogService,
-    ISettingsService settingsService)
+    ISettingsService settingsService,
+    IDialogService dialogService)
 {
     [RelayCommand]
     private void ResetToDefaultSettings()
@@ -22,8 +21,8 @@ public sealed partial class FileMenuViewModel(
             string newSettingsPath = result[0];
             try
             {
-                UserSettings? newUserPref = userPreferencesService.GetUserSettings(newSettingsPath) ?? throw new InvalidOperationException("Failed to load the settings");
-                userPreferencesService.SetCurrentPref(newUserPref);
+                UserSettings? newUserSettings = settingsService.GetUserSettingsByPath(newSettingsPath) ?? throw new InvalidOperationException("Failed to load the settings");
+                settingsService.SetCurrentUserSettings(newUserSettings);
             }
             catch (InvalidOperationException)
             {
@@ -35,7 +34,7 @@ public sealed partial class FileMenuViewModel(
     [RelayCommand]
     private void SaveSettings()
     {
-        settingsService.SaveCurrentSettings();
+        settingsService.SaveCurrentUserSettings();
     }
 
     [RelayCommand]

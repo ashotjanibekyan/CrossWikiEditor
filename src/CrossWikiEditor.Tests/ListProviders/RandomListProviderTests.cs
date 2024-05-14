@@ -15,7 +15,7 @@ public sealed class RandomListProviderTests : ListProvidersBaseTest<RandomListPr
         {
             IsIncludeRedirectsVisible = false
         };
-        _sut = new RandomListProvider(_dialogService, _pageService, _userPreferencesService, _viewModelFactory)
+        _sut = new RandomListProvider(_dialogService, _pageService, _settingsService, _viewModelFactory)
         {
             Param = "start from here"
         };

@@ -8,7 +8,7 @@ public sealed class PreferencesViewModelTests : BaseTest
     public void SetUp()
     {
         SetUpServices();
-        _sut = new PreferencesViewModel(_userPreferencesService, _messenger);
+        _sut = new PreferencesViewModel(_settingsService, _messenger);
     }
 
     [Test]

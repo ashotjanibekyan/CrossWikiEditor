@@ -7,7 +7,7 @@ public sealed class DisambiguationPagesListProviderTests : ListProvidersBaseTest
     {
         SetUpServices();
         SetUpUserSettings("hyw", ProjectEnum.Wikipedia);
-        _sut = new DisambiguationPagesListProvider(_dialogService, _pageService, _userPreferencesService)
+        _sut = new DisambiguationPagesListProvider(_dialogService, _pageService, _settingsService)
         {
             Param = "start from here"
         };

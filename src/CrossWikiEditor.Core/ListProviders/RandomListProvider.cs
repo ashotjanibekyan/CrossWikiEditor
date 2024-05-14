@@ -2,7 +2,7 @@
 
 public sealed class RandomListProvider(IDialogService dialogService,
         IPageService pageService,
-        IUserPreferencesService userPreferencesService,
+        ISettingsService settingsService,
         IViewModelFactory viewModelFactory)
     : LimitedListProviderBase(dialogService), INeedAdditionalParamsListProvider
 {
@@ -24,7 +24,7 @@ public sealed class RandomListProvider(IDialogService dialogService,
     public override async Task<Result<List<WikiPageModel>>> MakeList(int limit)
     {
         return await pageService.GetRandomPages(
-            userPreferencesService.CurrentApiUrl,
+            settingsService.CurrentApiUrl,
             _options!.Namespaces,
             filterRedirects: _options.RedirectFilter switch
             {

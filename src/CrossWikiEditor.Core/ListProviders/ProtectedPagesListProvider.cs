@@ -1,7 +1,7 @@
 ﻿namespace CrossWikiEditor.Core.ListProviders;
 
 public sealed class ProtectedPagesListProvider(IDialogService dialogService,
-    IPageService pageService, IUserPreferencesService userPreferencesService,
+    IPageService pageService, ISettingsService settingsService,
     IViewModelFactory viewModelFactory) : LimitedListProviderBase(dialogService), INeedAdditionalParamsListProvider
 {
     private string _protectionType = string.Empty;
@@ -16,5 +16,5 @@ public sealed class ProtectedPagesListProvider(IDialogService dialogService,
     }
 
     public override async Task<Result<List<WikiPageModel>>> MakeList(int limit) =>
-        await pageService.GetProtectedPages(userPreferencesService.CurrentApiUrl, _protectionType, _protectionLevel, limit);
+        await pageService.GetProtectedPages(settingsService.CurrentApiUrl, _protectionType, _protectionLevel, limit);
 }

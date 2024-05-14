@@ -2,8 +2,8 @@
 
 public sealed class LinksOnPageBlueListProvider(IDialogService dialogService,
         IPageService pageService,
-        IUserPreferencesService userPreferencesService)
-    : LinksOnPageListProvider(dialogService, pageService, userPreferencesService)
+        ISettingsService settingsService)
+    : LinksOnPageListProvider(dialogService, pageService, settingsService)
 {
     public override string Title => "Links on page (only bluelinks)";
 

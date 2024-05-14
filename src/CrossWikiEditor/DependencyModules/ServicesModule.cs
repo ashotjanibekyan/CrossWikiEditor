@@ -33,7 +33,6 @@ public static class ServicesModule
 
         services.AddSingleton<IViewModelFactory, ViewModelFactory>();
         services.AddSingleton<IFileDialogService, FileDialogService>();
-        services.AddSingleton<IUserPreferencesService, UserPreferencesService>();
         services.AddSingleton<ISystemService, SystemService>();
         services.AddSingleton<IUserService, UserService>();
         services.AddSingleton<IPageService, PageService>();

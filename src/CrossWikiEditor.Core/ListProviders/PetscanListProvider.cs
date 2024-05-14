@@ -1,6 +1,6 @@
 namespace CrossWikiEditor.Core.ListProviders;
 
-public sealed class PetscanListProvider(IHttpClientFactory httpClientFactory, IUserPreferencesService userPreferencesService, IWikiClientCache wikiClientCache) : UnlimitedListProviderBase
+public sealed class PetscanListProvider(IHttpClientFactory httpClientFactory, ISettingsService settingsService, IWikiClientCache wikiClientCache) : UnlimitedListProviderBase
 {
     public override string Title => "Petscan";
     public override string ParamTitle => "PSID";
@@ -17,7 +17,7 @@ public sealed class PetscanListProvider(IHttpClientFactory httpClientFactory, IU
                 {
                     string content = await result.Content.ReadAsStringAsync();
                     var titles = content.Split('\n').ToList();
-                    wikiPageModels.AddRange(titles.Select(title => new WikiPageModel(title, userPreferencesService.CurrentApiUrl, wikiClientCache)));
+                    wikiPageModels.AddRange(titles.Select(title => new WikiPageModel(title, settingsService.CurrentApiUrl, wikiClientCache)));
                 }
                 else
                 {

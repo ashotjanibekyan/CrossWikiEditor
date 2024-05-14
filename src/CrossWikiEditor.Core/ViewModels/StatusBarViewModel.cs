@@ -7,7 +7,7 @@ public sealed partial class StatusBarViewModel : ViewModelBase
 
     public StatusBarViewModel(IViewModelFactory viewModelFactory,
         IDialogService dialogService,
-        IUserPreferencesService userPreferencesService,
+        ISettingsService settingsService,
         IMessengerWrapper messenger)
     {
         _viewModelFactory = viewModelFactory;
@@ -15,7 +15,7 @@ public sealed partial class StatusBarViewModel : ViewModelBase
         messenger.Register<NewAccountLoggedInMessage>(this, (_, m) => Username = m.Value.Username);
         messenger.Register<ProjectChangedMessage>(this, (_, m) => Project = m.Value.ToString());
         messenger.Register<LanguageCodeChangedMessage>(this, (_, m) => LanguageCode = m.Value);
-        UserSettings currentPref = userPreferencesService.GetCurrentSettings();
+        UserSettings currentPref = settingsService.GetCurrentSettings();
         Project = currentPref.UserWiki.Project.ToString();
         LanguageCode = currentPref.UserWiki.LanguageCode ?? "";
     }

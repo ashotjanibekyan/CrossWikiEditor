@@ -8,7 +8,7 @@ public interface IUserService
     Task<Result<List<WikiPageModel>>> GetUserContributionsPages(string apiRoot, string username, int limit);
 }
 
-public sealed class UserService(IWikiClientCache wikiClientCache, IUserPreferencesService userPreferencesService, ILogger logger)
+public sealed class UserService(IWikiClientCache wikiClientCache, ISettingsService settingsService, ILogger logger)
     : IUserService
 {
     public async Task<Result<Unit>> Login(Profile profile, string apiRoot)
@@ -48,7 +48,7 @@ public sealed class UserService(IWikiClientCache wikiClientCache, IUserPreferenc
     {
         try
         {
-            WikiSite site = await wikiClientCache.GetWikiSite(userPreferencesService.CurrentApiUrl);
+            WikiSite site = await wikiClientCache.GetWikiSite(settingsService.CurrentApiUrl);
             var gen = new MyWatchlistGenerator(site);
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
             return result.Select(x => new WikiPageModel(x)).ToList();

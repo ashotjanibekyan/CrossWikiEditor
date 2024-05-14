@@ -12,7 +12,7 @@ public sealed class LinksOnPageBlueListProviderTests : ListProvidersBaseTest<Lin
         SetUpUserSettings("hyw", ProjectEnum.Wikipedia);
         _wikiClientCache = new WikiClientCache(Substitute.For<ILogger>());
         _selectNamespacesViewModel = new SelectNamespacesViewModel(new List<WikiNamespace>(), false);
-        _sut = new LinksOnPageBlueListProvider(_dialogService, _pageService, _userPreferencesService)
+        _sut = new LinksOnPageBlueListProvider(_dialogService, _pageService, _settingsService)
         {
             Param = "start from here"
         };

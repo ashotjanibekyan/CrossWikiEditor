@@ -8,7 +8,7 @@ public sealed class TransclusionsOnPageListProviderTests : ListProvidersBaseTest
         SetUpServices();
         SetUpUserSettings("hyw", ProjectEnum.Wikipedia);
         _selectNamespacesViewModel = new SelectNamespacesViewModel(new List<WikiNamespace>(), false);
-        _sut = new TransclusionsOnPageListProvider(_dialogService, _pageService, _userPreferencesService)
+        _sut = new TransclusionsOnPageListProvider(_dialogService, _pageService, _settingsService)
         {
             Param = "start from here"
         };

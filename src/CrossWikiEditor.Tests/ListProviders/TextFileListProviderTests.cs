@@ -8,7 +8,7 @@ public sealed class TextFileListProviderTests : ListProvidersBaseTest<TextFileLi
     public void SetUp()
     {
         SetUpServices();
-        _sut = new TextFileListProvider(_fileDialogService, _systemService, _userPreferencesService, _wikiClientCache);
+        _sut = new TextFileListProvider(_fileDialogService, _systemService, _settingsService, _wikiClientCache);
     }
 
     [Test]

@@ -7,7 +7,7 @@ public sealed class CategoriesOnPageOnlyHiddenCategoriesListProviderTests : List
     {
         SetUpServices();
         SetUpUserSettings("hyw", ProjectEnum.Wikipedia);
-        _sut = new CategoriesOnPageOnlyHiddenCategoriesListProvider(_categoryService, _dialogService, _userPreferencesService)
+        _sut = new CategoriesOnPageOnlyHiddenCategoriesListProvider(_categoryService, _dialogService, _settingsService)
         {
             Param = "page"
         };
@@ -21,7 +21,7 @@ public sealed class CategoriesOnPageOnlyHiddenCategoriesListProviderTests : List
     public async Task MakeList_ShouldReturnServiceResults()
     {
         // arrange
-        _categoryService.GetCategoriesOf(_userPreferencesService.CurrentApiUrl, _sut.Param, 73, onlyHidden: true)
+        _categoryService.GetCategoriesOf(_settingsService.CurrentApiUrl, _sut.Param, 73, onlyHidden: true)
             .Returns(_expectedPages);
 
         await base.MakeList_ShouldReturnServiceResults(_expectedPages);
@@ -31,7 +31,7 @@ public sealed class CategoriesOnPageOnlyHiddenCategoriesListProviderTests : List
     public async Task MakeList_ShouldReturnUnsuccessfulResult_WhenServiceReturnsUnsuccessfulResult()
     {
         // arrange
-        _categoryService.GetCategoriesOf(_userPreferencesService.CurrentApiUrl, _sut.Param, 73, onlyHidden: true)
+        _categoryService.GetCategoriesOf(_settingsService.CurrentApiUrl, _sut.Param, 73, onlyHidden: true)
             .Returns(new Exception("failed to get pages"));
 
         // act

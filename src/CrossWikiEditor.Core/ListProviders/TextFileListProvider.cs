@@ -2,7 +2,7 @@
 
 public sealed class TextFileListProvider(IFileDialogService fileDialogService,
         ISystemService systemService,
-        IUserPreferencesService userPreferencesService,
+        ISettingsService settingsService,
         IWikiClientCache wikiClientCache)
     : UnlimitedListProviderBase, INeedAdditionalParamsListProvider
 {
@@ -34,7 +34,7 @@ public sealed class TextFileListProvider(IFileDialogService fileDialogService,
             }
         }
 
-        var result = titles.Select(title => new WikiPageModel(title, userPreferencesService.CurrentApiUrl, wikiClientCache)).ToList();
+        var result = titles.Select(title => new WikiPageModel(title, settingsService.CurrentApiUrl, wikiClientCache)).ToList();
 
         _textFiles.Clear();
         return result;

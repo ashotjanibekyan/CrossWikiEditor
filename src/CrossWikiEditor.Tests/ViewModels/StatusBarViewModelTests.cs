@@ -10,7 +10,7 @@ public sealed class StatusBarViewModelTests : BaseTest
     public void SetUp()
     {
         SetUpServices();
-        _sut = new StatusBarViewModel(_viewModelFactory, _dialogService, _userPreferencesService, _messenger);
+        _sut = new StatusBarViewModel(_viewModelFactory, _dialogService, _settingsService, _messenger);
         _messenger.Received().Register(_sut, Arg.Any<MessageHandler<object, NewAccountLoggedInMessage>>());
         _messenger.Received().Register(_sut, Arg.Any<MessageHandler<object, ProjectChangedMessage>>());
         _messenger.Received().Register(_sut, Arg.Any<MessageHandler<object, LanguageCodeChangedMessage>>());
@@ -22,7 +22,7 @@ public sealed class StatusBarViewModelTests : BaseTest
     {
         // arrange
         var messenger = new MessengerWrapper(WeakReferenceMessenger.Default);
-        _sut = new StatusBarViewModel(_viewModelFactory, _dialogService, _userPreferencesService, messenger);
+        _sut = new StatusBarViewModel(_viewModelFactory, _dialogService, _settingsService, messenger);
 
         // act
         messenger.Send(new NewAccountLoggedInMessage(new Profile()
@@ -39,7 +39,7 @@ public sealed class StatusBarViewModelTests : BaseTest
     {
         // arrange
         var messenger = new MessengerWrapper(WeakReferenceMessenger.Default);
-        _sut = new StatusBarViewModel(_viewModelFactory, _dialogService, _userPreferencesService, messenger);
+        _sut = new StatusBarViewModel(_viewModelFactory, _dialogService, _settingsService, messenger);
 
         // act
         messenger.Send(new LanguageCodeChangedMessage("de"));
@@ -53,7 +53,7 @@ public sealed class StatusBarViewModelTests : BaseTest
     {
         // arrange
         var messenger = new MessengerWrapper(WeakReferenceMessenger.Default);
-        _sut = new StatusBarViewModel(_viewModelFactory, _dialogService, _userPreferencesService, messenger);
+        _sut = new StatusBarViewModel(_viewModelFactory, _dialogService, _settingsService, messenger);
 
         // act
         messenger.Send(new ProjectChangedMessage(ProjectEnum.Incubator));
@@ -66,13 +66,13 @@ public sealed class StatusBarViewModelTests : BaseTest
     public void CurrentWiki_ShouldComeFromCurrentPref()
     {
         // arrange
-        _userPreferencesService.GetCurrentSettings().Returns(new UserSettings
+        _settingsService.GetCurrentSettings().Returns(new UserSettings
         {
             UserWiki = new("hyw", ProjectEnum.Wikipedia)
         });
 
         // act
-        _sut = new StatusBarViewModel(_viewModelFactory, _dialogService, _userPreferencesService, _messenger);
+        _sut = new StatusBarViewModel(_viewModelFactory, _dialogService, _settingsService, _messenger);
 
         // assert
         _sut.CurrentWiki.Should().Be($"hyw:Wikipedia");
@@ -82,7 +82,7 @@ public sealed class StatusBarViewModelTests : BaseTest
     public void CurrentWikiClickedCommand_ShouldOpenPreferencesView()
     {
         // arrange
-        var preferencesViewModel = new PreferencesViewModel(_userPreferencesService, _messenger);
+        var preferencesViewModel = new PreferencesViewModel(_settingsService, _messenger);
         _dialogService.ShowDialog<bool>(Arg.Any<PreferencesViewModel>()).Returns(true);
         _viewModelFactory.GetPreferencesViewModel().Returns(preferencesViewModel);
 
@@ -102,7 +102,7 @@ public sealed class StatusBarViewModelTests : BaseTest
     public void UsernameClickedCommand_ShouldOpenPreferencesView()
     {
         // arrange
-        var profilesViewModel = new ProfilesViewModel(_fileDialogService, _dialogService, _profileRepository, _userService, _userPreferencesService,
+        var profilesViewModel = new ProfilesViewModel(_fileDialogService, _dialogService, _profileRepository, _userService, _settingsService,
             _messenger);
         _dialogService.ShowDialog<bool>(Arg.Any<PreferencesViewModel>()).Returns(true);
         _viewModelFactory.GetProfilesViewModel().Returns(profilesViewModel);
@@ -122,7 +122,7 @@ public sealed class StatusBarViewModelTests : BaseTest
     public void Constructor_ShouldSubscribeToNewAccountLoggedInMessage()
     {
         // Act
-        var vm = new StatusBarViewModel(_viewModelFactory, _dialogService, _userPreferencesService, _messenger);
+        var vm = new StatusBarViewModel(_viewModelFactory, _dialogService, _settingsService, _messenger);
 
         // assert
         _messenger.Received(1).Register(vm, Arg.Any<MessageHandler<object, NewAccountLoggedInMessage>>());
@@ -132,7 +132,7 @@ public sealed class StatusBarViewModelTests : BaseTest
     public void Constructor_ShouldSubscribeToProjectChangedMessage()
     {
         // Act
-        var vm = new StatusBarViewModel(_viewModelFactory, _dialogService, _userPreferencesService, _messenger);
+        var vm = new StatusBarViewModel(_viewModelFactory, _dialogService, _settingsService, _messenger);
 
         // assert
         _messenger.Received(1).Register(vm, Arg.Any<MessageHandler<object, ProjectChangedMessage>>());
@@ -142,7 +142,7 @@ public sealed class StatusBarViewModelTests : BaseTest
     public void Constructor_ShouldSubscribeToLanguageCodeChangedMessage()
     {
         // Act
-        var vm = new StatusBarViewModel(_viewModelFactory, _dialogService, _userPreferencesService, _messenger);
+        var vm = new StatusBarViewModel(_viewModelFactory, _dialogService, _settingsService, _messenger);
 
         // assert
         _messenger.Received(1).Register(vm, Arg.Any<MessageHandler<object, LanguageCodeChangedMessage>>());

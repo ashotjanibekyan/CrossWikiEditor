@@ -1,11 +1,11 @@
 namespace CrossWikiEditor.Core.Services.HtmlParsers;
 
-public sealed class HtmlAgilityPackParser(ILogger logger, IUserPreferencesService userPreferencesService, IWikiClientCache wikiClientCache)
+public sealed class HtmlAgilityPackParser(ILogger logger, ISettingsService settingsService, IWikiClientCache wikiClientCache)
 {
     public List<WikiPageModel> GetPages(string html)
     {
-        string baseUrl = userPreferencesService.GetCurrentSettings().GetBaseUrl();
-        string apiUrl = userPreferencesService.GetCurrentSettings().GetApiUrl();
+        string baseUrl = settingsService.GetCurrentSettings().GetBaseUrl();
+        string apiUrl = settingsService.GetCurrentSettings().GetApiUrl();
         var doc = new HtmlDocument();
         doc.LoadHtml(html);
 

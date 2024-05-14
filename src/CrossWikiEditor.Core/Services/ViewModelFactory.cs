@@ -16,24 +16,24 @@ public sealed class ViewModelFactory(IFileDialogService fileDialogService,
         IProfileRepository profileRepository,
         IWikiClientCache wikiClientCache,
         IUserService userService,
-        IUserPreferencesService userPreferencesService,
+        ISettingsService settingsService,
         IMessengerWrapper messenger,
         TextFileListProvider textFileListProvider)
     : IViewModelFactory
 {
     public ProfilesViewModel GetProfilesViewModel()
     {
-        return new ProfilesViewModel(fileDialogService, dialogService, profileRepository, userService, userPreferencesService, messenger);
+        return new ProfilesViewModel(fileDialogService, dialogService, profileRepository, userService, settingsService, messenger);
     }
 
     public PreferencesViewModel GetPreferencesViewModel()
     {
-        return new PreferencesViewModel(userPreferencesService, messenger);
+        return new PreferencesViewModel(settingsService, messenger);
     }
 
     public async Task<FilterViewModel> GetFilterViewModel()
     {
-        WikiSite? site = await wikiClientCache.GetWikiSite(userPreferencesService.CurrentApiUrl);
+        WikiSite? site = await wikiClientCache.GetWikiSite(settingsService.CurrentApiUrl);
         WikiNamespace[] namespaces = site.Namespaces.Select(x => new WikiNamespace(x.Id, x.CustomName)).ToArray();
 
         return new FilterViewModel(
@@ -44,16 +44,16 @@ public sealed class ViewModelFactory(IFileDialogService fileDialogService,
 
     public async Task<SelectNamespacesViewModel> GetSelectNamespacesViewModel(bool isMultiselect = true)
     {
-        WikiSite site = await wikiClientCache.GetWikiSite(userPreferencesService.CurrentApiUrl);
+        WikiSite site = await wikiClientCache.GetWikiSite(settingsService.CurrentApiUrl);
         WikiNamespace[] namespaces = site.Namespaces.Select(x => new WikiNamespace(x.Id, x.CustomName)).ToArray();
-        return new SelectNamespacesViewModel(namespaces.ToList(), isMultiselect);
+        return new SelectNamespacesViewModel([..namespaces], isMultiselect);
     }
 
     public async Task<SelectNamespacesAndRedirectFilterViewModel> GetSelectNamespacesAndRedirectFilterViewModel(bool isIncludeRedirectsVisible = true)
     {
-        WikiSite site = await wikiClientCache.GetWikiSite(userPreferencesService.CurrentApiUrl);
+        WikiSite site = await wikiClientCache.GetWikiSite(settingsService.CurrentApiUrl);
         WikiNamespace[] namespaces = site.Namespaces.Select(x => new WikiNamespace(x.Id, x.CustomName)).ToArray();
-        return new SelectNamespacesAndRedirectFilterViewModel(namespaces.ToList())
+        return new SelectNamespacesAndRedirectFilterViewModel([..namespaces])
         {
             IsIncludeRedirectsVisible = isIncludeRedirectsVisible
         };
@@ -66,6 +66,6 @@ public sealed class ViewModelFactory(IFileDialogService fileDialogService,
 
     public DatabaseScannerViewModel GetDatabaseScannerViewModel()
     {
-        return new DatabaseScannerViewModel(userPreferencesService, wikiClientCache, fileDialogService);
+        return new DatabaseScannerViewModel(settingsService, wikiClientCache, fileDialogService);
     }
 }

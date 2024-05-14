@@ -22,12 +22,12 @@ public sealed class MakeListViewModelTests : BaseTest
             Substitute.For<IListProvider>()
         };
         _sut = new MakeListViewModel(_messenger, _logger, _dialogService, _wikiClientCache, _pageService, _systemService, _viewModelFactory,
-            _fileDialogService, _userPreferencesService, listProviders);
-        _userPreferencesService.GetCurrentSettings().Returns(new UserSettings()
+            _fileDialogService, _settingsService, listProviders);
+        _settingsService.GetCurrentSettings().Returns(new UserSettings()
         {
             UserWiki = new("hy", ProjectEnum.Wikipedia)
         });
-        _userPreferencesService.CurrentApiUrl.Returns(ApiRoot);
+        _settingsService.CurrentApiUrl.Returns(ApiRoot);
         _wikiClientCache.GetWikiSite(Arg.Any<string>()).Returns(new WikiSite(_wikiClient, ApiRoot));
     }
 
@@ -50,7 +50,7 @@ public sealed class MakeListViewModelTests : BaseTest
         };
         var messenger = new MessengerWrapper(WeakReferenceMessenger.Default);
         _sut = new MakeListViewModel(messenger, _logger, _dialogService, _wikiClientCache, _pageService, _systemService, _viewModelFactory,
-            _fileDialogService, _userPreferencesService, listProviders)
+            _fileDialogService, _settingsService, listProviders)
         {
             Pages = pages.ToObservableCollection()
         };
@@ -304,7 +304,7 @@ public sealed class MakeListViewModelTests : BaseTest
     {
         // arrange
         _sut.SelectedPages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(4).ToObservableCollection();
-        _userPreferencesService.GetCurrentSettings().Returns(new UserSettings
+        _settingsService.GetCurrentSettings().Returns(new UserSettings
         {
             UserWiki = new("hy", ProjectEnum.Wikipedia)
         });
@@ -343,7 +343,7 @@ public sealed class MakeListViewModelTests : BaseTest
     {
         // arrange
         _sut.SelectedPages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(4).ToObservableCollection();
-        _userPreferencesService.GetCurrentSettings().Returns(new UserSettings
+        _settingsService.GetCurrentSettings().Returns(new UserSettings
         {
             UserWiki = new("hy", ProjectEnum.Wikipedia)
         });

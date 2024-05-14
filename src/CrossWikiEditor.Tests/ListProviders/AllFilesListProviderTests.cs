@@ -7,7 +7,7 @@ public sealed class AllFilesListProviderTests : ListProvidersBaseTest<AllFilesLi
     {
         SetUpServices();
         SetUpUserSettings("hyw", ProjectEnum.Wikipedia);
-        _sut = new AllFilesListProvider(_dialogService, _pageService, _userPreferencesService)
+        _sut = new AllFilesListProvider(_dialogService, _pageService, _settingsService)
         {
             Param = "start from here"
         };

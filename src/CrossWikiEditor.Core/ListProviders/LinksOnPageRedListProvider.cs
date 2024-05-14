@@ -2,8 +2,8 @@
 
 public sealed class LinksOnPageRedListProvider(IDialogService dialogService,
         IPageService pageService,
-        IUserPreferencesService userPreferencesService)
-    : LinksOnPageListProvider(dialogService, pageService, userPreferencesService)
+        ISettingsService settingsService)
+    : LinksOnPageListProvider(dialogService, pageService, settingsService)
 {
     public override string Title => "Links on page (only redlinks)";
 

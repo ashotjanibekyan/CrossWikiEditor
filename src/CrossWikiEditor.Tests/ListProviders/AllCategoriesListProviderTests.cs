@@ -7,7 +7,7 @@ public sealed class AllCategoriesListProviderTests : ListProvidersBaseTest<AllCa
     {
         SetUpServices();
         SetUpUserSettings("hyw", ProjectEnum.Wikipedia);
-        _sut = new AllCategoriesListProvider(_categoryService, _dialogService, _userPreferencesService)
+        _sut = new AllCategoriesListProvider(_categoryService, _dialogService, _settingsService)
         {
             Param = "start from here"
         };

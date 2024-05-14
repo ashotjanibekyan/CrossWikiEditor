@@ -31,8 +31,8 @@ public sealed class FilterViewModelTests : BaseTest
             new(11, "Կաղապարի քննարկում"),
             new(13, "Օգնության քննարկում"),
             new(15, "Կատեգորիայի քննարկում"),
-        }, new TextFileListProvider(_fileDialogService, _systemService, _userPreferencesService, _wikiClientCache));
-        _userPreferencesService.CurrentApiUrl.Returns("https://hy.wikipedia.org/w/api.php?");
+        }, new TextFileListProvider(_fileDialogService, _systemService, _settingsService, _wikiClientCache));
+        _settingsService.CurrentApiUrl.Returns("https://hy.wikipedia.org/w/api.php?");
     }
 
     [Test]
@@ -127,10 +127,10 @@ public sealed class FilterViewModelTests : BaseTest
         // assert
         _sut.Pages.Should().BeEquivalentTo(new List<WikiPageModel>
         {
-            new("title1", _userPreferencesService.CurrentApiUrl, _wikiClientCache),
-            new("Category:title (f e )2", _userPreferencesService.CurrentApiUrl, _wikiClientCache),
-            new("title3", _userPreferencesService.CurrentApiUrl, _wikiClientCache),
-            new("titl e3", _userPreferencesService.CurrentApiUrl, _wikiClientCache)
+            new("title1", _settingsService.CurrentApiUrl, _wikiClientCache),
+            new("Category:title (f e )2", _settingsService.CurrentApiUrl, _wikiClientCache),
+            new("title3", _settingsService.CurrentApiUrl, _wikiClientCache),
+            new("titl e3", _settingsService.CurrentApiUrl, _wikiClientCache)
         });
     }
 
@@ -147,7 +147,7 @@ public sealed class FilterViewModelTests : BaseTest
         _sut.KeepTitlesContaining = "as";
         _sut.UseRegex = true;
         _sut.SelectedSetOperations = SetOperations.Intersection;
-        _sut.Pages = Fakers.GetWikiPageModelFaker(_userPreferencesService.CurrentApiUrl, _wikiClientCache)
+        _sut.Pages = Fakers.GetWikiPageModelFaker(_settingsService.CurrentApiUrl, _wikiClientCache)
                            .Generate(10).ToObservableCollection();
         IDialog dialog = Substitute.For<IDialog>();
         var namespacesToKeep = _sut.SubjectNamespaces.Where(n => n.IsChecked).Select(n => n.Id).ToList();
@@ -171,7 +171,7 @@ public sealed class FilterViewModelTests : BaseTest
     public void ClearCommand_ShouldRemoveAllPages()
     {
         // arrange
-        _sut.Pages = Fakers.GetWikiPageModelFaker(_userPreferencesService.CurrentApiUrl, _wikiClientCache)
+        _sut.Pages = Fakers.GetWikiPageModelFaker(_settingsService.CurrentApiUrl, _wikiClientCache)
             .Generate(10).ToObservableCollection();
         
         // act

@@ -7,7 +7,7 @@ public sealed class AllPagesWithPrefixListProviderTests : ListProvidersBaseTest<
     {
         SetUpServices();
         SetUpUserSettings("hyw", ProjectEnum.Wikipedia);
-        _sut = new AllPagesWithPrefixListProvider(_dialogService, _pageService, _userPreferencesService, _viewModelFactory)
+        _sut = new AllPagesWithPrefixListProvider(_dialogService, _pageService, _settingsService, _viewModelFactory)
         {
             Param = "my prefix"
         };

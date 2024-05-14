@@ -1,7 +1,7 @@
 ﻿namespace CrossWikiEditor.Core.ListProviders;
 
 public sealed class WhatLinksHereListProvider(IDialogService dialogService,
-    IPageService pageService, IUserPreferencesService userPreferencesService,
+    IPageService pageService, ISettingsService settingsService,
     IViewModelFactory viewModelFactory) : LimitedListProviderBase(dialogService), INeedAdditionalParamsListProvider
 {
     private NamespacesAndRedirectFilterOptions? _options;
@@ -12,7 +12,7 @@ public sealed class WhatLinksHereListProvider(IDialogService dialogService,
     public override async Task<Result<List<WikiPageModel>>> MakeList(int limit)
     {
         return await pageService.GetPagesLinkedTo(
-            userPreferencesService.CurrentApiUrl,
+            settingsService.CurrentApiUrl,
             Param,
             _options!.Namespaces,
             filterRedirects: _options.RedirectFilter switch

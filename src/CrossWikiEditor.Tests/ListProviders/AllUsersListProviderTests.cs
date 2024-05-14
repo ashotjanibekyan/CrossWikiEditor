@@ -7,7 +7,7 @@ public sealed class AllUsersListProviderTests : ListProvidersBaseTest<AllUsersLi
     {
         SetUpServices();
         SetUpUserSettings("hyw", ProjectEnum.Wikipedia);
-        _sut = new AllUsersListProvider(_dialogService, _userPreferencesService, _userService);
+        _sut = new AllUsersListProvider(_dialogService, _settingsService, _userService);
         _expectedPages = Fakers.GetWikiPageModelFaker(_userSettings.GetApiUrl(), _wikiClientCache).Generate(4);
     }
 
@@ -18,7 +18,7 @@ public sealed class AllUsersListProviderTests : ListProvidersBaseTest<AllUsersLi
     public async Task MakeList_ShouldReturnServiceResults()
     {
         // arrange
-        _userService.GetAllUsers(_userPreferencesService.CurrentApiUrl, _sut.Param, 73)
+        _userService.GetAllUsers(_settingsService.CurrentApiUrl, _sut.Param, 73)
             .Returns(_expectedPages);
 
         await base.MakeList_ShouldReturnServiceResults(_expectedPages);
@@ -28,7 +28,7 @@ public sealed class AllUsersListProviderTests : ListProvidersBaseTest<AllUsersLi
     public async Task MakeList_ShouldReturnUnsuccessfulResult_WhenServiceReturnsUnsuccessfulResult()
     {
         // arrange
-        _userService.GetAllUsers(_userPreferencesService.CurrentApiUrl, _sut.Param, 73)
+        _userService.GetAllUsers(_settingsService.CurrentApiUrl, _sut.Param, 73)
             .Returns(new Exception("failed to get pages"));
 
         // act

@@ -2,8 +2,8 @@
 
 public sealed class PagesWithoutLanguageLinksListProvider(IDialogService dialogService,
     IPageService pageService,
-    IUserPreferencesService userPreferencesService,
-    IViewModelFactory viewModelFactory) : AllPagesListProviderBase(dialogService, pageService, viewModelFactory, userPreferencesService)
+    ISettingsService settingsService,
+    IViewModelFactory viewModelFactory) : AllPagesListProviderBase(dialogService, pageService, viewModelFactory, settingsService)
 {
     public override string Title => "Pages without language links";
 

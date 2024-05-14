@@ -2,17 +2,17 @@
 
 public sealed class LanguageSpecificRegexes : IAsyncInitialization
 {
-    private readonly IUserPreferencesService _userPreferencesService;
+    private readonly ISettingsService _settingsService;
     private readonly IWikiClientCache _wikiClientCache;
     private WikiSite? _site;
     private MagicWordCollection? _magicWordCollection;
 
     public LanguageSpecificRegexes(
-        IUserPreferencesService userPreferencesService,
+        ISettingsService settingsService,
         IWikiClientCache wikiClientCache,
         IMessengerWrapper messenger)
     {
-        _userPreferencesService = userPreferencesService;
+        _settingsService = settingsService;
         _wikiClientCache = wikiClientCache;
         InitAsync = InitializeAsync();
         messenger.Register<LanguageCodeChangedMessage>(this, (_, _) => InitAsync = InitializeAsync());
@@ -21,7 +21,7 @@ public sealed class LanguageSpecificRegexes : IAsyncInitialization
 
     private async Task InitializeAsync()
     {
-        string apiRoot = _userPreferencesService.CurrentApiUrl;
+        string apiRoot = _settingsService.CurrentApiUrl;
         _site = await _wikiClientCache.GetWikiSite(apiRoot);
         _magicWordCollection = await _site.GetMagicWords();
         MakeRegexes();
@@ -29,8 +29,8 @@ public sealed class LanguageSpecificRegexes : IAsyncInitialization
 
     private void MakeRegexes()
     {
-        string? url = _userPreferencesService.GetCurrentSettings().GetBaseUrl();
-        string? urlLong = _userPreferencesService.GetCurrentSettings().GetLongBaseUrl();
+        string? url = _settingsService.GetCurrentSettings().GetBaseUrl();
+        string? urlLong = _settingsService.GetCurrentSettings().GetLongBaseUrl();
 
         int pos = Tools.FirstDifference(url, urlLong);
         string s = Regex.Escape(urlLong[..pos]).Replace(@"https://", @"https?://");

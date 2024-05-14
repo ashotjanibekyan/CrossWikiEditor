@@ -2,7 +2,7 @@
 
 public sealed class RecentChangesListProvider(IDialogService dialogService,
     IPageService pageService,
-    IUserPreferencesService userPreferencesService,
+    ISettingsService settingsService,
     IViewModelFactory viewModelFactory) : LimitedListProviderBase(dialogService), INeedNamespacesListProvider
 {
     private int[]? _namespaces;
@@ -16,5 +16,5 @@ public sealed class RecentChangesListProvider(IDialogService dialogService,
     }
 
     public override async Task<Result<List<WikiPageModel>>> MakeList(int limit) =>
-        await pageService.GetRecentlyChangedPages(userPreferencesService.CurrentApiUrl, _namespaces, limit);
+        await pageService.GetRecentlyChangedPages(settingsService.CurrentApiUrl, _namespaces, limit);
 }

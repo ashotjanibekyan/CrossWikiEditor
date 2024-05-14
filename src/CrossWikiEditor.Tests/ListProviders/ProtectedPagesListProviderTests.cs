@@ -8,7 +8,7 @@ public sealed class ProtectedPagesListProviderTests : ListProvidersBaseTest<Prot
         SetUpServices();
         SetUpUserSettings("hyw", ProjectEnum.Wikipedia);
         _selectProtectionSelectionPageViewModel = new SelectProtectionSelectionPageViewModel();
-        _sut = new ProtectedPagesListProvider(_dialogService, _pageService, _userPreferencesService, _viewModelFactory)
+        _sut = new ProtectedPagesListProvider(_dialogService, _pageService, _settingsService, _viewModelFactory)
         {
             Param = "start from here"
         };

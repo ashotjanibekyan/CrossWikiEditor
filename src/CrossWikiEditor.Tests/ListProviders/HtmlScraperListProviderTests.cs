@@ -36,8 +36,8 @@ public sealed class HtmlScraperListProviderTests : ListProvidersBaseTest<HtmlScr
         SetUpUserSettings("hy", ProjectEnum.Wikipedia);
         _httpClientFactory = Substitute.For<IHttpClientFactory>();
         _mockHttpMessageHandler = new MockHttpMessageHandler();
-        _sut = new HtmlScraperListProvider(new HtmlAgilityPackParser(_logger, _userPreferencesService, _wikiClientCache), _httpClientFactory, _logger,
-            new SimpleHtmlParser(_logger, _userPreferencesService, _wikiClientCache));
+        _sut = new HtmlScraperListProvider(new HtmlAgilityPackParser(_logger, _settingsService, _wikiClientCache), _httpClientFactory, _logger,
+            new SimpleHtmlParser(_logger, _settingsService, _wikiClientCache));
     }
 
     [Test] public new void CanMake_ShouldBeFalse_WhenParamIsEmpty() => base.CanMake_ShouldBeFalse_WhenParamIsEmpty();

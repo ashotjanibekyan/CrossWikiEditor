@@ -2,7 +2,7 @@
 
 public sealed class NewPagesListProvider(IDialogService dialogService,
     IPageService pageService,
-    IUserPreferencesService userPreferencesService,
+    ISettingsService settingsService,
     IViewModelFactory viewModelFactory) : LimitedListProviderBase(dialogService), INeedNamespacesListProvider
 {
     private int[]? _namespaces;
@@ -13,5 +13,5 @@ public sealed class NewPagesListProvider(IDialogService dialogService,
     public async Task GetAdditionalParams() => _namespaces = await this.GetNamespaces(true, DialogService, viewModelFactory);
 
     public override async Task<Result<List<WikiPageModel>>> MakeList(int limit) =>
-        await pageService.GetNewPages(userPreferencesService.CurrentApiUrl, _namespaces!, limit);
+        await pageService.GetNewPages(settingsService.CurrentApiUrl, _namespaces!, limit);
 }

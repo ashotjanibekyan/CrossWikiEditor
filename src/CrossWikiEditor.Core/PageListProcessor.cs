@@ -3,7 +3,7 @@
 public sealed class PageListProcessor
 {
     private readonly IMessengerWrapper _messenger;
-    private readonly IUserPreferencesService _userPreferencesService;
+    private readonly ISettingsService _settingsService;
     private readonly UserSettings _userSettings;
     private readonly List<WikiPageModel> _pages;
     private bool _isAlive = true;
@@ -11,13 +11,13 @@ public sealed class PageListProcessor
 
     public PageListProcessor(
         IMessengerWrapper messenger,
-        IUserPreferencesService userPreferencesService,
+        ISettingsService settingsService,
         List<WikiPageModel> pages,
         NormalFindAndReplaceRules normalFindAndReplaceRules)
     {
         _messenger = messenger;
-        _userPreferencesService = userPreferencesService;
-        _userSettings = userPreferencesService.GetCurrentSettings();
+        _settingsService = settingsService;
+        _userSettings = settingsService.GetCurrentSettings();
         _pages = pages;
         messenger.Register<SaveOrSkipPageMessage>(this,
             (recipient, message) => _shouldSaveTaskCompletionSource?.TrySetResult(message.ShouldSavePage));

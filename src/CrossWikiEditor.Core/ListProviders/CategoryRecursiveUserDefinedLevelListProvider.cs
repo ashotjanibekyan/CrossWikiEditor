@@ -2,7 +2,7 @@
 
 public sealed class CategoryRecursiveUserDefinedLevelListProvider(ICategoryService categoryService,
         IDialogService dialogService,
-        IUserPreferencesService userPreferencesService)
+        ISettingsService settingsService)
     : LimitedListProviderBase(dialogService), INeedAdditionalParamsListProvider
 {
     private int? _recursionLevel;
@@ -18,7 +18,7 @@ public sealed class CategoryRecursiveUserDefinedLevelListProvider(ICategoryServi
             return new Exception("Please select recursive level.");
         }
 
-        UserSettings userSettings = userPreferencesService.GetCurrentSettings();
+        UserSettings userSettings = settingsService.GetCurrentSettings();
         Result<List<WikiPageModel>> result = await categoryService.GetPagesOfCategory(userSettings.GetApiUrl(), Param, limit, (int) _recursionLevel);
         _recursionLevel = null;
         return result;

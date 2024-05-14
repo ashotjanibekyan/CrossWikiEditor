@@ -8,7 +8,7 @@ public sealed class NewPagesListProviderTests : ListProvidersBaseTest<NewPagesLi
         SetUpServices();
         SetUpUserSettings("hyw", ProjectEnum.Wikipedia);
         _selectNamespacesViewModel = new SelectNamespacesViewModel(new List<WikiNamespace>(), false);
-        _sut = new NewPagesListProvider(_dialogService, _pageService, _userPreferencesService, _viewModelFactory)
+        _sut = new NewPagesListProvider(_dialogService, _pageService, _settingsService, _viewModelFactory)
         {
             Param = "start from here"
         };

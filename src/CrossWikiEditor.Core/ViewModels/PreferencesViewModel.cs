@@ -2,12 +2,12 @@
 
 public sealed partial class PreferencesViewModel : ViewModelBase
 {
-    private readonly IUserPreferencesService _userPreferencesService;
+    private readonly ISettingsService _settingsService;
     private readonly IMessengerWrapper _messenger;
 
-    public PreferencesViewModel(IUserPreferencesService userPreferencesService, IMessengerWrapper messenger)
+    public PreferencesViewModel(ISettingsService settingsService, IMessengerWrapper messenger)
     {
-        _userPreferencesService = userPreferencesService;
+        _settingsService = settingsService;
         _messenger = messenger;
         Alerts = new Alerts
         {
@@ -18,8 +18,8 @@ public sealed partial class PreferencesViewModel : ViewModelBase
             SeeAlsoOutOfPlace = true
         };
 
-        SelectedLanguage = userPreferencesService.GetCurrentSettings().UserWiki.LanguageCode ?? "";
-        SelectedProject = userPreferencesService.GetCurrentSettings().UserWiki.Project;
+        SelectedLanguage = settingsService.GetCurrentSettings().UserWiki.LanguageCode ?? "";
+        SelectedProject = settingsService.GetCurrentSettings().UserWiki.Project;
     }
 
     [ObservableProperty] private bool _minimizeToSystray;

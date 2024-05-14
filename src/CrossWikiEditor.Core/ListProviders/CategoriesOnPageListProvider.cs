@@ -1,13 +1,15 @@
 ﻿namespace CrossWikiEditor.Core.ListProviders;
 
-public class CategoriesOnPageListProvider(ICategoryService categoryService,
-    IDialogService dialogService, IUserPreferencesService userPreferencesService) : LimitedListProviderBase(dialogService)
+public class CategoriesOnPageListProvider(
+    ICategoryService categoryService,
+    IDialogService dialogService,
+    ISettingsService settingsService) : LimitedListProviderBase(dialogService)
 {
-    protected IUserPreferencesService UserPreferencesService => userPreferencesService;
+    protected ISettingsService SettingsService => settingsService;
     protected ICategoryService CategoryService => categoryService;
     public override string Title => "Categories on page";
     public override string ParamTitle => "Page";
 
     public override async Task<Result<List<WikiPageModel>>> MakeList(int limit) =>
-        await categoryService.GetCategoriesOf(userPreferencesService.CurrentApiUrl, Param, limit);
+        await categoryService.GetCategoriesOf(settingsService.CurrentApiUrl, Param, limit);
 }

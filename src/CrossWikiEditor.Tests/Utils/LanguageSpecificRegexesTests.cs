@@ -11,15 +11,15 @@ public sealed class LanguageSpecificRegexesTests : BaseTest
     {
         SetUpServices();
         string apiRoot = "https://en.wikipedia.org/w/api.php?";
-        _userPreferencesService.CurrentApiUrl.Returns(apiRoot);
-        _userPreferencesService.GetCurrentSettings().Returns(new UserSettings()
+        _settingsService.CurrentApiUrl.Returns(apiRoot);
+        _settingsService.GetCurrentSettings().Returns(new UserSettings()
         {
             UserWiki = new("en", ProjectEnum.Wikipedia)
         });
         var enWiki = new WikiSite(new WikiClient(), apiRoot);
         await enWiki.Initialization;
         _wikiClientCache.GetWikiSite(apiRoot).Returns(enWiki);
-        _sut = new LanguageSpecificRegexes(_userPreferencesService, _wikiClientCache, _messenger);
+        _sut = new LanguageSpecificRegexes(_settingsService, _wikiClientCache, _messenger);
         await _sut.InitAsync;
     }
     

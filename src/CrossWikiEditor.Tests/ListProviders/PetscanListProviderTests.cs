@@ -14,7 +14,7 @@ public sealed class PetscanListProviderTests : ListProvidersBaseTest<PetscanList
         SetUpServices();
         _httpClientFactory = Substitute.For<IHttpClientFactory>();
         _mockHttpMessageHandler = new MockHttpMessageHandler();
-        _sut = new PetscanListProvider(_httpClientFactory, _userPreferencesService, _wikiClientCache);
+        _sut = new PetscanListProvider(_httpClientFactory, _settingsService, _wikiClientCache);
     }
 
     [Test]

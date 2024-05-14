@@ -4,38 +4,76 @@ namespace CrossWikiEditor.Core.Services;
 
 public interface ISettingsService
 {
-    void SaveCurrentSettings();
-    Settings.Settings GetDefaultSettings(bool force = false);
+    UserSettings GetDefaultSettings(bool force = false);
+    UserSettings? GetUserSettingsByPath(string path);
+    UserSettings GetCurrentSettings();
+    void SaveCurrentUserSettings();
+    void SetCurrentUserSettings(UserSettings userSettings);
+    string CurrentApiUrl { get; }
 }
 
-public sealed class SettingsService() : ISettingsService
+public sealed class SettingsService : ISettingsService
 {
-    private Settings.Settings? _settings;
-    public void SaveCurrentSettings()
+    private readonly JsonSerializerOptions _jsonSerializerOptions;
+
+    private UserSettings _currentSettings;
+    
+    public SettingsService(IMessengerWrapper messenger)
     {
-        var settings = new Settings.Settings()
-        {
-            NormalFindAndReplaceRules = MainWindowViewModel.Instance!.OptionsViewModel.NormalFindAndReplaceRules
-        };
-        var json = JsonSerializer.Serialize(settings, options: new JsonSerializerOptions
+        _currentSettings = new UserSettings();
+        _jsonSerializerOptions = new JsonSerializerOptions
         {
             WriteIndented = true
-        });
-        File.WriteAllText("./settings.json", json);
+        };
+        messenger.Register<LanguageCodeChangedMessage>(this, (r, m) => _currentSettings.UserWiki!.LanguageCode = m.Value);
+        messenger.Register<ProjectChangedMessage>(this, (r, m) => _currentSettings.UserWiki!.Project = m.Value);
     }
 
-    public Settings.Settings GetDefaultSettings(bool force = false)
+    public UserSettings GetDefaultSettings(bool force = false)
     {
-        if (!force && _settings is not null)
+        if (!force && _currentSettings is not null)
         {
-            return _settings;
+            return _currentSettings;
         }
         if (!File.Exists("./settings.json"))
         {
-            return new Settings.Settings();
+            return new UserSettings();
         }
         var json = File.ReadAllText("./settings.json");
-        _settings = JsonSerializer.Deserialize<Settings.Settings>(json);
-        return _settings ?? new Settings.Settings();
+        _currentSettings = JsonSerializer.Deserialize<UserSettings>(json) ?? new UserSettings();
+        return _currentSettings;
+    }
+
+    public UserSettings? GetUserSettingsByPath(string path)
+    {
+        if (string.IsNullOrEmpty(path))
+        {
+            return null;
+        }
+        string json = File.ReadAllText(path, Encoding.UTF8);
+        return JsonSerializer.Deserialize<UserSettings>(json);
+    }
+
+
+    public void SaveCurrentUserSettings()
+    {
+        var settings = new UserSettings()
+        {
+            NormalFindAndReplaceRules = MainWindowViewModel.Instance!.OptionsViewModel.NormalFindAndReplaceRules
+        };
+        var json = JsonSerializer.Serialize(settings, options: _jsonSerializerOptions);
+        File.WriteAllText("./settings.json", json);
+    }
+
+    public UserSettings GetCurrentSettings()
+    {
+        return _currentSettings;
+    }
+
+    public string CurrentApiUrl => _currentSettings.UserWiki.GetApiUrl();
+
+    public void SetCurrentUserSettings(UserSettings userSettings)
+    {
+        _currentSettings = userSettings;
     }
 }

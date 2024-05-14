@@ -2,7 +2,7 @@
 
 public sealed class AllPagesWithPrefixListProvider(IDialogService dialogService,
     IPageService pageService,
-    IUserPreferencesService userPreferencesService,
+    ISettingsService settingsService,
     IViewModelFactory viewModelFactory) : LimitedListProviderBase(dialogService), INeedNamespacesListProvider
 {
     private int[]? _namespaces;
@@ -13,5 +13,5 @@ public sealed class AllPagesWithPrefixListProvider(IDialogService dialogService,
     public async Task GetAdditionalParams() => _namespaces = await this.GetNamespaces(isMultiselect: false, DialogService, viewModelFactory);
 
     public override async Task<Result<List<WikiPageModel>>> MakeList(int limit) =>
-        await pageService.GetAllPagesWithPrefix(userPreferencesService.CurrentApiUrl, Param, _namespaces!.First(), limit);
+        await pageService.GetAllPagesWithPrefix(settingsService.CurrentApiUrl, Param, _namespaces!.First(), limit);
 }

@@ -4,7 +4,7 @@ public sealed partial class ProfilesViewModel(IFileDialogService fileDialogServi
         IDialogService dialogService,
         IProfileRepository profileRepository,
         IUserService userService,
-        IUserPreferencesService userPreferencesService,
+        ISettingsService settingsService,
         IMessengerWrapper messenger)
     : ViewModelBase
 {
@@ -88,8 +88,8 @@ public sealed partial class ProfilesViewModel(IFileDialogService fileDialogServi
 
     private async Task Login(Profile profile, IDialog dialog)
     {
-        UserSettings? currentUserSettings = userPreferencesService.GetUserSettings(profile.DefaultSettingsPath);
-        currentUserSettings ??= userPreferencesService.GetCurrentSettings();
+        UserSettings? currentUserSettings = settingsService.GetUserSettingsByPath(profile.DefaultSettingsPath);
+        currentUserSettings ??= settingsService.GetCurrentSettings();
 
         Result<Unit> loginResult = await userService.Login(profile, currentUserSettings.GetApiUrl());
         if (loginResult is { IsSuccessful: true })
@@ -97,7 +97,7 @@ public sealed partial class ProfilesViewModel(IFileDialogService fileDialogServi
             messenger.Send(new NewAccountLoggedInMessage(profile));
             if (!string.IsNullOrEmpty(profile.DefaultSettingsPath))
             {
-                userPreferencesService.SetCurrentPref(currentUserSettings);
+                settingsService.SetCurrentUserSettings(currentUserSettings);
             }
 
             dialog.Close(true);

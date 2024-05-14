@@ -4,7 +4,7 @@ public abstract class AllPagesListProviderBase(
     IDialogService dialogService,
     IPageService pageService,
     IViewModelFactory viewModelFactory,
-    IUserPreferencesService userPreferencesService) : LimitedListProviderBase(dialogService), INeedNamespacesListProvider
+    ISettingsService settingsService) : LimitedListProviderBase(dialogService), INeedNamespacesListProvider
 {
     private int[]? _namespaces;
     public override string ParamTitle => "Start from";
@@ -14,7 +14,7 @@ public abstract class AllPagesListProviderBase(
     protected async Task<Result<List<WikiPageModel>>> MakeListBase(int limit, PropertyFilterOption redirectsFilter,
         PropertyFilterOption langLinksFilter)
     {
-        return await pageService.GetAllPages(userPreferencesService.CurrentApiUrl, Param, _namespaces!.First(),
+        return await pageService.GetAllPages(settingsService.CurrentApiUrl, Param, _namespaces!.First(),
             redirectsFilter: redirectsFilter, langLinksFilter: langLinksFilter, limit);
     }
 }

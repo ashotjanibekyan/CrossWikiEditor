@@ -7,7 +7,7 @@ public sealed class CategoryRecursiveUserDefinedLevelListProviderTests : ListPro
     {
         SetUpServices();
         SetUpUserSettings("hyw", ProjectEnum.Wikipedia);
-        _sut = new CategoryRecursiveUserDefinedLevelListProvider(_categoryService, _dialogService, _userPreferencesService)
+        _sut = new CategoryRecursiveUserDefinedLevelListProvider(_categoryService, _dialogService, _settingsService)
         {
             Param = "my prefix"
         };

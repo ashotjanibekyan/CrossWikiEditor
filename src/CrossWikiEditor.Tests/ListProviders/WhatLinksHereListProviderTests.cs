@@ -12,7 +12,7 @@ public sealed class WhatLinksHereListProviderTests : ListProvidersBaseTest<WhatL
             new(0, ""),
             new(1, "Քննարկում:")
         });
-        _sut = new WhatLinksHereListProvider(_dialogService, _pageService, _userPreferencesService, _viewModelFactory)
+        _sut = new WhatLinksHereListProvider(_dialogService, _pageService, _settingsService, _viewModelFactory)
         {
             Param = "start from here"
         };
