@@ -20,13 +20,7 @@ public sealed class FileDialogService(IStorageProvider storageProvider) : IFileD
         };
         if (patterns is not null)
         {
-            options.FileTypeFilter = new List<FilePickerFileType>
-            {
-                new(null)
-                {
-                    Patterns = patterns
-                }
-            };
+            options.FileTypeFilter = [new(null) { Patterns = patterns }];
         }
         IReadOnlyList<IStorageFile> result = await storageProvider.OpenFilePickerAsync(options);
         return result.Select(f => HttpUtility.UrlDecode(f.Path.AbsolutePath)).ToArray();
@@ -42,6 +36,5 @@ public sealed class FileDialogService(IStorageProvider storageProvider) : IFileD
             SuggestedFileName = suggestedFileName
         });
         return storageFile is null ? (null, null) : (storageFile.OpenReadAsync, storageFile.OpenWriteAsync);
-
     }
 }

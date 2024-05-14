@@ -7,7 +7,7 @@ file class JsonProfile
     public int Id { get; set; }
     public string Username { get; set; } = string.Empty;
     public bool IsPasswordSaved { get; set; }
-    public byte[] Password { get; set; } = Array.Empty<byte>();
+    public byte[] Password { get; set; } = [];
     public string DefaultSettingsPath { get; set; } = string.Empty;
     public string Notes { get; set; } = string.Empty;
 }
@@ -49,11 +49,11 @@ public sealed class SimpleJsonProfileRepository(IStringEncryptionService stringE
 {
     private const string JsonName = "profiles.json";
     private readonly object _profileJsonLock = new();
-    
+
     public Profile? Get(int id)
     {
         List<Profile> profiles = GetAll();
-        return profiles.FirstOrDefault(p => p.Id == id);
+        return profiles.Find(p => p.Id == id);
     }
 
     public int Insert(Profile profile)
@@ -68,7 +68,7 @@ public sealed class SimpleJsonProfileRepository(IStringEncryptionService stringE
     public void Update(Profile profile)
     {
         List<Profile> profiles = GetAll();
-        Profile? p = profiles.FirstOrDefault(p => p.Id == profile.Id);
+        Profile? p = profiles.Find(p => p.Id == profile.Id);
         if (p is not null)
         {
             profiles.Remove(p);
@@ -83,11 +83,11 @@ public sealed class SimpleJsonProfileRepository(IStringEncryptionService stringE
         {
             if (!File.Exists(JsonName))
             {
-                SaveAll(new List<Profile>());
+                SaveAll([]);
             }
             string json = File.ReadAllText(JsonName);
             List<JsonProfile>? jsonProfiles = JsonSerializer.Deserialize<List<JsonProfile>>(json);
-            return jsonProfiles is null ? new List<Profile>() : jsonProfiles.Select(p => Mapper.JsonProfileToProfile(p, stringEncryptionService)).ToList();
+            return jsonProfiles is null ? [] : jsonProfiles.ConvertAll(p => Mapper.JsonProfileToProfile(p, stringEncryptionService));
         }
     }
 
@@ -95,7 +95,7 @@ public sealed class SimpleJsonProfileRepository(IStringEncryptionService stringE
     {
         lock (_profileJsonLock)
         {
-            var jsonProfiles = profiles.Select(p => Mapper.ProfileToJsonProfile(p, stringEncryptionService)).ToList();
+            List<JsonProfile> jsonProfiles = profiles.ConvertAll(p => Mapper.ProfileToJsonProfile(p, stringEncryptionService));
             string json = JsonSerializer.Serialize(jsonProfiles, new JsonSerializerOptions()
             {
                 WriteIndented = true
@@ -107,7 +107,7 @@ public sealed class SimpleJsonProfileRepository(IStringEncryptionService stringE
     public void Delete(int id)
     {
         List<Profile> profiles = GetAll();
-        Profile? p = profiles.FirstOrDefault(p => p.Id == id);
+        Profile? p = profiles.Find(p => p.Id == id);
         if (p is not null)
         {
             profiles.Remove(p);

@@ -35,7 +35,7 @@ public sealed class UserService(IWikiClientCache wikiClientCache, ISettingsServi
                 StartFrom = startFrom
             };
             List<WikiPage> result = await gen.EnumItemsAsync().Take(limit).ToListAsync();
-            return result.Select(x => new WikiPageModel(x)).ToList();
+            return result.ConvertAll(x => new WikiPageModel(x));
         }
         catch (Exception e)
         {
@@ -51,7 +51,7 @@ public sealed class UserService(IWikiClientCache wikiClientCache, ISettingsServi
             WikiSite site = await wikiClientCache.GetWikiSite(settingsService.CurrentApiUrl);
             var gen = new MyWatchlistGenerator(site);
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
-            return result.Select(x => new WikiPageModel(x)).ToList();
+            return result.ConvertAll(x => new WikiPageModel(x));
         }
         catch (Exception e)
         {
@@ -65,13 +65,13 @@ public sealed class UserService(IWikiClientCache wikiClientCache, ISettingsServi
         try
         {
             WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
-            var gen = new UserContributionsGenerator(site, new List<string> {username})
+            var gen = new UserContributionsGenerator(site, new List<string> { username })
             {
                 IncludeTitle = true,
                 IncludeIds = true
             };
             List<UserContributionResultItem> result = await gen.EnumItemsAsync().Take(limit).ToListAsync();
-            return result.Select(item => new WikiPageModel(item.WikiPage)).ToList();
+            return result.ConvertAll(item => new WikiPageModel(item.WikiPage));
         }
         catch (Exception e)
         {

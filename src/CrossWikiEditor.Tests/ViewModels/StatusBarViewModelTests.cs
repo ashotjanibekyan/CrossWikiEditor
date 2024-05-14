@@ -14,7 +14,6 @@ public sealed class StatusBarViewModelTests : BaseTest
         _messenger.Received().Register(_sut, Arg.Any<MessageHandler<object, NewAccountLoggedInMessage>>());
         _messenger.Received().Register(_sut, Arg.Any<MessageHandler<object, ProjectChangedMessage>>());
         _messenger.Received().Register(_sut, Arg.Any<MessageHandler<object, LanguageCodeChangedMessage>>());
-
     }
 
     [Test]
@@ -96,7 +95,6 @@ public sealed class StatusBarViewModelTests : BaseTest
             _dialogService.Received(1).ShowDialog<bool>(preferencesViewModel);
         });
     }
-
 
     [Test]
     public void UsernameClickedCommand_ShouldOpenPreferencesView()

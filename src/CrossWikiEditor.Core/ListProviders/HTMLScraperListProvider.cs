@@ -5,7 +5,7 @@ public sealed class HtmlScraperListProvider(HtmlAgilityPackParser htmlAgilityPac
 {
     public override string Title => "HTML Scraper";
     public override string ParamTitle => "URL";
-    
+
     public override async Task<Result<List<WikiPageModel>>> MakeList()
     {
         try

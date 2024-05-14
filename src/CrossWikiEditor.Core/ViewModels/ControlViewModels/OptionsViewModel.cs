@@ -35,7 +35,6 @@ public sealed partial class OptionsViewModel : ViewModelBase
     [ObservableProperty] private bool _skipIfNoTypoFixed;
     [ObservableProperty] private NormalFindAndReplaceRules _normalFindAndReplaceRules = [];
 
-
     [RelayCommand]
     private async Task OpenNormalFindAndReplaceDialog()
     {

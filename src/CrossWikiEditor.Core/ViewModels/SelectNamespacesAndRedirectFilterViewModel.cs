@@ -7,7 +7,7 @@ public sealed partial class SelectNamespacesAndRedirectFilterViewModel(List<Wiki
     [ObservableProperty] private int _selectedRedirectFilter = 0;
     [ObservableProperty] private bool _includeRedirects;
     [ObservableProperty] private bool _isIncludeRedirectsVisible;
-    
+
     partial void OnIsAllNamespacesCheckedChanged(bool value)
     {
         Namespaces = Namespaces

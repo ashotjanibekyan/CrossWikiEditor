@@ -11,10 +11,10 @@ public sealed class AllPagesWithPrefixListProviderTests : ListProvidersBaseTest<
         {
             Param = "my prefix"
         };
-        _dialogService.ShowDialog<int[]?>(_selectNamespacesViewModel).Returns(new[] {7, 2, 3, 9});
+        _dialogService.ShowDialog<int[]?>(_selectNamespacesViewModel).Returns([7, 2, 3, 9]);
         _expectedPages = Fakers.GetWikiPageModelFaker(_userSettings.GetApiUrl(), _wikiClientCache).Generate(4);
     }
-    
+
     [Test]
     public new async Task CanMake_ShouldBeFalse_WhenGetAdditionalParamsNotCalled() =>
         await base.CanMake_ShouldBeFalse_WhenGetAdditionalParamsNotCalled();
@@ -31,7 +31,7 @@ public sealed class AllPagesWithPrefixListProviderTests : ListProvidersBaseTest<
     public async Task MakeList_ShouldReturnPageServiceResults()
     {
         // arrange
-        _pageService.GetAllPagesWithPrefix(_userSettings.GetApiUrl(), _sut.Param,  7, 73)
+        _pageService.GetAllPagesWithPrefix(_userSettings.GetApiUrl(), _sut.Param, 7, 73)
             .Returns(_expectedPages);
 
         await MakeList_ShouldReturnServiceResults(_expectedPages);

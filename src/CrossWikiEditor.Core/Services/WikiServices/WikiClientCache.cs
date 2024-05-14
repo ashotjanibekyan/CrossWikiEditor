@@ -9,8 +9,8 @@ public interface IWikiClientCache
 
 public sealed class WikiClientCache(ILogger logger) : IWikiClientCache
 {
-    private ConcurrentDictionary<string, WikiClient> _wikiClients = new();
-    private ConcurrentDictionary<string, WikiSite> _wikiSites = new();
+    private readonly ConcurrentDictionary<string, WikiClient> _wikiClients = new();
+    private readonly ConcurrentDictionary<string, WikiSite> _wikiSites = new();
 
     public WikiClient GetWikiClient(string apiRoot, bool forceNew = false)
     {

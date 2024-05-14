@@ -2,7 +2,7 @@
 
 public sealed class CategoriesOnPageOnlyHiddenCategoriesListProvider(
     ICategoryService categoryService,
-    IDialogService dialogService, 
+    IDialogService dialogService,
     ISettingsService settingsService) : CategoriesOnPageListProvider(categoryService, dialogService, settingsService)
 {
     public override string Title => "Categories on page (only hidden categories)";

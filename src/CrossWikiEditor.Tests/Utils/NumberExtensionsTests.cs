@@ -13,7 +13,7 @@ public sealed class NumberExtensionsTests
     [TestCase(-11, ExpectedResult = false)]
     [TestCase(11, ExpectedResult = false)]
     public bool IsEven(int value) => value.IsEven();
-    
+
     [TestCase(0, ExpectedResult = false)]
     [TestCase(-2, ExpectedResult = false)]
     [TestCase(2, ExpectedResult = false)]

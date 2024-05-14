@@ -6,7 +6,7 @@ public sealed class WikiClientCacheTests : BaseTest
 {
     private WikiClientCache _sut;
     private const string ApiRoot = "https://hy.wikipedia.org/w/api.php?";
-    
+
     [SetUp]
     public void SetUp()
     {

@@ -32,7 +32,7 @@ public sealed class CategoryRecursiveUserDefinedLevelListProviderTests : ListPro
         else
         {
             _dialogService.ShowDialog<int?>(Arg.Is<PromptViewModel>(vm => vm.IsNumeric && vm.Text == "Recursion depth: "))
-                .Returns((int?)null);
+                .Returns((int?) null);
         }
 
         // act
@@ -72,7 +72,7 @@ public sealed class CategoryRecursiveUserDefinedLevelListProviderTests : ListPro
     public async Task MakeList_ShouldReturnUnsuccessfulResult_WhenRecursionLevelIsNotSelected()
     {
         // arrange
-        
+
         // act
         Result<List<WikiPageModel>> result = await _sut.MakeList(73);
 

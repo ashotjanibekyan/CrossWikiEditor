@@ -43,7 +43,6 @@ public sealed class StringEncryptionServiceTests
         (byte[] key1, byte[] iv1) = StringEncryptionService.GenerateKeyAndIv("passphrase2");
         var sut1 = new StringEncryptionService(key1, iv1);
 
-
         Action decrypting = () => sut1.DecryptStringFromBytes(encrypted);
 
         // assert

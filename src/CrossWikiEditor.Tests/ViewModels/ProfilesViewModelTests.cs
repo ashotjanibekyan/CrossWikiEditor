@@ -10,7 +10,7 @@ public sealed class ProfilesViewModelTests : BaseTest
     public void SetUp()
     {
         SetUpServices();
-        _profileRepository.GetAll().Returns(new List<Profile>());
+        _profileRepository.GetAll().Returns([]);
         _sut = new ProfilesViewModel(_fileDialogService, _dialogService, _profileRepository, _userService, _settingsService, _messenger);
         _profileRepository.ClearReceivedCalls();
     }
@@ -213,7 +213,7 @@ public sealed class ProfilesViewModelTests : BaseTest
     {
         // arrange
         List<Profile> profiles = Fakers.ProfileFaker.Generate(5);
-        _sut.SelectedProfile = profiles.First();
+        _sut.SelectedProfile = profiles[0];
         _dialogService.ShowDialog<bool>(Arg.Any<ViewModelBase>()).Returns(true);
         _profileRepository.GetAll().Returns(profiles);
 
@@ -229,7 +229,7 @@ public sealed class ProfilesViewModelTests : BaseTest
     {
         // arrange
         List<Profile> profiles = Fakers.ProfileFaker.Generate(5);
-        _sut.SelectedProfile = profiles.First();
+        _sut.SelectedProfile = profiles[0];
         _dialogService.ShowDialog<bool>(Arg.Any<ViewModelBase>()).Returns(false);
         _profileRepository.GetAll().Returns(profiles);
 

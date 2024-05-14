@@ -47,7 +47,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
         if (!string.IsNullOrWhiteSpace(NewPageTitle))
         {
             Result<WikiPageModel> result = await _clientCache.GetWikiPageModel(_settingsService.CurrentApiUrl, NewPageTitle);
-            if (result is {IsSuccessful: true, Value: not null})
+            if (result is { IsSuccessful: true, Value: not null })
             {
                 Pages.Add(result.Value);
             }
@@ -64,7 +64,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
             Pages.Remove(new List<WikiPageModel>(SelectedPages));
         }
 
-        SelectedPages = new ObservableCollection<WikiPageModel>();
+        SelectedPages = [];
     }
 
     [RelayCommand]
@@ -79,7 +79,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
         {
             return;
         }
-        
+
         Result<List<WikiPageModel>> result = SelectedListProvider switch
         {
             ILimitedListProvider limitedListProvider => await limitedListProvider.MakeList(await limitedListProvider.GetLimit()),
@@ -130,8 +130,8 @@ public sealed partial class MakeListViewModel : ViewModelBase
         }
 
         await _systemService.SetClipboardTextAsync(string.Join(Environment.NewLine, SelectedPages.Select<WikiPageModel, string>(x => x.Title)));
-        Pages.Remove(SelectedPages.ToList<WikiPageModel>());
-        SelectedPages = new ObservableCollection<WikiPageModel>();
+        Pages.Remove([..SelectedPages]);
+        SelectedPages = [];
     }
 
     [RelayCommand]
@@ -157,7 +157,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
             foreach (string title in titles)
             {
                 Result<WikiPageModel> result = await _clientCache.GetWikiPageModel(urlApi, title);
-                if (result is {IsSuccessful: true, Value: not null})
+                if (result is { IsSuccessful: true, Value: not null })
                 {
                     Pages.Add(result.Value);
                 }
@@ -177,7 +177,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
     [RelayCommand]
     private void SelectNone()
     {
-        SelectedPages = new ObservableCollection<WikiPageModel>();
+        SelectedPages = [];
     }
 
     [RelayCommand]
@@ -191,7 +191,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
     [RelayCommand]
     private void RemoveSelected()
     {
-        Pages.Remove(SelectedPages.ToList());
+        Pages.Remove([..SelectedPages]);
         SelectedPages.Clear();
     }
 
@@ -237,7 +237,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
     [RelayCommand]
     private void ConvertToTalkPages()
     {
-        List<WikiPageModel>? talkPages = _pageService.ConvertToTalk(Pages.ToList()).Value;
+        List<WikiPageModel>? talkPages = _pageService.ConvertToTalk([..Pages]).Value;
         if (talkPages is not null)
         {
             Pages = talkPages.ToObservableCollection();
@@ -247,13 +247,13 @@ public sealed partial class MakeListViewModel : ViewModelBase
     [RelayCommand]
     private void ConvertFromTalkPages()
     {
-        List<WikiPageModel>? subjectPages = _pageService.ConvertToSubject(Pages.ToList()).Value;
+        List<WikiPageModel>? subjectPages = _pageService.ConvertToSubject([..Pages]).Value;
         if (subjectPages is not null)
         {
             Pages = subjectPages.ToObservableCollection();
         }
     }
-    
+
     [RelayCommand]
     private async Task Filter()
     {
@@ -318,7 +318,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
 
     [ObservableProperty] private ObservableCollection<IListProvider> _listProviders;
     [ObservableProperty] private IListProvider _selectedListProvider;
-    [ObservableProperty] private ObservableCollection<WikiPageModel> _pages = new();
-    [ObservableProperty] private ObservableCollection<WikiPageModel> _selectedPages = new();
+    [ObservableProperty] private ObservableCollection<WikiPageModel> _pages = [];
+    [ObservableProperty] private ObservableCollection<WikiPageModel> _selectedPages = [];
     [ObservableProperty] private string _newPageTitle = string.Empty;
 }

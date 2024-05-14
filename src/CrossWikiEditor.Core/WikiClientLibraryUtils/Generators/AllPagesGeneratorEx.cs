@@ -1,14 +1,10 @@
 ﻿namespace CrossWikiEditor.Core.WikiClientLibraryUtils.Generators;
 
-public sealed class AllPagesGeneratorEx : AllPagesGenerator
+public sealed class AllPagesGeneratorEx(WikiSite site) : AllPagesGenerator(site)
 {
-    public AllPagesGeneratorEx(WikiSite site) : base(site)
-    {
-    }
-    
     public string? ProtectionType { get; set; }
     public string? ProtectionLevel { get; set; }
-    
+
     public override IEnumerable<KeyValuePair<string, object?>> EnumListParameters()
     {
         return new Dictionary<string, object?>

@@ -1,11 +1,7 @@
 ﻿namespace CrossWikiEditor.Core.WikiClientLibraryUtils.Generators;
 
-public sealed class MyWatchlistGenerator : WikiPageGenerator
+public sealed class MyWatchlistGenerator(WikiSite site) : WikiPageGenerator(site)
 {
-    public MyWatchlistGenerator(WikiSite site) : base(site)
-    {
-    }
-
     /// <summary>
     /// Only list pages in the given namespaces.
     /// </summary>

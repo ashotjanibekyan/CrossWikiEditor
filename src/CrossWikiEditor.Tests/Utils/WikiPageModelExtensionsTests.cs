@@ -37,14 +37,14 @@ public class WikiPageModelExtensionsTests : BaseTest
                                # [[{pages[4].Title}]]
                                
                                """;
-        
+
         // act
         string list = pages.ToWikiList(true, 6);
 
         // assert
         list.Should().Be(expectedList);
     }
-    
+
     [Test]
     public void ToWikiList_ShouldMakeNumericList_SectionIsSmallerThanPages()
     {
@@ -61,14 +61,14 @@ public class WikiPageModelExtensionsTests : BaseTest
                                # [[{pages[4].Title}]]
 
                                """;
-        
+
         // act
         string list = pages.ToWikiList(true, 2);
 
         // assert
         list.Should().Be(expectedList);
     }
-    
+
     [Test]
     public void ToWikiList_ShouldMakeNumericList_SectionIsExactMultipleOfPages()
     {
@@ -86,15 +86,14 @@ public class WikiPageModelExtensionsTests : BaseTest
                                # [[{pages[5].Title}]]
                                
                                """;
-        
+
         // act
         string list = pages.ToWikiList(true, 2);
 
         // assert
         list.Should().Be(expectedList);
     }
-    
-    
+
     [Test]
     public void ToWikiList_ShouldMakeBulletList_SectionIsLargerThanPages()
     {
@@ -109,14 +108,14 @@ public class WikiPageModelExtensionsTests : BaseTest
                                * [[{pages[4].Title}]]
                                
                                """;
-        
+
         // act
         string list = pages.ToWikiList(false, 6);
 
         // assert
         list.Should().Be(expectedList);
     }
-    
+
     [Test]
     public void ToWikiList_ShouldMakeBulletList_SectionIsSmallerThanPages()
     {
@@ -133,7 +132,7 @@ public class WikiPageModelExtensionsTests : BaseTest
                                * [[{pages[4].Title}]]
 
                                """;
-        
+
         // act
         string list = pages.ToWikiList(false, 2);
 
@@ -158,14 +157,14 @@ public class WikiPageModelExtensionsTests : BaseTest
                                * [[{pages[5].Title}]]
                                
                                """;
-        
+
         // act
         string list = pages.ToWikiList(false, 2);
 
         // assert
         list.Should().Be(expectedList);
     }
-    
+
     [Test]
     public void ToWikiListAlphabetically_ShouldReturnEmptyString_WhenPagesIsEmpty()
     {
@@ -178,7 +177,7 @@ public class WikiPageModelExtensionsTests : BaseTest
         // assert
         list.Should().Be(string.Empty);
     }
-    
+
     [Test]
     public void ToWikiListAlphabetically_ShouldMakeNumericList()
     {
@@ -198,7 +197,7 @@ public class WikiPageModelExtensionsTests : BaseTest
             new("Aa", ApiRoot, _wikiClientCache),
             new("Wfwaa", ApiRoot, _wikiClientCache),
         };
-        const string expectedList = $"""
+        const string expectedList = """
                                      == 1 ==
                                      # [[1aafew]]
                                      == A ==
@@ -217,14 +216,14 @@ public class WikiPageModelExtensionsTests : BaseTest
                                      # [[Wfwfweaa]]
 
                                      """;
-        
+
         // act
         string list = pages.ToWikiListAlphabetically(true);
 
         // assert
         list.Should().Be(expectedList);
     }
-    
+
     [Test]
     public void ToWikiListAlphabetically_ShouldMakeBulletList()
     {
@@ -263,7 +262,7 @@ public class WikiPageModelExtensionsTests : BaseTest
                                      * [[Wfwfweaa]]
 
                                      """;
-        
+
         // act
         string list = pages.ToWikiListAlphabetically(false);
 

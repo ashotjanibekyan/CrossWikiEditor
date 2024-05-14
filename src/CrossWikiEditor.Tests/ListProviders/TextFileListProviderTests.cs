@@ -15,7 +15,7 @@ public sealed class TextFileListProviderTests : ListProvidersBaseTest<TextFileLi
     public async Task MakeList_ShouldReadBulletWikiList()
     {
         // arrange
-        string text = """
+        const string text = """
                       *[[title1]]
 
 
@@ -26,7 +26,7 @@ public sealed class TextFileListProviderTests : ListProvidersBaseTest<TextFileLi
                       *     [[titl e3|display]]
                       """;
         SetupForSingleFile(text);
-        
+
         // act
         await _sut.GetAdditionalParams();
         Result<List<WikiPageModel>> result = await _sut.MakeList();
@@ -44,7 +44,7 @@ public sealed class TextFileListProviderTests : ListProvidersBaseTest<TextFileLi
     public async Task MakeList_ShouldReadNumberedWikiList()
     {
         // arrange
-        string text = """
+        const string text = """
                       #[[title1]]
                       
                       
@@ -55,7 +55,7 @@ public sealed class TextFileListProviderTests : ListProvidersBaseTest<TextFileLi
                       #     [[titl e3|display]]
                       """;
         SetupForSingleFile(text);
-        
+
         // act
         await _sut.GetAdditionalParams();
         Result<List<WikiPageModel>> result = await _sut.MakeList();
@@ -73,7 +73,7 @@ public sealed class TextFileListProviderTests : ListProvidersBaseTest<TextFileLi
     public async Task MakeList_ShouldReadPlainList()
     {
         // arrange
-        string text = """
+        const string text = """
                       title1
                       title2
                       
@@ -81,7 +81,7 @@ public sealed class TextFileListProviderTests : ListProvidersBaseTest<TextFileLi
                       title3
                       """;
         SetupForSingleFile(text);
-        
+
         // act
         await _sut.GetAdditionalParams();
         Result<List<WikiPageModel>> result = await _sut.MakeList();
@@ -100,7 +100,7 @@ public sealed class TextFileListProviderTests : ListProvidersBaseTest<TextFileLi
         // arrange
         _fileDialogService
             .OpenFilePickerAsync("Select text files to extract pages", true)
-            .Returns(new[] {"some/path/text.txt"});
+            .Returns(["some/path/text.txt"]);
 
         // act
         await _sut.GetAdditionalParams();
@@ -137,7 +137,7 @@ public sealed class TextFileListProviderTests : ListProvidersBaseTest<TextFileLi
     {
         _fileDialogService
             .OpenFilePickerAsync("Select text files to extract pages", true)
-            .Returns(new[] {"path/to/file1/text.txt"});
+            .Returns(["path/to/file1/text.txt"]);
         _systemService
             .ReadAllTextAsync("path/to/file1/text.txt", Encoding.Default)
             .Returns(text);

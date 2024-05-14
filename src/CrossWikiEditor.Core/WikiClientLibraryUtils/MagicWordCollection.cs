@@ -50,13 +50,7 @@ public sealed class MagicWordCollection : ReadOnlyCollection<MagicWordInfo>
     {
         get
         {
-            MagicWordInfo? match = TryGet(name);
-            if (match == null)
-            {
-                throw new KeyNotFoundException();
-            }
-
-            return match;
+            return TryGet(name) ?? throw new KeyNotFoundException();
         }
     }
 
@@ -72,20 +66,14 @@ public sealed class MagicWordCollection : ReadOnlyCollection<MagicWordInfo>
 
     private MagicWordInfo? TryGet(string name)
     {
-        if (name == null)
-        {
-            throw new ArgumentNullException(nameof(name));
-        }
+        ArgumentNullException.ThrowIfNull(name);
 
         return magicWordLookup[name].FirstOrDefault();
     }
 
     private MagicWordInfo? TryGetByAlias(string alias)
     {
-        if (alias == null)
-        {
-            throw new ArgumentNullException(nameof(alias));
-        }
+        ArgumentNullException.ThrowIfNull(alias);
 
         return magicWordAliasLookup[alias].FirstOrDefault(i => i.Aliases.Any(a =>
             string.Equals(a, alias, i.CaseSensitive ? StringComparison.InvariantCulture : StringComparison.InvariantCultureIgnoreCase)

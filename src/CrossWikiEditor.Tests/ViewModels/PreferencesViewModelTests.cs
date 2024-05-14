@@ -18,7 +18,7 @@ public sealed class PreferencesViewModelTests : BaseTest
     {
         // arrange
         _sut.SelectedProject = project;
-        
+
         // act
         _sut.SaveCommand.Execute(_dialog);
 
@@ -34,7 +34,7 @@ public sealed class PreferencesViewModelTests : BaseTest
     {
         // arrange
         _sut.SelectedLanguage = language;
-        
+
         // act
         _sut.SaveCommand.Execute(_dialog);
 

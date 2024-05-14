@@ -10,7 +10,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
             WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
             var gen = new FilesGenerator(site, pageName);
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
-            return result.Select(x => new WikiPageModel(x)).ToList();
+            return result.ConvertAll(x => new WikiPageModel(x));
         }
         catch (Exception e)
         {
@@ -36,7 +36,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
                 }
             };
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
-            return result.Select(x => new WikiPageModel(x)).ToList();
+            return result.ConvertAll(x => new WikiPageModel(x));
         }
         catch (Exception e)
         {
@@ -57,7 +57,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
             WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
             var gen = new FileUsageGenerator(site, fileName);
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
-            return result.Select(x => new WikiPageModel(x)).ToList();
+            return result.ConvertAll(x => new WikiPageModel(x));
         }
         catch (Exception e)
         {
@@ -73,7 +73,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
             WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
             var gen = new LinksGenerator(site, pageName);
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
-            return result.Select(x => new WikiPageModel(x)).ToList();
+            return result.ConvertAll(x => new WikiPageModel(x));
         }
         catch (Exception e)
         {
@@ -94,7 +94,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
                 NamespaceIds = namespaces
             };
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
-            return result.Select(x => new WikiPageModel(x)).ToList();
+            return result.ConvertAll(x => new WikiPageModel(x));
         }
         catch (Exception e)
         {
@@ -113,7 +113,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
                 PaginationSize = 500
             };
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
-            return result.Select(x => new WikiPageModel(x)).ToList();
+            return result.ConvertAll(x => new WikiPageModel(x));
         }
         catch (Exception e)
         {
@@ -133,7 +133,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
                 NamespaceIds = namespaces
             };
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
-            return result.Select(x => new WikiPageModel(x)).ToList();
+            return result.ConvertAll(x => new WikiPageModel(x));
         }
         catch (Exception e)
         {
@@ -165,7 +165,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
                 AllowRedirectedLinks = allowRedirectLinks
             };
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
-            return result.Select(x => new WikiPageModel(x)).ToList();
+            return result.ConvertAll(x => new WikiPageModel(x));
         }
         catch (Exception e)
         {
@@ -183,7 +183,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
             WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
             var gen = new PagesWithPropGenerator(site, param);
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
-            return result.Select(x => new WikiPageModel(x)).ToList();
+            return result.ConvertAll(x => new WikiPageModel(x));
         }
         catch (Exception e)
         {
@@ -192,7 +192,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
         }
     }
 
-    public async Task<Result<List<WikiPageModel>>> GetAllFiles(string apiRoot, string startTitle, int limit) => 
+    public async Task<Result<List<WikiPageModel>>> GetAllFiles(string apiRoot, string startTitle, int limit) =>
         await GetAllPages(
             apiRoot: apiRoot,
             startTitle: startTitle,
@@ -210,7 +210,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
     {
         return await GetAllPages(apiRoot, namespaceId, PropertyFilterOption.Disable, PropertyFilterOption.Disable, limit, prefix: prefix);
     }
-    
+
     public async Task<Result<List<WikiPageModel>>> GetProtectedPages(string apiRoot, string protectType, string protectLevel, int limit)
     {
         try
@@ -223,7 +223,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
                 ProtectionLevel = protectLevel
             };
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
-            return result.Select(x => new WikiPageModel(x)).ToList();
+            return result.ConvertAll(x => new WikiPageModel(x));
         }
         catch (Exception e)
         {
@@ -232,7 +232,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
             return e;
         }
     }
-    
+
     public async Task<Result<List<WikiPageModel>>> WikiSearch(string apiRoot, string keyword, int[]? namespaces, int limit)
     {
         try
@@ -244,7 +244,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
                 PaginationSize = Math.Min(limit, 500)
             };
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
-            return result.Select(x => new WikiPageModel(x)).ToList();
+            return result.ConvertAll(x => new WikiPageModel(x));
         }
         catch (Exception e)
         {
@@ -263,7 +263,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
                 NamespaceIds = namespaces
             };
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
-            return result.Select(x => new WikiPageModel(x)).ToList();
+            return result.ConvertAll(x => new WikiPageModel(x));
         }
         catch (Exception e)
         {
@@ -283,7 +283,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
             };
 
             List<ExternalUrlUsageItem> result = await gen.EnumItemsAsync().Take(limit).ToListAsync();
-            return result.Select(x => new WikiPageModel(new WikiPage(wikiSite, x.Title, x.NamespaceId))).ToList();
+            return result.ConvertAll(x => new WikiPageModel(new WikiPage(wikiSite, x.Title, x.NamespaceId)));
         }
         catch (Exception e)
         {
@@ -293,7 +293,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
     }
 
     private async Task<Result<List<WikiPageModel>>> GetAllPages(
-        string apiRoot, 
+        string apiRoot,
         int namespaceId,
         PropertyFilterOption redirectsFilter,
         PropertyFilterOption langLinksFilter,
@@ -321,7 +321,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
                 gen.Prefix = prefix;
             }
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
-            return result.Select(x => new WikiPageModel(x)).ToList();
+            return result.ConvertAll(x => new WikiPageModel(x));
         }
         catch (Exception e)
         {
@@ -333,22 +333,22 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
 
     public Result<List<WikiPageModel>> ConvertToSubject(List<WikiPageModel> pages)
     {
-        List<WikiPageModel> result = (from wikiPageModel in pages 
-            select ConvertToSubject(wikiPageModel)
+        List<WikiPageModel> result = (from wikiPageModel in pages
+                                      select ConvertToSubject(wikiPageModel)
             into subjectPageResult
-            where subjectPageResult is {IsSuccessful: true, Value: not null}
-            select subjectPageResult.Value).ToList();
+                                      where subjectPageResult is { IsSuccessful: true, Value: not null }
+                                      select subjectPageResult.Value).ToList();
 
         return result;
     }
 
     public Result<List<WikiPageModel>> ConvertToTalk(List<WikiPageModel> pages)
     {
-        List<WikiPageModel> result = (from wikiPageModel in pages
-            select ConvertToTalk(wikiPageModel)
+        var result = (from wikiPageModel in pages
+                                      select ConvertToTalk(wikiPageModel)
             into talkPageResult
-            where talkPageResult is {IsSuccessful: true, Value: not null}
-            select talkPageResult.Value).ToList();
+                                      where talkPageResult is { IsSuccessful: true, Value: not null }
+                                      select talkPageResult.Value).ToList();
 
         return result;
     }

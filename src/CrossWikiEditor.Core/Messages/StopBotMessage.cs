@@ -1,5 +1,3 @@
 ﻿namespace CrossWikiEditor.Core.Messages;
 
-public sealed class StopBotMessage
-{
-}
+public sealed class StopBotMessage;

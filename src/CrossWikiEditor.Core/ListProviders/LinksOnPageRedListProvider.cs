@@ -10,7 +10,7 @@ public sealed class LinksOnPageRedListProvider(IDialogService dialogService,
     public override async Task<Result<List<WikiPageModel>>> MakeList(int limit)
     {
         Result<List<WikiPageModel>> result = await base.MakeList(limit);
-        if (result is not {IsSuccessful: true, Value: not null})
+        if (result is not { IsSuccessful: true, Value: not null })
         {
             return result;
         }

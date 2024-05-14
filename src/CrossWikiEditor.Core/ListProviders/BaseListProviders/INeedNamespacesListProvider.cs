@@ -1,5 +1,3 @@
 namespace CrossWikiEditor.Core.ListProviders.BaseListProviders;
 
-public interface INeedNamespacesListProvider : INeedAdditionalParamsListProvider
-{
-}
+public interface INeedNamespacesListProvider : INeedAdditionalParamsListProvider;

@@ -8,5 +8,5 @@ public sealed class WikiSearchInTextListProvider(IDialogService dialogService,
     public override string ParamTitle => "Wiki search";
 
     public override async Task<Result<List<WikiPageModel>>> MakeList(int limit) =>
-        await pageService.WikiSearch(settingsService.CurrentApiUrl, Param, new[] {0}, limit);
+        await pageService.WikiSearch(settingsService.CurrentApiUrl, Param, [0], limit);
 }

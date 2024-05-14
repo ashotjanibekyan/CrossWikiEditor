@@ -28,7 +28,7 @@ public sealed class PetscanListProvider(IHttpClientFactory httpClientFactory, IS
             {
                 return new Exception($"{Param} is not a valid PSID");
             }
-            
+
             return wikiPageModels;
         }
         catch (Exception e)

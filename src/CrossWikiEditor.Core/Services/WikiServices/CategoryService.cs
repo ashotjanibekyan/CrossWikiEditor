@@ -28,7 +28,7 @@ public sealed class CategoryService(IWikiClientCache wikiClientCache, ILogger lo
             }
 
             List<WikiPage> result = await catGen.EnumPagesAsync().Take(limit).ToListAsync();
-            return result.Select(x => new WikiPageModel(x)).ToList();
+            return result.ConvertAll(x => new WikiPageModel(x));
         }
         catch (Exception e)
         {
@@ -47,7 +47,7 @@ public sealed class CategoryService(IWikiClientCache wikiClientCache, ILogger lo
 
         try
         {
-            List<List<WikiPage>> resultByDepth = new();
+            List<List<WikiPage>> resultByDepth = [];
             WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
             var catGen = new CategoryMembersGenerator(new WikiPage(site, categoryName));
             resultByDepth.Add(await catGen.EnumPagesAsync().Take(limit).ToListAsync());
@@ -84,7 +84,7 @@ public sealed class CategoryService(IWikiClientCache wikiClientCache, ILogger lo
                 StartTitle = startTitle
             };
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
-            return result.Select(x => new WikiPageModel(x)).ToList();
+            return result.ConvertAll(x => new WikiPageModel(x));
         }
         catch (Exception e)
         {

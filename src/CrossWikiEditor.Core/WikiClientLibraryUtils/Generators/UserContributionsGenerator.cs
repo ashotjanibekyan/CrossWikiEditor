@@ -100,27 +100,27 @@ public sealed class UserContributionsGenerator : WikiList<UserContributionResult
     /// Lists tags for the edit.
     /// </summary>
     public bool IncludeTags { get; set; }
-    
+
     /// <summary>
     /// Show only items that are new.
     /// </summary>
     public PropertyFilterOption NewFilter { get; set; }
-    
+
     /// <summary>
     /// Show only items that are auto patrolled.
     /// </summary>
     public PropertyFilterOption AutoPatrolledFilter { get; set; }
-    
+
     /// <summary>
     /// Show only items that are minor.
     /// </summary>
     public PropertyFilterOption MinorFilter { get; set; }
-    
+
     /// <summary>
     /// Show only items that are patrolled.
     /// </summary>
     public PropertyFilterOption PatrolledFilter { get; set; }
-    
+
     /// <summary>
     /// Show only items that top.
     /// </summary>
@@ -135,7 +135,7 @@ public sealed class UserContributionsGenerator : WikiList<UserContributionResult
     /// In which direction to enumerate:
     /// </summary>
     public bool OrderDescending { get; set; }
-    
+
     /// <summary>
     /// Only list contributions in these namespaces.
     /// </summary>
@@ -173,7 +173,7 @@ public sealed class UserContributionsGenerator : WikiList<UserContributionResult
     protected override UserContributionResultItem ItemFromJson(JToken json)
     {
         var wikiPage = new WikiPage(Site, (string) json["title"]);
-        MediaWikiHelper.PopulatePageFromJson(wikiPage, (JObject)json, new WikiPageQueryProvider()
+        MediaWikiHelper.PopulatePageFromJson(wikiPage, (JObject) json, new WikiPageQueryProvider()
         {
             Properties = []
         });

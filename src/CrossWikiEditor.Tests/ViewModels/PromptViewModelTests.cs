@@ -12,7 +12,7 @@ public sealed class PromptViewModelTests : BaseTest
             IsNumeric = true
         };
     }
-    
+
     [Test]
     public void OkCommand_ClosesDialogWithValue([Values(42, 1, 3, 74, 0, -1)] int value)
     {
@@ -25,7 +25,7 @@ public sealed class PromptViewModelTests : BaseTest
         // assert
         _dialog.Received(1).Close(value);
     }
-    
+
     [Test]
     public void CancelCommand_ClosesDialogWithNullValue([Values(42, 1, 3, 74, 0, -1)] int value)
     {

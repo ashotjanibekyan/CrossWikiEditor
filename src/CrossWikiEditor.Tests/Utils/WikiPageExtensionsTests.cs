@@ -13,7 +13,7 @@ public class WikiPageExtensionsTests : BaseTest
         SetUpServices();
         _wikiClientCache = new WikiClientCache(_logger);
     }
-    
+
     [TestCase("Քննարկում:Վերնագիր")]
     [TestCase("Մասնակցի քննարկում:Վերնագիր")]
     [TestCase("Վիքիպեդիայի քննարկում:Վերնագիր")]
@@ -30,7 +30,7 @@ public class WikiPageExtensionsTests : BaseTest
         // assert
         talkWikiPage.Should().Be(wikiPage);
     }
-    
+
     [TestCase("Վերնագիր", "Քննարկում:Վերնագիր")]
     [TestCase("Մասնակից:Վերնագիր", "Մասնակցի քննարկում:Վերնագիր")]
     [TestCase("Վիքիպեդիա:Վերնագիր", "Վիքիպեդիայի քննարկում:Վերնագիր")]
@@ -48,7 +48,7 @@ public class WikiPageExtensionsTests : BaseTest
         // assert
         talkWikiPage.Should().BeEquivalentTo(expectedTalkPage);
     }
-    
+
     [TestCase("Վերնագիր")]
     [TestCase("Մասնակից:Վերնագիր")]
     [TestCase("Վիքիպեդիա:Վերնագիր")]
@@ -65,7 +65,7 @@ public class WikiPageExtensionsTests : BaseTest
         // assert
         subjectWikiPage.Should().Be(wikiPage);
     }
-    
+
     [TestCase("Վերնագիր", "Քննարկում:Վերնագիր")]
     [TestCase("Մասնակից:Վերնագիր", "Մասնակցի քննարկում:Վերնագիր")]
     [TestCase("Վիքիպեդիա:Վերնագիր", "Վիքիպեդիայի քննարկում:Վերնագիր")]

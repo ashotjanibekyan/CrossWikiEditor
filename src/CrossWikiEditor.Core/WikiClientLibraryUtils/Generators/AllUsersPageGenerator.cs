@@ -2,15 +2,11 @@
 
 namespace CrossWikiEditor.Core.WikiClientLibraryUtils.Generators;
 
-public sealed class AllUsersPageGenerator : WikiList<WikiPage>
+public sealed class AllUsersPageGenerator(WikiSite site) : WikiList<WikiPage>(site)
 {
-    public AllUsersPageGenerator(WikiSite site) : base(site)
-    {
-    }
-
     public string? StartFrom { get; set; } = null;
     public override string ListName => "allusers";
-    
+
     public override IEnumerable<KeyValuePair<string, object?>> EnumListParameters()
     {
         return new Dictionary<string, object?>()
@@ -26,5 +22,4 @@ public sealed class AllUsersPageGenerator : WikiList<WikiPage>
         wikiPage.RefreshAsync();
         return wikiPage;
     }
-
 }

@@ -21,7 +21,7 @@ public sealed class WikiPageModel : IEquatable<WikiPageModel>, IComparable<WikiP
         _wikiClientCache = wikiClientCache;
         Title = title;
     }
-    
+
     private async Task InitializeAsync(string title, string apiRoot, IWikiClientCache wikiClientCache)
     {
         WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
@@ -38,7 +38,7 @@ public sealed class WikiPageModel : IEquatable<WikiPageModel>, IComparable<WikiP
     public string Title { get; }
 
     public int NamespaceId { get; set; } = 0;
-    
+
     public async Task<string> GetContent()
     {
         await InitAsync;
@@ -141,6 +141,6 @@ public sealed class WikiPageModel : IEquatable<WikiPageModel>, IComparable<WikiP
             return 1;
         }
 
-        return string.Compare(Title, other.Title, StringComparison.Ordinal);
+        return string.CompareOrdinal(Title, other.Title);
     }
 }

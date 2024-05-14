@@ -23,12 +23,12 @@ public class FilterOptions(IReadOnlyCollection<int> namespacesToKeep,
     public bool RemoveDuplicates { get; } = removeDuplicates;
     public SetOperations SetOperation { get; } = setOperation;
     public IReadOnlyCollection<WikiPageModel> FilterPages { get; } = filterPages;
-    
+
     public List<WikiPageModel> PerRemoveDuplicates(IEnumerable<WikiPageModel> pages)
     {
         return RemoveDuplicates ? pages.Distinct().ToList() : pages.ToList();
     }
-    
+
     public List<WikiPageModel> PerNamespacesToKeep(IEnumerable<WikiPageModel> pages)
     {
         return NamespacesToKeep.Count > 0 ? pages.Where(p => NamespacesToKeep.Contains(p.NamespaceId)).ToList() : pages.ToList();
@@ -64,6 +64,6 @@ public class FilterOptions(IReadOnlyCollection<int> namespacesToKeep,
 
     public List<WikiPageModel> PerSortAlphabetically(IEnumerable<WikiPageModel> pages)
     {
-        return SortAlphabetically ? pages.OrderBy(p => p.Title).ToList() : pages.ToList();
+        return SortAlphabetically ? [..pages.OrderBy(p => p.Title)] : pages.ToList();
     }
 }

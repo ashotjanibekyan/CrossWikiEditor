@@ -39,11 +39,11 @@ public static class ServicesModule
         services.AddSingleton<ICategoryService, CategoryService>();
         services.AddSingleton<IWikiClientCache, WikiClientCache>();
         services.AddSingleton<IDialogService, DialogService>(sp => new DialogService(sp, mainWindow));
-        services.AddTransient<IStorageProvider>(sp => TopLevel.GetTopLevel(mainWindow)!.StorageProvider);
-        services.AddTransient<IClipboard>(sp => TopLevel.GetTopLevel(mainWindow)!.Clipboard!);
-        services.AddSingleton<IStringEncryptionService>(sp => stringEncryptionService);
-        services.AddSingleton<ILogger>(sp => logger);
-        services.AddSingleton<IMessengerWrapper>(sp => new MessengerWrapper(StrongReferenceMessenger.Default));
+        services.AddTransient(_ => TopLevel.GetTopLevel(mainWindow)!.StorageProvider);
+        services.AddTransient(_ => TopLevel.GetTopLevel(mainWindow)!.Clipboard!);
+        services.AddSingleton(_ => stringEncryptionService);
+        services.AddSingleton<ILogger>(_ => logger);
+        services.AddSingleton<IMessengerWrapper>(_ => new MessengerWrapper(StrongReferenceMessenger.Default));
         services.AddTransient<SimpleHtmlParser>();
         services.AddTransient<HtmlAgilityPackParser>();
         services.AddSingleton<ISettingsService, SettingsService>();

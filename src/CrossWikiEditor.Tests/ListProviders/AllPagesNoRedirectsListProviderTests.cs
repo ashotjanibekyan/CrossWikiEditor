@@ -7,12 +7,12 @@ public sealed class AllPagesNoRedirectsListProviderTests : ListProvidersBaseTest
     {
         SetUpServices();
         SetUpUserSettings("hyw", ProjectEnum.Wikipedia);
-        _selectNamespacesViewModel = new SelectNamespacesViewModel(new List<WikiNamespace>(), false);
+        _selectNamespacesViewModel = new SelectNamespacesViewModel([], false);
         _sut = new AllPagesNoRedirectsListProvider(_dialogService, _pageService, _settingsService, _viewModelFactory)
         {
             Param = "start from here"
         };
-        _dialogService.ShowDialog<int[]?>(_selectNamespacesViewModel).Returns(new[] {7, 2, 3, 9});
+        _dialogService.ShowDialog<int[]?>(_selectNamespacesViewModel).Returns([7, 2, 3, 9]);
         _viewModelFactory.GetSelectNamespacesViewModel(false).Returns(_selectNamespacesViewModel);
         _expectedPages = Fakers.GetWikiPageModelFaker(_userSettings.GetApiUrl(), _wikiClientCache).Generate(4);
     }
@@ -28,7 +28,7 @@ public sealed class AllPagesNoRedirectsListProviderTests : ListProvidersBaseTest
     [Test]
     public async Task CanMake_ShouldBeTrue_WhenGetAdditionalParamsReturnsNonEmptyList() =>
         await base.CanMake_ShouldBeTrue_WhenGetAdditionalParamsReturnsNonEmptyList(_selectNamespacesViewModel);
-    
+
     [Test]
     public async Task MakeList_ShouldReturnPageServiceResults()
     {
@@ -54,7 +54,7 @@ public sealed class AllPagesNoRedirectsListProviderTests : ListProvidersBaseTest
         result.IsSuccessful.Should().BeFalse();
         result.ErrorMessage.Should().Be("failed to get pages");
     }
-    
+
     [TearDown]
     public void TearDown()
     {

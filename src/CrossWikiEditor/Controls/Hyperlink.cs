@@ -44,10 +44,7 @@ public sealed class Hyperlink : InlineUIContainer
 
         _textBlock = new TextBlock
         {
-            Inlines = new InlineCollection
-            {
-                _underline
-            }
+            Inlines = [_underline]
         };
 
         _button = new Button

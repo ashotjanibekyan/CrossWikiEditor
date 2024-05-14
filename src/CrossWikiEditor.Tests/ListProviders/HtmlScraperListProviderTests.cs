@@ -28,7 +28,7 @@ public sealed class HtmlScraperListProviderTests : ListProvidersBaseTest<HtmlScr
             </body>
         </html>
         """;
-    
+
     [SetUp]
     public void SetUp()
     {
@@ -52,7 +52,7 @@ public sealed class HtmlScraperListProviderTests : ListProvidersBaseTest<HtmlScr
         _mockHttpMessageHandler
             .When(_sut.Param)
         .Respond(HttpStatusCode.Found, new StringContent("error message"));
-        
+
         // act
         Result<List<WikiPageModel>> result = await _sut.MakeList();
 
@@ -61,7 +61,7 @@ public sealed class HtmlScraperListProviderTests : ListProvidersBaseTest<HtmlScr
         result.Value.Should().BeNull();
         result.ErrorMessage.Should().Be("Response status code does not indicate success: 302 (Found).");
     }
-    
+
     [Test]
     public async Task MakeList_ShouldReturnUniquePages_WhenHtmlContainsLinks()
     {
@@ -71,7 +71,7 @@ public sealed class HtmlScraperListProviderTests : ListProvidersBaseTest<HtmlScr
         _mockHttpMessageHandler
             .When(_sut.Param)
             .Respond("application/text", _htmlWithDuplicateLinks);
-        
+
         // act
         Result<List<WikiPageModel>> result = await _sut.MakeList();
 
@@ -81,7 +81,7 @@ public sealed class HtmlScraperListProviderTests : ListProvidersBaseTest<HtmlScr
         result.Value![0].Title.Should().Be("Kotlin");
         result.Value[1].Title.Should().Be("Ռեո դղյակ");
     }
-    
+
     [Test]
     public async Task MakeList_ShouldReturnEmptyList_WhenHtmlDoesNotContainsLinks()
     {
@@ -91,7 +91,7 @@ public sealed class HtmlScraperListProviderTests : ListProvidersBaseTest<HtmlScr
         _mockHttpMessageHandler
             .When(_sut.Param)
             .Respond("application/text", _htmlWithoutLinks);
-        
+
         // act
         Result<List<WikiPageModel>> result = await _sut.MakeList();
 
@@ -100,7 +100,7 @@ public sealed class HtmlScraperListProviderTests : ListProvidersBaseTest<HtmlScr
         result.Value.Should().NotBeNull();
         result.Value.Should().BeEmpty();
     }
-    
+
     [TearDown]
     public void TearDown()
     {

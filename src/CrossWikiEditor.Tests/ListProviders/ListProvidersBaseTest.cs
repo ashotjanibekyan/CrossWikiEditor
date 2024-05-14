@@ -96,7 +96,7 @@ public abstract class ListProvidersBaseTest<T> : BaseTest where T : ListProvider
         // assert
         result.Should().BeTrue();
     }
-    
+
     protected async Task CanMake_ShouldBeFalse_WhenGetAdditionalParamsNotCalled()
     {
         // arrange
@@ -111,7 +111,7 @@ public abstract class ListProvidersBaseTest<T> : BaseTest where T : ListProvider
     protected async Task CanMake_ShouldBeFalse_WhenGetAdditionalParamsReturnsEmptyList(SelectNamespacesViewModel selectNamespacesViewModel)
     {
         // arrange
-        _dialogService.ShowDialog<int[]?>(selectNamespacesViewModel).Returns(new int[] {});
+        _dialogService.ShowDialog<int[]?>(selectNamespacesViewModel).Returns([]);
 
         // act
         await (_sut as INeedAdditionalParamsListProvider)!.GetAdditionalParams();
@@ -123,7 +123,7 @@ public abstract class ListProvidersBaseTest<T> : BaseTest where T : ListProvider
     protected async Task CanMake_ShouldBeTrue_WhenGetAdditionalParamsReturnsNonEmptyList(SelectNamespacesViewModel selectNamespacesViewModel)
     {
         // arrange
-        _dialogService.ShowDialog<int[]?>(selectNamespacesViewModel).Returns(new[] {1});
+        _dialogService.ShowDialog<int[]?>(selectNamespacesViewModel).Returns([1]);
 
         // act
         await (_sut as INeedAdditionalParamsListProvider)!.GetAdditionalParams();

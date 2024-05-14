@@ -9,12 +9,12 @@ public sealed partial class DatabaseScannerViewModel(ISettingsService settingsSe
     private Task? _scannerTask;
     private Task? _updateUiTask;
     private CancellationTokenSource _scannerCancellationTokenSource = new();
-    private ConcurrentQueue<string> _titlesQueue = new();
+    private readonly ConcurrentQueue<string> _titlesQueue = new();
     public EventHandler<string>? _convertedTextChanged;
-    
-    [ObservableProperty] private ObservableCollection<WikiNamespace> _subjectNamespaces = new();
-    [ObservableProperty] private ObservableCollection<WikiNamespace> _talkNamespaces = new();
-    [ObservableProperty] private ObservableCollection<WikiPageModel> _pages = new();
+
+    [ObservableProperty] private ObservableCollection<WikiNamespace> _subjectNamespaces = [];
+    [ObservableProperty] private ObservableCollection<WikiNamespace> _talkNamespaces = [];
+    [ObservableProperty] private ObservableCollection<WikiPageModel> _pages = [];
 
     [ObservableProperty] private bool _isTitleContainsEnabled;
     [ObservableProperty] private bool _isTitleNotContainsEnabled;
@@ -36,12 +36,12 @@ public sealed partial class DatabaseScannerViewModel(ISettingsService settingsSe
     [ObservableProperty] private DateTimeOffset _selectedEndDate;
     [ObservableProperty] private DateTimeOffset _minStartYear = new(new DateTime(2000, 1, 1));
     [ObservableProperty] private DateTimeOffset _minEndYear = new(new DateTime(2000, 1, 1));
-    
+
     [ObservableProperty] private string _convertedText = string.Empty;
     [ObservableProperty] private bool _isAlphabetisedHeading;
     [ObservableProperty] private int _numberOfPagesOnEachSection = 25;
     [ObservableProperty] private bool _isNumericList;
-    
+
     partial void OnIsAllTalkCheckedChanged(bool value)
     {
         TalkNamespaces = TalkNamespaces
@@ -55,12 +55,12 @@ public sealed partial class DatabaseScannerViewModel(ISettingsService settingsSe
             .Select(x => new WikiNamespace(x.Id, x.Name, value))
             .ToObservableCollection();
     }
-    
+
     [RelayCommand]
     public async Task BrowseCommand()
     {
         string[]? result = await fileDialogService.OpenFilePickerAsync("Open Database dump", false);
-        if (result is not {Length: 1})
+        if (result is not { Length: 1 })
         {
             return;
         }
@@ -77,7 +77,7 @@ public sealed partial class DatabaseScannerViewModel(ISettingsService settingsSe
             return;
         }
         _scannerTask = Task.Run(Scan, _scannerCancellationTokenSource.Token);
-        
+
         _updateUiTask = Task.Run(async () =>
         {
             WikiSite wikiSite = await wikiClientCache.GetWikiSite(settingsService.CurrentApiUrl);
@@ -97,7 +97,7 @@ public sealed partial class DatabaseScannerViewModel(ISettingsService settingsSe
         _scannerCancellationTokenSource = new CancellationTokenSource();
     }
 
-    [RelayCommand]                                      
+    [RelayCommand]
     private void Save(IDialog dialog)
     {
         _scannerTask = null;
@@ -178,7 +178,7 @@ public sealed partial class DatabaseScannerViewModel(ISettingsService settingsSe
         {
             return false;
         }
-        
+
         return checkedNamespaces.All(ns => ns.Id != page.Ns);
     }
 
@@ -192,7 +192,7 @@ public sealed partial class DatabaseScannerViewModel(ISettingsService settingsSe
         {
             return true;
         }
-        string? currentText = page.Revision.Last().Text;
+        string? currentText = page.Revision[^1].Text;
         if (currentText == null)
         {
             return true;
@@ -206,9 +206,9 @@ public sealed partial class DatabaseScannerViewModel(ISettingsService settingsSe
         {
             return false;
         }
-        
-        string? currentText = page.Revision.Last().Text;
-        return currentText != null && currentText.Contains(TitleNotContains, IsTitleContainsRegex, IsTitleContainsCaseSensitive);
+
+        string? currentText = page.Revision[^1].Text;
+        return currentText?.Contains(TitleNotContains, IsTitleContainsRegex, IsTitleContainsCaseSensitive) == true;
     }
 
     private bool ViolatesRevisionDateRange(DbPage page) =>
@@ -219,7 +219,7 @@ public sealed partial class DatabaseScannerViewModel(ISettingsService settingsSe
         string title = string.Empty;
         int ns = 0;
         int id = 0;
-        List<DbRevision> revisions = new();
+        List<DbRevision> revisions = [];
         while (reader.Read())
         {
             if (reader.NodeType == XmlNodeType.Element)
@@ -240,8 +240,8 @@ public sealed partial class DatabaseScannerViewModel(ISettingsService settingsSe
                         break;
                 }
             }
-    
-            if (reader is {NodeType: XmlNodeType.EndElement, Name: "page"})
+
+            if (reader is { NodeType: XmlNodeType.EndElement, Name: "page" })
             {
                 return new DbPage()
                 {
@@ -303,7 +303,7 @@ public sealed partial class DatabaseScannerViewModel(ISettingsService settingsSe
                         break;
                 }
             }
-            if (reader is {NodeType: XmlNodeType.EndElement, Name: "revision"})
+            if (reader is { NodeType: XmlNodeType.EndElement, Name: "revision" })
             {
                 return new DbRevision()
                 {
@@ -338,7 +338,7 @@ public sealed partial class DatabaseScannerViewModel(ISettingsService settingsSe
                     username = reader.ReadElementContentAsString();
                     break;
             }
-            if (reader is {NodeType: XmlNodeType.EndElement, Name: "contributor"})
+            if (reader is { NodeType: XmlNodeType.EndElement, Name: "contributor" })
             {
                 return new DbContributor()
                 {
@@ -369,13 +369,13 @@ public sealed partial class DatabaseScannerViewModel(ISettingsService settingsSe
                     Case = reader.ReadString();
                     break;
                 case "namespaces":
-                {
-                    ParseNamespaces(reader);
-                    break;
-                }
+                    {
+                        ParseNamespaces(reader);
+                        break;
+                    }
             }
-            
-            if (reader is {NodeType: XmlNodeType.EndElement, Name: "siteinfo"})
+
+            if (reader is { NodeType: XmlNodeType.EndElement, Name: "siteinfo" })
             {
                 break;
             }
@@ -402,7 +402,7 @@ public sealed partial class DatabaseScannerViewModel(ISettingsService settingsSe
                     TalkNamespaces.Add(ns);
                 }
             }
-            if (reader is {NodeType: XmlNodeType.EndElement, Name: "namespaces"})
+            if (reader is { NodeType: XmlNodeType.EndElement, Name: "namespaces" })
             {
                 break;
             }

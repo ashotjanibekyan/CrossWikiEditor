@@ -5,7 +5,7 @@ namespace CrossWikiEditor.Tests.ViewModels.ControlViewModels;
 public class OptionsViewModelTests : BaseTest
 {
     private OptionsViewModel _sut;
-    
+
     [SetUp]
     public void SetUp()
     {
@@ -17,10 +17,12 @@ public class OptionsViewModelTests : BaseTest
     public void OpenNormalFindAndReplaceDialogCommand_ShouldSetNormalFindAndReplaceRules_WhenDialogReturnsSuccessfully()
     {
         // arrange
-        var rules = new NormalFindAndReplaceRules(new[]
+        var rules = new NormalFindAndReplaceRules([new NormalFindAndReplaceRule("f", "w", false, true, true, true, false, true, false, "fwe")])
         {
-            new NormalFindAndReplaceRule("f", "w", false, true, true, true, false, true, false, "fwe")
-        }) {AddToSummary = true, IgnoreLinks = true, IgnoreMore = false};
+            AddToSummary = true,
+            IgnoreLinks = true,
+            IgnoreMore = false
+        };
         _dialogService.ShowDialog<NormalFindAndReplaceRules>(Arg.Any<FindAndReplaceViewModel>())
             .Returns(rules);
 
@@ -35,10 +37,12 @@ public class OptionsViewModelTests : BaseTest
     public void OpenNormalFindAndReplaceDialogCommand_ShouldDoNothing_WhenDialogReturnsUnsuccessfully()
     {
         // arrange
-        var rules = new NormalFindAndReplaceRules(new[]
+        var rules = new NormalFindAndReplaceRules([new NormalFindAndReplaceRule("f", "w", false, true, true, true, false, true, false, "fwe")])
         {
-            new NormalFindAndReplaceRule("f", "w", false, true, true, true, false, true, false, "fwe")
-        }) {AddToSummary = true, IgnoreLinks = true, IgnoreMore = false};
+            AddToSummary = true,
+            IgnoreLinks = true,
+            IgnoreMore = false
+        };
         _dialogService.ShowDialog<NormalFindAndReplaceRules>(Arg.Any<FindAndReplaceViewModel>())
             .Returns(rules);
         _sut.OpenNormalFindAndReplaceDialogCommand.Execute(null);

@@ -8,7 +8,7 @@ public interface IFileDialogService
         List<string>? patterns = null);
 
     Task<(Func<Task<Stream>>? openReadStream, Func<Task<Stream>>? openWriteStream)> SaveFilePickerAsync(
-        string title, 
+        string title,
         string? defaultExtension = null,
         string? suggestedFileName = null);
 }

@@ -13,7 +13,7 @@ public sealed class ImageFileLinksListProviderTests : ListProvidersBaseTest<Imag
 
     [Test] public new void CanMake_ShouldBeFalse_WhenParamIsEmpty() => base.CanMake_ShouldBeFalse_WhenParamIsEmpty();
     [Test] public new void CanMake_ShouldBeTrue_WhenParamIsEmpty() => base.CanMake_ShouldBeTrue_WhenParamIsEmpty();
-    
+
     [Test]
     public async Task MakeList_ShouldReturnServiceResults()
     {
@@ -23,7 +23,7 @@ public sealed class ImageFileLinksListProviderTests : ListProvidersBaseTest<Imag
 
         await base.MakeList_ShouldReturnServiceResults(_expectedPages);
     }
-    
+
     [Test]
     public async Task MakeList_ShouldReturnUnsuccessfulResult_WhenServiceReturnsUnsuccessfulResult()
     {
@@ -38,7 +38,7 @@ public sealed class ImageFileLinksListProviderTests : ListProvidersBaseTest<Imag
         result.IsSuccessful.Should().BeFalse();
         result.ErrorMessage.Should().Be("failed to get pages");
     }
-    
+
     [TearDown]
     public void TearDown()
     {

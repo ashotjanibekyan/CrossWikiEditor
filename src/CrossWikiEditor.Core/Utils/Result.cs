@@ -32,7 +32,7 @@ public readonly struct Result<TResult> : IEquatable<Result<TResult>>
     public string ErrorMessage { get; }
 
     public bool Equals(Result<TResult> other) => IsSuccessful && other.IsSuccessful && Equals(Value, other.Value);
-    public override bool Equals(object? obj) => obj is Result<TResult> && Equals((Result<TResult>) obj);
+    public override bool Equals(object? obj) => obj is Result<TResult> result && Equals(result);
     public static bool operator ==(Result<TResult> left, Result<TResult> right) => left.Equals(right);
     public static bool operator !=(Result<TResult> left, Result<TResult> right) => !(left == right);
     public override int GetHashCode() => HashCode.Combine(IsSuccessful, Value, Exception, ErrorMessage);

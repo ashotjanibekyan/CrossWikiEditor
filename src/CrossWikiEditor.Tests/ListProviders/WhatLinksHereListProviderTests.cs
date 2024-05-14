@@ -7,17 +7,17 @@ public sealed class WhatLinksHereListProviderTests : ListProvidersBaseTest<WhatL
     {
         SetUpServices();
         SetUpUserSettings("hyw", ProjectEnum.Wikipedia);
-        _selectNamespacesAndRedirectFilterViewModel = new SelectNamespacesAndRedirectFilterViewModel(new List<WikiNamespace>()
-        {
+        _selectNamespacesAndRedirectFilterViewModel = new SelectNamespacesAndRedirectFilterViewModel(
+        [
             new(0, ""),
             new(1, "Քննարկում:")
-        });
+        ]);
         _sut = new WhatLinksHereListProvider(_dialogService, _pageService, _settingsService, _viewModelFactory)
         {
             Param = "start from here"
         };
         _dialogService.ShowDialog<NamespacesAndRedirectFilterOptions>(_selectNamespacesAndRedirectFilterViewModel)
-            .Returns(new NamespacesAndRedirectFilterOptions(new []{3, 4}, true, RedirectFilter.All));
+            .Returns(new NamespacesAndRedirectFilterOptions([3, 4], true, RedirectFilter.All));
         _viewModelFactory.GetSelectNamespacesAndRedirectFilterViewModel().Returns(_selectNamespacesAndRedirectFilterViewModel);
         _expectedPages = Fakers.GetWikiPageModelFaker(_userSettings.GetApiUrl(), _wikiClientCache).Generate(4);
     }
@@ -49,7 +49,7 @@ public sealed class WhatLinksHereListProviderTests : ListProvidersBaseTest<WhatL
     {
         // arrange
         _dialogService.ShowDialog<NamespacesAndRedirectFilterOptions>(_selectNamespacesAndRedirectFilterViewModel)
-            .Returns(new NamespacesAndRedirectFilterOptions(new []{2}, true, RedirectFilter.All));
+            .Returns(new NamespacesAndRedirectFilterOptions([2], true, RedirectFilter.All));
         _sut.Param = "";
 
         // act
@@ -64,7 +64,7 @@ public sealed class WhatLinksHereListProviderTests : ListProvidersBaseTest<WhatL
     {
         // arrange
         _dialogService.ShowDialog<NamespacesAndRedirectFilterOptions>(_selectNamespacesAndRedirectFilterViewModel)
-            .Returns(new NamespacesAndRedirectFilterOptions(new []{2}, true, RedirectFilter.All));
+            .Returns(new NamespacesAndRedirectFilterOptions([2], true, RedirectFilter.All));
         _sut.Param = "not empty";
 
         // act
@@ -73,21 +73,21 @@ public sealed class WhatLinksHereListProviderTests : ListProvidersBaseTest<WhatL
         // assert
         _sut.CanMake.Should().BeTrue();
     }
-    
+
     [TestCase(RedirectFilter.All, null, true)]
     [TestCase(RedirectFilter.Redirects, true, true)]
     [TestCase(RedirectFilter.NoRedirects, false, true)]
-    [TestCase((RedirectFilter)7, null, true)]
+    [TestCase((RedirectFilter) 7, null, true)]
     [TestCase(RedirectFilter.All, null, false)]
     [TestCase(RedirectFilter.Redirects, true, false)]
     [TestCase(RedirectFilter.NoRedirects, false, false)]
-    [TestCase((RedirectFilter)7, null, false)]
+    [TestCase((RedirectFilter) 7, null, false)]
     public async Task MakeList_ShouldReturnPageServiceResults(RedirectFilter redirectFilter, bool? filterRedirects, bool allowRedirectLinks)
     {
         // arrange
         _dialogService.ShowDialog<NamespacesAndRedirectFilterOptions>(_selectNamespacesAndRedirectFilterViewModel)
             .Returns(new NamespacesAndRedirectFilterOptions([3, 4], allowRedirectLinks, redirectFilter));
-        _pageService.GetPagesLinkedTo(_userSettings.GetApiUrl(), _sut.Param, Arg.Is<int[]>(x => x.SequenceEqual(new []{3, 4})), allowRedirectLinks, filterRedirects, 73)
+        _pageService.GetPagesLinkedTo(_userSettings.GetApiUrl(), _sut.Param, Arg.Is<int[]>(x => x.SequenceEqual(new[] { 3, 4 })), allowRedirectLinks, filterRedirects, 73)
             .Returns(_expectedPages);
 
         await MakeList_ShouldReturnServiceResults(_expectedPages);
@@ -96,17 +96,17 @@ public sealed class WhatLinksHereListProviderTests : ListProvidersBaseTest<WhatL
     [TestCase(RedirectFilter.All, null, true)]
     [TestCase(RedirectFilter.Redirects, true, true)]
     [TestCase(RedirectFilter.NoRedirects, false, true)]
-    [TestCase((RedirectFilter)7, null, true)]
+    [TestCase((RedirectFilter) 7, null, true)]
     [TestCase(RedirectFilter.All, null, false)]
     [TestCase(RedirectFilter.Redirects, true, false)]
     [TestCase(RedirectFilter.NoRedirects, false, false)]
-    [TestCase((RedirectFilter)7, null, false)]
+    [TestCase((RedirectFilter) 7, null, false)]
     public async Task MakeList_ShouldReturnUnsuccessfulResult_WhenPageServiceReturnsUnsuccessfulResult(RedirectFilter redirectFilter, bool? filterRedirects, bool allowRedirectLinks)
     {
         // arrange
         _dialogService.ShowDialog<NamespacesAndRedirectFilterOptions>(_selectNamespacesAndRedirectFilterViewModel)
             .Returns(new NamespacesAndRedirectFilterOptions([3, 4], allowRedirectLinks, redirectFilter));
-        _pageService.GetPagesLinkedTo(_userSettings.GetApiUrl(), _sut.Param, Arg.Is<int[]>(x => x.SequenceEqual(new []{3, 4})), allowRedirectLinks, filterRedirects, 73)
+        _pageService.GetPagesLinkedTo(_userSettings.GetApiUrl(), _sut.Param, Arg.Is<int[]>(x => x.SequenceEqual(new[] { 3, 4 })), allowRedirectLinks, filterRedirects, 73)
             .Returns(new Exception("failed to get pages"));
 
         // act
@@ -117,7 +117,7 @@ public sealed class WhatLinksHereListProviderTests : ListProvidersBaseTest<WhatL
         result.IsSuccessful.Should().BeFalse();
         result.ErrorMessage.Should().Be("failed to get pages");
     }
-    
+
     [TearDown]
     public void TearDown()
     {

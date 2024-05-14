@@ -16,10 +16,7 @@ public partial class DatabaseScannerView : Window, IDialog
     {
         if (DataContext is DatabaseScannerViewModel vm)
         {
-            vm._convertedTextChanged += (sender, s) =>
-            {
-                TextEditor.Text = s;
-            };
+            vm._convertedTextChanged += (sender, s) => TextEditor.Text = s;
         }
     }
 }

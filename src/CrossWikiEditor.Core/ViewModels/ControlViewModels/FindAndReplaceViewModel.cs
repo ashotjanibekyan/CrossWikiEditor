@@ -21,7 +21,7 @@ public partial class FindAndReplaceViewModel : ViewModelBase
         NormalFindAndReplaceRules.Clear();
         AddNewRow();
     }
-    
+
     [RelayCommand]
     private void Save(IDialog dialog)
     {

@@ -49,7 +49,7 @@ public sealed class ProtectedPagesListProviderTests : ListProvidersBaseTest<Prot
         // assert
         _sut.CanMake.Should().BeTrue();
     }
-    
+
     [Test]
     public async Task MakeList_ShouldReturnPageServiceResults()
     {
@@ -75,7 +75,7 @@ public sealed class ProtectedPagesListProviderTests : ListProvidersBaseTest<Prot
         result.IsSuccessful.Should().BeFalse();
         result.ErrorMessage.Should().Be("failed to get pages");
     }
-    
+
     [TearDown]
     public void TearDown()
     {

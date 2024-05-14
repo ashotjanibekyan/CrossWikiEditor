@@ -10,9 +10,9 @@ public class FindAndReplaceViewModelTests : BaseTest
     public void SetUp()
     {
         SetUpServices();
-        _sut = new FindAndReplaceViewModel(new NormalFindAndReplaceRules());
+        _sut = new FindAndReplaceViewModel([]);
     }
-    
+
     [Test]
     public void Constructor_InitializesProperties()
     {
@@ -40,7 +40,7 @@ public class FindAndReplaceViewModelTests : BaseTest
     {
         // arrange
         NormalFindAndReplaceRule last = _sut.NormalFindAndReplaceRules.Last();
-        
+
         // act
         last.ReplaceWith = "few";
         last.Comment = "fwe";

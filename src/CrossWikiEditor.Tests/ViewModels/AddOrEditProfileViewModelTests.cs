@@ -16,8 +16,8 @@ public sealed class AddOrEditProfileViewModelTests : BaseTest
     {
         // arrange
         _fileDialogService
-            .OpenFilePickerAsync("Select settings file", false, Arg.Is<List<string>>(x => x.First() == "*.xml"))
-            .Returns(new[] { "some/valid/file.xml" });
+            .OpenFilePickerAsync("Select settings file", false, Arg.Is<List<string>>(x => x[0] == "*.xml"))
+            .Returns(["some/valid/file.xml"]);
 
         // act
         _sut.BrowseCommand.Execute(null);
@@ -31,8 +31,8 @@ public sealed class AddOrEditProfileViewModelTests : BaseTest
     {
         // arrange
         _fileDialogService
-            .OpenFilePickerAsync("Select settings file", false, new List<string>{"*.xml"})
-            .Returns(Array.Empty<string>());
+            .OpenFilePickerAsync("Select settings file", false, ["*.xml"])
+            .Returns([]);
         string? initialDefaultSettingsPath = _sut.DefaultSettingsPath;
 
         // act
@@ -47,7 +47,7 @@ public sealed class AddOrEditProfileViewModelTests : BaseTest
     {
         // arrange
         _fileDialogService
-            .OpenFilePickerAsync("Select settings file", false, new List<string>{"*.xml"})
+            .OpenFilePickerAsync("Select settings file", false, ["*.xml"])
             .ReturnsNull();
         string? initialDefaultSettingsPath = _sut.DefaultSettingsPath;
 
@@ -142,7 +142,6 @@ public sealed class AddOrEditProfileViewModelTests : BaseTest
         _profileRepository.DidNotReceive().Update(Arg.Any<Profile>());
         _dialog.Received(1).Close(true);
     }
-
 
     [TestCase(0, "username", "Qwer1234", true, "some/path/file.xml", true, "this is a note")]
     [TestCase(1, "username", "Qwer1234", false, "some/path/file.xml", true, "this is a note")]

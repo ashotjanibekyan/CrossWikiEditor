@@ -9,6 +9,6 @@ public sealed class NormalFindAndReplaceRules : List<NormalFindAndReplaceRule>
     public bool IgnoreLinks { get; set; }
 
     public bool IgnoreMore { get; set; }
-    
+
     public bool AddToSummary { get; set; }
 }

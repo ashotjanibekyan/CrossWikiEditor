@@ -6,4 +6,4 @@ public interface IDialog
     object? DataContext { get; set; }
 }
 
-public interface IOwner { }
+public interface IOwner;

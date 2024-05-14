@@ -45,7 +45,7 @@ public sealed class StringExtensionsTests
         // Assert
         result.Should().Be(string.Empty);
     }
-    
+
     [Test]
     public void Contains_SubstringFound_ReturnsTrue()
     {

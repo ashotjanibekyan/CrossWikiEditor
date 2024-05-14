@@ -11,7 +11,7 @@ public sealed class MagicWordInfo
 {
     [JsonProperty] public string Name { get; private set; } = "";
 
-    [JsonProperty] public IReadOnlyCollection<string> Aliases { get; private set; } = ImmutableList<string>.Empty;
+    [JsonProperty] public IReadOnlyCollection<string> Aliases { get; private set; } = [];
 
     [JsonProperty("case-sensitive")] public bool CaseSensitive { get; private set; }
 

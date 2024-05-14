@@ -2,7 +2,6 @@
 
 public sealed class ToolsTests
 {
-
     [TestCase("https://en.wikipedia.org/wiki/Artificial_intelligence", ExpectedResult = "Artificial intelligence")]
     [TestCase("https://en.wikipedia.org/wiki/Mathematics?", ExpectedResult = "Mathematics")]
     [TestCase("https://en.wikipedia.org/wiki/Artificial_intelligence?foo=bar", ExpectedResult = "Artificial intelligence")]
@@ -25,7 +24,7 @@ public sealed class ToolsTests
     {
         return Tools.GetPageTitleFromUrl(url);
     }
-    
+
     [Test]
     public void FirstDifference_ShouldReturnStringLength_WhenStringsAreIdentical()
     {
@@ -95,8 +94,8 @@ public sealed class ToolsTests
         // Assert
         result.Should().Be(b.Length);
     }
-    
-        [Test]
+
+    [Test]
     public void RemoveSyntax_ShouldReturnEmptyString_WhenInputIsNull()
     {
         // Arrange
@@ -126,7 +125,7 @@ public sealed class ToolsTests
     public void RemoveSyntax_ShouldRemoveLeadingHash_WhenInputStartsWithHash()
     {
         // Arrange
-        string input = "#Hashtag";
+        const string input = "#Hashtag";
 
         // Act
         string result = Tools.RemoveSyntax(input);
@@ -139,7 +138,7 @@ public sealed class ToolsTests
     public void RemoveSyntax_ShouldRemoveLeadingAsterisk_WhenInputStartsWithAsterisk()
     {
         // Arrange
-        string input = "*Asterisk";
+        const string input = "*Asterisk";
 
         // Act
         string result = Tools.RemoveSyntax(input);
@@ -152,7 +151,7 @@ public sealed class ToolsTests
     public void RemoveSyntax_ShouldRemoveUnderscoresAndTrimSpaces()
     {
         // Arrange
-        string input = " _Remove_ _ Underscores _ ";
+        const string input = " _Remove_ _ Underscores _ ";
 
         // Act
         string result = Tools.RemoveSyntax(input);

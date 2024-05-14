@@ -46,19 +46,19 @@ public sealed class ViewModelFactory(IFileDialogService fileDialogService,
     {
         WikiSite site = await wikiClientCache.GetWikiSite(settingsService.CurrentApiUrl);
         WikiNamespace[] namespaces = site.Namespaces.Select(x => new WikiNamespace(x.Id, x.CustomName)).ToArray();
-        return new SelectNamespacesViewModel([..namespaces], isMultiselect);
+        return new SelectNamespacesViewModel([.. namespaces], isMultiselect);
     }
 
     public async Task<SelectNamespacesAndRedirectFilterViewModel> GetSelectNamespacesAndRedirectFilterViewModel(bool isIncludeRedirectsVisible = true)
     {
         WikiSite site = await wikiClientCache.GetWikiSite(settingsService.CurrentApiUrl);
         WikiNamespace[] namespaces = site.Namespaces.Select(x => new WikiNamespace(x.Id, x.CustomName)).ToArray();
-        return new SelectNamespacesAndRedirectFilterViewModel([..namespaces])
+        return new SelectNamespacesAndRedirectFilterViewModel([.. namespaces])
         {
             IsIncludeRedirectsVisible = isIncludeRedirectsVisible
         };
     }
-    
+
     public SelectProtectionSelectionPageViewModel GetSelectProtectionSelectionPageViewModel()
     {
         return new SelectProtectionSelectionPageViewModel();

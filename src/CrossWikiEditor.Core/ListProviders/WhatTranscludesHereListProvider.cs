@@ -8,5 +8,5 @@ public sealed class WhatTranscludesHereListProvider(IDialogService dialogService
     public override string ParamTitle => "What embeds";
 
     public override async Task<Result<List<WikiPageModel>>> MakeList(int limit) =>
-        await pageService.GetTransclusionsOf(settingsService.CurrentApiUrl, Param, new[] {0}, limit);
+        await pageService.GetTransclusionsOf(settingsService.CurrentApiUrl, Param, [0], limit);
 }

@@ -10,7 +10,7 @@ public sealed class LanguageSpecificRegexesTests : BaseTest
     public async Task SetUp()
     {
         SetUpServices();
-        string apiRoot = "https://en.wikipedia.org/w/api.php?";
+        const string apiRoot = "https://en.wikipedia.org/w/api.php?";
         _settingsService.CurrentApiUrl.Returns(apiRoot);
         _settingsService.GetCurrentSettings().Returns(new UserSettings()
         {
@@ -22,7 +22,7 @@ public sealed class LanguageSpecificRegexesTests : BaseTest
         _sut = new LanguageSpecificRegexes(_settingsService, _wikiClientCache, _messenger);
         await _sut.InitAsync;
     }
-    
+
     [Test]
     public void ExtractTitleTests()
     {
@@ -31,19 +31,19 @@ public sealed class LanguageSpecificRegexesTests : BaseTest
             Assert.Fail("LanguageSpecificRegexes isn't initialized properly");
             return;
         }
-        
-        IsMatch(_sut.ExtractTitle, @"https://en.wikipedia.org/wiki/Foo");
-        IsMatch(_sut.ExtractTitle, @"https://en.wikipedia.org/wiki/Foo_bar");
-            
-        Assert.That(_sut.ExtractTitle.Match(@"https://en.wikipedia.org/wiki/Foo").Groups[1].Value, Is.EqualTo("Foo"));
-        Assert.That(_sut.ExtractTitle.Match(@"https://en.wikipedia.org/w/index.php?title=Foo").Groups[1].Value, Is.EqualTo("Foo"));
-        Assert.That(_sut.ExtractTitle.Match(@"https://en.wikipedia.org/w/index.php/Foo").Groups[1].Value, Is.EqualTo("Foo"));
-        Assert.That(_sut.ExtractTitle.Match(@"https://en.wikipedia.org/w/index.php/Foo bar here").Groups[1].Value, Is.EqualTo("Foo bar here"));
-            
-        NoMatch(_sut.ExtractTitle, @"https://random.org/wiki/Foo");
-        NoMatch(_sut.ExtractTitle, @"https://en.wikipedia.org/wikirandom/Foo");
-        NoMatch(_sut.ExtractTitle, @"https://hy.wikipedia.org/wiki/Foo");
-        NoMatch(_sut.ExtractTitle, @"https://hy.wikipedia.org/wiki/Foo_bar");
+
+        IsMatch(_sut.ExtractTitle, "https://en.wikipedia.org/wiki/Foo");
+        IsMatch(_sut.ExtractTitle, "https://en.wikipedia.org/wiki/Foo_bar");
+
+        Assert.That(_sut.ExtractTitle.Match("https://en.wikipedia.org/wiki/Foo").Groups[1].Value, Is.EqualTo("Foo"));
+        Assert.That(_sut.ExtractTitle.Match("https://en.wikipedia.org/w/index.php?title=Foo").Groups[1].Value, Is.EqualTo("Foo"));
+        Assert.That(_sut.ExtractTitle.Match("https://en.wikipedia.org/w/index.php/Foo").Groups[1].Value, Is.EqualTo("Foo"));
+        Assert.That(_sut.ExtractTitle.Match("https://en.wikipedia.org/w/index.php/Foo bar here").Groups[1].Value, Is.EqualTo("Foo bar here"));
+
+        NoMatch(_sut.ExtractTitle, "https://random.org/wiki/Foo");
+        NoMatch(_sut.ExtractTitle, "https://en.wikipedia.org/wikirandom/Foo");
+        NoMatch(_sut.ExtractTitle, "https://hy.wikipedia.org/wiki/Foo");
+        NoMatch(_sut.ExtractTitle, "https://hy.wikipedia.org/wiki/Foo_bar");
     }
 
     private static void IsMatch(Regex regex, string input)

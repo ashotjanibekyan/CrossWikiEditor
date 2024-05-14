@@ -17,7 +17,7 @@ public partial class FilterViewModel(List<WikiNamespace> subjectNamespaces, List
             SortAlphabetically,
             RemoveDuplicates,
             SelectedSetOperations,
-            Pages.ToList()));
+            [..Pages]));
     }
 
     [RelayCommand]
@@ -63,7 +63,7 @@ public partial class FilterViewModel(List<WikiNamespace> subjectNamespaces, List
 
     [ObservableProperty] private ObservableCollection<WikiNamespace> _subjectNamespaces = subjectNamespaces.ToObservableCollection();
     [ObservableProperty] private ObservableCollection<WikiNamespace> _talkNamespaces = talkNamespaces.ToObservableCollection();
-    [ObservableProperty] private ObservableCollection<WikiPageModel> _pages = new();
+    [ObservableProperty] private ObservableCollection<WikiPageModel> _pages = [];
 
     [ObservableProperty]
     private ObservableCollection<SetOperations> _setOperations =

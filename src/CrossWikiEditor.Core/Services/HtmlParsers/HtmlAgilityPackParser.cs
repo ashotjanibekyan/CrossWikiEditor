@@ -15,7 +15,7 @@ public sealed class HtmlAgilityPackParser(ILogger logger, ISettingsService setti
         {
             return urls;
         }
-        
+
         foreach (HtmlNode? link in nodes)
         {
             try

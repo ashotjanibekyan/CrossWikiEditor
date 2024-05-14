@@ -5,7 +5,7 @@ namespace CrossWikiEditor.Tests.ViewModels.ControlViewModels;
 public class StartViewModelTests : BaseTest
 {
     private StartViewModel _sut;
-    
+
     [SetUp]
     public void SetUp()
     {

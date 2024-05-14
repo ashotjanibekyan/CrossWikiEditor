@@ -6,7 +6,7 @@ public sealed class TextFileListProvider(IFileDialogService fileDialogService,
         IWikiClientCache wikiClientCache)
     : UnlimitedListProviderBase, INeedAdditionalParamsListProvider
 {
-    private readonly List<string> _textFiles = new();
+    private readonly List<string> _textFiles = [];
 
     public override string Title => "Text file";
     public override string ParamTitle => string.Empty;
@@ -28,13 +28,13 @@ public sealed class TextFileListProvider(IFileDialogService fileDialogService,
             }
             else
             {
-                titles.AddRange(pageText.Split(new[] {"\r\n", "\n"}, StringSplitOptions.RemoveEmptyEntries)
+                titles.AddRange(pageText.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries)
                     .Where(s => s.Trim().Length != 0)
                     .Select(Tools.RemoveSyntax));
             }
         }
 
-        var result = titles.Select(title => new WikiPageModel(title, settingsService.CurrentApiUrl, wikiClientCache)).ToList();
+        List<WikiPageModel> result = titles.ConvertAll(title => new WikiPageModel(title, settingsService.CurrentApiUrl, wikiClientCache));
 
         _textFiles.Clear();
         return result;

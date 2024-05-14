@@ -7,8 +7,8 @@ public sealed class SelectNamespacesViewModelTests
     [SetUp]
     public void SetUp()
     {
-        _sut = new SelectNamespacesViewModel(new List<WikiNamespace>
-        {
+        _sut = new SelectNamespacesViewModel(
+        [
             new(0, "namespace name with id 0"),
             new(1, "namespace name with id 1"),
             new(2, "namespace name with id 2"),
@@ -17,7 +17,7 @@ public sealed class SelectNamespacesViewModelTests
             new(5, "namespace name with id 5"),
             new(6, "namespace name with id 6"),
             new(7, "namespace name with id 7"),
-        });
+        ]);
     }
 
     [Test]
@@ -37,7 +37,7 @@ public sealed class SelectNamespacesViewModelTests
 
         // act
         _sut.SelectCommand.Execute(dialog);
-        
+
         // assert
         dialog.Received(1).Close(Arg.Is<int[]>(x => x.SequenceEqual(expectedResult)));
     }

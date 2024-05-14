@@ -2,12 +2,8 @@
 
 namespace CrossWikiEditor.Core.WikiClientLibraryUtils.Generators;
 
-public sealed class ExternalUrlUsageGenerator : WikiList<ExternalUrlUsageItem>
+public sealed class ExternalUrlUsageGenerator(WikiSite site) : WikiList<ExternalUrlUsageItem>(site)
 {
-    public ExternalUrlUsageGenerator(WikiSite site) : base(site)
-    {
-    }
-    
     public override string ListName => "exturlusage";
     public IEnumerable<int>? NamespaceIds { get; set; }
     public string? Url { get; set; }
@@ -36,5 +32,4 @@ public sealed class ExternalUrlUsageGenerator : WikiList<ExternalUrlUsageItem>
             Url = (string) jsonObj["url"]
         };
     }
-
 }

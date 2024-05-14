@@ -9,10 +9,10 @@ public interface IStringEncryptionService
 public sealed class StringEncryptionService(byte[] key, byte[] iv) : IStringEncryptionService
 {
     private static readonly byte[] Salt =
-    {
+    [
         130, 172, 223, 224, 181, 229, 138, 159, 136, 84, 68, 219, 64, 243, 115, 223, 223, 18, 132, 188, 12, 1, 108, 54, 184, 239, 230, 98, 195, 119,
         226, 97
-    };
+    ];
 
     public byte[] EncryptStringToBytes(string plainText)
     {

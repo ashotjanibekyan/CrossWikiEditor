@@ -17,7 +17,7 @@ public static class WikiPageModelExtensions
             }
             i++;
         }
-        return sb.ToString();   
+        return sb.ToString();
     }
 
     public static string ToWikiListAlphabetically(this IEnumerable<WikiPageModel> wikiPageModels, bool isNumericList)
@@ -27,7 +27,7 @@ public static class WikiPageModelExtensions
         IEnumerable<IEnumerable<WikiPageModel>> pages = wikiPageModels.GroupBy(p => char.ToLower(p.Title[0])).OrderBy(p => p.First().Title).Select(l => l.OrderBy(p => p.Title));
         foreach (IEnumerable<WikiPageModel> section in pages)
         {
-            sb.Append($"== {char.ToUpper(section.First().Title.First())} =={Environment.NewLine}");
+            sb.Append($"== {char.ToUpper(section.First().Title[0])} =={Environment.NewLine}");
             foreach (WikiPageModel page in section)
             {
                 sb.Append($"{seperator} [[{page.Title}]]{Environment.NewLine}");

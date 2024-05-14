@@ -84,8 +84,7 @@ public sealed class SimpleJsonProfileRepositoryTests
         List<Profile> existingProfiles = _sut.GetAll();
         existingProfiles.Should().BeEquivalentTo(profiles);
     }
-    
-    
+
     [Test]
     public void Update_ShouldUpdate_WhenProfileExists()
     {
@@ -119,7 +118,7 @@ public sealed class SimpleJsonProfileRepositoryTests
 
         // act
         List<Profile> existingProfiles = _sut.GetAll();
-        
+
         // assert
         existingProfiles.Count.Should().Be(0);
     }
@@ -135,7 +134,7 @@ public sealed class SimpleJsonProfileRepositoryTests
 
         // act
         List<Profile> existingProfiles = _sut.GetAll();
-        
+
         // assert
         existingProfiles.Count.Should().Be(3);
         existingProfiles[0].Should().BeEquivalentTo(profiles[0]);

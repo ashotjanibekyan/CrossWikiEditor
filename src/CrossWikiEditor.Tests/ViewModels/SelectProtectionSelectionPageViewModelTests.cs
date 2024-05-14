@@ -3,7 +3,7 @@ namespace CrossWikiEditor.Tests.ViewModels;
 public sealed class SelectProtectionSelectionPageViewModelTests : BaseTest
 {
     private SelectProtectionSelectionPageViewModel _sut;
-    
+
     [SetUp]
     public void SetUp()
     {
@@ -21,7 +21,7 @@ public sealed class SelectProtectionSelectionPageViewModelTests : BaseTest
         _sut.ProtectionType = type;
         _sut.ProtectionLevel = level;
         IDialog dialog = Substitute.For<IDialog>();
-        
+
         // act
         _sut.OkCommand.Execute(dialog);
 

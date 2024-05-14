@@ -1,5 +1,3 @@
 ﻿namespace CrossWikiEditor.Core.ViewModels.ControlViewModels;
 
-public sealed class MoreViewModel : ViewModelBase
-{
-}
+public sealed class MoreViewModel : ViewModelBase;

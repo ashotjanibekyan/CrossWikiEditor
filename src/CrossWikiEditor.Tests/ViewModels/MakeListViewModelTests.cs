@@ -16,11 +16,11 @@ public sealed class MakeListViewModelTests : BaseTest
     public void SetUp()
     {
         SetUpServices();
-        List<IListProvider> listProviders = new()
-        {
+        List<IListProvider> listProviders =
+        [
             Substitute.For<IListProvider>(),
             Substitute.For<IListProvider>()
-        };
+        ];
         _sut = new MakeListViewModel(_messenger, _logger, _dialogService, _wikiClientCache, _pageService, _systemService, _viewModelFactory,
             _fileDialogService, _settingsService, listProviders);
         _settingsService.GetCurrentSettings().Returns(new UserSettings()
@@ -43,11 +43,11 @@ public sealed class MakeListViewModelTests : BaseTest
             new("Page3", ApiRoot, _wikiClientCache),
             new("Page4", ApiRoot, _wikiClientCache),
         };
-        List<IListProvider> listProviders = new()
-        {
+        List<IListProvider> listProviders =
+        [
             Substitute.For<IListProvider>(),
             Substitute.For<IListProvider>()
-        };
+        ];
         var messenger = new MessengerWrapper(WeakReferenceMessenger.Default);
         _sut = new MakeListViewModel(messenger, _logger, _dialogService, _wikiClientCache, _pageService, _systemService, _viewModelFactory,
             _fileDialogService, _settingsService, listProviders)
@@ -93,7 +93,7 @@ public sealed class MakeListViewModelTests : BaseTest
 
         // act
         _sut.AddNewPageCommand.Execute(null);
-        
+
         // assert
         _sut.Pages.Should().BeEquivalentTo(originalPages.Concat([new WikiPageModel("new page", ApiRoot, _wikiClientCache)]));
     }
@@ -118,7 +118,7 @@ public sealed class MakeListViewModelTests : BaseTest
         _sut.NewPageTitle = "    new page title   ";
         _wikiClientCache.GetWikiPageModel(ApiRoot, Arg.Any<string>())
             .Returns(args => new WikiPageModel("new page title", ApiRoot, _wikiClientCache));
-        
+
         // act
         _sut.AddNewPageCommand.Execute(null);
 
@@ -134,7 +134,7 @@ public sealed class MakeListViewModelTests : BaseTest
         // arrange
         List<WikiPageModel>? randomPages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(10);
         _sut.Pages = randomPages.ToObservableCollection();
-        _sut.SelectedPages = new ObservableCollection<WikiPageModel>();
+        _sut.SelectedPages = [];
 
         // act
         _sut.RemoveCommand.Execute(null);
@@ -177,7 +177,6 @@ public sealed class MakeListViewModelTests : BaseTest
         _sut.Pages.Should().BeEquivalentTo(randomPages);
     }
 
-
     [Test]
     public void RemoveCommand_ShouldClearSelectedPage()
     {
@@ -203,7 +202,7 @@ public sealed class MakeListViewModelTests : BaseTest
         listProvider.GetLimit().Returns(42);
         List<WikiPageModel>? pages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(42);
         listProvider.MakeList(42).Returns(pages);
-        
+
         // act
         _sut.MakeListCommand.Execute(42);
 
@@ -212,7 +211,7 @@ public sealed class MakeListViewModelTests : BaseTest
         listProvider.Received(1).MakeList(42);
         _sut.Pages.Should().BeEquivalentTo(pages);
     }
-    
+
     [Test]
     public void MakeListCommand_ShouldDoNothing_WhenSelectedProviderCanNotMake()
     {
@@ -329,7 +328,7 @@ public sealed class MakeListViewModelTests : BaseTest
     public void OpenHistoryInBrowserCommand_ShouldDoNothing_WhenThereIsNoSelectedPage()
     {
         // arrange
-        _sut.SelectedPages = new ObservableCollection<WikiPageModel>();
+        _sut.SelectedPages = [];
 
         // act
         _sut.OpenHistoryInBrowserCommand.Execute(null);
@@ -368,7 +367,7 @@ public sealed class MakeListViewModelTests : BaseTest
     public void CutCommand_ShouldDoNothing_WhenSelectedPagesIsEmpty()
     {
         // arrange
-        _sut.SelectedPages = new ObservableCollection<WikiPageModel>();
+        _sut.SelectedPages = [];
 
         // act
         _sut.CutCommand.Execute(null);
@@ -401,7 +400,7 @@ public sealed class MakeListViewModelTests : BaseTest
     public void CopyCommand_ShouldDoNothing_WhenSelectedPagesIsEmpty()
     {
         // arrange
-        _sut.SelectedPages = new ObservableCollection<WikiPageModel>();
+        _sut.SelectedPages = [];
 
         // act
         _sut.CopyCommand.Execute(null);
@@ -437,7 +436,7 @@ public sealed class MakeListViewModelTests : BaseTest
     {
         // arrange
         _sut.Pages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(5).ToObservableCollection();
-        _sut.SelectedPages = new ObservableCollection<WikiPageModel>();
+        _sut.SelectedPages = [];
 
         // act
         _sut.SelectAllCommand.Execute(null);
@@ -454,7 +453,7 @@ public sealed class MakeListViewModelTests : BaseTest
     {
         // arrange
         _sut.Pages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(5).ToObservableCollection();
-        _sut.SelectedPages = new ObservableCollection<WikiPageModel>();
+        _sut.SelectedPages = [];
 
         // act
         _sut.SelectNoneCommand.Execute(null);
@@ -471,7 +470,7 @@ public sealed class MakeListViewModelTests : BaseTest
     {
         // arrange
         _sut.Pages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(5).ToObservableCollection();
-        _sut.SelectedPages = new ObservableCollection<WikiPageModel>();
+        _sut.SelectedPages = [];
 
         // act
         _sut.SelectInverseCommand.Execute(null);
@@ -525,7 +524,7 @@ public sealed class MakeListViewModelTests : BaseTest
             .Returns($"page3{Environment.NewLine}fewfew{Environment.NewLine}ofiewf203{Environment.NewLine} foiwej   ");
         _wikiClientCache.GetWikiPageModel(ApiRoot, Arg.Any<string>())
             .Returns(args => new WikiPageModel(((string) args[1]).Trim(), ApiRoot, _wikiClientCache));
-        
+
         // act
         _sut.PasteCommand.Execute(null);
 
@@ -599,7 +598,7 @@ public sealed class MakeListViewModelTests : BaseTest
     {
         // arrange
         List<WikiPageModel>? pages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(10);
-        pages = pages.Concat(pages.RandomSubset(4)).ToList();
+        pages = [.. pages, .. pages.RandomSubset(4)];
         _sut.Pages = pages.ToObservableCollection();
         _sut.SelectedPages = pages.RandomSubset(2).ToObservableCollection();
 
@@ -624,7 +623,7 @@ public sealed class MakeListViewModelTests : BaseTest
         _sut.Pages[2].NamespaceId = 0;
         _sut.Pages[3].NamespaceId = 12;
         _sut.Pages[4].NamespaceId = 13;
-        var nonSelected = new List<WikiPageModel> {_sut.Pages[0], _sut.Pages[2]};
+        var nonSelected = new List<WikiPageModel> { _sut.Pages[0], _sut.Pages[2] };
 
         // act
         _sut.RemoveNonMainSpaceCommand.Execute(null);
@@ -694,8 +693,7 @@ public sealed class MakeListViewModelTests : BaseTest
         // assert
         _sut.Pages.Should().BeEquivalentTo(talkPages);
     }
-    
-    
+
     [Test]
     public void ConvertToTalkPagesCommand_ShouldDoNothing_WhenPageServiceReturnsFailure()
     {
@@ -730,8 +728,7 @@ public sealed class MakeListViewModelTests : BaseTest
         // assert
         _sut.Pages.Should().BeEquivalentTo(talkPages);
     }
-    
-    
+
     [Test]
     public void ConvertFromTalkPagesCommand_ShouldDoNothing_WhenPageServiceReturnsFailure()
     {
@@ -756,7 +753,7 @@ public sealed class MakeListViewModelTests : BaseTest
         // arrange
         List<WikiPageModel>? pages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(10);
         _dialogService.ShowDialog<FilterOptions>(Arg.Any<FilterViewModel>())
-            .Returns(new FilterOptions(Array.Empty<int>(), "", "", false, false, true, SetOperations.Intersection, new List<WikiPageModel>()));
+            .Returns(new FilterOptions([], "", "", false, false, true, SetOperations.Intersection, []));
         _sut.Pages.AddRange(pages);
         _sut.Pages.AddRange(pages);
 
@@ -772,7 +769,7 @@ public sealed class MakeListViewModelTests : BaseTest
     {
         // arrange
         _dialogService.ShowDialog<FilterOptions>(Arg.Any<FilterViewModel>())
-            .Returns(new FilterOptions(Array.Empty<int>(), "a", "", false, false, true, SetOperations.Intersection, new List<WikiPageModel>()));
+            .Returns(new FilterOptions([], "a", "", false, false, true, SetOperations.Intersection, []));
         _sut.Pages = new ObservableCollection<WikiPageModel>(new WikiPageModel[]
         {
             new("bbb", ApiRoot, _wikiClientCache),
@@ -796,7 +793,7 @@ public sealed class MakeListViewModelTests : BaseTest
     {
         // arrange
         _dialogService.ShowDialog<FilterOptions>(Arg.Any<FilterViewModel>())
-            .Returns(new FilterOptions(Array.Empty<int>(), "", "a", false, false, true, SetOperations.Intersection, new List<WikiPageModel>()));
+            .Returns(new FilterOptions([], "", "a", false, false, true, SetOperations.Intersection, []));
         _sut.Pages = new ObservableCollection<WikiPageModel>(new WikiPageModel[]
         {
             new("bbb", ApiRoot, _wikiClientCache),
@@ -821,7 +818,7 @@ public sealed class MakeListViewModelTests : BaseTest
     {
         // arrange
         _dialogService.ShowDialog<FilterOptions>(Arg.Any<FilterViewModel>())
-            .Returns(new FilterOptions(Array.Empty<int>(), @"\d", "", true, false, true, SetOperations.Intersection, new List<WikiPageModel>()));
+            .Returns(new FilterOptions([], @"\d", "", true, false, true, SetOperations.Intersection, []));
         _sut.Pages = new ObservableCollection<WikiPageModel>(new WikiPageModel[]
         {
             new("bb2b", ApiRoot, _wikiClientCache),
@@ -845,7 +842,7 @@ public sealed class MakeListViewModelTests : BaseTest
     {
         // arrange
         _dialogService.ShowDialog<FilterOptions>(Arg.Any<FilterViewModel>())
-            .Returns(new FilterOptions(Array.Empty<int>(), "", @"\d", true, false, true, SetOperations.Intersection, new List<WikiPageModel>()));
+            .Returns(new FilterOptions([], "", @"\d", true, false, true, SetOperations.Intersection, []));
         _sut.Pages = new ObservableCollection<WikiPageModel>(new WikiPageModel[]
         {
             new("bb2b", ApiRoot, _wikiClientCache),
@@ -870,7 +867,7 @@ public sealed class MakeListViewModelTests : BaseTest
     {
         // arrange
         _dialogService.ShowDialog<FilterOptions>(Arg.Any<FilterViewModel>())
-            .Returns(new FilterOptions(new []{0, 1}, "", "", true, false, true, SetOperations.Intersection, new List<WikiPageModel>()));
+            .Returns(new FilterOptions([0, 1], "", "", true, false, true, SetOperations.Intersection, []));
         _sut.Pages = new ObservableCollection<WikiPageModel>(new WikiPageModel[]
         {
             new("bb2b", ApiRoot, _wikiClientCache),
@@ -903,11 +900,7 @@ public sealed class MakeListViewModelTests : BaseTest
             new("Վիքիպեդիա:aa2a", ApiRoot, _wikiClientCache),
         };
         _dialogService.ShowDialog<FilterOptions>(Arg.Any<FilterViewModel>())
-            .Returns(new FilterOptions(Array.Empty<int>(), "", "", true, false, true, SetOperations.Intersection, new List<WikiPageModel>
-            {
-                pages[1],
-                pages[3],
-            }));
+            .Returns(new FilterOptions([], "", "", true, false, true, SetOperations.Intersection, [pages[1], pages[3]]));
         _sut.Pages = new ObservableCollection<WikiPageModel>(pages);
 
         // act
@@ -937,10 +930,9 @@ public sealed class MakeListViewModelTests : BaseTest
             new("Կաղապար:aոֆեոa2a", ApiRoot, _wikiClientCache),
             ogPages[0],
             ogPages[3]
-
         };
         _dialogService.ShowDialog<FilterOptions>(Arg.Any<FilterViewModel>())
-            .Returns(new FilterOptions(Array.Empty<int>(), "", "", true, false, true, SetOperations.SymmetricDifference, filterPages));
+            .Returns(new FilterOptions([], "", "", true, false, true, SetOperations.SymmetricDifference, filterPages));
         _sut.Pages = new ObservableCollection<WikiPageModel>(ogPages);
 
         // act
@@ -965,7 +957,7 @@ public sealed class MakeListViewModelTests : BaseTest
             new("Վիքիպեդիա:aa2a", ApiRoot, _wikiClientCache),
         };
         _dialogService.ShowDialog<FilterOptions>(Arg.Any<FilterViewModel>())
-            .Returns(new FilterOptions(Array.Empty<int>(), "", "", true, true, true, SetOperations.SymmetricDifference, new List<WikiPageModel>()));
+            .Returns(new FilterOptions([], "", "", true, true, true, SetOperations.SymmetricDifference, []));
         _sut.Pages = new ObservableCollection<WikiPageModel>(ogPages);
 
         // act
@@ -985,7 +977,7 @@ public sealed class MakeListViewModelTests : BaseTest
     {
         // arrange
         _dialogService.ShowDialog<FilterOptions>(Arg.Any<FilterViewModel>())
-            .Returns(new FilterOptions(Array.Empty<int>(), "a", "b", false, false, true, SetOperations.Intersection, new List<WikiPageModel>()));
+            .Returns(new FilterOptions([], "a", "b", false, false, true, SetOperations.Intersection, []));
         _sut.Pages = new ObservableCollection<WikiPageModel>(new WikiPageModel[]
         {
             new("bbb", ApiRoot, _wikiClientCache),
@@ -1003,15 +995,13 @@ public sealed class MakeListViewModelTests : BaseTest
         _sut.Pages[0].Title.Should().Be("bbb");
         _sut.Pages[1].Title.Should().Be("bewgrbb");
     }
-    
-    
 
     [Test]
     public void FilterCommand_ShouldRemoveTitleContainingAndKeepTitlesContainingUseRegex_WhenRemoveAndKeepTitlesAreNotEmpty()
     {
         // arrange
         _dialogService.ShowDialog<FilterOptions>(Arg.Any<FilterViewModel>())
-            .Returns(new FilterOptions(Array.Empty<int>(), @"\d", @"(.)\1", true, false, true, SetOperations.Intersection, new List<WikiPageModel>()));
+            .Returns(new FilterOptions([], @"\d", @"(.)\1", true, false, true, SetOperations.Intersection, []));
         _sut.Pages = new ObservableCollection<WikiPageModel>(new WikiPageModel[]
         {
             new("bgbggb", ApiRoot, _wikiClientCache),
@@ -1029,7 +1019,7 @@ public sealed class MakeListViewModelTests : BaseTest
         _sut.Pages[0].Title.Should().Be("bgbggb");
         _sut.Pages[1].Title.Should().Be("babb");
     }
-    
+
     #endregion
 
     #region SaveListCommand
@@ -1048,7 +1038,7 @@ public sealed class MakeListViewModelTests : BaseTest
         openWriteStream().Returns(stream);
         List<WikiPageModel>? pages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(3);
         _sut.Pages = pages.ToObservableCollection();
-        
+
         // act
         _sut.SaveListCommand.Execute(null);
 
@@ -1063,7 +1053,7 @@ public sealed class MakeListViewModelTests : BaseTest
         });
         stream.Received(1).Close();
     }
-    
+
     [Test]
     public void SaveListCommand_ShouldDoNothing_WhenUserDidNotPickALocationAndPagesExist()
     {
@@ -1076,7 +1066,7 @@ public sealed class MakeListViewModelTests : BaseTest
             .Returns((null, null));
         List<WikiPageModel>? pages = Fakers.GetWikiPageModelFaker(ApiRoot, _wikiClientCache).Generate(3);
         _sut.Pages = pages.ToObservableCollection();
-        
+
         // act
         _sut.SaveListCommand.Execute(null);
 
@@ -1084,7 +1074,6 @@ public sealed class MakeListViewModelTests : BaseTest
 
         _fileDialogService.Received(1).SaveFilePickerAsync("Save pages", defaultExtension: Arg.Any<string?>(), Arg.Any<string?>());
     }
-    
 
     [Test]
     public void SaveListCommand_ShouldDoNothing_WhenUserPagesDoNotExist()
@@ -1096,7 +1085,7 @@ public sealed class MakeListViewModelTests : BaseTest
         listProvider.Param.Returns("ListProviderParam");
         _fileDialogService.SaveFilePickerAsync("Save pages", defaultExtension: Arg.Any<string?>(), Arg.Any<string?>())
             .Returns((null, null));
-        
+
         // act
         _sut.SaveListCommand.Execute(null);
 

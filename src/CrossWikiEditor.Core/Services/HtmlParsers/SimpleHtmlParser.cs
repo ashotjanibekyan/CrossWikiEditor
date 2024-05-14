@@ -3,14 +3,14 @@ namespace CrossWikiEditor.Core.Services.HtmlParsers;
 public sealed class SimpleHtmlParser(ILogger logger, ISettingsService settingsService,
     IWikiClientCache wikiClientCache)
 {
-    readonly char[] _terminationChars = {' ', '\t', '\n', '"', '<', '>', '{', '}', '&'};
-    
+    readonly char[] _terminationChars = [' ', '\t', '\n', '"', '<', '>', '{', '}', '&'];
+
     public async Task<List<WikiPageModel>> GetPages(string html)
     {
         string[] results = html.Split(settingsService.GetCurrentSettings().GetBaseUrl());
         return await GetWikiPageModels(results);
     }
-    
+
     private async Task<List<WikiPageModel>> GetWikiPageModels(string[] results)
     {
         var wikiPageModels = new List<WikiPageModel>();
@@ -39,8 +39,8 @@ public sealed class SimpleHtmlParser(ILogger logger, ISettingsService settingsSe
         {
             url = urlStart[..i];
         }
-        
-        if (url.Last() == '\'' || url.Last() == '\"')
+
+        if (url[^1] is '\'' or '\"')
         {
             var page = new WikiPageModel(Tools.GetPageTitleFromUrl(baseUrl + url[..^1]), apiUrl, wikiClientCache);
             if (await page.Exists())

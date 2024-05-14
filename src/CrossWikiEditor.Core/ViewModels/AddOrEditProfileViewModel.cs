@@ -17,8 +17,8 @@ public sealed partial class AddOrEditProfileViewModel(IFileDialogService fileDia
     [RelayCommand]
     private async Task Browse()
     {
-        string[]? result = await fileDialogService.OpenFilePickerAsync("Select settings file", false, new List<string> {"*.xml"});
-        if (result is not null && result.Length == 1)
+        string[]? result = await fileDialogService.OpenFilePickerAsync("Select settings file", false, ["*.xml"]);
+        if (result?.Length == 1)
         {
             DefaultSettingsPath = result[0];
         }
@@ -68,8 +68,5 @@ public sealed partial class AddOrEditProfileViewModel(IFileDialogService fileDia
     }
 
     [RelayCommand]
-    private void Cancel(IDialog dialog)
-    {
-        dialog.Close(false);
-    }
+    private void Cancel(IDialog dialog) => dialog.Close(false);
 }

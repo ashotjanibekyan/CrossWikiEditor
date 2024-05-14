@@ -8,8 +8,8 @@ public sealed class RecentChangesListProvider(IDialogService dialogService,
     private int[]? _namespaces;
     public override string Title => "Recent Changes";
     public override string ParamTitle => "";
-    public override bool CanMake => _namespaces is {Length: > 0};
-    
+    public override bool CanMake => _namespaces is { Length: > 0 };
+
     public async Task GetAdditionalParams()
     {
         _namespaces = await this.GetNamespaces(true, DialogService, viewModelFactory);

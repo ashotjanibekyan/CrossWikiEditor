@@ -33,9 +33,9 @@ public sealed class LanguageSpecificRegexes : IAsyncInitialization
         string? urlLong = _settingsService.GetCurrentSettings().GetLongBaseUrl();
 
         int pos = Tools.FirstDifference(url, urlLong);
-        string s = Regex.Escape(urlLong[..pos]).Replace(@"https://", @"https?://");
+        string s = Regex.Escape(urlLong[..pos]).Replace("https://", "https?://");
         s += "(?:" + Regex.Escape(urlLong[pos..]) + @"index\.php(?:\?title=|/)|"
-             + Regex.Escape(url[pos..]) + "/wiki/" + ")";
+             + Regex.Escape(url[pos..]) + "/wiki/)";
         ExtractTitle = new Regex("^" + s + "([^?&]*)$");
     }
 

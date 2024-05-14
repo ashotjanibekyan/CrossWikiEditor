@@ -7,7 +7,7 @@ public sealed class PetscanListProviderTests : ListProvidersBaseTest<PetscanList
 {
     private IHttpClientFactory _httpClientFactory;
     private MockHttpMessageHandler _mockHttpMessageHandler;
-    
+
     [SetUp]
     public void SetUp()
     {
@@ -45,7 +45,7 @@ public sealed class PetscanListProviderTests : ListProvidersBaseTest<PetscanList
     public async Task MakeList_ShouldReturnFailure_WhenRequestThrowsException()
     {
         // arrange
-        var id = 1234;
+        const int id = 1234;
         _httpClientFactory.CreateClient("Petscan").Returns(new HttpClient(_mockHttpMessageHandler));
         _mockHttpMessageHandler
             .When($"https://petscan.wmflabs.org/?psid={id}&format=plain")
@@ -60,12 +60,12 @@ public sealed class PetscanListProviderTests : ListProvidersBaseTest<PetscanList
         result.Value.Should().BeNull();
         result.ErrorMessage.Should().Be("exception message");
     }
-    
+
     [Test]
     public async Task MakeList_ShouldReturnFailure_WhenPetscanRequestIsNotSuccessful()
     {
         // arrange
-        var id = 1234;
+        const int id = 1234;
         _httpClientFactory.CreateClient("Petscan").Returns(new HttpClient(_mockHttpMessageHandler));
         _mockHttpMessageHandler
             .When($"https://petscan.wmflabs.org/?psid={id}&format=plain")
@@ -85,7 +85,7 @@ public sealed class PetscanListProviderTests : ListProvidersBaseTest<PetscanList
     public async Task MakeList_ShouldReturnFailure_WhenPSIDIsNotValid()
     {
         // arrange
-        var id = "fwe";
+        const string id = "fwe";
         _httpClientFactory.CreateClient("Petscan").Returns(new HttpClient(_mockHttpMessageHandler));
         _mockHttpMessageHandler
             .When($"https://petscan.wmflabs.org/?psid={id}&format=plain")
@@ -105,7 +105,7 @@ public sealed class PetscanListProviderTests : ListProvidersBaseTest<PetscanList
     public async Task MakeList_ShouldFetchPlainTestFromPetscan()
     {
         // arrange
-        var id = 1234;
+        const int id = 1234;
         _httpClientFactory.CreateClient("Petscan").Returns(new HttpClient(_mockHttpMessageHandler));
         _mockHttpMessageHandler
             .When($"https://petscan.wmflabs.org/?psid={id}&format=plain")

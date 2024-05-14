@@ -7,17 +7,17 @@ public sealed class WhatTranscludesHereAllNsListProviderTests : ListProvidersBas
     {
         SetUpServices();
         SetUpUserSettings("hyw", ProjectEnum.Wikipedia);
-        _selectNamespacesViewModel = new SelectNamespacesViewModel(new List<WikiNamespace>(), false);
+        _selectNamespacesViewModel = new SelectNamespacesViewModel([], false);
         _sut = new WhatTranscludesHereAllNsListProvider(_dialogService, _pageService, _settingsService)
         {
             Param = "start from here"
         };
         _expectedPages = Fakers.GetWikiPageModelFaker(_userSettings.GetApiUrl(), _wikiClientCache).Generate(4);
     }
-    
+
     [Test] public new void CanMake_ShouldBeFalse_WhenParamIsEmpty() => base.CanMake_ShouldBeFalse_WhenParamIsEmpty();
     [Test] public new void CanMake_ShouldBeTrue_WhenParamIsEmpty() => base.CanMake_ShouldBeTrue_WhenParamIsEmpty();
-    
+
     [Test]
     public async Task MakeList_ShouldReturnPageServiceResults()
     {
@@ -42,7 +42,7 @@ public sealed class WhatTranscludesHereAllNsListProviderTests : ListProvidersBas
         result.IsSuccessful.Should().BeFalse();
         result.ErrorMessage.Should().Be("failed to get pages");
     }
-    
+
     [TearDown]
     public void TearDown()
     {

@@ -44,7 +44,7 @@ public sealed class CollectionExtensionsTests
     public void RandomSubset_ShouldReturnOutOfBoundException_WhenSubsetSizeIsLargerThanCollectionSize()
     {
         // arrange
-        var list = new List<int>{3, 4, 2};
+        var list = new List<int> { 3, 4, 2 };
 
         // act
 
@@ -57,7 +57,7 @@ public sealed class CollectionExtensionsTests
     public void RandomSubset_ShouldReturnSubsetOfGivenSize()
     {
         // arrange
-        var list = new List<int> {2, 12, 42, 7, -5};
+        var list = new List<int> { 2, 12, 42, 7, -5 };
 
         // act
         List<int> result = list.RandomSubset(3);

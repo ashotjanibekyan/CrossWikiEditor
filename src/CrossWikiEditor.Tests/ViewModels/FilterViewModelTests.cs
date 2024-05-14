@@ -10,8 +10,8 @@ public sealed class FilterViewModelTests : BaseTest
     public void SetUp()
     {
         SetUpServices();
-        _sut = new FilterViewModel(new List<WikiNamespace>
-        {
+        _sut = new FilterViewModel(
+        [
             new(0, ""),
             new(2, "Մասնակից"),
             new(4, "Վիքիպեդիա"),
@@ -20,9 +20,8 @@ public sealed class FilterViewModelTests : BaseTest
             new(10, "Կաղապար"),
             new(12, "Օգնություն"),
             new(14, "Կատեգորիա"),
-        }, new List<WikiNamespace>
-        {
-
+        ],
+        [
             new(1, "Քննարկում"),
             new(3, "Մասնակցի քննարկում"),
             new(5, "Վիքիպեդիայի քննարկում"),
@@ -31,7 +30,7 @@ public sealed class FilterViewModelTests : BaseTest
             new(11, "Կաղապարի քննարկում"),
             new(13, "Օգնության քննարկում"),
             new(15, "Կատեգորիայի քննարկում"),
-        }, new TextFileListProvider(_fileDialogService, _systemService, _settingsService, _wikiClientCache));
+        ], new TextFileListProvider(_fileDialogService, _systemService, _settingsService, _wikiClientCache));
         _settingsService.CurrentApiUrl.Returns("https://hy.wikipedia.org/w/api.php?");
     }
 
@@ -104,7 +103,7 @@ public sealed class FilterViewModelTests : BaseTest
     public void OpenFileCommand_ShouldSetPages_WhenListProviderMakesSuccessful()
     {
         // arrange
-        string text = """
+        const string text = """
                       #[[title1]]
 
 
@@ -116,7 +115,7 @@ public sealed class FilterViewModelTests : BaseTest
                       """;
         _fileDialogService
             .OpenFilePickerAsync("Select text files to extract pages", true)
-            .Returns(new[] {"some/path/text.txt"});
+            .Returns(["some/path/text.txt"]);
         _systemService
             .ReadAllTextAsync("some/path/text.txt", Encoding.Default)
             .Returns(text);
@@ -173,7 +172,7 @@ public sealed class FilterViewModelTests : BaseTest
         // arrange
         _sut.Pages = Fakers.GetWikiPageModelFaker(_settingsService.CurrentApiUrl, _wikiClientCache)
             .Generate(10).ToObservableCollection();
-        
+
         // act
         _sut.ClearCommand.Execute(null);
 

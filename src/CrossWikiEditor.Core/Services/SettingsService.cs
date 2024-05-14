@@ -19,14 +19,14 @@ public sealed class SettingsService : ISettingsService
     private readonly IMessengerWrapper _messenger;
     private string _currentSettingsPath;
     private UserSettings _currentSettings;
-    
+
     public SettingsService(IMessengerWrapper messenger)
     {
         _messenger = messenger;
         _currentSettingsPath = "./settings.json";
         if (File.Exists(_currentSettingsPath))
         {
-            var temp = GetSettingsByPath(_currentSettingsPath);
+            UserSettings? temp = GetSettingsByPath(_currentSettingsPath);
             if (temp is not null)
             {
                 _currentSettings = temp;

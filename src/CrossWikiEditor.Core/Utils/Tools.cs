@@ -19,16 +19,16 @@ public static partial class Tools
             return text;
         }
 
-        if (text[0] == '#' || text[0] == '*')
+        if (text[0] is '#' or '*')
         {
             text = text[1..];
         }
 
         text = text.Replace("_", " ").Trim();
         text = text.Trim('[', ']');
-        text = text.Replace(@"&amp;", @"&");
-        text = text.Replace(@"&quot;", @"""");
-        text = text.Replace(@"�", "");
+        text = text.Replace("&amp;", "&");
+        text = text.Replace("&quot;", @"""");
+        text = text.Replace("�", "");
 
         return text.TrimStart(':');
     }
@@ -50,7 +50,7 @@ public static partial class Tools
 
         return Math.Min(a.Length, b.Length);
     }
-    
+
     public static string GetPageTitleFromUrl(string url)
     {
         var uri = new Uri(url);
@@ -68,7 +68,7 @@ public static partial class Tools
         }
 
         // If the URL structure is not as expected, attempt to extract from the path
-        string path =  UnescapeDataStringRec(uri.AbsolutePath);
+        string path = UnescapeDataStringRec(uri.AbsolutePath);
         var extractedTitle = path[(path.LastIndexOf('/') + 1)..];
 
         return extractedTitle.Replace("_", " ");

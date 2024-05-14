@@ -2,17 +2,18 @@ namespace CrossWikiEditor.Tests.ListProviders;
 
 public sealed class NewPagesListProviderTests : ListProvidersBaseTest<NewPagesListProvider>
 {
+    private readonly int[] _testArray = [7, 2, 3, 9];
     [SetUp]
     public void SetUp()
     {
         SetUpServices();
         SetUpUserSettings("hyw", ProjectEnum.Wikipedia);
-        _selectNamespacesViewModel = new SelectNamespacesViewModel(new List<WikiNamespace>(), false);
+        _selectNamespacesViewModel = new SelectNamespacesViewModel([], false);
         _sut = new NewPagesListProvider(_dialogService, _pageService, _settingsService, _viewModelFactory)
         {
             Param = "start from here"
         };
-        _dialogService.ShowDialog<int[]?>(_selectNamespacesViewModel).Returns(new[] {7, 2, 3, 9});
+        _dialogService.ShowDialog<int[]?>(_selectNamespacesViewModel).Returns(_testArray);
         _viewModelFactory.GetSelectNamespacesViewModel(true).Returns(_selectNamespacesViewModel);
         _expectedPages = Fakers.GetWikiPageModelFaker(_userSettings.GetApiUrl(), _wikiClientCache).Generate(4);
     }
@@ -28,12 +29,12 @@ public sealed class NewPagesListProviderTests : ListProvidersBaseTest<NewPagesLi
     [Test]
     public async Task CanMake_ShouldBeTrue_WhenGetAdditionalParamsReturnsNonEmptyList() =>
         await base.CanMake_ShouldBeTrue_WhenGetAdditionalParamsReturnsNonEmptyList(_selectNamespacesViewModel);
-    
+
     [Test]
     public async Task MakeList_ShouldReturnPageServiceResults()
     {
         // arrange
-        _pageService.GetNewPages(_userSettings.GetApiUrl(), Arg.Is<int[]>(x => x.SequenceEqual(new[] {7, 2, 3, 9})), 73)
+        _pageService.GetNewPages(_userSettings.GetApiUrl(), Arg.Is<int[]>(x => x.SequenceEqual(_testArray)), 73)
             .Returns(_expectedPages);
 
         await MakeList_ShouldReturnServiceResults(_expectedPages);
@@ -43,7 +44,7 @@ public sealed class NewPagesListProviderTests : ListProvidersBaseTest<NewPagesLi
     public async Task MakeList_ShouldReturnUnsuccessfulResult_WhenPageServiceReturnsUnsuccessfulResult()
     {
         // arrange
-        _pageService.GetNewPages(_userSettings.GetApiUrl(), Arg.Is<int[]>(x => x.SequenceEqual(new[] {7, 2, 3, 9})), 73)
+        _pageService.GetNewPages(_userSettings.GetApiUrl(), Arg.Is<int[]>(x => x.SequenceEqual(_testArray)), 73)
             .Returns(new Exception("failed to get pages"));
 
         // act
@@ -54,7 +55,7 @@ public sealed class NewPagesListProviderTests : ListProvidersBaseTest<NewPagesLi
         result.IsSuccessful.Should().BeFalse();
         result.ErrorMessage.Should().Be("failed to get pages");
     }
-    
+
     [TearDown]
     public void TearDown()
     {

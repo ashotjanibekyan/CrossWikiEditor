@@ -9,7 +9,7 @@ public sealed partial class ProfilesViewModel(IFileDialogService fileDialogServi
     : ViewModelBase
 {
     [ObservableProperty] private Profile? _selectedProfile;
-    [ObservableProperty] private ObservableCollection<Profile> _profiles = new(profileRepository.GetAll() ?? new List<Profile>());
+    [ObservableProperty] private ObservableCollection<Profile> _profiles = new(profileRepository.GetAll() ?? []);
 
     public string Username { get; set; } = "";
     public string Password { get; set; } = "";
