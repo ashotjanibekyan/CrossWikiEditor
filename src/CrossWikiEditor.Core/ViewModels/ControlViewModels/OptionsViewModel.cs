@@ -1,27 +1,28 @@
 ﻿using System.Reflection;
+using CrossWikiEditor.Core.Services;
 
 namespace CrossWikiEditor.Core.ViewModels.ControlViewModels;
 
 public sealed partial class OptionsViewModel : ViewModelBase
 {
-    private readonly GeneralOptions _generalOptions;
+    private GeneralOptions? _generalOptions;
     private readonly IDialogService _dialogService;
+    private readonly ISettingsService _settingsService;
 
-    public OptionsViewModel(ISettingsService settingsService, IDialogService dialogService)
+    public OptionsViewModel(
+        ISettingsService settingsService,
+        IDialogService dialogService,
+        IMessengerWrapper messenger)
     {
-        _generalOptions = settingsService.GetCurrentSettings().GeneralOptions;
+        messenger.Register<CurrentSettingsUpdatedMessage>(this, (r, m) =>
+        {
+            _generalOptions = settingsService.GetCurrentSettings().GeneralOptions;
+            PopulateProperties();
+        });
         _dialogService = dialogService;
-        NormalFindAndReplaceRules = _generalOptions.NormalFindAndReplaceRules;
+        _settingsService = settingsService;
+        PopulateProperties();
         PropertyChanged += OptionsViewModel_PropertyChanged;
-
-        AutoTag = _generalOptions.AutoTag;
-        ApplyGeneralFixes = _generalOptions.ApplyGeneralFixes;
-        UnicodifyWholePage = _generalOptions.UnicodifyWholePage;
-        FindAndReplace = _generalOptions.FindAndReplace;
-        SkipIfNoReplacement = _generalOptions.SkipIfNoReplacement;
-        SkipIfOnlyMinorReplacementMade = _generalOptions.SkipIfOnlyMinorReplacementMade;
-        RegexTypoFixing = _generalOptions.RegexTypoFixing;
-        SkipIfNoTypoFixed = _generalOptions.SkipIfNoTypoFixed;
     }
 
     [ObservableProperty] private bool _autoTag;
@@ -32,7 +33,7 @@ public sealed partial class OptionsViewModel : ViewModelBase
     [ObservableProperty] private bool _skipIfOnlyMinorReplacementMade;
     [ObservableProperty] private bool _regexTypoFixing;
     [ObservableProperty] private bool _skipIfNoTypoFixed;
-    [ObservableProperty] private NormalFindAndReplaceRules _normalFindAndReplaceRules;
+    [ObservableProperty] private NormalFindAndReplaceRules _normalFindAndReplaceRules = [];
 
 
     [RelayCommand]
@@ -55,5 +56,19 @@ public sealed partial class OptionsViewModel : ViewModelBase
         PropertyInfo property = typeof(OptionsViewModel).GetProperty(e.PropertyName!)!;
         PropertyInfo targetProperty = typeof(GeneralOptions).GetProperty(e.PropertyName)!;
         targetProperty.SetValue(_generalOptions, property.GetValue(this));
+    }
+
+    private void PopulateProperties()
+    {
+        _generalOptions = _settingsService.GetCurrentSettings().GeneralOptions;
+        NormalFindAndReplaceRules = _generalOptions.NormalFindAndReplaceRules;
+        AutoTag = _generalOptions.AutoTag;
+        ApplyGeneralFixes = _generalOptions.ApplyGeneralFixes;
+        UnicodifyWholePage = _generalOptions.UnicodifyWholePage;
+        FindAndReplace = _generalOptions.FindAndReplace;
+        SkipIfNoReplacement = _generalOptions.SkipIfNoReplacement;
+        SkipIfOnlyMinorReplacementMade = _generalOptions.SkipIfOnlyMinorReplacementMade;
+        RegexTypoFixing = _generalOptions.RegexTypoFixing;
+        SkipIfNoTypoFixed = _generalOptions.SkipIfNoTypoFixed;
     }
 }

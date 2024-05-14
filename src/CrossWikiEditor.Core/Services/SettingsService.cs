@@ -1,4 +1,5 @@
 using System.Text.Json;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace CrossWikiEditor.Core.Services;
 
@@ -15,11 +16,13 @@ public interface ISettingsService
 public sealed class SettingsService : ISettingsService
 {
     private readonly JsonSerializerOptions _jsonSerializerOptions;
+    private readonly IMessengerWrapper _messenger;
     private string _currentSettingsPath;
     private UserSettings _currentSettings;
     
     public SettingsService(IMessengerWrapper messenger)
     {
+        _messenger = messenger;
         _currentSettingsPath = "./settings.json";
         if (File.Exists(_currentSettingsPath))
         {
@@ -75,5 +78,6 @@ public sealed class SettingsService : ISettingsService
     public void SetCurrentSettings(UserSettings userSettings)
     {
         _currentSettings = userSettings;
+        _messenger.Send(new CurrentSettingsUpdatedMessage(userSettings));
     }
 }
