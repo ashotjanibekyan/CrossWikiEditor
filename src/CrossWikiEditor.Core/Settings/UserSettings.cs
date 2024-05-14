@@ -11,4 +11,5 @@ public sealed class UserSettings
     public string GetBaseUrl() => UserWiki.GetBaseUrl();
     public string GetLongBaseUrl() => UserWiki.GetLongBaseUrl();
     public string GetIndexUrl() => UserWiki.GetIndexUrl();
+    public static UserSettings GetDefaultUserSettings() => new(); // TODO: For now
 }

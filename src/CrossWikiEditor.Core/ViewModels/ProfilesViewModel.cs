@@ -88,7 +88,7 @@ public sealed partial class ProfilesViewModel(IFileDialogService fileDialogServi
 
     private async Task Login(Profile profile, IDialog dialog)
     {
-        UserSettings? currentUserSettings = settingsService.GetUserSettingsByPath(profile.DefaultSettingsPath);
+        UserSettings? currentUserSettings = settingsService.GetSettingsByPath(profile.DefaultSettingsPath);
         currentUserSettings ??= settingsService.GetCurrentSettings();
 
         Result<Unit> loginResult = await userService.Login(profile, currentUserSettings.GetApiUrl());
@@ -97,7 +97,7 @@ public sealed partial class ProfilesViewModel(IFileDialogService fileDialogServi
             messenger.Send(new NewAccountLoggedInMessage(profile));
             if (!string.IsNullOrEmpty(profile.DefaultSettingsPath))
             {
-                settingsService.SetCurrentUserSettings(currentUserSettings);
+                settingsService.SetCurrentSettings(currentUserSettings);
             }
 
             dialog.Close(true);

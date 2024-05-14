@@ -9,7 +9,7 @@ public sealed partial class FileMenuViewModel(
     [RelayCommand]
     private void ResetToDefaultSettings()
     {
-        throw new NotImplementedException();
+        settingsService.SetCurrentSettings(settingsService.GetDefaultSettings());
     }
 
     [RelayCommand]
@@ -21,8 +21,8 @@ public sealed partial class FileMenuViewModel(
             string newSettingsPath = result[0];
             try
             {
-                UserSettings? newUserSettings = settingsService.GetUserSettingsByPath(newSettingsPath) ?? throw new InvalidOperationException("Failed to load the settings");
-                settingsService.SetCurrentUserSettings(newUserSettings);
+                UserSettings? newUserSettings = settingsService.GetSettingsByPath(newSettingsPath) ?? throw new InvalidOperationException("Failed to load the settings");
+                settingsService.SetCurrentSettings(newUserSettings);
             }
             catch (InvalidOperationException)
             {
@@ -34,7 +34,7 @@ public sealed partial class FileMenuViewModel(
     [RelayCommand]
     private void SaveSettings()
     {
-        settingsService.SaveCurrentUserSettings();
+        settingsService.SaveCurrentSettings();
     }
 
     [RelayCommand]

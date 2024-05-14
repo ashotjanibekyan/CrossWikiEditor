@@ -70,7 +70,7 @@ public sealed class ProfilesViewModelTests : BaseTest
         {
             UserWiki = new("hy", ProjectEnum.Wikipedia)
         };
-        _settingsService.GetUserSettingsByPath(profile.DefaultSettingsPath).Returns(userSettings);
+        _settingsService.GetSettingsByPath(profile.DefaultSettingsPath).Returns(userSettings);
         _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Unit.Default);
 
         // act
@@ -78,7 +78,7 @@ public sealed class ProfilesViewModelTests : BaseTest
 
         // assert
         _settingsService.Received(1)
-            .SetCurrentUserSettings(userSettings);
+            .SetCurrentSettings(userSettings);
         _userService.Received(1).Login(Arg.Is<Profile>(p => p.Username == profile.Username && p.Password == profile.Password),
             "https://hy.wikipedia.org/w/api.php?");
         _dialogService.Received(0).Alert(Arg.Any<string>(), Arg.Any<string>());

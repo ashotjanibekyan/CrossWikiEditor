@@ -4,23 +4,32 @@ namespace CrossWikiEditor.Core.Services;
 
 public interface ISettingsService
 {
-    UserSettings GetDefaultSettings(bool force = false);
-    UserSettings? GetUserSettingsByPath(string path);
+    UserSettings GetDefaultSettings();
+    UserSettings? GetSettingsByPath(string path);
     UserSettings GetCurrentSettings();
-    void SaveCurrentUserSettings();
-    void SetCurrentUserSettings(UserSettings userSettings);
+    void SaveCurrentSettings();
+    void SetCurrentSettings(UserSettings userSettings);
     string CurrentApiUrl { get; }
 }
 
 public sealed class SettingsService : ISettingsService
 {
     private readonly JsonSerializerOptions _jsonSerializerOptions;
-
+    private string _currentSettingsPath;
     private UserSettings _currentSettings;
     
     public SettingsService(IMessengerWrapper messenger)
     {
-        _currentSettings = GetDefaultSettings(true);
+        _currentSettingsPath = "./settings.json";
+        if (File.Exists(_currentSettingsPath))
+        {
+            var temp = GetSettingsByPath(_currentSettingsPath);
+            if (temp is not null)
+            {
+                _currentSettings = temp;
+            }
+        }
+        _currentSettings ??= GetDefaultSettings();
         _jsonSerializerOptions = new JsonSerializerOptions
         {
             WriteIndented = true
@@ -29,22 +38,9 @@ public sealed class SettingsService : ISettingsService
         messenger.Register<ProjectChangedMessage>(this, (r, m) => _currentSettings.UserWiki!.Project = m.Value);
     }
 
-    public UserSettings GetDefaultSettings(bool force = false)
-    {
-        if (!force && _currentSettings is not null)
-        {
-            return _currentSettings;
-        }
-        if (!File.Exists("./settings.json"))
-        {
-            return new UserSettings();
-        }
-        var json = File.ReadAllText("./settings.json");
-        _currentSettings = JsonSerializer.Deserialize<UserSettings>(json) ?? new UserSettings();
-        return _currentSettings;
-    }
+    public UserSettings GetDefaultSettings() => UserSettings.GetDefaultUserSettings();
 
-    public UserSettings? GetUserSettingsByPath(string path)
+    public UserSettings? GetSettingsByPath(string path)
     {
         if (string.IsNullOrEmpty(path))
         {
@@ -54,11 +50,19 @@ public sealed class SettingsService : ISettingsService
         return JsonSerializer.Deserialize<UserSettings>(json);
     }
 
-
-    public void SaveCurrentUserSettings()
+    public void SaveCurrentSettings()
     {
+        if (File.Exists(_currentSettingsPath))
+        {
+            if (!Directory.Exists("./oldSettings"))
+            {
+                Directory.CreateDirectory("./oldSettings");
+            }
+            // Just in case. This is just a json file, so no big deal, they can delete it themself.
+            File.Move(_currentSettingsPath, $"./oldSettings/{DateTime.Now:yyyyMMdd_HHmmss}_settings.json");
+        }
         var json = JsonSerializer.Serialize(_currentSettings, options: _jsonSerializerOptions);
-        File.WriteAllText("./settings.json", json);
+        File.WriteAllText(_currentSettingsPath, json);
     }
 
     public UserSettings GetCurrentSettings()
@@ -68,7 +72,7 @@ public sealed class SettingsService : ISettingsService
 
     public string CurrentApiUrl => _currentSettings.UserWiki.GetApiUrl();
 
-    public void SetCurrentUserSettings(UserSettings userSettings)
+    public void SetCurrentSettings(UserSettings userSettings)
     {
         _currentSettings = userSettings;
     }
