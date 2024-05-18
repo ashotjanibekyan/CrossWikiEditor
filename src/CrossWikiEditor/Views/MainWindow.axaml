@@ -6,6 +6,7 @@
         xmlns:controlViews="clr-namespace:CrossWikiEditor.Views.ControlViews"
         xmlns:reportViews="clr-namespace:CrossWikiEditor.Views.ReportViews"
         xmlns:viewModels="clr-namespace:CrossWikiEditor.Core.ViewModels;assembly=CrossWikiEditor.Core"
+        xmlns:av="clr-namespace:TheArtOfDev.HtmlRenderer.Avalonia;assembly=Avalonia.HtmlRenderer"
         WindowState="Maximized"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="CrossWikiEditor.Views.MainWindow"
@@ -17,7 +18,7 @@
         <views:MenuView Grid.Row="0" Grid.Column="0" DataContext="{Binding MenuViewModel}" />
         <Grid Grid.Row="1" RowDefinitions="*,1,*">
             <Grid Grid.Row="0">
-                <Rectangle Fill="White" />
+                <av:HtmlPanel x:Name="_htmlPanel" />
             </Grid>
             <GridSplitter Grid.Row="1" Background="Black" ResizeDirection="Rows" />
             <Grid Grid.Row="2">
