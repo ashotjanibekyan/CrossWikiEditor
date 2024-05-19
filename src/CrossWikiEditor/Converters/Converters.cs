@@ -1,4 +1,5 @@
-﻿using Avalonia.Data.Converters;
+﻿using System.Globalization;
+using Avalonia.Data.Converters;
 using CrossWikiEditor.Core.Models;
 
 namespace CrossWikiEditor.Converters;
@@ -17,5 +18,27 @@ public static class Converters
             SetOperations.Intersection => "Intersection",
             SetOperations.SymmetricDifference => "Symmetric difference",
             _ => x.ToString()
+        });
+    public static readonly IMultiValueConverter FirstEqualsToAnyConverter =
+        new FuncMultiValueConverter<object?, bool>(items =>
+        {
+            var itemsList = items.ToList();
+            if (itemsList.Count <= 1)
+            {
+                return true;
+            }
+            var first = itemsList[0];
+            if (first == null)
+            {
+                return false;
+            }
+            for (int i = 1; i < itemsList.Count; i++)
+            {
+                if (first.Equals(itemsList[i]))
+                {
+                    return true;
+                }
+            }
+            return false;
         });
 }

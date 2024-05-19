@@ -5,26 +5,44 @@
 /// </summary>
 public sealed class MoreOptions
 {
-    public bool AppendPrependEnabled { get; set; }
+    public bool IsAppendPrependEnabled { get; set; }
     public bool IsAppend { get; set; }
-    public string AppendOrPrependText { get; set; } = string.Empty;
-    public int UseNNewlines { get; set; }
-    public bool SortMetaDataAfterAppendOrPrepend { get; set; }
-    public List<FilesOrCategoryAction> FileActions { get; set; } = [];
-    public List<FilesOrCategoryAction> CategoryActions { get; set; } = [];
+    public string AppendOrPrependContent { get; set; } = string.Empty;
+    public int AppendOrPrependNewLines { get; set; }
+    public bool ShouldSortMetaDataAfterAppendOrPrepend { get; set; }
+    public List<FileTask> FileActions { get; set; } = [new(FileTaskType.None)];
+    public List<CategoryTask> CategoryActions { get; set; } = [new(CategoryTaskType.None)];
 }
 
-public enum ActionType
+public enum FileTaskType
 {
+    None,
     Replace,
     Remove,
-    Add,
     CommentOut
 }
-public sealed class FilesOrCategoryAction(ActionType actionType)
+
+public enum CategoryTaskType
 {
-    public ActionType Type { get; set; } = actionType;
-    public bool SkipIfNotChanged { get; set; }
-    public string? Value1 { get; set; }
-    public string? Value2 { get; set; }
+    None,
+    Replace,
+    Add,
+    Remove
+}
+
+public sealed class FileTask(FileTaskType type)
+{
+    public FileTaskType Type { get; set; } = type;
+    public string SourceFile { get; set; } = string.Empty;
+    public string ReplaceFileOrComment { get; set; } = string.Empty;
+    public bool SkipIfNoChanged { get; set; }
+}
+
+public sealed class CategoryTask(CategoryTaskType type)
+{
+    public CategoryTaskType Type { get; set; } = type;
+    public string SourceCategory { get; set; } = string.Empty;
+    public string ReplaceCategory { get; set; } = string.Empty;
+    public bool SkipIfNoChanged { get; set; }
+    public bool RemoveSortkey { get; set; }
 }

@@ -1,11 +1,10 @@
 ﻿using System.Reflection;
-using CrossWikiEditor.Core.Services;
 
 namespace CrossWikiEditor.Core.ViewModels.ControlViewModels;
 
 public sealed partial class OptionsViewModel : ViewModelBase
 {
-    private GeneralOptions? _generalOptions;
+    private GeneralOptions _generalOptions;
     private readonly IDialogService _dialogService;
     private readonly ISettingsService _settingsService;
 
@@ -21,6 +20,7 @@ public sealed partial class OptionsViewModel : ViewModelBase
         });
         _dialogService = dialogService;
         _settingsService = settingsService;
+        _generalOptions = _settingsService.GetCurrentSettings().GeneralOptions;
         PopulateProperties();
         PropertyChanged += OptionsViewModel_PropertyChanged;
     }
@@ -59,7 +59,6 @@ public sealed partial class OptionsViewModel : ViewModelBase
 
     private void PopulateProperties()
     {
-        _generalOptions = _settingsService.GetCurrentSettings().GeneralOptions;
         NormalFindAndReplaceRules = _generalOptions.NormalFindAndReplaceRules;
         AutoTag = _generalOptions.AutoTag;
         ApplyGeneralFixes = _generalOptions.ApplyGeneralFixes;
