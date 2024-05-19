@@ -19,9 +19,14 @@
                 <TextBox Height="70" Grid.Row="1" AcceptsReturn="True" TextWrapping="Wrap" Text="{Binding AppendOrPrependContent}" />
                 <Grid ColumnDefinitions="Auto,Auto,Auto,*" Grid.Row="2">
                     <Label Grid.Column="0" VerticalAlignment="Center">Use: </Label>
-                    <NumericUpDown Grid.Column="1" ShowButtonSpinner="False" Value="{Binding AppendOrPrependNewLines}" Padding="0" />
+                    <NumericUpDown Grid.Column="1" ShowButtonSpinner="False" Value="{Binding AppendOrPrependNewLines}" IsEnabled="{Binding IsAppendOrPrependEnabled}" />
                     <Label Margin="10 0 0 0" Grid.Column="2" VerticalAlignment="Center"> newlines </Label>
-                    <CheckBox HorizontalAlignment="Right" Grid.Column="3" IsEnabled="{Binding ShouldSortMetadataAfterAppendOrPrepend}">Sort meta data after</CheckBox>
+                    <CheckBox HorizontalAlignment="Right" 
+                              Grid.Column="3" 
+                              IsChecked="{Binding ShouldSortMetadataAfterAppendOrPrepend}"
+                              IsEnabled="{Binding IsAppendOrPrependEnabled}">
+                              Sort meta data after
+                    </CheckBox>
                 </Grid>
             </Grid>
         </HeaderedContentControl>
