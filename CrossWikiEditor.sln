@@ -1,0 +1,46 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.34902.84
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrossWikiEditor.Core", "src\CrossWikiEditor.Core\CrossWikiEditor.Core.csproj", "{3871940E-876E-D7E4-76C5-49E9FD40E2AB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrossWikiEditor.Tests", "src\CrossWikiEditor.Tests\CrossWikiEditor.Tests.csproj", "{37678317-5671-2112-9299-0A5E5B67B96D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrossWikiEditor", "src\CrossWikiEditor\CrossWikiEditor.csproj", "{F6982CB1-F9F9-CEF7-6894-83F2C097E4C6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3871940E-876E-D7E4-76C5-49E9FD40E2AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3871940E-876E-D7E4-76C5-49E9FD40E2AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3871940E-876E-D7E4-76C5-49E9FD40E2AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3871940E-876E-D7E4-76C5-49E9FD40E2AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37678317-5671-2112-9299-0A5E5B67B96D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37678317-5671-2112-9299-0A5E5B67B96D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37678317-5671-2112-9299-0A5E5B67B96D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37678317-5671-2112-9299-0A5E5B67B96D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6982CB1-F9F9-CEF7-6894-83F2C097E4C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6982CB1-F9F9-CEF7-6894-83F2C097E4C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6982CB1-F9F9-CEF7-6894-83F2C097E4C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6982CB1-F9F9-CEF7-6894-83F2C097E4C6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
+ExtensibilityGlobals) = postSolution
+		SolutionGuid = {89D0875A-4F43-4FC2-8688-84B352CE824D}
+	EndGlobalSection
+EndGlobal
+NestedProjects) = preSolution
+		{D31A096C-5D40-4713-92ED-504DBF5BA1D3} = {BAE7516E-3382-4600-A215-63829B10688E}
+		{89048868-A8D9-4C49-A246-D988E49BFE63} = {BAE7516E-3382-4600-A215-63829B10688E}
+		{5B9E7549-EAC0-4A15-81FE-30819B153B29} = {BAE7516E-3382-4600-A215-63829B10688E}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {89D0875A-4F43-4FC2-8688-84B352CE824D}
+	EndGlobalSection
+EndGlobal

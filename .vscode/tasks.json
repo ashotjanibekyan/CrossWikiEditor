@@ -12,6 +12,37 @@
                 "/consoleloggerparameters:NoSummary"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "run-all-tests",
+            "command": "dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura",
+            "type": "shell",
+            "dependsOn": [
+                "build"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "generate-report",
+            "command": "reportgenerator \"-reports:./src/CrossWikiEditor.Tests/coverage.cobertura.xml\" \"-targetdir:coveragereport\" -reporttypes:Html",
+            "type": "shell",
+            "dependsOn": [
+                "run-all-tests"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "open-coverage-report",
+            "windows": {
+                "command": "explorer"
+            },
+            "args": [
+                ".\\coveragereport\\index.html"
+            ],
+            "dependsOn": [
+                "generate-report"
+            ],
+            "problemMatcher": []
         }
     ]
 }
