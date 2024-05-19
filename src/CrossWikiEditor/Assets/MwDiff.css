@@ -1,4 +1,8 @@
-﻿.diff {
+﻿/*
+    Copied from https://www.mediawiki.org/w/load.php?modules=mediawiki.diff.styles&only=styles
+*/
+
+.diff {
     border: 0;
     border-spacing: 4px;
     margin: 0;
