@@ -4,13 +4,10 @@ public sealed partial class FileMenuViewModel(
     IViewModelFactory viewModelFactory,
     IFileDialogService fileDialogService,
     ISettingsService settingsService,
-    IDialogService dialogService)
+    IDialogService dialogService,
+    IMessengerWrapper messenger)
 {
-    [RelayCommand]
-    private void ResetToDefaultSettings()
-    {
-        settingsService.SetCurrentSettings(settingsService.GetDefaultSettings());
-    }
+    [RelayCommand] private void ResetToDefaultSettings() => settingsService.SetCurrentSettings(settingsService.GetDefaultSettings());
 
     [RelayCommand]
     private async Task OpenSettings()
@@ -31,39 +28,11 @@ public sealed partial class FileMenuViewModel(
         }
     }
 
-    [RelayCommand]
-    private void SaveSettings()
-    {
-        settingsService.SaveCurrentSettings();
-    }
-
-    [RelayCommand]
-    private void SaveSettingsAs()
-    {
-        throw new NotImplementedException();
-    }
-
-    [RelayCommand]
-    private void SaveSettingsAsDefault()
-    {
-        throw new NotImplementedException();
-    }
-
-    [RelayCommand]
-    private async Task LoginProfiles()
-    {
-        await dialogService.ShowDialog<bool>(viewModelFactory.GetProfilesViewModel());
-    }
-
-    [RelayCommand]
-    private void Logout()
-    {
-        throw new NotImplementedException();
-    }
-
-    [RelayCommand]
-    private void RefreshStatusAndTypos()
-    {
-        throw new NotImplementedException();
-    }
+    [RelayCommand] private void SaveSettings() => settingsService.SaveCurrentSettings();
+    [RelayCommand] private void SaveSettingsAs() => throw new NotImplementedException();
+    [RelayCommand] private void SaveSettingsAsDefault() => throw new NotImplementedException();
+    [RelayCommand] private async Task LoginProfiles() => await dialogService.ShowDialog<bool>(viewModelFactory.GetProfilesViewModel());
+    [RelayCommand] private void Logout() => throw new NotImplementedException();
+    [RelayCommand] private void RefreshStatusAndTypos() => throw new NotImplementedException();
+    [RelayCommand] private void Exit() => messenger.Send(new ExitApplicationMessage());
 }

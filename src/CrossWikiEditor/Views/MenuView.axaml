@@ -21,7 +21,7 @@
             <MenuItem Header="Log out" Command="{Binding FileMenuViewModel.LogoutCommand}" />
             <MenuItem Header="Refresh Status/Typos" Command="{Binding FileMenuViewModel.RefreshStatusAndTyposCommand}" />
             <Separator />
-            <MenuItem Header="Exit" />
+            <MenuItem Header="Exit" Command="{Binding FileMenuViewModel.ExitCommand}" />
         </MenuItem>
         <MenuItem Header="View">
             <MenuItem Header="Show toolbar" />

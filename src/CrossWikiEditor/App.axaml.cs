@@ -47,6 +47,7 @@ public sealed class App : Application
             services.AddSingleton<LanguageSpecificRegexes>();
             services.AddHttpClient();
             ServiceProvider sp = services.BuildServiceProvider();
+            sp.GetRequiredService<IMessengerWrapper>().Register<ExitApplicationMessage>(this, (r, m) => desktop.Shutdown());
             _mainWindow.DataContext = sp.GetRequiredService<MainWindowViewModel>();
             desktop.MainWindow = _mainWindow;
         }
