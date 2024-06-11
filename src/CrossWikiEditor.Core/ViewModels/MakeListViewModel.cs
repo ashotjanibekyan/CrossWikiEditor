@@ -149,18 +149,19 @@ public sealed partial class MakeListViewModel : ViewModelBase
     private async Task Paste()
     {
         string? clipboardText = await _systemService.GetClipboardTextAsync();
-        if (!string.IsNullOrWhiteSpace(clipboardText))
+        if (string.IsNullOrWhiteSpace(clipboardText))
         {
-            string[] titles = clipboardText.Split(new[] { Environment.NewLine },
-                StringSplitOptions.None);
-            string urlApi = _settingsService.CurrentApiUrl;
-            foreach (string title in titles)
+            return;
+        }
+        string[] titles = clipboardText.Split([Environment.NewLine],
+            StringSplitOptions.None);
+        string urlApi = _settingsService.CurrentApiUrl;
+        foreach (string title in titles)
+        {
+            Result<WikiPageModel> result = await _clientCache.GetWikiPageModel(urlApi, title);
+            if (result is { IsSuccessful: true, Value: not null })
             {
-                Result<WikiPageModel> result = await _clientCache.GetWikiPageModel(urlApi, title);
-                if (result is { IsSuccessful: true, Value: not null })
-                {
-                    Pages.Add(result.Value);
-                }
+                Pages.Add(result.Value);
             }
         }
     }
