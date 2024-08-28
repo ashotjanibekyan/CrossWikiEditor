@@ -233,7 +233,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
         }
     }
 
-    public async Task<Result<List<WikiPageModel>>> WikiSearch(string apiRoot, string keyword, int[]? namespaces, int limit)
+    public async Task<Result<List<WikiPageModel>>> WikiSearch(string apiRoot, string keyword, int[] namespaces, int limit)
     {
         try
         {

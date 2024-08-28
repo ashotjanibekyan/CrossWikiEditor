@@ -18,7 +18,8 @@ public sealed class AllUsersPageGenerator(WikiSite site) : WikiList<WikiPage>(si
 
     protected override WikiPage ItemFromJson(JToken json)
     {
-        var wikiPage = new WikiPage(Site, $"User:{(string) json["name"]}", 2);
+        var name = json["name"]!.Value<string>();
+        var wikiPage = new WikiPage(Site, $"User:{name}", 2);
         wikiPage.RefreshAsync();
         return wikiPage;
     }

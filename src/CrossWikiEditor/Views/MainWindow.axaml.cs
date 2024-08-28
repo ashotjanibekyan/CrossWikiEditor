@@ -18,7 +18,7 @@ public sealed partial class MainWindow : Window, IOwner
         string url = "https://hy.wikipedia.org/w/api.php?action=compare&format=json&fromrev=9956865&torev=9955494&toslots=&prop=diff&difftype=table&formatversion=2";
         string jsonResult = GetJsonFromUrl(url);
         var parsed = JObject.Parse(jsonResult);
-        var result = parsed["compare"]["body"];
+        var result = parsed["compare"]?["body"];
         _htmlPanel.Text = $"""
 <html>
     <head>

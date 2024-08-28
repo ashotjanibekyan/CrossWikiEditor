@@ -8,5 +8,5 @@ public sealed class WikiSearchInTitleAllNsListProvider(IDialogService dialogServ
     public override string ParamTitle => "Wiki search";
 
     public override async Task<Result<List<WikiPageModel>>> MakeList(int limit) =>
-        await pageService.WikiSearch(settingsService.CurrentApiUrl, $"intitle:{Param}", null, limit);
+        await pageService.WikiSearch(settingsService.CurrentApiUrl, $"intitle:{Param}", [], limit);
 }

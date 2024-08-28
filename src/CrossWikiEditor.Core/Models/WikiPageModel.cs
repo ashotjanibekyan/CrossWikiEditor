@@ -11,7 +11,7 @@ public sealed class WikiPageModel : IEquatable<WikiPageModel>, IComparable<WikiP
         _initAsync = Task.CompletedTask;
         _wikiPage = wikiPage;
         _apiRoot = wikiPage.Site.ApiEndpoint;
-        Title = wikiPage.Title;
+        Title = wikiPage.Title ?? string.Empty;
         NamespaceId = wikiPage.NamespaceId;
     }
 
@@ -42,19 +42,23 @@ public sealed class WikiPageModel : IEquatable<WikiPageModel>, IComparable<WikiP
     public async Task<string> GetContent()
     {
         await InitAsync;
-        return _wikiPage!.Content;
+        return _wikiPage?.Content ?? string.Empty;
     }
 
-    public async Task SetContent(string content)
+    public async Task<bool> EditAsync(string content, string summary = "", bool isBot = true, bool isMinor = false)
     {
         await InitAsync;
-        _wikiPage!.Content = content;
-    }
-
-    public async Task UpdateContent(string summary = "")
-    {
-        await InitAsync;
-        await _wikiPage!.UpdateContentAsync(summary);
+        if (_wikiPage is null)
+        {
+            return false;
+        }
+        return await _wikiPage.EditAsync(new WikiPageEditOptions()
+        {
+            Content = content,
+            Summary = summary,
+            Bot = isBot,
+            Minor = isMinor
+        });
     }
 
     public async Task<bool> Exists()
@@ -136,11 +140,6 @@ public sealed class WikiPageModel : IEquatable<WikiPageModel>, IComparable<WikiP
             return 0;
         }
 
-        if (ReferenceEquals(null, other))
-        {
-            return 1;
-        }
-
-        return string.CompareOrdinal(Title, other.Title);
+        return ReferenceEquals(null, other) ? 1 : string.CompareOrdinal(Title, other.Title);
     }
 }

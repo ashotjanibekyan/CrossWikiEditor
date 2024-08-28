@@ -1,20 +1,7 @@
-﻿using Newtonsoft.Json.Linq;
-
-namespace CrossWikiEditor.Core.WikiClientLibraryUtils;
+﻿namespace CrossWikiEditor.Core.WikiClientLibraryUtils;
 
 public static class WikiSiteExtensions
 {
-    public static async Task<MagicWordCollection> GetMagicWords(this WikiSite wikiSite)
-    {
-        JToken? result = await wikiSite.InvokeMediaWikiApiAsync(new MediaWikiFormRequestMessage(new
-        {
-            action = "query",
-            meta = "siteinfo",
-            siprop = "magicwords"
-        }), true, CancellationToken.None);
-        return new MagicWordCollection((JArray) result["query"]["magicwords"]);
-    }
-
     public static string? ToString(this PropertyFilterOption value,
         string? withValue, string? withoutValue, string? allValue = "all")
     {

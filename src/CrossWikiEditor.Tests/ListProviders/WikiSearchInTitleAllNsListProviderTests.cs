@@ -22,7 +22,7 @@ public sealed class WikiSearchInTitleAllNsListProviderTests : ListProvidersBaseT
     public async Task MakeList_ShouldReturnPageServiceResults()
     {
         // arrange
-        _pageService.WikiSearch(_userSettings.GetApiUrl(), $"intitle:{_sut.Param}", null, 73)
+        _pageService.WikiSearch(_userSettings.GetApiUrl(), $"intitle:{_sut.Param}", [], 73)
             .Returns(_expectedPages);
 
         await MakeList_ShouldReturnServiceResults(_expectedPages);
@@ -32,7 +32,7 @@ public sealed class WikiSearchInTitleAllNsListProviderTests : ListProvidersBaseT
     public async Task MakeList_ShouldReturnUnsuccessfulResult_WhenPageServiceReturnsUnsuccessfulResult()
     {
         // arrange
-        _pageService.WikiSearch(_userSettings.GetApiUrl(), $"intitle:{_sut.Param}", null, 73)
+        _pageService.WikiSearch(_userSettings.GetApiUrl(), $"intitle:{_sut.Param}", [], 73)
             .Returns(new Exception("failed to get pages"));
 
         // act

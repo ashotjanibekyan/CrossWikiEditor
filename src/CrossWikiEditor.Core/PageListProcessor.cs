@@ -110,10 +110,9 @@ public sealed class PageListProcessor
     private async Task SavePage(WikiPageModel page, string newContent, string summary)
     {
         _messenger.Send(new PageSavingMessage(page));
-        await page.SetContent(newContent);
         try
         {
-            await page.UpdateContent(summary);
+            await page.EditAsync(newContent, summary);
             _messenger.Send(new PageSavedMessage(page, true));
         }
         catch (Exception e)

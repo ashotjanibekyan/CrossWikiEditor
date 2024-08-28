@@ -172,7 +172,12 @@ public sealed class UserContributionsGenerator : WikiList<UserContributionResult
 
     protected override UserContributionResultItem ItemFromJson(JToken json)
     {
-        var wikiPage = new WikiPage(Site, (string) json["title"]);
+        var title = json["title"];
+        if (title is null)
+        {
+            throw new Exception("Title field is missing from json");
+        }
+        var wikiPage = new WikiPage(Site, title.Value<string>() ?? string.Empty);
         MediaWikiHelper.PopulatePageFromJson(wikiPage, (JObject) json, new WikiPageQueryProvider()
         {
             Properties = []

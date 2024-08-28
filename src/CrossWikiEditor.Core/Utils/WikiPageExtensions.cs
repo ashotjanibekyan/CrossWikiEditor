@@ -9,6 +9,11 @@ public static class WikiPageExtensions
             return wikiPage;
         }
 
+        if (wikiPage.Title is null)
+        {
+            throw new Exception("Title is null");
+        }
+
         NamespaceInfo? ns = wikiPage.Site.Namespaces[wikiPage.NamespaceId + 1];
         string nslessTitle = wikiPage.Title.Contains(':') ? wikiPage.Title.Split(':')[1] : wikiPage.Title;
         return new WikiPage(wikiPage.Site, $"{ns.CanonicalName}:{nslessTitle}");
@@ -27,6 +32,10 @@ public static class WikiPageExtensions
 
     private static string TitleWithoutNamespace(this WikiPage wikiPage)
     {
+        if (wikiPage.Title is null)
+        {
+            throw new Exception("Title is null");
+        }
         return wikiPage.Title.Contains(':') ? wikiPage.Title.Split(':')[1] : wikiPage.Title;
     }
 }

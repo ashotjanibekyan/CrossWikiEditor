@@ -24,12 +24,20 @@ public sealed class ExternalUrlUsageGenerator(WikiSite site) : WikiList<External
     protected override ExternalUrlUsageItem ItemFromJson(JToken json)
     {
         var jsonObj = (JObject) json;
+        JToken? pageId = jsonObj["pageid"];
+        JToken? ns = jsonObj["ns"];
+        JToken? title = jsonObj["title"];
+        JToken? url = jsonObj["url"];
+        if (pageId is null || ns is null || title is null || url is null)
+        {
+            throw new Exception("External url usage generation error");
+        }
         return new ExternalUrlUsageItem()
         {
-            PageId = (int) jsonObj["pageid"],
-            NamespaceId = (int) jsonObj["ns"],
-            Title = (string) jsonObj["title"],
-            Url = (string) jsonObj["url"]
+            PageId = pageId.Value<int>(),
+            NamespaceId = ns.Value<int>(),
+            Title = title.Value<string>() ?? string.Empty,
+            Url = url.Value<string>() ?? string.Empty,
         };
     }
 }

@@ -2,7 +2,7 @@
 
 namespace CrossWikiEditor.Core.Repositories;
 
-file class JsonProfile
+file sealed class JsonProfile
 {
     public int Id { get; set; }
     public string Username { get; set; } = string.Empty;

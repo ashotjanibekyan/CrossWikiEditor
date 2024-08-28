@@ -5,7 +5,6 @@ public sealed class LanguageSpecificRegexes : IAsyncInitialization
     private readonly ISettingsService _settingsService;
     private readonly IWikiClientCache _wikiClientCache;
     private WikiSite? _site;
-    private MagicWordCollection? _magicWordCollection;
 
     public LanguageSpecificRegexes(
         ISettingsService settingsService,
@@ -23,7 +22,6 @@ public sealed class LanguageSpecificRegexes : IAsyncInitialization
     {
         string apiRoot = _settingsService.CurrentApiUrl;
         _site = await _wikiClientCache.GetWikiSite(apiRoot);
-        _magicWordCollection = await _site.GetMagicWords();
         MakeRegexes();
     }
 

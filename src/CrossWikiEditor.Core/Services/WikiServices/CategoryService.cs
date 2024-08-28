@@ -58,6 +58,10 @@ public sealed class CategoryService(IWikiClientCache wikiClientCache, ILogger lo
                 var temp = new List<WikiPage>();
                 foreach (WikiPage subCat in subCats)
                 {
+                    if (subCat.Title is null)
+                    {
+                        continue;
+                    }
                     catGen = new CategoryMembersGenerator(new WikiPage(site, subCat.Title));
                     temp.AddRange(await catGen.EnumPagesAsync().Take(limit).Take(limit).ToListAsync());
                 }
