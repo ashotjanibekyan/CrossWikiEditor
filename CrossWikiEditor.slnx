@@ -1,5 +1,5 @@
 <Solution>
-  <Project Path="src\CrossWikiEditor.Core\CrossWikiEditor.Core.csproj" />
-  <Project Path="src\CrossWikiEditor.Tests\CrossWikiEditor.Tests.csproj" />
-  <Project Path="src\CrossWikiEditor\CrossWikiEditor.csproj" />
+    <Project Path="src\CrossWikiEditor.Core\CrossWikiEditor.Core.csproj"/>
+    <Project Path="src\CrossWikiEditor.Tests\CrossWikiEditor.Tests.csproj"/>
+    <Project Path="src\CrossWikiEditor\CrossWikiEditor.csproj"/>
 </Solution>
