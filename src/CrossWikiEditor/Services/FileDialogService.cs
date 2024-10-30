@@ -1,5 +1,4 @@
 using System.Web;
-
 using Avalonia.Platform.Storage;
 
 using CrossWikiEditor.Core.Services;
@@ -20,7 +19,7 @@ public sealed class FileDialogService(IStorageProvider storageProvider) : IFileD
         };
         if (patterns is not null)
         {
-            options.FileTypeFilter = [new(null) { Patterns = patterns }];
+            options.FileTypeFilter = [new FilePickerFileType("Select file...") { Patterns = patterns }];
         }
         IReadOnlyList<IStorageFile> result = await storageProvider.OpenFilePickerAsync(options);
         return result.Select(f => HttpUtility.UrlDecode(f.Path.AbsolutePath)).ToArray();
