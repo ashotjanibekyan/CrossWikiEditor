@@ -25,7 +25,7 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="NunitXml.TestLogger" Version="4.0.254" />
+        <PackageReference Include="NunitXml.TestLogger" Version="4.1.0" />
         <PackageReference Include="RichardSzalay.MockHttp" Version="7.0.0" />
     </ItemGroup>
 
