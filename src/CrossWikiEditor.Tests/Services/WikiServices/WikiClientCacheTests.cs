@@ -4,8 +4,8 @@ namespace CrossWikiEditor.Tests.Services.WikiServices;
 
 public sealed class WikiClientCacheTests : BaseTest
 {
-    private WikiClientCache _sut;
     private const string ApiRoot = "https://hy.wikipedia.org/w/api.php?";
+    private WikiClientCache _sut;
 
     [SetUp]
     public void SetUp()
@@ -115,7 +115,8 @@ public sealed class WikiClientCacheTests : BaseTest
 
         // assert
         result.IsSuccessful.Should().BeFalse();
-        result.ErrorMessage.Should().Be("An invalid request URI was provided. Either the request URI must be an absolute URI or BaseAddress must be set.");
+        result.ErrorMessage.Should()
+            .Be("An invalid request URI was provided. Either the request URI must be an absolute URI or BaseAddress must be set.");
     }
 
     [Test]

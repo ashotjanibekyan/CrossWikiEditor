@@ -24,7 +24,7 @@ public sealed class StatusBarViewModelTests : BaseTest
         _sut = new StatusBarViewModel(_viewModelFactory, _dialogService, _settingsService, messenger);
 
         // act
-        messenger.Send(new NewAccountLoggedInMessage(new Profile()
+        messenger.Send(new NewAccountLoggedInMessage(new Profile
         {
             Username = "this is a new username"
         }));
@@ -67,14 +67,14 @@ public sealed class StatusBarViewModelTests : BaseTest
         // arrange
         _settingsService.GetCurrentSettings().Returns(new UserSettings
         {
-            UserWiki = new("hyw", ProjectEnum.Wikipedia)
+            UserWiki = new UserWiki("hyw", ProjectEnum.Wikipedia)
         });
 
         // act
         _sut = new StatusBarViewModel(_viewModelFactory, _dialogService, _settingsService, _messenger);
 
         // assert
-        _sut.CurrentWiki.Should().Be($"hyw:Wikipedia");
+        _sut.CurrentWiki.Should().Be("hyw:Wikipedia");
     }
 
     [Test]

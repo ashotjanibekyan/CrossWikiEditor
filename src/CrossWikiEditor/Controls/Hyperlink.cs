@@ -10,33 +10,11 @@ namespace CrossWikiEditor.Controls;
 
 public sealed class Hyperlink : InlineUIContainer
 {
-    private readonly Underline _underline;
-    private readonly TextBlock _textBlock;
-    private readonly Button _button;
     public static readonly StyledProperty<string> TextProperty = AvaloniaProperty.Register<Hyperlink, string>("Text");
     public static readonly StyledProperty<string> HrefProperty = AvaloniaProperty.Register<Hyperlink, string>("Href");
-
-    public Span Content => _underline;
-
-    public string Text
-    {
-        get => GetValue(TextProperty);
-        set
-        {
-            _textBlock.Text = value;
-            SetValue(TextProperty, value);
-        }
-    }
-
-    public string Href
-    {
-        get => GetValue(HrefProperty);
-        set
-        {
-            ToolTip.SetTip(_button, value);
-            SetValue(HrefProperty, value);
-        }
-    }
+    private readonly Button _button;
+    private readonly TextBlock _textBlock;
+    private readonly Underline _underline;
 
     public Hyperlink()
     {
@@ -58,6 +36,28 @@ public sealed class Hyperlink : InlineUIContainer
         };
 
         Child = _button;
+    }
+
+    public Span Content => _underline;
+
+    public string Text
+    {
+        get => GetValue(TextProperty);
+        set
+        {
+            _textBlock.Text = value;
+            SetValue(TextProperty, value);
+        }
+    }
+
+    public string Href
+    {
+        get => GetValue(HrefProperty);
+        set
+        {
+            ToolTip.SetTip(_button, value);
+            SetValue(HrefProperty, value);
+        }
     }
 
     private static void OpenUrl(string url)

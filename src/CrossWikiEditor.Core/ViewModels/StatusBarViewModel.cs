@@ -2,8 +2,8 @@ namespace CrossWikiEditor.Core.ViewModels;
 
 public sealed partial class StatusBarViewModel : ViewModelBase
 {
-    private readonly IViewModelFactory _viewModelFactory;
     private readonly IDialogService _dialogService;
+    private readonly IViewModelFactory _viewModelFactory;
 
     public StatusBarViewModel(IViewModelFactory viewModelFactory,
         IDialogService dialogService,
@@ -24,13 +24,13 @@ public sealed partial class StatusBarViewModel : ViewModelBase
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CurrentWiki))]
-    private string _username = "User: ";
+    public partial string Username { get; set; } = "User: ";
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CurrentWiki))]
-    private string _languageCode;
+    public partial string LanguageCode { get; set; }
 
-    [ObservableProperty] private string _project;
+    [ObservableProperty] public partial string Project { get; set; }
 
     [RelayCommand]
     private async Task UsernameClicked()

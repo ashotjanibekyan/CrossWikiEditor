@@ -7,20 +7,20 @@ namespace CrossWikiEditor.Tests;
 [Parallelizable]
 public abstract class BaseTest
 {
-    protected IFileDialogService _fileDialogService;
-    protected ISystemService _systemService;
+    protected ICategoryService _categoryService;
+    protected IClipboard _clipboard;
+    protected IDialog _dialog;
     protected IDialogService _dialogService;
+    protected IFileDialogService _fileDialogService;
+    protected ILogger _logger;
+    protected IMessengerWrapper _messenger;
+    protected IPageService _pageService;
     protected IProfileRepository _profileRepository;
     protected ISettingsService _settingsService;
-    protected IViewModelFactory _viewModelFactory;
-    protected IDialog _dialog;
-    protected IMessengerWrapper _messenger;
-    protected IClipboard _clipboard;
-    protected ILogger _logger;
+    protected ISystemService _systemService;
 
     protected IUserService _userService;
-    protected IPageService _pageService;
-    protected ICategoryService _categoryService;
+    protected IViewModelFactory _viewModelFactory;
     protected IWikiClientCache _wikiClientCache;
 
     protected void SetUpServices()

@@ -4,14 +4,14 @@ namespace CrossWikiEditor.Core.ViewModels;
 
 public sealed partial class DatabaseScannerViewModel : ViewModelBase
 {
+    private readonly IFileDialogService _fileDialogService;
+    private readonly ISettingsService _settingsService;
+    private readonly ConcurrentQueue<string> _titlesQueue = new();
+    private readonly IWikiClientCache _wikiClientCache;
+    public EventHandler<string>? _convertedTextChanged;
+    private CancellationTokenSource _scannerCancellationTokenSource = new();
     private Task? _scannerTask;
     private Task? _updateUiTask;
-    private CancellationTokenSource _scannerCancellationTokenSource = new();
-    private readonly ConcurrentQueue<string> _titlesQueue = new();
-    private readonly ISettingsService _settingsService;
-    private readonly IWikiClientCache _wikiClientCache;
-    private readonly IFileDialogService _fileDialogService;
-    public EventHandler<string>? _convertedTextChanged;
 
     public DatabaseScannerViewModel(
         ISettingsService settingsService,
@@ -31,8 +31,8 @@ public sealed partial class DatabaseScannerViewModel : ViewModelBase
         Base = string.Empty;
         Generator = string.Empty;
         Case = string.Empty;
-        MinStartYear = new(new DateTime(2000, 1, 1));
-        MinEndYear = new(new DateTime(2000, 1, 1));
+        MinStartYear = new DateTimeOffset(new DateTime(2000, 1, 1));
+        MinEndYear = new DateTimeOffset(new DateTime(2000, 1, 1));
         ConvertedText = string.Empty;
         NumberOfPagesOnEachSection = 25;
     }
@@ -41,11 +41,11 @@ public sealed partial class DatabaseScannerViewModel : ViewModelBase
     [ObservableProperty] public partial ObservableCollection<WikiNamespace> TalkNamespaces { get; set; }
     [ObservableProperty] public partial ObservableCollection<WikiPageModel> Pages { get; set; }
 
-    [ObservableProperty] public partial bool IsTitleContainsEnabled { get; set;}
+    [ObservableProperty] public partial bool IsTitleContainsEnabled { get; set; }
     [ObservableProperty] public partial bool IsTitleNotContainsEnabled { get; set; }
-    [ObservableProperty] public partial string TitleContains {get;set;}
+    [ObservableProperty] public partial string TitleContains { get; set; }
     [ObservableProperty] public partial string TitleNotContains { get; set; }
-    [ObservableProperty] public partial bool IsTitleContainsRegex {get;set;}
+    [ObservableProperty] public partial bool IsTitleContainsRegex { get; set; }
     [ObservableProperty] public partial bool IsTitleContainsCaseSensitive { get; set; }
 
     [ObservableProperty] public partial bool IsAllTalkChecked { get; set; }
@@ -85,7 +85,7 @@ public sealed partial class DatabaseScannerViewModel : ViewModelBase
     public async Task BrowseCommand()
     {
         string[]? result = await _fileDialogService.OpenFilePickerAsync("Open Database dump", false);
-        if (result is not { Length: 1 })
+        if (result is not {Length: 1})
         {
             return;
         }
@@ -101,6 +101,7 @@ public sealed partial class DatabaseScannerViewModel : ViewModelBase
         {
             return;
         }
+
         _scannerTask = Task.Run(Scan, _scannerCancellationTokenSource.Token);
 
         _updateUiTask = Task.Run(async () =>
@@ -157,16 +158,19 @@ public sealed partial class DatabaseScannerViewModel : ViewModelBase
             {
                 break;
             }
+
             if (reader.NodeType != XmlNodeType.Element || reader.Name != "page")
             {
                 continue;
             }
+
             DbPage page = ParsePageElement(reader);
             if (ShouldIncludePage(page))
             {
                 _titlesQueue.Enqueue(page.Title!);
             }
         }
+
         _scannerTask = null;
     }
 
@@ -213,15 +217,18 @@ public sealed partial class DatabaseScannerViewModel : ViewModelBase
         {
             return false;
         }
+
         if (page.Revision.Count == 0)
         {
             return true;
         }
+
         string? currentText = page.Revision[^1].Text;
         if (currentText == null)
         {
             return true;
         }
+
         return !currentText.Contains(TitleContains, IsTitleContainsRegex, IsTitleContainsCaseSensitive);
     }
 
@@ -236,8 +243,10 @@ public sealed partial class DatabaseScannerViewModel : ViewModelBase
         return currentText?.Contains(TitleNotContains, IsTitleContainsRegex, IsTitleContainsCaseSensitive) == true;
     }
 
-    private bool ViolatesRevisionDateRange(DbPage page) =>
-        IsSearchDateChecked && page.Revision.All(rev => rev.Timestamp <= SelectedStartDate || rev.Timestamp >= SelectedEndDate);
+    private bool ViolatesRevisionDateRange(DbPage page)
+    {
+        return IsSearchDateChecked && page.Revision.All(rev => rev.Timestamp <= SelectedStartDate || rev.Timestamp >= SelectedEndDate);
+    }
 
     private DbPage ParsePageElement(XmlReader reader)
     {
@@ -266,9 +275,9 @@ public sealed partial class DatabaseScannerViewModel : ViewModelBase
                 }
             }
 
-            if (reader is { NodeType: XmlNodeType.EndElement, Name: "page" })
+            if (reader is {NodeType: XmlNodeType.EndElement, Name: "page"})
             {
-                return new DbPage()
+                return new DbPage
                 {
                     Id = id,
                     Ns = ns,
@@ -277,6 +286,7 @@ public sealed partial class DatabaseScannerViewModel : ViewModelBase
                 };
             }
         }
+
         throw new UnreachableException();
     }
 
@@ -328,9 +338,10 @@ public sealed partial class DatabaseScannerViewModel : ViewModelBase
                         break;
                 }
             }
-            if (reader is { NodeType: XmlNodeType.EndElement, Name: "revision" })
+
+            if (reader is {NodeType: XmlNodeType.EndElement, Name: "revision"})
             {
-                return new DbRevision()
+                return new DbRevision
                 {
                     Id = id,
                     Parentid = parentId,
@@ -345,6 +356,7 @@ public sealed partial class DatabaseScannerViewModel : ViewModelBase
                 };
             }
         }
+
         throw new UnreachableException();
     }
 
@@ -363,15 +375,17 @@ public sealed partial class DatabaseScannerViewModel : ViewModelBase
                     username = reader.ReadElementContentAsString();
                     break;
             }
-            if (reader is { NodeType: XmlNodeType.EndElement, Name: "contributor" })
+
+            if (reader is {NodeType: XmlNodeType.EndElement, Name: "contributor"})
             {
-                return new DbContributor()
+                return new DbContributor
                 {
                     Id = id,
                     Username = username
                 };
             }
         }
+
         throw new UnreachableException();
     }
 
@@ -394,13 +408,13 @@ public sealed partial class DatabaseScannerViewModel : ViewModelBase
                     Case = reader.ReadString();
                     break;
                 case "namespaces":
-                    {
-                        ParseNamespaces(reader);
-                        break;
-                    }
+                {
+                    ParseNamespaces(reader);
+                    break;
+                }
             }
 
-            if (reader is { NodeType: XmlNodeType.EndElement, Name: "siteinfo" })
+            if (reader is {NodeType: XmlNodeType.EndElement, Name: "siteinfo"})
             {
                 break;
             }
@@ -418,6 +432,7 @@ public sealed partial class DatabaseScannerViewModel : ViewModelBase
                 {
                     continue;
                 }
+
                 if (ns.Id.IsEven())
                 {
                     SubjectNamespaces.Add(ns);
@@ -427,7 +442,8 @@ public sealed partial class DatabaseScannerViewModel : ViewModelBase
                     TalkNamespaces.Add(ns);
                 }
             }
-            if (reader is { NodeType: XmlNodeType.EndElement, Name: "namespaces" })
+
+            if (reader is {NodeType: XmlNodeType.EndElement, Name: "namespaces"})
             {
                 break;
             }
@@ -446,13 +462,22 @@ public sealed partial class DatabaseScannerViewModel : ViewModelBase
             }
         }
     }
-    private void MakeAlphabetisedList() => _convertedTextChanged?.Invoke(this, Pages.ToWikiListAlphabetically(IsNumericList));
-    private void MakeNumericList() => _convertedTextChanged?.Invoke(this, Pages.ToWikiList(IsNumericList, NumberOfPagesOnEachSection));
+
+    private void MakeAlphabetisedList()
+    {
+        _convertedTextChanged?.Invoke(this, Pages.ToWikiListAlphabetically(IsNumericList));
+    }
+
+    private void MakeNumericList()
+    {
+        _convertedTextChanged?.Invoke(this, Pages.ToWikiList(IsNumericList, NumberOfPagesOnEachSection));
+    }
+
     private void UpdateUi(WikiSite wikiSite)
     {
         while (!_titlesQueue.IsEmpty)
         {
-            if (_titlesQueue.TryDequeue(out var title))
+            if (_titlesQueue.TryDequeue(out string? title))
             {
                 Pages.Add(new WikiPageModel(new WikiPage(wikiSite, title)));
             }

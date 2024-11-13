@@ -5,15 +5,21 @@
              xmlns:viewModels="clr-namespace:CrossWikiEditor.Core.ViewModels;assembly=CrossWikiEditor.Core"
              x:CompileBindings="True"
              x:DataType="viewModels:StatusBarViewModel"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="450"
              x:Class="CrossWikiEditor.Views.StatusBarView">
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+    <StackPanel Orientation="Horizontal"
+                HorizontalAlignment="Right">
         <Label>Pages/min: 0</Label>
         <Label>Edits/min: 0</Label>
         <Label>Edits: 0</Label>
         <Label>Skipped: 0</Label>
         <Label>New: 0</Label>
-        <Button Command="{Binding CurrentWikiClickedCommand}" Classes="Transparent" Content="{Binding CurrentWiki}" />
-        <Button Command="{Binding UsernameClickedCommand}" Content="{Binding Username}" />
+        <Button Command="{Binding CurrentWikiClickedCommand}"
+                Classes="Transparent"
+                Content="{Binding CurrentWiki}" />
+        <Button Command="{Binding UsernameClickedCommand}"
+                Content="{Binding Username}" />
     </StackPanel>
 </UserControl>

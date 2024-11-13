@@ -3,6 +3,7 @@
 public sealed class PromptViewModelTests : BaseTest
 {
     private PromptViewModel _sut;
+
     [SetUp]
     public void SetUp()
     {

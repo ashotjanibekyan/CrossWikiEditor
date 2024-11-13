@@ -4,9 +4,9 @@ namespace CrossWikiEditor.Core.ViewModels.ControlViewModels;
 
 public sealed partial class OptionsViewModel : ViewModelBase
 {
-    private GeneralOptions _generalOptions;
     private readonly IDialogService _dialogService;
     private readonly ISettingsService _settingsService;
+    private GeneralOptions _generalOptions;
 
     public OptionsViewModel(
         ISettingsService settingsService,
@@ -26,7 +26,7 @@ public sealed partial class OptionsViewModel : ViewModelBase
         PropertyChanged += OptionsViewModel_PropertyChanged;
     }
 
-    [ObservableProperty] public partial bool AutoTag { get;set; }
+    [ObservableProperty] public partial bool AutoTag { get; set; }
     [ObservableProperty] public partial bool ApplyGeneralFixes { get; set; }
     [ObservableProperty] public partial bool UnicodifyWholePage { get; set; }
     [ObservableProperty] public partial bool FindAndReplace { get; set; }
@@ -53,6 +53,7 @@ public sealed partial class OptionsViewModel : ViewModelBase
         {
             return;
         }
+
         PropertyInfo property = typeof(OptionsViewModel).GetProperty(e.PropertyName!)!;
         PropertyInfo targetProperty = typeof(GeneralOptions).GetProperty(e.PropertyName)!;
         targetProperty.SetValue(_generalOptions, property.GetValue(this));

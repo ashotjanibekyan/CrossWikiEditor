@@ -9,11 +9,20 @@ public partial class FindAndReplaceViewModel : ViewModelBase
         {
             model.PropertyChanged += OnModelPropertyChanged;
         }
+
         AddNewRow();
         IgnoreLinks = normalFindAndReplaceRules.IgnoreLinks;
         IgnoreMore = normalFindAndReplaceRules.IgnoreMore;
         AddToSummary = normalFindAndReplaceRules.AddToSummary;
     }
+
+    [ObservableProperty] public partial ObservableCollection<NormalFindAndReplaceRule> NormalFindAndReplaceRules { get; set; }
+
+    [ObservableProperty] public partial bool IgnoreLinks { get; set; }
+
+    [ObservableProperty] public partial bool IgnoreMore { get; set; }
+
+    [ObservableProperty] public partial bool AddToSummary { get; set; }
 
     [RelayCommand]
     private void Clean()
@@ -40,17 +49,13 @@ public partial class FindAndReplaceViewModel : ViewModelBase
         dialog.Close(rules);
     }
 
-    [ObservableProperty] private ObservableCollection<NormalFindAndReplaceRule> _normalFindAndReplaceRules;
-    [ObservableProperty] private bool _ignoreLinks;
-    [ObservableProperty] private bool _ignoreMore;
-    [ObservableProperty] private bool _addToSummary;
-
     private void OnModelPropertyChanged(object? sender, PropertyChangedEventArgs args)
     {
-        if (NormalFindAndReplaceRules.LastOrDefault() is not { IsEmpty: false })
+        if (NormalFindAndReplaceRules.LastOrDefault() is not {IsEmpty: false})
         {
             return;
         }
+
         AddNewRow();
     }
 

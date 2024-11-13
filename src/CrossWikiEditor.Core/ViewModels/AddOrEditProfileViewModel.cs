@@ -3,8 +3,8 @@
 public sealed partial class AddOrEditProfileViewModel : ViewModelBase
 {
     private readonly IFileDialogService _fileDialogService;
-    private readonly IProfileRepository _profileRepository;
     private readonly int _id;
+    private readonly IProfileRepository _profileRepository;
 
     public AddOrEditProfileViewModel(
         IFileDialogService fileDialogService,
@@ -60,7 +60,7 @@ public sealed partial class AddOrEditProfileViewModel : ViewModelBase
             return;
         }
 
-        var profile = new Profile()
+        var profile = new Profile
         {
             Username = Username,
             DefaultSettingsPath = ShouldSelectDefaultSettings ? DefaultSettingsPath : string.Empty,
@@ -83,5 +83,8 @@ public sealed partial class AddOrEditProfileViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void Cancel(IDialog dialog) => dialog.Close(false);
+    private void Cancel(IDialog dialog)
+    {
+        dialog.Close(false);
+    }
 }

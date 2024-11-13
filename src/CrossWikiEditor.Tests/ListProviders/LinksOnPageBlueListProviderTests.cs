@@ -21,8 +21,17 @@ public sealed class LinksOnPageBlueListProviderTests : ListProvidersBaseTest<Lin
         _expectedPages.Add(new WikiPageModel("8 Յուլիս", _userSettings.GetApiUrl(), _wikiClientCache));
     }
 
-    [Test] public new void CanMake_ShouldBeFalse_WhenParamIsEmpty() => base.CanMake_ShouldBeFalse_WhenParamIsEmpty();
-    [Test] public new void CanMake_ShouldBeTrue_WhenParamIsEmpty() => base.CanMake_ShouldBeTrue_WhenParamIsEmpty();
+    [Test]
+    public new void CanMake_ShouldBeFalse_WhenParamIsEmpty()
+    {
+        base.CanMake_ShouldBeFalse_WhenParamIsEmpty();
+    }
+
+    [Test]
+    public new void CanMake_ShouldBeTrue_WhenParamIsEmpty()
+    {
+        base.CanMake_ShouldBeTrue_WhenParamIsEmpty();
+    }
 
     [Test]
     public async Task MakeList_ShouldReturnBluePageServiceResults()
@@ -33,8 +42,8 @@ public sealed class LinksOnPageBlueListProviderTests : ListProvidersBaseTest<Lin
 
         await MakeList_ShouldReturnServiceResults(
         [
-            new("8 Յուլիս", _userSettings.GetApiUrl(), _wikiClientCache),
-            new("Գրիգոր Ամիրեանի Բնակելի Տուն", _userSettings.GetApiUrl(), _wikiClientCache)
+            new WikiPageModel("8 Յուլիս", _userSettings.GetApiUrl(), _wikiClientCache),
+            new WikiPageModel("Գրիգոր Ամիրեանի Բնակելի Տուն", _userSettings.GetApiUrl(), _wikiClientCache)
         ]);
     }
 

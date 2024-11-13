@@ -11,14 +11,15 @@ public interface IViewModelFactory
     DatabaseScannerViewModel GetDatabaseScannerViewModel();
 }
 
-public sealed class ViewModelFactory(IFileDialogService fileDialogService,
-        IDialogService dialogService,
-        IProfileRepository profileRepository,
-        IWikiClientCache wikiClientCache,
-        IUserService userService,
-        ISettingsService settingsService,
-        IMessengerWrapper messenger,
-        TextFileListProvider textFileListProvider)
+public sealed class ViewModelFactory(
+    IFileDialogService fileDialogService,
+    IDialogService dialogService,
+    IProfileRepository profileRepository,
+    IWikiClientCache wikiClientCache,
+    IUserService userService,
+    ISettingsService settingsService,
+    IMessengerWrapper messenger,
+    TextFileListProvider textFileListProvider)
     : IViewModelFactory
 {
     public ProfilesViewModel GetProfilesViewModel()

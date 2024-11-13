@@ -4,6 +4,8 @@ public sealed class WikiPageModel : IEquatable<WikiPageModel>, IComparable<WikiP
 {
     private readonly string _apiRoot;
     private readonly IWikiClientCache? _wikiClientCache;
+
+    private Task? _initAsync;
     private WikiPage? _wikiPage;
 
     public WikiPageModel(WikiPage wikiPage)
@@ -22,6 +24,27 @@ public sealed class WikiPageModel : IEquatable<WikiPageModel>, IComparable<WikiP
         Title = title;
     }
 
+    public string Title { get; }
+
+    public int NamespaceId { get; set; }
+
+    public Task InitAsync => _initAsync ??= InitializeAsync(Title, _apiRoot, _wikiClientCache!);
+
+    public int CompareTo(WikiPageModel? other)
+    {
+        if (ReferenceEquals(this, other))
+        {
+            return 0;
+        }
+
+        return ReferenceEquals(null, other) ? 1 : string.CompareOrdinal(Title, other.Title);
+    }
+
+    public bool Equals(WikiPageModel? other)
+    {
+        return this == other;
+    }
+
     private async Task InitializeAsync(string title, string apiRoot, IWikiClientCache wikiClientCache)
     {
         WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
@@ -30,14 +53,6 @@ public sealed class WikiPageModel : IEquatable<WikiPageModel>, IComparable<WikiP
         await _wikiPage.RefreshAsync();
         NamespaceId = _wikiPage.NamespaceId;
     }
-
-    private Task? _initAsync = null;
-
-    public Task InitAsync => _initAsync ??= InitializeAsync(Title, _apiRoot, _wikiClientCache!);
-
-    public string Title { get; }
-
-    public int NamespaceId { get; set; } = 0;
 
     public async Task<string> GetContent()
     {
@@ -52,7 +67,8 @@ public sealed class WikiPageModel : IEquatable<WikiPageModel>, IComparable<WikiP
         {
             return false;
         }
-        return await _wikiPage.EditAsync(new WikiPageEditOptions()
+
+        return await _wikiPage.EditAsync(new WikiPageEditOptions
         {
             Content = content,
             Summary = summary,
@@ -86,11 +102,6 @@ public sealed class WikiPageModel : IEquatable<WikiPageModel>, IComparable<WikiP
     {
         title = Title;
         namespaceId = NamespaceId;
-    }
-
-    public bool Equals(WikiPageModel? other)
-    {
-        return this == other;
     }
 
     public override bool Equals(object? obj)
@@ -131,15 +142,5 @@ public sealed class WikiPageModel : IEquatable<WikiPageModel>, IComparable<WikiP
     public static bool operator !=(WikiPageModel? left, WikiPageModel? right)
     {
         return !(left == right);
-    }
-
-    public int CompareTo(WikiPageModel? other)
-    {
-        if (ReferenceEquals(this, other))
-        {
-            return 0;
-        }
-
-        return ReferenceEquals(null, other) ? 1 : string.CompareOrdinal(Title, other.Title);
     }
 }

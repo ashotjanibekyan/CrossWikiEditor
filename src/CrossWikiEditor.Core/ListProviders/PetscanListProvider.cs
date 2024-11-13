@@ -1,9 +1,11 @@
 namespace CrossWikiEditor.Core.ListProviders;
 
-public sealed class PetscanListProvider(IHttpClientFactory httpClientFactory, ISettingsService settingsService, IWikiClientCache wikiClientCache) : UnlimitedListProviderBase
+public sealed class PetscanListProvider(IHttpClientFactory httpClientFactory, ISettingsService settingsService, IWikiClientCache wikiClientCache)
+    : UnlimitedListProviderBase
 {
     public override string Title => "Petscan";
     public override string ParamTitle => "PSID";
+
     public override async Task<Result<List<WikiPageModel>>> MakeList()
     {
         try

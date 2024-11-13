@@ -3,6 +3,7 @@ namespace CrossWikiEditor.Tests.ListProviders;
 public sealed class NewPagesListProviderTests : ListProvidersBaseTest<NewPagesListProvider>
 {
     private readonly int[] _testArray = [7, 2, 3, 9];
+
     [SetUp]
     public void SetUp()
     {
@@ -14,21 +15,27 @@ public sealed class NewPagesListProviderTests : ListProvidersBaseTest<NewPagesLi
             Param = "start from here"
         };
         _dialogService.ShowDialog<int[]?>(_selectNamespacesViewModel).Returns(_testArray);
-        _viewModelFactory.GetSelectNamespacesViewModel(true).Returns(_selectNamespacesViewModel);
+        _viewModelFactory.GetSelectNamespacesViewModel().Returns(_selectNamespacesViewModel);
         _expectedPages = Fakers.GetWikiPageModelFaker(_userSettings.GetApiUrl(), _wikiClientCache).Generate(4);
     }
 
     [Test]
-    public new async Task CanMake_ShouldBeFalse_WhenGetAdditionalParamsNotCalled() =>
+    public new async Task CanMake_ShouldBeFalse_WhenGetAdditionalParamsNotCalled()
+    {
         await base.CanMake_ShouldBeFalse_WhenGetAdditionalParamsNotCalled();
+    }
 
     [Test]
-    public async Task CanMake_ShouldBeFalse_WhenGetAdditionalParamsReturnsEmptyList() =>
+    public async Task CanMake_ShouldBeFalse_WhenGetAdditionalParamsReturnsEmptyList()
+    {
         await base.CanMake_ShouldBeFalse_WhenGetAdditionalParamsReturnsEmptyList(_selectNamespacesViewModel);
+    }
 
     [Test]
-    public async Task CanMake_ShouldBeTrue_WhenGetAdditionalParamsReturnsNonEmptyList() =>
+    public async Task CanMake_ShouldBeTrue_WhenGetAdditionalParamsReturnsNonEmptyList()
+    {
         await base.CanMake_ShouldBeTrue_WhenGetAdditionalParamsReturnsNonEmptyList(_selectNamespacesViewModel);
+    }
 
     [Test]
     public async Task MakeList_ShouldReturnPageServiceResults()

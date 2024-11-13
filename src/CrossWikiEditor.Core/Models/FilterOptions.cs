@@ -6,7 +6,8 @@ public enum SetOperations
     Intersection
 }
 
-public class FilterOptions(IReadOnlyCollection<int> namespacesToKeep,
+public class FilterOptions(
+    IReadOnlyCollection<int> namespacesToKeep,
     string removeTitlesContaining,
     string keepTitlesContaining,
     bool useRegex,
@@ -36,7 +37,9 @@ public class FilterOptions(IReadOnlyCollection<int> namespacesToKeep,
 
     public List<WikiPageModel> PerRemoveTitlesContaining(IEnumerable<WikiPageModel> pages)
     {
-        return RemoveTitlesContaining != string.Empty ? pages.Where(p => !p.Title.Contains(RemoveTitlesContaining, UseRegex)).ToList() : pages.ToList();
+        return RemoveTitlesContaining != string.Empty
+            ? pages.Where(p => !p.Title.Contains(RemoveTitlesContaining, UseRegex)).ToList()
+            : pages.ToList();
     }
 
     public List<WikiPageModel> PerKeepTitlesContaining(IEnumerable<WikiPageModel> pages)
@@ -50,15 +53,18 @@ public class FilterOptions(IReadOnlyCollection<int> namespacesToKeep,
         {
             return pages;
         }
+
         var list = new HashSet<WikiPageModel>(pages);
         if (SetOperation == SetOperations.SymmetricDifference)
         {
             list.ExceptWith(FilterPages);
         }
+
         if (SetOperation == SetOperations.Intersection)
         {
             list.IntersectWith(FilterPages);
         }
+
         return new List<WikiPageModel>(list);
     }
 

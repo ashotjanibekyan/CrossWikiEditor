@@ -6,35 +6,83 @@
         SizeToContent="WidthAndHeight"
         CanResize="False"
         Classes="DialogWindow"
-        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="200"
+        mc:Ignorable="d"
+        d:DesignWidth="400"
+        d:DesignHeight="200"
         x:Class="CrossWikiEditor.Views.AddNewProfileView"
         x:DataType="viewModels:AddOrEditProfileViewModel"
         x:Name="This"
         Title="Add New Profile">
-    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*" Margin="10" Width="400">
-        <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Text="Username: " />
-        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Username}" />
+    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto"
+          ColumnDefinitions="Auto,*"
+          Margin="10"
+          Width="400">
+        <TextBlock Grid.Row="0"
+                   Grid.Column="0"
+                   VerticalAlignment="Center"
+                   Text="Username: " />
+        <TextBox Grid.Row="0"
+                 Grid.Column="1"
+                 Text="{Binding Username}" />
 
-        <CheckBox Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0" IsChecked="{Binding ShouldSavePassword}">Save Password?</CheckBox>
+        <CheckBox Grid.Row="1"
+                  Grid.ColumnSpan="2"
+                  Grid.Column="0"
+                  IsChecked="{Binding ShouldSavePassword}">
+            Save Password?
+        </CheckBox>
 
-        <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Text="Password: " />
-        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Password}" PasswordChar="*"
+        <TextBlock Grid.Row="2"
+                   Grid.Column="0"
+                   VerticalAlignment="Center"
+                   Text="Password: " />
+        <TextBox Grid.Row="2"
+                 Grid.Column="1"
+                 Text="{Binding Password}"
+                 PasswordChar="*"
                  IsEnabled="{Binding ShouldSavePassword}" />
 
-        <CheckBox Grid.Row="3" Grid.ColumnSpan="2" Grid.Column="0" IsChecked="{Binding ShouldSelectDefaultSettings}">Select default settings?</CheckBox>
+        <CheckBox Grid.Row="3"
+                  Grid.ColumnSpan="2"
+                  Grid.Column="0"
+                  IsChecked="{Binding ShouldSelectDefaultSettings}">
+            Select default settings?
+        </CheckBox>
 
-        <TextBlock Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Text="Path: " />
-        <Grid Grid.Row="4" Grid.Column="1" ColumnDefinitions="*,Auto" IsEnabled="{Binding ShouldSelectDefaultSettings}">
-            <TextBox Grid.Column="0" IsReadOnly="True" Text="{Binding DefaultSettingsPath}" />
-            <Button Grid.Column="1" Command="{Binding BrowseCommand}" Content="Browse..." />
+        <TextBlock Grid.Row="4"
+                   Grid.Column="0"
+                   VerticalAlignment="Center"
+                   Text="Path: " />
+        <Grid Grid.Row="4"
+              Grid.Column="1"
+              ColumnDefinitions="*,Auto"
+              IsEnabled="{Binding ShouldSelectDefaultSettings}">
+            <TextBox Grid.Column="0"
+                     IsReadOnly="True"
+                     Text="{Binding DefaultSettingsPath}" />
+            <Button Grid.Column="1"
+                    Command="{Binding BrowseCommand}"
+                    Content="Browse..." />
         </Grid>
 
-        <TextBlock Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Text="Notes: " />
-        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Notes}" />
+        <TextBlock Grid.Row="5"
+                   Grid.Column="0"
+                   VerticalAlignment="Center"
+                   Text="Notes: " />
+        <TextBox Grid.Row="5"
+                 Grid.Column="1"
+                 Text="{Binding Notes}" />
 
-        <StackPanel Grid.Row="6" Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
-            <Button Command="{Binding SaveCommand}" CommandParameter="{Binding #This}" Content="Ok" />
-            <Button Command="{Binding CancelCommand}" CommandParameter="{Binding #This}" Content="Cancel" />
+        <StackPanel Grid.Row="6"
+                    Grid.Column="1"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+            <Button Command="{Binding SaveCommand}"
+                    CommandParameter="{Binding #This}"
+                    Content="Ok" />
+            <Button Command="{Binding CancelCommand}"
+                    CommandParameter="{Binding #This}"
+                    Content="Cancel" />
         </StackPanel>
     </Grid>
 </Window>

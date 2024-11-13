@@ -3,8 +3,9 @@
 public sealed partial class StartViewModel : ViewModelBase
 {
     private readonly IMessengerWrapper _messenger;
-    private bool _isProcessing = false;
-    private bool _isSaving = false;
+    private bool _isProcessing;
+    private bool _isSaving;
+
     public StartViewModel(IMessengerWrapper messenger)
     {
         _messenger = messenger;
@@ -40,7 +41,7 @@ public sealed partial class StartViewModel : ViewModelBase
     {
         if (!IsBusy)
         {
-            _messenger.Send(new SaveOrSkipPageMessage(shouldSavePage: true));
+            _messenger.Send(new SaveOrSkipPageMessage(true));
         }
     }
 
@@ -49,7 +50,7 @@ public sealed partial class StartViewModel : ViewModelBase
     {
         if (!IsBusy)
         {
-            _messenger.Send(new SaveOrSkipPageMessage(shouldSavePage: false));
+            _messenger.Send(new SaveOrSkipPageMessage(false));
         }
     }
 }

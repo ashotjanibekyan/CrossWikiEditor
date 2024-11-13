@@ -47,6 +47,7 @@ public sealed class WhatLinksHereOptionsViewModelTests : BaseTest
         _dialog.Received(1).Close(Arg.Is<NamespacesAndRedirectFilterOptions>(options =>
             options.IncludeRedirects == sut.IncludeRedirects
             && (int) options.RedirectFilter == sut.SelectedRedirectFilter
-            && options.Namespaces.OrderBy(e => e).SequenceEqual(sut.Namespaces.Where(x => x.IsChecked).Select(n => n.Id).OrderBy(e => e))));
+            && Enumerable.OrderBy(options.Namespaces, e => e)
+                .SequenceEqual(sut.Namespaces.Where(x => x.IsChecked).Select(n => n.Id).OrderBy(e => e))));
     }
 }

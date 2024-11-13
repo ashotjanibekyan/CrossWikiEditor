@@ -1,6 +1,9 @@
 ﻿namespace CrossWikiEditor.Core.ListProviders;
 
-public sealed class HtmlScraperListProvider(HtmlAgilityPackParser htmlAgilityPackParser, IHttpClientFactory httpClientFactory, ILogger logger,
+public sealed class HtmlScraperListProvider(
+    HtmlAgilityPackParser htmlAgilityPackParser,
+    IHttpClientFactory httpClientFactory,
+    ILogger logger,
     SimpleHtmlParser simpleHtmlParser) : UnlimitedListProviderBase
 {
     public override string Title => "HTML Scraper";

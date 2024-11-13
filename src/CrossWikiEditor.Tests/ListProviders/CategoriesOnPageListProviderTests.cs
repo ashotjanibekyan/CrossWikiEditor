@@ -14,8 +14,17 @@ public sealed class CategoriesOnPageListProviderTests : ListProvidersBaseTest<Ca
         _expectedPages = Fakers.GetWikiPageModelFaker(_userSettings.GetApiUrl(), _wikiClientCache).Generate(4);
     }
 
-    [Test] public new void CanMake_ShouldBeFalse_WhenParamIsEmpty() => base.CanMake_ShouldBeFalse_WhenParamIsEmpty();
-    [Test] public new void CanMake_ShouldBeTrue_WhenParamIsEmpty() => base.CanMake_ShouldBeTrue_WhenParamIsEmpty();
+    [Test]
+    public new void CanMake_ShouldBeFalse_WhenParamIsEmpty()
+    {
+        base.CanMake_ShouldBeFalse_WhenParamIsEmpty();
+    }
+
+    [Test]
+    public new void CanMake_ShouldBeTrue_WhenParamIsEmpty()
+    {
+        base.CanMake_ShouldBeTrue_WhenParamIsEmpty();
+    }
 
     [Test]
     public async Task MakeList_ShouldReturnServiceResults()

@@ -3,7 +3,7 @@
 public static partial class Tools
 {
     /// <summary>
-    /// Removes underscores and wiki syntax from links
+    ///     Removes underscores and wiki syntax from links
     /// </summary>
     public static string RemoveSyntax(string text)
     {
@@ -34,7 +34,7 @@ public static partial class Tools
     }
 
     /// <summary>
-    /// Returns index of first character different between strings
+    ///     Returns index of first character different between strings
     /// </summary>
     /// <param name="a">First string</param>
     /// <param name="b">Second string</param>
@@ -69,7 +69,7 @@ public static partial class Tools
 
         // If the URL structure is not as expected, attempt to extract from the path
         string path = UnescapeDataStringRec(uri.AbsolutePath);
-        var extractedTitle = path[(path.LastIndexOf('/') + 1)..];
+        string? extractedTitle = path[(path.LastIndexOf('/') + 1)..];
 
         return extractedTitle.Replace("_", " ");
     }

@@ -1,14 +1,12 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-
 using CrossWikiEditor.Core;
 using CrossWikiEditor.Core.Repositories;
 using CrossWikiEditor.Core.Utils;
 using CrossWikiEditor.Core.ViewModels;
 using CrossWikiEditor.DependencyModules;
 using CrossWikiEditor.Views;
-
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CrossWikiEditor;

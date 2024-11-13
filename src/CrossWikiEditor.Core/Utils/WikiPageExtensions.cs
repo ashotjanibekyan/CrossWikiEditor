@@ -36,6 +36,7 @@ public static class WikiPageExtensions
         {
             throw new Exception("Title is null");
         }
+
         return wikiPage.Title.Contains(':') ? wikiPage.Title.Split(':')[1] : wikiPage.Title;
     }
 }

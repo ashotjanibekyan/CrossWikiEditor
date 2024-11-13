@@ -2,11 +2,15 @@
 
 public sealed partial class SelectNamespacesAndRedirectFilterViewModel(List<WikiNamespace> namespaces) : ViewModelBase
 {
-    [ObservableProperty] private ObservableCollection<WikiNamespace> _namespaces = namespaces.ToObservableCollection();
-    [ObservableProperty] private bool _isAllNamespacesChecked;
-    [ObservableProperty] private int _selectedRedirectFilter = 0;
-    [ObservableProperty] private bool _includeRedirects;
-    [ObservableProperty] private bool _isIncludeRedirectsVisible;
+    [ObservableProperty] public partial ObservableCollection<WikiNamespace> Namespaces { get; set; } = namespaces.ToObservableCollection();
+
+    [ObservableProperty] public partial bool IsAllNamespacesChecked { get; set; }
+
+    [ObservableProperty] public partial int SelectedRedirectFilter { get; set; } = 0;
+
+    [ObservableProperty] public partial bool IncludeRedirects { get; set; }
+
+    [ObservableProperty] public partial bool IsIncludeRedirectsVisible { get; set; }
 
     partial void OnIsAllNamespacesCheckedChanged(bool value)
     {

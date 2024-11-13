@@ -2,8 +2,9 @@
 
 public sealed partial class SelectProtectionSelectionPageViewModel : ViewModelBase
 {
-    [ObservableProperty] private int _protectionType;
-    [ObservableProperty] private int _protectionLevel;
+    [ObservableProperty] public partial int ProtectionType { get; set; }
+
+    [ObservableProperty] public partial int ProtectionLevel { get; set; }
 
     [RelayCommand]
     private void Ok(IDialog dialog)

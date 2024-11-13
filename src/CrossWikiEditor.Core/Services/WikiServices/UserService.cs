@@ -65,7 +65,7 @@ public sealed class UserService(IWikiClientCache wikiClientCache, ISettingsServi
         try
         {
             WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
-            var gen = new UserContributionsGenerator(site, new List<string> { username })
+            var gen = new UserContributionsGenerator(site, new List<string> {username})
             {
                 IncludeTitle = true,
                 IncludeIds = true

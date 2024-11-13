@@ -3,8 +3,8 @@
 namespace CrossWikiEditor.Core.WikiClientLibraryUtils;
 
 /// <summary>
-/// This class is mostly copied from WikiClientLibrary itself. Once this class is released and is available via Nuget,
-/// We should get rid of this class.
+///     This class is mostly copied from WikiClientLibrary itself. Once this class is released and is available via Nuget,
+///     We should get rid of this class.
 /// </summary>
 [JsonObject(MemberSerialization.OptIn)]
 public sealed class MagicWordInfo

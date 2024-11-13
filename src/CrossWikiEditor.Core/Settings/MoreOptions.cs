@@ -1,7 +1,7 @@
 ﻿namespace CrossWikiEditor.Core.Settings;
 
 /// <summary>
-/// Corresponds to the <see cref="MoreViewModel"/>
+///     Corresponds to the <see cref="MoreViewModel" />
 /// </summary>
 public sealed class MoreOptions
 {

@@ -3,9 +3,9 @@
 public sealed class PageListProcessor
 {
     private readonly IMessengerWrapper _messenger;
+    private readonly List<WikiPageModel> _pages;
     private readonly ISettingsService _settingsService;
     private readonly UserSettings _userSettings;
-    private readonly List<WikiPageModel> _pages;
     private bool _isAlive = true;
     private TaskCompletionSource<bool>? _shouldSaveTaskCompletionSource;
 
@@ -40,7 +40,7 @@ public sealed class PageListProcessor
 
     private async Task TreatPage(WikiPageModel page)
     {
-        var (initialContent, newContent, replacements) = await ProcessPage(page);
+        (string? initialContent, string? newContent, List<Tuple<string, string>>? replacements) = await ProcessPage(page);
         if (initialContent is null || newContent is null || replacements is null)
         {
             _messenger.Send(new PageSkippedMessage(page, SkipReason.ErrorProcessing));
@@ -91,12 +91,14 @@ public sealed class PageListProcessor
                     newContent = regex.Replace(newContent, match =>
                     {
                         string replacedValue = normalFindAndReplaceRule.ReplaceWith;
-                        replacedValue = Regex.Replace(replacedValue, @"\$([1-9])", groupReference => match.Groups[int.Parse(groupReference.Groups[1].Value)].Value);
+                        replacedValue = Regex.Replace(replacedValue, @"\$([1-9])",
+                            groupReference => match.Groups[int.Parse(groupReference.Groups[1].Value)].Value);
                         replacements.Add(Tuple.Create(match.Value, replacedValue));
                         return replacedValue;
                     });
                 }
             }
+
             _messenger.Send(new PageProcessedMessage(page, true));
             return (initialContent, newContent, replacements);
         }
@@ -127,10 +129,8 @@ public sealed class PageListProcessor
         {
             return string.Join(", ", replacements.Select(tp => $"{tp.Item1} \u2192 {tp.Item2}")) + ", օգտվելով CWE";
         }
-        else
-        {
-            return "օգտվելով CWE";
-        }
+
+        return "օգտվելով CWE";
     }
 
     public void Stop()

@@ -137,7 +137,8 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
         }
         catch (Exception e)
         {
-            logger.Fatal(e, "Failed to get pages. Site {Site}, page: {Page}, namespaces: {Namespaces}, limit: {Limit}", apiRoot, pageName, namespaces, limit);
+            logger.Fatal(e, "Failed to get pages. Site {Site}, page: {Page}, namespaces: {Namespaces}, limit: {Limit}", apiRoot, pageName, namespaces,
+                limit);
             return e;
         }
     }
@@ -192,16 +193,19 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
         }
     }
 
-    public async Task<Result<List<WikiPageModel>>> GetAllFiles(string apiRoot, string startTitle, int limit) =>
-        await GetAllPages(
-            apiRoot: apiRoot,
-            startTitle: startTitle,
-            namespaceId: 6,
-            redirectsFilter: PropertyFilterOption.Disable,
-            langLinksFilter: PropertyFilterOption.Disable,
-            limit: limit);
+    public async Task<Result<List<WikiPageModel>>> GetAllFiles(string apiRoot, string startTitle, int limit)
+    {
+        return await GetAllPages(
+            apiRoot,
+            startTitle,
+            6,
+            PropertyFilterOption.Disable,
+            PropertyFilterOption.Disable,
+            limit);
+    }
 
-    public async Task<Result<List<WikiPageModel>>> GetAllPages(string apiRoot, string startTitle, int namespaceId, PropertyFilterOption redirectsFilter, PropertyFilterOption langLinksFilter, int limit)
+    public async Task<Result<List<WikiPageModel>>> GetAllPages(string apiRoot, string startTitle, int namespaceId,
+        PropertyFilterOption redirectsFilter, PropertyFilterOption langLinksFilter, int limit)
     {
         return await GetAllPages(apiRoot, namespaceId, redirectsFilter, langLinksFilter, limit, startTitle);
     }
@@ -248,7 +252,8 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
         }
         catch (Exception e)
         {
-            logger.Fatal(e, "Failed to get pages. Site {Site}, keyword: {Keyword}, namespaces: {Namespaces}, limit: {Limit}", apiRoot, keyword, namespaces, limit);
+            logger.Fatal(e, "Failed to get pages. Site {Site}, keyword: {Keyword}, namespaces: {Namespaces}, limit: {Limit}", apiRoot, keyword,
+                namespaces, limit);
             return e;
         }
     }
@@ -279,7 +284,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
             WikiSite wikiSite = await wikiClientCache.GetWikiSite(apiRoot);
             var gen = new ExternalUrlUsageGenerator(wikiSite)
             {
-                Url = url,
+                Url = url
             };
 
             List<ExternalUrlUsageItem> result = await gen.EnumItemsAsync().Take(limit).ToListAsync();
@@ -290,6 +295,28 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
             logger.Fatal(e, "Failed to get pages. Site: {ApiRoot}, Url: {Url} limit: {Limit}", apiRoot, url, limit);
             return e;
         }
+    }
+
+    public Result<List<WikiPageModel>> ConvertToSubject(List<WikiPageModel> pages)
+    {
+        List<WikiPageModel> result = (from wikiPageModel in pages
+            select ConvertToSubject(wikiPageModel)
+            into subjectPageResult
+            where subjectPageResult is {IsSuccessful: true, Value: not null}
+            select subjectPageResult.Value).ToList();
+
+        return result;
+    }
+
+    public Result<List<WikiPageModel>> ConvertToTalk(List<WikiPageModel> pages)
+    {
+        var result = (from wikiPageModel in pages
+            select ConvertToTalk(wikiPageModel)
+            into talkPageResult
+            where talkPageResult is {IsSuccessful: true, Value: not null}
+            select talkPageResult.Value).ToList();
+
+        return result;
     }
 
     private async Task<Result<List<WikiPageModel>>> GetAllPages(
@@ -320,37 +347,18 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
             {
                 gen.Prefix = prefix;
             }
+
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
             return result.ConvertAll(x => new WikiPageModel(x));
         }
         catch (Exception e)
         {
-            logger.Fatal(e, "Failed to get pages. Site {Site}, start title: {StartTitle}, prefix: {Prefix}, namespace: {NamespaceId}, redirectsFilter {RedirectsFilter}, limit: {Limit}", apiRoot,
+            logger.Fatal(e,
+                "Failed to get pages. Site {Site}, start title: {StartTitle}, prefix: {Prefix}, namespace: {NamespaceId}, redirectsFilter {RedirectsFilter}, limit: {Limit}",
+                apiRoot,
                 startTitle, prefix, namespaceId, redirectsFilter, limit);
             return e;
         }
-    }
-
-    public Result<List<WikiPageModel>> ConvertToSubject(List<WikiPageModel> pages)
-    {
-        List<WikiPageModel> result = (from wikiPageModel in pages
-                                      select ConvertToSubject(wikiPageModel)
-            into subjectPageResult
-                                      where subjectPageResult is { IsSuccessful: true, Value: not null }
-                                      select subjectPageResult.Value).ToList();
-
-        return result;
-    }
-
-    public Result<List<WikiPageModel>> ConvertToTalk(List<WikiPageModel> pages)
-    {
-        var result = (from wikiPageModel in pages
-                                      select ConvertToTalk(wikiPageModel)
-            into talkPageResult
-                                      where talkPageResult is { IsSuccessful: true, Value: not null }
-                                      select talkPageResult.Value).ToList();
-
-        return result;
     }
 
     private Result<WikiPageModel> ConvertToSubject(WikiPageModel page)

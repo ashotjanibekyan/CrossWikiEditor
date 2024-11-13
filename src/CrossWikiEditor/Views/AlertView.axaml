@@ -6,14 +6,24 @@
         SizeToContent="WidthAndHeight"
         Classes="DialogWindow"
         CanResize="False"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d"
+        d:DesignWidth="800"
+        d:DesignHeight="450"
         x:Class="CrossWikiEditor.Views.AlertView"
         x:DataType="viewModels:AlertViewModel"
         x:Name="This"
         Title="{Binding Title}">
-    <Grid RowDefinitions="Auto,Auto" Margin="16">
-        <TextBlock Grid.Row="0" HorizontalAlignment="Center" Text="{Binding ContentText}" />
-        <Button Grid.Row="1" HorizontalAlignment="Right" Content="Ok" Command="{Binding OkCommand}"
-                CommandParameter="{Binding #This}" Width="50" HorizontalContentAlignment="Center" />
+    <Grid RowDefinitions="Auto,Auto"
+          Margin="16">
+        <TextBlock Grid.Row="0"
+                   HorizontalAlignment="Center"
+                   Text="{Binding ContentText}" />
+        <Button Grid.Row="1"
+                HorizontalAlignment="Right"
+                Content="Ok"
+                Command="{Binding OkCommand}"
+                CommandParameter="{Binding #This}"
+                Width="50"
+                HorizontalContentAlignment="Center" />
     </Grid>
 </Window>

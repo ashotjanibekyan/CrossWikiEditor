@@ -1,9 +1,10 @@
 ﻿namespace CrossWikiEditor.Core.ListProviders;
 
-public sealed class RandomListProvider(IDialogService dialogService,
-        IPageService pageService,
-        ISettingsService settingsService,
-        IViewModelFactory viewModelFactory)
+public sealed class RandomListProvider(
+    IDialogService dialogService,
+    IPageService pageService,
+    ISettingsService settingsService,
+    IViewModelFactory viewModelFactory)
     : LimitedListProviderBase(dialogService), INeedAdditionalParamsListProvider
 {
     private NamespacesAndRedirectFilterOptions? _options;
@@ -15,24 +16,25 @@ public sealed class RandomListProvider(IDialogService dialogService,
     {
         NamespacesAndRedirectFilterOptions? result =
             await DialogService.ShowDialog<NamespacesAndRedirectFilterOptions>(
-                await viewModelFactory.GetSelectNamespacesAndRedirectFilterViewModel(isIncludeRedirectsVisible: false));
+                await viewModelFactory.GetSelectNamespacesAndRedirectFilterViewModel(false));
         if (result is not null)
         {
             _options = result;
         }
     }
+
     public override async Task<Result<List<WikiPageModel>>> MakeList(int limit)
     {
         return await pageService.GetRandomPages(
             settingsService.CurrentApiUrl,
             _options!.Namespaces,
-            filterRedirects: _options.RedirectFilter switch
+            _options.RedirectFilter switch
             {
                 RedirectFilter.All => null,
                 RedirectFilter.Redirects => true,
                 RedirectFilter.NoRedirects => false,
                 _ => null
             },
-            limit: limit);
+            limit);
     }
 }

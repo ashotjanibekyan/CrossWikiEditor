@@ -29,8 +29,7 @@ public sealed class PreferencesViewModelTests : BaseTest
 
     [Test]
     public void SaveCommand_ShouldSendLanguageCodeChangedMessage(
-        [Values("hy", "hyw", "en")]
-        string language)
+        [Values("hy", "hyw", "en")] string language)
     {
         // arrange
         _sut.SelectedLanguage = language;

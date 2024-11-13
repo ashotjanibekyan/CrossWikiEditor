@@ -2,9 +2,9 @@
 
 public sealed partial class MoreViewModel : ViewModelBase
 {
-    private MoreOptions _moreOptions;
     private readonly IDialogService _dialogService;
     private readonly ISettingsService _settingsService;
+    private MoreOptions _moreOptions;
 
     public MoreViewModel(
         ISettingsService settingsService,
@@ -49,20 +49,75 @@ public sealed partial class MoreViewModel : ViewModelBase
     [ObservableProperty] public partial bool SkipIfNoCategoryChanged { get; set; }
     [ObservableProperty] public partial bool RemoveSortkey { get; set; }
 
-    partial void OnIsAppendOrPrependEnabledChanged(bool value) => _moreOptions.IsAppendPrependEnabled = value;
-    partial void OnIsAppendChanged(bool value) => _moreOptions.IsAppend = value;
-    partial void OnAppendOrPrependContentChanged(string value) => _moreOptions.AppendOrPrependContent = value;
-    partial void OnAppendOrPrependNewLinesChanged(int value) => _moreOptions.AppendOrPrependNewLines = value;
-    partial void OnShouldSortMetadataAfterAppendOrPrependChanged(bool value) => _moreOptions.ShouldSortMetaDataAfterAppendOrPrepend = value;
-    partial void OnFileTypeChanged(FileTaskType value) => _moreOptions.FileActions[0].Type = value;
-    partial void OnSourceFileChanged(string value) => _moreOptions.FileActions[0].SourceFile = value;
-    partial void OnReplaceFileOrCommentChanged(string value) => _moreOptions.FileActions[0].ReplaceFileOrComment = value;
-    partial void OnSkipIfNoFileChangedChanged(bool value) => _moreOptions.FileActions[0].SkipIfNoChanged = value;
-    partial void OnCategoryTypeChanged(CategoryTaskType value) => _moreOptions.CategoryActions[0].Type = value;
-    partial void OnSourceCategoryChanged(string value) => _moreOptions.CategoryActions[0].SourceCategory = value;
-    partial void OnReplaceCategoryChanged(string value) => _moreOptions.CategoryActions[0].ReplaceCategory = value;
-    partial void OnSkipIfNoCategoryChangedChanged(bool value) => _moreOptions.CategoryActions[0].SkipIfNoChanged = value;
-    partial void OnRemoveSortkeyChanged(bool value) => _moreOptions.CategoryActions[0].RemoveSortkey = value;
+    partial void OnIsAppendOrPrependEnabledChanged(bool value)
+    {
+        _moreOptions.IsAppendPrependEnabled = value;
+    }
+
+    partial void OnIsAppendChanged(bool value)
+    {
+        _moreOptions.IsAppend = value;
+    }
+
+    partial void OnAppendOrPrependContentChanged(string value)
+    {
+        _moreOptions.AppendOrPrependContent = value;
+    }
+
+    partial void OnAppendOrPrependNewLinesChanged(int value)
+    {
+        _moreOptions.AppendOrPrependNewLines = value;
+    }
+
+    partial void OnShouldSortMetadataAfterAppendOrPrependChanged(bool value)
+    {
+        _moreOptions.ShouldSortMetaDataAfterAppendOrPrepend = value;
+    }
+
+    partial void OnFileTypeChanged(FileTaskType value)
+    {
+        _moreOptions.FileActions[0].Type = value;
+    }
+
+    partial void OnSourceFileChanged(string value)
+    {
+        _moreOptions.FileActions[0].SourceFile = value;
+    }
+
+    partial void OnReplaceFileOrCommentChanged(string value)
+    {
+        _moreOptions.FileActions[0].ReplaceFileOrComment = value;
+    }
+
+    partial void OnSkipIfNoFileChangedChanged(bool value)
+    {
+        _moreOptions.FileActions[0].SkipIfNoChanged = value;
+    }
+
+    partial void OnCategoryTypeChanged(CategoryTaskType value)
+    {
+        _moreOptions.CategoryActions[0].Type = value;
+    }
+
+    partial void OnSourceCategoryChanged(string value)
+    {
+        _moreOptions.CategoryActions[0].SourceCategory = value;
+    }
+
+    partial void OnReplaceCategoryChanged(string value)
+    {
+        _moreOptions.CategoryActions[0].ReplaceCategory = value;
+    }
+
+    partial void OnSkipIfNoCategoryChangedChanged(bool value)
+    {
+        _moreOptions.CategoryActions[0].SkipIfNoChanged = value;
+    }
+
+    partial void OnRemoveSortkeyChanged(bool value)
+    {
+        _moreOptions.CategoryActions[0].RemoveSortkey = value;
+    }
 
     private void PopulateProperties()
     {

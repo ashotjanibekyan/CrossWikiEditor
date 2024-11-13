@@ -11,26 +11,26 @@ public sealed class FilterViewModelTests : BaseTest
     {
         SetUpServices();
         _sut = new FilterViewModel(
-        [
-            new(0, ""),
-            new(2, "Մասնակից"),
-            new(4, "Վիքիպեդիա"),
-            new(6, "Պատկեր"),
-            new(8, "MediaWiki"),
-            new(10, "Կաղապար"),
-            new(12, "Օգնություն"),
-            new(14, "Կատեգորիա"),
-        ],
-        [
-            new(1, "Քննարկում"),
-            new(3, "Մասնակցի քննարկում"),
-            new(5, "Վիքիպեդիայի քննարկում"),
-            new(7, "Պատկերի քննարկում"),
-            new(9, "MediaWiki քննարկում"),
-            new(11, "Կաղապարի քննարկում"),
-            new(13, "Օգնության քննարկում"),
-            new(15, "Կատեգորիայի քննարկում"),
-        ], new TextFileListProvider(_fileDialogService, _systemService, _settingsService, _wikiClientCache));
+            [
+                new WikiNamespace(0, ""),
+                new WikiNamespace(2, "Մասնակից"),
+                new WikiNamespace(4, "Վիքիպեդիա"),
+                new WikiNamespace(6, "Պատկեր"),
+                new WikiNamespace(8, "MediaWiki"),
+                new WikiNamespace(10, "Կաղապար"),
+                new WikiNamespace(12, "Օգնություն"),
+                new WikiNamespace(14, "Կատեգորիա")
+            ],
+            [
+                new WikiNamespace(1, "Քննարկում"),
+                new WikiNamespace(3, "Մասնակցի քննարկում"),
+                new WikiNamespace(5, "Վիքիպեդիայի քննարկում"),
+                new WikiNamespace(7, "Պատկերի քննարկում"),
+                new WikiNamespace(9, "MediaWiki քննարկում"),
+                new WikiNamespace(11, "Կաղապարի քննարկում"),
+                new WikiNamespace(13, "Օգնության քննարկում"),
+                new WikiNamespace(15, "Կատեգորիայի քննարկում")
+            ], new TextFileListProvider(_fileDialogService, _systemService, _settingsService, _wikiClientCache));
         _settingsService.CurrentApiUrl.Returns("https://hy.wikipedia.org/w/api.php?");
     }
 
@@ -104,15 +104,15 @@ public sealed class FilterViewModelTests : BaseTest
     {
         // arrange
         const string text = """
-                      #[[title1]]
+                            #[[title1]]
 
 
-                      # [[Category:title (f e )2|few (fewcas)]]
+                            # [[Category:title (f e )2|few (fewcas)]]
 
 
-                      #     [[title3]]
-                      #     [[titl e3|display]]
-                      """;
+                            #     [[title3]]
+                            #     [[titl e3|display]]
+                            """;
         _fileDialogService
             .OpenFilePickerAsync("Select text files to extract pages", true)
             .Returns(["some/path/text.txt"]);
@@ -147,7 +147,7 @@ public sealed class FilterViewModelTests : BaseTest
         _sut.UseRegex = true;
         _sut.SelectedSetOperations = SetOperations.Intersection;
         _sut.Pages = Fakers.GetWikiPageModelFaker(_settingsService.CurrentApiUrl, _wikiClientCache)
-                           .Generate(10).ToObservableCollection();
+            .Generate(10).ToObservableCollection();
         IDialog dialog = Substitute.For<IDialog>();
         var namespacesToKeep = _sut.SubjectNamespaces.Where(n => n.IsChecked).Select(n => n.Id).ToList();
         namespacesToKeep.AddRange(_sut.TalkNamespaces.Where(n => n.IsChecked).Select(n => n.Id));

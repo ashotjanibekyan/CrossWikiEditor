@@ -1,4 +1,3 @@
-using CrossWikiEditor.Core.Services;
 using CrossWikiEditor.Core.ViewModels;
 using CrossWikiEditor.Core.ViewModels.ControlViewModels;
 using CrossWikiEditor.Core.ViewModels.MenuViewModels;

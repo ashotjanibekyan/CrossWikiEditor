@@ -6,28 +6,28 @@ namespace CrossWikiEditor.Tests.ListProviders;
 
 public sealed class HtmlScraperListProviderTests : ListProvidersBaseTest<HtmlScraperListProvider>
 {
-    private IHttpClientFactory _httpClientFactory;
-    private MockHttpMessageHandler _mockHttpMessageHandler;
-
     private readonly string _htmlWithDuplicateLinks = """
-        <html>
-            <body>
-                <a href="https://hy.wikipedia.org/wiki/Kotlin" >Kotlin programming language</a>
-                <a href="https://hy.wikipedia.org/wiki/%D5%8C%D5%A5%D5%B8_%D5%A4%D5%B2%D5%B5%D5%A1%D5%AF" >Ռեո դղյակ</a>
-                <a href="https://hy.wikipedia.org/wiki/%D5%8C%D5%A5%D5%B8_%D5%A4%D5%B2%D5%B5%D5%A1%D5%AF" >Ռեո դղյակ</a>
-                <a href="https://hy.wikipedia.org/wiki/%D5%8C%D5%A5%D5%B8_%D5%A4%D5%B2%D5%B5%D5%A1%D5%AF" >Ռեո դղյակ</a>
-                <a href="https://hy.wikipedia.org/wiki/%D5%8C%D5%A5%D5%B8_%D5%A4%D5%B2%D5%B5%D5%A1%D5%AF" >Ռեո դղյակ</a>
-                <a href="https://hy.wikipedia.org/wiki/%D5%8C%D5%A5%D5%B8_%D5%A4%D5%B2%D5%B5%D5%A1%D5%AF" >Ռեո դղյակ</a>
-            </body>
-        </html>
-        """;
+                                                      <html>
+                                                          <body>
+                                                              <a href="https://hy.wikipedia.org/wiki/Kotlin" >Kotlin programming language</a>
+                                                              <a href="https://hy.wikipedia.org/wiki/%D5%8C%D5%A5%D5%B8_%D5%A4%D5%B2%D5%B5%D5%A1%D5%AF" >Ռեո դղյակ</a>
+                                                              <a href="https://hy.wikipedia.org/wiki/%D5%8C%D5%A5%D5%B8_%D5%A4%D5%B2%D5%B5%D5%A1%D5%AF" >Ռեո դղյակ</a>
+                                                              <a href="https://hy.wikipedia.org/wiki/%D5%8C%D5%A5%D5%B8_%D5%A4%D5%B2%D5%B5%D5%A1%D5%AF" >Ռեո դղյակ</a>
+                                                              <a href="https://hy.wikipedia.org/wiki/%D5%8C%D5%A5%D5%B8_%D5%A4%D5%B2%D5%B5%D5%A1%D5%AF" >Ռեո դղյակ</a>
+                                                              <a href="https://hy.wikipedia.org/wiki/%D5%8C%D5%A5%D5%B8_%D5%A4%D5%B2%D5%B5%D5%A1%D5%AF" >Ռեո դղյակ</a>
+                                                          </body>
+                                                      </html>
+                                                      """;
 
     private readonly string _htmlWithoutLinks = """
-        <html>
-            <body>
-            </body>
-        </html>
-        """;
+                                                <html>
+                                                    <body>
+                                                    </body>
+                                                </html>
+                                                """;
+
+    private IHttpClientFactory _httpClientFactory;
+    private MockHttpMessageHandler _mockHttpMessageHandler;
 
     [SetUp]
     public void SetUp()
@@ -40,8 +40,17 @@ public sealed class HtmlScraperListProviderTests : ListProvidersBaseTest<HtmlScr
             new SimpleHtmlParser(_logger, _settingsService, _wikiClientCache));
     }
 
-    [Test] public new void CanMake_ShouldBeFalse_WhenParamIsEmpty() => base.CanMake_ShouldBeFalse_WhenParamIsEmpty();
-    [Test] public new void CanMake_ShouldBeTrue_WhenParamIsEmpty() => base.CanMake_ShouldBeTrue_WhenParamIsEmpty();
+    [Test]
+    public new void CanMake_ShouldBeFalse_WhenParamIsEmpty()
+    {
+        base.CanMake_ShouldBeFalse_WhenParamIsEmpty();
+    }
+
+    [Test]
+    public new void CanMake_ShouldBeTrue_WhenParamIsEmpty()
+    {
+        base.CanMake_ShouldBeTrue_WhenParamIsEmpty();
+    }
 
     [Test]
     public async Task MakeList_ShouldReturnFailure_WhenRequestIsNotSuccessful()
@@ -51,7 +60,7 @@ public sealed class HtmlScraperListProviderTests : ListProvidersBaseTest<HtmlScr
         _httpClientFactory.CreateClient("Scraper").Returns(new HttpClient(_mockHttpMessageHandler));
         _mockHttpMessageHandler
             .When(_sut.Param)
-        .Respond(HttpStatusCode.Found, new StringContent("error message"));
+            .Respond(HttpStatusCode.Found, new StringContent("error message"));
 
         // act
         Result<List<WikiPageModel>> result = await _sut.MakeList();

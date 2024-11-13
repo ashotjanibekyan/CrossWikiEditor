@@ -4,24 +4,33 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:menuViewModels="clr-namespace:CrossWikiEditor.Core.ViewModels.MenuViewModels;assembly=CrossWikiEditor.Core"
              x:DataType="menuViewModels:MenuViewModel"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="450"
              x:Class="CrossWikiEditor.Views.MenuView">
     <Menu>
         <MenuItem Header="File">
             <MenuItem Header="Reset to original default settings"
                       Command="{Binding FileMenuViewModel.ResetToDefaultSettingsCommand}" />
-            <MenuItem Header="Open settings..." Command="{Binding FileMenuViewModel.OpenSettingsCommand}" />
+            <MenuItem Header="Open settings..."
+                      Command="{Binding FileMenuViewModel.OpenSettingsCommand}" />
             <Separator />
-            <MenuItem Header="Save settings" Command="{Binding FileMenuViewModel.SaveSettingsCommand}" />
-            <MenuItem Header="Save settings as..." Command="{Binding FileMenuViewModel.SaveSettingsAsCommand}" />
+            <MenuItem Header="Save settings"
+                      Command="{Binding FileMenuViewModel.SaveSettingsCommand}" />
+            <MenuItem Header="Save settings as..."
+                      Command="{Binding FileMenuViewModel.SaveSettingsAsCommand}" />
             <MenuItem Header="Save settings as default"
                       Command="{Binding FileMenuViewModel.SaveSettingsAsDefaultCommand}" />
             <Separator />
-            <MenuItem Header="Login/Profiles..." Command="{Binding FileMenuViewModel.LoginProfilesCommand}" />
-            <MenuItem Header="Log out" Command="{Binding FileMenuViewModel.LogoutCommand}" />
-            <MenuItem Header="Refresh Status/Typos" Command="{Binding FileMenuViewModel.RefreshStatusAndTyposCommand}" />
+            <MenuItem Header="Login/Profiles..."
+                      Command="{Binding FileMenuViewModel.LoginProfilesCommand}" />
+            <MenuItem Header="Log out"
+                      Command="{Binding FileMenuViewModel.LogoutCommand}" />
+            <MenuItem Header="Refresh Status/Typos"
+                      Command="{Binding FileMenuViewModel.RefreshStatusAndTyposCommand}" />
             <Separator />
-            <MenuItem Header="Exit" Command="{Binding FileMenuViewModel.ExitCommand}" />
+            <MenuItem Header="Exit"
+                      Command="{Binding FileMenuViewModel.ExitCommand}" />
         </MenuItem>
         <MenuItem Header="View">
             <MenuItem Header="Show toolbar" />

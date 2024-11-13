@@ -11,7 +11,7 @@ public sealed class ExternalUrlUsageGenerator(WikiSite site) : WikiList<External
 
     public override IEnumerable<KeyValuePair<string, object?>> EnumListParameters()
     {
-        return new Dictionary<string, object?>()
+        return new Dictionary<string, object?>
         {
             {"euprop", "ids|title|url"},
             {"euprotocol", Protocol},
@@ -32,12 +32,13 @@ public sealed class ExternalUrlUsageGenerator(WikiSite site) : WikiList<External
         {
             throw new Exception("External url usage generation error");
         }
-        return new ExternalUrlUsageItem()
+
+        return new ExternalUrlUsageItem
         {
             PageId = pageId.Value<int>(),
             NamespaceId = ns.Value<int>(),
             Title = title.Value<string>() ?? string.Empty,
-            Url = url.Value<string>() ?? string.Empty,
+            Url = url.Value<string>() ?? string.Empty
         };
     }
 }

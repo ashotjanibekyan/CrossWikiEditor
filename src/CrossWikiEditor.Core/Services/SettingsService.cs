@@ -1,23 +1,22 @@
 using System.Text.Json;
-using CommunityToolkit.Mvvm.Messaging;
 
 namespace CrossWikiEditor.Core.Services;
 
 public interface ISettingsService
 {
+    string CurrentApiUrl { get; }
     UserSettings GetDefaultSettings();
     UserSettings? GetSettingsByPath(string path);
     UserSettings GetCurrentSettings();
     void SaveCurrentSettings();
     void SetCurrentSettings(UserSettings userSettings);
-    string CurrentApiUrl { get; }
 }
 
 public sealed class SettingsService : ISettingsService
 {
+    private readonly string _currentSettingsPath;
     private readonly JsonSerializerOptions _jsonSerializerOptions;
     private readonly IMessengerWrapper _messenger;
-    private string _currentSettingsPath;
     private UserSettings _currentSettings;
 
     public SettingsService(IMessengerWrapper messenger)
@@ -32,6 +31,7 @@ public sealed class SettingsService : ISettingsService
                 _currentSettings = temp;
             }
         }
+
         _currentSettings ??= GetDefaultSettings();
         _jsonSerializerOptions = new JsonSerializerOptions
         {
@@ -41,7 +41,10 @@ public sealed class SettingsService : ISettingsService
         messenger.Register<ProjectChangedMessage>(this, (r, m) => _currentSettings.UserWiki!.Project = m.Value);
     }
 
-    public UserSettings GetDefaultSettings() => UserSettings.GetDefaultUserSettings();
+    public UserSettings GetDefaultSettings()
+    {
+        return UserSettings.GetDefaultUserSettings();
+    }
 
     public UserSettings? GetSettingsByPath(string path)
     {
@@ -49,6 +52,7 @@ public sealed class SettingsService : ISettingsService
         {
             return null;
         }
+
         string json = File.ReadAllText(path, Encoding.UTF8);
         return JsonSerializer.Deserialize<UserSettings>(json);
     }
@@ -61,10 +65,12 @@ public sealed class SettingsService : ISettingsService
             {
                 Directory.CreateDirectory("./oldSettings");
             }
+
             // Just in case. This is just a json file, so no big deal, they can delete it themself.
             File.Move(_currentSettingsPath, $"./oldSettings/{DateTime.Now:yyyyMMdd_HHmmss}_settings.json");
         }
-        var json = JsonSerializer.Serialize(_currentSettings, options: _jsonSerializerOptions);
+
+        string? json = JsonSerializer.Serialize(_currentSettings, _jsonSerializerOptions);
         File.WriteAllText(_currentSettingsPath, json);
     }
 

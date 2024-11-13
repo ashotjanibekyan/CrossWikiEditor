@@ -4,16 +4,38 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controlViewModels="clr-namespace:CrossWikiEditor.Core.ViewModels.ControlViewModels;assembly=CrossWikiEditor.Core"
              Classes="DialogWindow"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="450"
              x:DataType="controlViewModels:OptionsViewModel"
              x:Class="CrossWikiEditor.Views.ControlViews.OptionsView">
-    <Grid RowDefinitions="Auto,Auto,Auto" Margin="3">
-        <HeaderedContentControl Header="Automatic changes" Margin="3" Grid.Row="0" Background="Black">
-            <Grid Margin="3" RowDefinitions="*,*,*" ColumnDefinitions="2*,*">
-                <CheckBox Grid.Row="0" Grid.Column="0" IsChecked="{Binding AutoTag}">Auto tag</CheckBox>
-                <CheckBox Grid.Row="1" Grid.Column="0" IsChecked="{Binding ApplyGeneralFixes}">Apply general fixes</CheckBox>
-                <CheckBox Grid.Row="2" Grid.Column="0" IsChecked="{Binding UnicodifyWholePage}">Unicodify whole page</CheckBox>
-                <Grid Grid.Row="0" Grid.RowSpan="3" Grid.Column="1">
+    <Grid RowDefinitions="Auto,Auto,Auto"
+          Margin="3">
+        <HeaderedContentControl Header="Automatic changes"
+                                Margin="3"
+                                Grid.Row="0"
+                                Background="Black">
+            <Grid Margin="3"
+                  RowDefinitions="*,*,*"
+                  ColumnDefinitions="2*,*">
+                <CheckBox Grid.Row="0"
+                          Grid.Column="0"
+                          IsChecked="{Binding AutoTag}">
+                    Auto tag
+                </CheckBox>
+                <CheckBox Grid.Row="1"
+                          Grid.Column="0"
+                          IsChecked="{Binding ApplyGeneralFixes}">
+                    Apply general fixes
+                </CheckBox>
+                <CheckBox Grid.Row="2"
+                          Grid.Column="0"
+                          IsChecked="{Binding UnicodifyWholePage}">
+                    Unicodify whole page
+                </CheckBox>
+                <Grid Grid.Row="0"
+                      Grid.RowSpan="3"
+                      Grid.Column="1">
                     <Button>
                         <StackPanel Orientation="Vertical">
                             <TextBlock>Auto changes</TextBlock>
@@ -23,13 +45,36 @@
                 </Grid>
             </Grid>
         </HeaderedContentControl>
-        <Border Margin="3" Grid.Row="1" BorderThickness="1" BorderBrush="Black">
-            <Grid Margin="3" RowDefinitions="*,*,*,*,*" ColumnDefinitions="*,*">
-                <CheckBox Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" IsChecked="{Binding FindAndReplace}">Find and replace</CheckBox>
-                <Button Grid.Row="0" Grid.Column="1" Command="{Binding OpenNormalFindAndReplaceDialogCommand}">Normal settings</Button>
-                <Button Grid.Row="1" Grid.Column="1">Advanced settings</Button>
-                <Button Grid.Row="2" Grid.Column="1">Template substitution</Button>
-                <Grid Grid.Row="3" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2">
+        <Border Margin="3"
+                Grid.Row="1"
+                BorderThickness="1"
+                BorderBrush="Black">
+            <Grid Margin="3"
+                  RowDefinitions="*,*,*,*,*"
+                  ColumnDefinitions="*,*">
+                <CheckBox Grid.Row="0"
+                          Grid.RowSpan="3"
+                          Grid.Column="0"
+                          IsChecked="{Binding FindAndReplace}">
+                    Find and replace
+                </CheckBox>
+                <Button Grid.Row="0"
+                        Grid.Column="1"
+                        Command="{Binding OpenNormalFindAndReplaceDialogCommand}">
+                    Normal settings
+                </Button>
+                <Button Grid.Row="1"
+                        Grid.Column="1">
+                    Advanced settings
+                </Button>
+                <Button Grid.Row="2"
+                        Grid.Column="1">
+                    Template substitution
+                </Button>
+                <Grid Grid.Row="3"
+                      Grid.RowSpan="2"
+                      Grid.Column="0"
+                      Grid.ColumnSpan="2">
                     <StackPanel Orientation="Horizontal">
                         <Label Margin="3">Skip if</Label>
                         <StackPanel Orientation="Vertical">
@@ -40,7 +85,10 @@
                 </Grid>
             </Grid>
         </Border>
-        <Border Margin="3" Grid.Row="2" BorderThickness="1" BorderBrush="Black">
+        <Border Margin="3"
+                Grid.Row="2"
+                BorderThickness="1"
+                BorderBrush="Black">
             <StackPanel Margin="3">
                 <CheckBox IsChecked="{Binding RegexTypoFixing}">Regex typo fixing</CheckBox>
                 <CheckBox IsChecked="{Binding SkipIfNoTypoFixed}">Skip if no typo fixed</CheckBox>

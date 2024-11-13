@@ -1,15 +1,17 @@
 namespace CrossWikiEditor.Core.ViewModels;
 
-public sealed partial class ProfilesViewModel(IFileDialogService fileDialogService,
-        IDialogService dialogService,
-        IProfileRepository profileRepository,
-        IUserService userService,
-        ISettingsService settingsService,
-        IMessengerWrapper messenger)
+public sealed partial class ProfilesViewModel(
+    IFileDialogService fileDialogService,
+    IDialogService dialogService,
+    IProfileRepository profileRepository,
+    IUserService userService,
+    ISettingsService settingsService,
+    IMessengerWrapper messenger)
     : ViewModelBase
 {
-    [ObservableProperty] private Profile? _selectedProfile;
-    [ObservableProperty] private ObservableCollection<Profile> _profiles = new(profileRepository.GetAll() ?? []);
+    [ObservableProperty] public partial Profile? SelectedProfile { get; set; }
+
+    [ObservableProperty] public partial ObservableCollection<Profile> Profiles { get; set; } = new(profileRepository.GetAll() ?? []);
 
     public string Username { get; set; } = "";
     public string Password { get; set; } = "";
@@ -78,7 +80,7 @@ public sealed partial class ProfilesViewModel(IFileDialogService fileDialogServi
             return;
         }
 
-        var profile = new Profile()
+        var profile = new Profile
         {
             Username = Username,
             Password = Password
@@ -92,7 +94,7 @@ public sealed partial class ProfilesViewModel(IFileDialogService fileDialogServi
         currentUserSettings ??= settingsService.GetCurrentSettings();
 
         Result<Unit> loginResult = await userService.Login(profile, currentUserSettings.GetApiUrl());
-        if (loginResult is { IsSuccessful: true })
+        if (loginResult is {IsSuccessful: true})
         {
             messenger.Send(new NewAccountLoggedInMessage(profile));
             if (!string.IsNullOrEmpty(profile.DefaultSettingsPath))

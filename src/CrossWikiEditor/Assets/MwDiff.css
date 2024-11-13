@@ -60,7 +60,7 @@
     white-space: break-spaces
 }
 
-@media only screen and (max-width:720px) {
+@media only screen and (max-width: 720px) {
     .client-js .mw-diff-inline-added ins, .client-js .mw-diff-inline-changed ins, .client-js .mw-diff-inline-moved ins, .client-js .mw-diff-inline-deleted ins, .client-js .mw-diff-inline-added del, .client-js .mw-diff-inline-changed del, .client-js .mw-diff-inline-moved del, .client-js .mw-diff-inline-deleted del {
         cursor: pointer
     }
@@ -81,26 +81,26 @@
     margin: 1em 0
 }
 
-    .mw-diff-table-prefix .mw-diff-inline-legend {
-        margin-right: auto
-    }
+.mw-diff-table-prefix .mw-diff-inline-legend {
+    margin-right: auto
+}
 
-        .mw-diff-table-prefix .mw-diff-inline-legend .mw-diff-inline-legend-ins, .mw-diff-table-prefix .mw-diff-inline-legend .mw-diff-inline-legend-del {
-            display: inline-block;
-            padding: 4px 6px
-        }
+.mw-diff-table-prefix .mw-diff-inline-legend .mw-diff-inline-legend-ins, .mw-diff-table-prefix .mw-diff-inline-legend .mw-diff-inline-legend-del {
+    display: inline-block;
+    padding: 4px 6px
+}
 
-        .mw-diff-table-prefix .mw-diff-inline-legend .mw-diff-inline-legend-ins {
-            background: #a3d3ff
-        }
+.mw-diff-table-prefix .mw-diff-inline-legend .mw-diff-inline-legend-ins {
+    background: #a3d3ff
+}
 
-        .mw-diff-table-prefix .mw-diff-inline-legend .mw-diff-inline-legend-del {
-            background: #ffe49c
-        }
+.mw-diff-table-prefix .mw-diff-inline-legend .mw-diff-inline-legend-del {
+    background: #ffe49c
+}
 
-    .mw-diff-table-prefix .mw-diffPage-inlineToggle-container {
-        margin-left: 1em
-    }
+.mw-diff-table-prefix .mw-diffPage-inlineToggle-container {
+    margin-left: 1em
+}
 
 .diff-addedline, .diff-deletedline, .diff-context {
     vertical-align: top;
@@ -119,7 +119,7 @@
 }
 
 .diff-editfont-monospace .diff-addedline, .diff-editfont-monospace .diff-deletedline, .diff-editfont-monospace .diff-context, .diff-editfont-monospace .mw-diff-inline-added, .diff-editfont-monospace .mw-diff-inline-deleted, .diff-editfont-monospace .mw-diff-inline-moved, .diff-editfont-monospace .mw-diff-inline-changed, .diff-editfont-monospace .mw-diff-inline-context {
-    font-family: monospace,monospace
+    font-family: monospace, monospace
 }
 
 .diff-editfont-sans-serif .diff-addedline, .diff-editfont-sans-serif .diff-deletedline, .diff-editfont-sans-serif .diff-context, .diff-editfont-sans-serif .mw-diff-inline-added, .diff-editfont-sans-serif .mw-diff-inline-deleted, .diff-editfont-sans-serif .mw-diff-inline-moved, .diff-editfont-sans-serif .mw-diff-inline-changed, .diff-editfont-sans-serif .mw-diff-inline-context {
@@ -237,7 +237,7 @@
 }
 
 .mw-diff-inline-added.mw-diff-empty-line::after, .mw-diff-inline-deleted.mw-diff-empty-line::after, .mw-inline-diff-newline::after {
-    font-family: 'Courier New',monospace;
+    font-family: 'Courier New', monospace;
     font-size: 87.5%;
     padding: 0 3px;
     display: inline-block;
@@ -267,7 +267,7 @@
     display: none
 }
 
-@media only screen and (max-width:720px) {
+@media only screen and (max-width: 720px) {
     .mw-diff-inline-legend {
         display: none
     }

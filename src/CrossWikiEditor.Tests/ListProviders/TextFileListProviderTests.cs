@@ -16,15 +16,15 @@ public sealed class TextFileListProviderTests : ListProvidersBaseTest<TextFileLi
     {
         // arrange
         const string text = """
-                      *[[title1]]
+                            *[[title1]]
 
 
-                      * [[Category:title (f e )2|few (fewcas)]]
+                            * [[Category:title (f e )2|few (fewcas)]]
 
 
-                      *     [[title3]]
-                      *     [[titl e3|display]]
-                      """;
+                            *     [[title3]]
+                            *     [[titl e3|display]]
+                            """;
         SetupForSingleFile(text);
 
         // act
@@ -45,15 +45,15 @@ public sealed class TextFileListProviderTests : ListProvidersBaseTest<TextFileLi
     {
         // arrange
         const string text = """
-                      #[[title1]]
-                      
-                      
-                      # [[Category:title (f e )2|few (fewcas)]]
-                      
-                      
-                      #     [[title3]]
-                      #     [[titl e3|display]]
-                      """;
+                            #[[title1]]
+
+
+                            # [[Category:title (f e )2|few (fewcas)]]
+
+
+                            #     [[title3]]
+                            #     [[titl e3|display]]
+                            """;
         SetupForSingleFile(text);
 
         // act
@@ -74,12 +74,12 @@ public sealed class TextFileListProviderTests : ListProvidersBaseTest<TextFileLi
     {
         // arrange
         const string text = """
-                      title1
-                      title2
-                      
-                      
-                      title3
-                      """;
+                            title1
+                            title2
+
+
+                            title3
+                            """;
         SetupForSingleFile(text);
 
         // act

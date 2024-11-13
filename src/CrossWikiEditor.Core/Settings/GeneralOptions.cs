@@ -1,7 +1,7 @@
 ﻿namespace CrossWikiEditor.Core.Settings;
 
 /// <summary>
-/// Corresponds to the <see cref="OptionsViewModel"/>
+///     Corresponds to the <see cref="OptionsViewModel" />
 /// </summary>
 public sealed class GeneralOptions
 {

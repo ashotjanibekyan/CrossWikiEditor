@@ -6,36 +6,53 @@
         xmlns:models="clr-namespace:CrossWikiEditor.Core.Models;assembly=CrossWikiEditor.Core"
         Classes="DialogWindow"
         SizeToContent="WidthAndHeight"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d"
+        d:DesignWidth="800"
+        d:DesignHeight="450"
         x:DataType="viewModels:SelectNamespacesAndRedirectFilterViewModel"
         x:Class="CrossWikiEditor.Views.SelectNamespacesAndRedirectFilterView"
         x:Name="This"
         Title="Select namespaces and redirect filter">
-    <Grid RowDefinitions="300,Auto" Margin="4">
-        <HeaderedContentControl Grid.RowSpan="" Header="The namespace to enumerate">
-            <Grid RowDefinitions="Auto,*" Margin="4">
-                <CheckBox Grid.Row="0" Grid.Column="0" Content="Select all" IsChecked="{Binding IsAllNamespacesChecked}"
-                      Margin="4" />
-                <ListBox Grid.Row="1" Grid.Column="0" SelectionMode="Multiple" Margin="3"
+    <Grid RowDefinitions="300,Auto"
+          Margin="4">
+        <HeaderedContentControl Grid.RowSpan=""
+                                Header="The namespace to enumerate">
+            <Grid RowDefinitions="Auto,*"
+                  Margin="4">
+                <CheckBox Grid.Row="0"
+                          Grid.Column="0"
+                          Content="Select all"
+                          IsChecked="{Binding IsAllNamespacesChecked}"
+                          Margin="4" />
+                <ListBox Grid.Row="1"
+                         Grid.Column="0"
+                         SelectionMode="Multiple"
+                         Margin="3"
                          ScrollViewer.HorizontalScrollBarVisibility="Visible"
                          ItemsSource="{Binding Namespaces}">
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="models:WikiNamespace">
-                            <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}" />
+                            <CheckBox Content="{Binding Name}"
+                                      IsChecked="{Binding IsChecked}" />
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
             </Grid>
         </HeaderedContentControl>
-        <StackPanel Grid.Row="1" Spacing="4">
+        <StackPanel Grid.Row="1"
+                    Spacing="4">
             <TextBlock>How to filter for redirects</TextBlock>
             <ComboBox SelectedIndex="{Binding SelectedRedirectFilter}">
                 <ComboBoxItem>Both</ComboBoxItem>
                 <ComboBoxItem>Only redirects</ComboBoxItem>
                 <ComboBoxItem>No redirects</ComboBoxItem>
             </ComboBox>
-            <CheckBox IsVisible="{Binding IsIncludeRedirectsVisible}" Content="Include links to redirects too" IsChecked="{Binding IncludeRedirects}" />
-            <Button Command="{Binding OkCommand}" CommandParameter="{Binding #This}" Content="Ok" />
+            <CheckBox IsVisible="{Binding IsIncludeRedirectsVisible}"
+                      Content="Include links to redirects too"
+                      IsChecked="{Binding IncludeRedirects}" />
+            <Button Command="{Binding OkCommand}"
+                    CommandParameter="{Binding #This}"
+                    Content="Ok" />
         </StackPanel>
     </Grid>
 </Window>

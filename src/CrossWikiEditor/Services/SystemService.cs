@@ -1,11 +1,8 @@
 using System.Diagnostics;
 using System.Text;
-
 using Avalonia.Input.Platform;
-
 using CrossWikiEditor.Core.Services;
 using CrossWikiEditor.Core.Utils;
-
 using Serilog;
 
 namespace CrossWikiEditor.Services;

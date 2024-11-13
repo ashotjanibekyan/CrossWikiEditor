@@ -11,24 +11,43 @@
         x:DataType="viewModels:SelectNamespacesViewModel"
         x:Name="This"
         Title="SelectNamespacesView">
-    <Grid RowDefinitions="Auto,300,Auto" Margin="4">
-        <CheckBox Grid.Row="0" Content="Select all" IsVisible="{Binding IsMultiselect}" IsChecked="{Binding IsAllSelected}" Margin="4" />
-        <ListBox Grid.Row="1" SelectionMode="Single" IsVisible="{Binding IsMultiselect}" Margin="3" ScrollViewer.HorizontalScrollBarVisibility="Visible"
+    <Grid RowDefinitions="Auto,300,Auto"
+          Margin="4">
+        <CheckBox Grid.Row="0"
+                  Content="Select all"
+                  IsVisible="{Binding IsMultiselect}"
+                  IsChecked="{Binding IsAllSelected}"
+                  Margin="4" />
+        <ListBox Grid.Row="1"
+                 SelectionMode="Single"
+                 IsVisible="{Binding IsMultiselect}"
+                 Margin="3"
+                 ScrollViewer.HorizontalScrollBarVisibility="Visible"
                  ItemsSource="{Binding Namespaces}">
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="models:WikiNamespace">
-                    <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}" />
+                    <CheckBox Content="{Binding Name}"
+                              IsChecked="{Binding IsChecked}" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <ListBox Grid.Row="1" SelectionMode="Single" IsVisible="{Binding !IsMultiselect}" Margin="3" ScrollViewer.HorizontalScrollBarVisibility="Visible"
+        <ListBox Grid.Row="1"
+                 SelectionMode="Single"
+                 IsVisible="{Binding !IsMultiselect}"
+                 Margin="3"
+                 ScrollViewer.HorizontalScrollBarVisibility="Visible"
                  ItemsSource="{Binding Namespaces}">
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="models:WikiNamespace">
-                    <RadioButton Content="{Binding Name}" GroupName="groupname" IsChecked="{Binding IsChecked}" />
+                    <RadioButton Content="{Binding Name}"
+                                 GroupName="groupname"
+                                 IsChecked="{Binding IsChecked}" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <Button Grid.Row="2" Content="Select" Command="{Binding SelectCommand}" CommandParameter="{Binding #This}" />
+        <Button Grid.Row="2"
+                Content="Select"
+                Command="{Binding SelectCommand}"
+                CommandParameter="{Binding #This}" />
     </Grid>
 </Window>

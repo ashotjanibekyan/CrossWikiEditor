@@ -10,7 +10,6 @@ global using FluentAssertions;
 global using NSubstitute;
 global using NSubstitute.ReturnsExtensions;
 global using NUnit.Framework;
-
 global using CrossWikiEditor.Core.ListProviders;
 global using CrossWikiEditor.Core.ListProviders.BaseListProviders;
 global using CrossWikiEditor.Core.Messages;

@@ -32,7 +32,8 @@ public sealed class CategoryService(IWikiClientCache wikiClientCache, ILogger lo
         }
         catch (Exception e)
         {
-            logger.Fatal(e, "Failed to get pages. Site: {Site}, page: {Page}, includeHidden: {IncludeHidden}, onlyHidden: {OnlyHidden}, limit: {Limit}",
+            logger.Fatal(e,
+                "Failed to get pages. Site: {Site}, page: {Page}, includeHidden: {IncludeHidden}, onlyHidden: {OnlyHidden}, limit: {Limit}",
                 apiRoot, pageName, includeHidden, onlyHidden, limit);
             return e;
         }
@@ -62,6 +63,7 @@ public sealed class CategoryService(IWikiClientCache wikiClientCache, ILogger lo
                     {
                         continue;
                     }
+
                     catGen = new CategoryMembersGenerator(new WikiPage(site, subCat.Title));
                     temp.AddRange(await catGen.EnumPagesAsync().Take(limit).Take(limit).ToListAsync());
                 }

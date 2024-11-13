@@ -35,7 +35,7 @@ public class WikiPageModelExtensionsTests : BaseTest
                                # [[{pages[2].Title}]]
                                # [[{pages[3].Title}]]
                                # [[{pages[4].Title}]]
-                               
+
                                """;
 
         // act
@@ -84,7 +84,7 @@ public class WikiPageModelExtensionsTests : BaseTest
                                == 3 ==
                                # [[{pages[4].Title}]]
                                # [[{pages[5].Title}]]
-                               
+
                                """;
 
         // act
@@ -106,7 +106,7 @@ public class WikiPageModelExtensionsTests : BaseTest
                                * [[{pages[2].Title}]]
                                * [[{pages[3].Title}]]
                                * [[{pages[4].Title}]]
-                               
+
                                """;
 
         // act
@@ -155,7 +155,7 @@ public class WikiPageModelExtensionsTests : BaseTest
                                == 3 ==
                                * [[{pages[4].Title}]]
                                * [[{pages[5].Title}]]
-                               
+
                                """;
 
         // act
@@ -195,27 +195,27 @@ public class WikiPageModelExtensionsTests : BaseTest
             new("Bafwea", ApiRoot, _wikiClientCache),
             new("Aafew", ApiRoot, _wikiClientCache),
             new("Aa", ApiRoot, _wikiClientCache),
-            new("Wfwaa", ApiRoot, _wikiClientCache),
+            new("Wfwaa", ApiRoot, _wikiClientCache)
         };
         const string expectedList = """
-                                     == 1 ==
-                                     # [[1aafew]]
-                                     == A ==
-                                     # [[aa]]
-                                     # [[Aa]]
-                                     # [[Aafew]]
-                                     == B ==
-                                     # [[baa]]
-                                     # [[Baa]]
-                                     # [[bafwea]]
-                                     # [[Bafwea]]
-                                     == W ==
-                                     # [[wfwaa]]
-                                     # [[Wfwaa]]
-                                     # [[wfwfweaa]]
-                                     # [[Wfwfweaa]]
+                                    == 1 ==
+                                    # [[1aafew]]
+                                    == A ==
+                                    # [[aa]]
+                                    # [[Aa]]
+                                    # [[Aafew]]
+                                    == B ==
+                                    # [[baa]]
+                                    # [[Baa]]
+                                    # [[bafwea]]
+                                    # [[Bafwea]]
+                                    == W ==
+                                    # [[wfwaa]]
+                                    # [[Wfwaa]]
+                                    # [[wfwfweaa]]
+                                    # [[Wfwfweaa]]
 
-                                     """;
+                                    """;
 
         // act
         string list = pages.ToWikiListAlphabetically(true);
@@ -241,27 +241,27 @@ public class WikiPageModelExtensionsTests : BaseTest
             new("Bafwea", ApiRoot, _wikiClientCache),
             new("Aafew", ApiRoot, _wikiClientCache),
             new("Aa", ApiRoot, _wikiClientCache),
-            new("Wfwaa", ApiRoot, _wikiClientCache),
+            new("Wfwaa", ApiRoot, _wikiClientCache)
         };
-        const string expectedList = $"""
-                                     == 1 ==
-                                     * [[1aafew]]
-                                     == A ==
-                                     * [[aa]]
-                                     * [[Aa]]
-                                     * [[Aafew]]
-                                     == B ==
-                                     * [[baa]]
-                                     * [[Baa]]
-                                     * [[bafwea]]
-                                     * [[Bafwea]]
-                                     == W ==
-                                     * [[wfwaa]]
-                                     * [[Wfwaa]]
-                                     * [[wfwfweaa]]
-                                     * [[Wfwfweaa]]
+        const string expectedList = """
+                                    == 1 ==
+                                    * [[1aafew]]
+                                    == A ==
+                                    * [[aa]]
+                                    * [[Aa]]
+                                    * [[Aafew]]
+                                    == B ==
+                                    * [[baa]]
+                                    * [[Baa]]
+                                    * [[bafwea]]
+                                    * [[Bafwea]]
+                                    == W ==
+                                    * [[wfwaa]]
+                                    * [[Wfwaa]]
+                                    * [[wfwfweaa]]
+                                    * [[Wfwfweaa]]
 
-                                     """;
+                                    """;
 
         // act
         string list = pages.ToWikiListAlphabetically(false);

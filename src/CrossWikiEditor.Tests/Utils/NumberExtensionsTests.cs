@@ -12,7 +12,10 @@ public sealed class NumberExtensionsTests
     [TestCase(3, ExpectedResult = false)]
     [TestCase(-11, ExpectedResult = false)]
     [TestCase(11, ExpectedResult = false)]
-    public bool IsEven(int value) => value.IsEven();
+    public bool IsEven(int value)
+    {
+        return value.IsEven();
+    }
 
     [TestCase(0, ExpectedResult = false)]
     [TestCase(-2, ExpectedResult = false)]
@@ -24,5 +27,8 @@ public sealed class NumberExtensionsTests
     [TestCase(3, ExpectedResult = true)]
     [TestCase(-11, ExpectedResult = true)]
     [TestCase(11, ExpectedResult = true)]
-    public bool IsOdd(int value) => value.IsOdd();
+    public bool IsOdd(int value)
+    {
+        return value.IsOdd();
+    }
 }

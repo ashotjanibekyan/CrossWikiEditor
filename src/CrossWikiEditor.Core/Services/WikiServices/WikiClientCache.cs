@@ -19,6 +19,7 @@ public sealed class WikiClientCache(ILogger logger) : IWikiClientCache
             client = new WikiClient();
             _wikiClients[apiRoot] = client;
         }
+
         return client;
     }
 

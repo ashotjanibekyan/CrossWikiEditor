@@ -2,12 +2,12 @@ namespace CrossWikiEditor.Tests.ListProviders;
 
 public abstract class ListProvidersBaseTest<T> : BaseTest where T : ListProviderBase
 {
-    protected UserSettings _userSettings;
+    protected List<WikiPageModel> _expectedPages;
+    protected SelectNamespacesAndRedirectFilterViewModel _selectNamespacesAndRedirectFilterViewModel;
     protected SelectNamespacesViewModel _selectNamespacesViewModel;
     protected SelectProtectionSelectionPageViewModel _selectProtectionSelectionPageViewModel;
-    protected SelectNamespacesAndRedirectFilterViewModel _selectNamespacesAndRedirectFilterViewModel;
-    protected List<WikiPageModel> _expectedPages;
     protected T _sut;
+    protected UserSettings _userSettings;
 
     [Test]
     public async Task GetLimit_ShouldReturn50_WhenNoValueIsReturned()
@@ -17,11 +17,12 @@ public abstract class ListProvidersBaseTest<T> : BaseTest where T : ListProvider
             Assert.Pass();
             return;
         }
+
         // arrange
         _dialogService.ShowDialog<int?>(Arg.Any<PromptViewModel>()).Returns(null as int?);
 
         // act
-        var result = await limitedListProvider.GetLimit();
+        int result = await limitedListProvider.GetLimit();
 
         // assert
         result.Should().Be(50);
@@ -35,12 +36,13 @@ public abstract class ListProvidersBaseTest<T> : BaseTest where T : ListProvider
             Assert.Pass();
             return;
         }
+
         // arrange
         _dialogService.ShowDialog<int?>(Arg.Is<PromptViewModel>(vm =>
             vm.IsNumeric && vm.Value == 50 && vm.Title == "How many page" && vm.Text == "Limit: ")).Returns(42);
 
         // act
-        var result = await limitedListProvider.GetLimit();
+        int result = await limitedListProvider.GetLimit();
 
         // assert
         result.Should().Be(42);
@@ -50,7 +52,7 @@ public abstract class ListProvidersBaseTest<T> : BaseTest where T : ListProvider
     {
         _userSettings = new UserSettings
         {
-            UserWiki = new(languageCode, project)
+            UserWiki = new UserWiki(languageCode, project)
         };
         _settingsService.GetCurrentSettings().Returns(_userSettings);
         _settingsService.CurrentApiUrl.Returns(_userSettings.GetApiUrl());
@@ -65,6 +67,7 @@ public abstract class ListProvidersBaseTest<T> : BaseTest where T : ListProvider
         {
             await needAdditionalParamsListProvider.GetAdditionalParams();
         }
+
         Result<List<WikiPageModel>> result = await (_sut as ILimitedListProvider)!.MakeList(73);
 
         // assert
@@ -79,7 +82,7 @@ public abstract class ListProvidersBaseTest<T> : BaseTest where T : ListProvider
         _sut.Param = "";
 
         // act
-        var result = _sut.CanMake;
+        bool result = _sut.CanMake;
 
         // assert
         result.Should().BeFalse();
@@ -91,7 +94,7 @@ public abstract class ListProvidersBaseTest<T> : BaseTest where T : ListProvider
         _sut.Param = "not empty";
 
         // act
-        var result = _sut.CanMake;
+        bool result = _sut.CanMake;
 
         // assert
         result.Should().BeTrue();

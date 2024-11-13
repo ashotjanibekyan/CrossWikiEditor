@@ -13,27 +13,33 @@ public sealed class RecentChangesListProviderTests : ListProvidersBaseTest<Recen
             Param = "start from here"
         };
         _dialogService.ShowDialog<int[]?>(_selectNamespacesViewModel).Returns([7, 2, 3, 9]);
-        _viewModelFactory.GetSelectNamespacesViewModel(true).Returns(_selectNamespacesViewModel);
+        _viewModelFactory.GetSelectNamespacesViewModel().Returns(_selectNamespacesViewModel);
         _expectedPages = Fakers.GetWikiPageModelFaker(_userSettings.GetApiUrl(), _wikiClientCache).Generate(4);
     }
 
     [Test]
-    public new async Task CanMake_ShouldBeFalse_WhenGetAdditionalParamsNotCalled() =>
+    public new async Task CanMake_ShouldBeFalse_WhenGetAdditionalParamsNotCalled()
+    {
         await base.CanMake_ShouldBeFalse_WhenGetAdditionalParamsNotCalled();
+    }
 
     [Test]
-    public async Task CanMake_ShouldBeFalse_WhenGetAdditionalParamsReturnsEmptyList() =>
+    public async Task CanMake_ShouldBeFalse_WhenGetAdditionalParamsReturnsEmptyList()
+    {
         await base.CanMake_ShouldBeFalse_WhenGetAdditionalParamsReturnsEmptyList(_selectNamespacesViewModel);
+    }
 
     [Test]
-    public async Task CanMake_ShouldBeTrue_WhenGetAdditionalParamsReturnsNonEmptyList() =>
+    public async Task CanMake_ShouldBeTrue_WhenGetAdditionalParamsReturnsNonEmptyList()
+    {
         await base.CanMake_ShouldBeTrue_WhenGetAdditionalParamsReturnsNonEmptyList(_selectNamespacesViewModel);
+    }
 
     [Test]
     public async Task MakeList_ShouldReturnPageServiceResults()
     {
         // arrange
-        _pageService.GetRecentlyChangedPages(_userSettings.GetApiUrl(), Arg.Is<int[]>(x => x.SequenceEqual(new[] { 7, 2, 3, 9 })), 73)
+        _pageService.GetRecentlyChangedPages(_userSettings.GetApiUrl(), Arg.Is<int[]>(x => x.SequenceEqual(new[] {7, 2, 3, 9})), 73)
             .Returns(_expectedPages);
 
         await MakeList_ShouldReturnServiceResults(_expectedPages);
@@ -43,7 +49,7 @@ public sealed class RecentChangesListProviderTests : ListProvidersBaseTest<Recen
     public async Task MakeList_ShouldReturnUnsuccessfulResult_WhenPageServiceReturnsUnsuccessfulResult()
     {
         // arrange
-        _pageService.GetRecentlyChangedPages(_userSettings.GetApiUrl(), Arg.Is<int[]>(x => x.SequenceEqual(new[] { 7, 2, 3, 9 })), 73)
+        _pageService.GetRecentlyChangedPages(_userSettings.GetApiUrl(), Arg.Is<int[]>(x => x.SequenceEqual(new[] {7, 2, 3, 9})), 73)
             .Returns(new Exception("failed to get pages"));
 
         // act

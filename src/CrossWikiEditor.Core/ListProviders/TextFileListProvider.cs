@@ -1,9 +1,10 @@
 ﻿namespace CrossWikiEditor.Core.ListProviders;
 
-public sealed class TextFileListProvider(IFileDialogService fileDialogService,
-        ISystemService systemService,
-        ISettingsService settingsService,
-        IWikiClientCache wikiClientCache)
+public sealed class TextFileListProvider(
+    IFileDialogService fileDialogService,
+    ISystemService systemService,
+    ISettingsService settingsService,
+    IWikiClientCache wikiClientCache)
     : UnlimitedListProviderBase, INeedAdditionalParamsListProvider
 {
     private readonly List<string> _textFiles = [];
@@ -11,6 +12,15 @@ public sealed class TextFileListProvider(IFileDialogService fileDialogService,
     public override string Title => "Text file";
     public override string ParamTitle => string.Empty;
     public override bool CanMake => _textFiles.Count != 0;
+
+    public async Task GetAdditionalParams()
+    {
+        string[]? result = await fileDialogService.OpenFilePickerAsync("Select text files to extract pages", true);
+        if (result is not null)
+        {
+            _textFiles.AddRange(result);
+        }
+    }
 
     public override async Task<Result<List<WikiPageModel>>> MakeList()
     {
@@ -28,7 +38,7 @@ public sealed class TextFileListProvider(IFileDialogService fileDialogService,
             }
             else
             {
-                titles.AddRange(pageText.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries)
+                titles.AddRange(pageText.Split(new[] {"\r\n", "\n"}, StringSplitOptions.RemoveEmptyEntries)
                     .Where(s => s.Trim().Length != 0)
                     .Select(Tools.RemoveSyntax));
             }
@@ -38,14 +48,5 @@ public sealed class TextFileListProvider(IFileDialogService fileDialogService,
 
         _textFiles.Clear();
         return result;
-    }
-
-    public async Task GetAdditionalParams()
-    {
-        string[]? result = await fileDialogService.OpenFilePickerAsync("Select text files to extract pages", true);
-        if (result is not null)
-        {
-            _textFiles.AddRange(result);
-        }
     }
 }

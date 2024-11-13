@@ -5,8 +5,6 @@ public sealed class MainWindowViewModel : ViewModelBase
     private PageListProcessor? _listProcessor;
     private Task? _myBot;
 
-    public static MainWindowViewModel? Instance { get; private set; }
-
     public MainWindowViewModel(StatusBarViewModel statusBarViewModel,
         MakeListViewModel makeListViewModel,
         OptionsViewModel optionsViewModel,
@@ -42,12 +40,15 @@ public sealed class MainWindowViewModel : ViewModelBase
             _myBot = Task.Run(async () =>
             {
                 _listProcessor?.Stop();
-                _listProcessor = new PageListProcessor(messenger, settingsService, [..MakeListViewModel.Pages], OptionsViewModel.NormalFindAndReplaceRules);
+                _listProcessor = new PageListProcessor(messenger, settingsService, [..MakeListViewModel.Pages],
+                    OptionsViewModel.NormalFindAndReplaceRules);
                 await _listProcessor.Start();
             });
         });
         messenger.Register<StopBotMessage>(this, (recipient, message) => _listProcessor?.Stop());
     }
+
+    public static MainWindowViewModel? Instance { get; private set; }
 
     public StatusBarViewModel StatusBarViewModel { get; }
     public MakeListViewModel MakeListViewModel { get; }

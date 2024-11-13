@@ -9,14 +9,14 @@ public sealed class SelectNamespacesViewModelTests
     {
         _sut = new SelectNamespacesViewModel(
         [
-            new(0, "namespace name with id 0"),
-            new(1, "namespace name with id 1"),
-            new(2, "namespace name with id 2"),
-            new(3, "namespace name with id 3"),
-            new(4, "namespace name with id 4"),
-            new(5, "namespace name with id 5"),
-            new(6, "namespace name with id 6"),
-            new(7, "namespace name with id 7"),
+            new WikiNamespace(0, "namespace name with id 0"),
+            new WikiNamespace(1, "namespace name with id 1"),
+            new WikiNamespace(2, "namespace name with id 2"),
+            new WikiNamespace(3, "namespace name with id 3"),
+            new WikiNamespace(4, "namespace name with id 4"),
+            new WikiNamespace(5, "namespace name with id 5"),
+            new WikiNamespace(6, "namespace name with id 6"),
+            new WikiNamespace(7, "namespace name with id 7")
         ]);
     }
 

@@ -1,9 +1,11 @@
 namespace CrossWikiEditor.Core.Services.HtmlParsers;
 
-public sealed class SimpleHtmlParser(ILogger logger, ISettingsService settingsService,
+public sealed class SimpleHtmlParser(
+    ILogger logger,
+    ISettingsService settingsService,
     IWikiClientCache wikiClientCache)
 {
-    readonly char[] _terminationChars = [' ', '\t', '\n', '"', '<', '>', '{', '}', '&'];
+    private readonly char[] _terminationChars = [' ', '\t', '\n', '"', '<', '>', '{', '}', '&'];
 
     public async Task<List<WikiPageModel>> GetPages(string html)
     {
@@ -47,8 +49,10 @@ public sealed class SimpleHtmlParser(ILogger logger, ISettingsService settingsSe
             {
                 return page;
             }
+
             return new WikiPageModel(Tools.GetPageTitleFromUrl(baseUrl + url), apiUrl, wikiClientCache);
         }
+
         return new WikiPageModel(Tools.GetPageTitleFromUrl(baseUrl + url), apiUrl, wikiClientCache);
     }
 }

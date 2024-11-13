@@ -6,39 +6,81 @@
              xmlns:settings="using:CrossWikiEditor.Core.Settings"
              xmlns:controlVM="using:CrossWikiEditor.Core.ViewModels.ControlViewModels"
              x:DataType="controlVM:MoreViewModel"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="450"
              x:Class="CrossWikiEditor.Views.ControlViews.MoreView">
-    <Grid RowDefinitions="Auto,Auto,Auto" Margin="3">
-        <HeaderedContentControl Margin="3" Grid.Row="0" Background="Black" Header="Append/Prepend text">
-            <Grid Margin="3" RowDefinitions="Auto,*,Auto">
-                <Grid Grid.Row="0" ColumnDefinitions="*,*,*,*">
-                    <CheckBox Grid.Column="0" IsChecked="{Binding IsAppendOrPrependEnabled}">Enabled</CheckBox>
-                    <RadioButton Grid.Column="2" GroupName="Mode" Content="Append" IsChecked="{Binding IsAppend}" />
-                    <RadioButton Grid.Column="3" GroupName="Mode" Content="Prepend" IsChecked="{Binding !IsAppend}" />
+    <Grid RowDefinitions="Auto,Auto,Auto"
+          Margin="3">
+        <HeaderedContentControl Margin="3"
+                                Grid.Row="0"
+                                Background="Black"
+                                Header="Append/Prepend text">
+            <Grid Margin="3"
+                  RowDefinitions="Auto,*,Auto">
+                <Grid Grid.Row="0"
+                      ColumnDefinitions="*,*,*,*">
+                    <CheckBox Grid.Column="0"
+                              IsChecked="{Binding IsAppendOrPrependEnabled}">
+                        Enabled
+                    </CheckBox>
+                    <RadioButton Grid.Column="2"
+                                 GroupName="Mode"
+                                 Content="Append"
+                                 IsChecked="{Binding IsAppend}" />
+                    <RadioButton Grid.Column="3"
+                                 GroupName="Mode"
+                                 Content="Prepend"
+                                 IsChecked="{Binding !IsAppend}" />
                 </Grid>
-                <TextBox Height="70" Grid.Row="1" AcceptsReturn="True" TextWrapping="Wrap" Text="{Binding AppendOrPrependContent}" />
-                <Grid ColumnDefinitions="Auto,Auto,Auto,*" Grid.Row="2">
-                    <Label Grid.Column="0" VerticalAlignment="Center">Use: </Label>
-                    <NumericUpDown Grid.Column="1" ShowButtonSpinner="False" Value="{Binding AppendOrPrependNewLines}" IsEnabled="{Binding IsAppendOrPrependEnabled}" />
-                    <Label Margin="10 0 0 0" Grid.Column="2" VerticalAlignment="Center"> newlines </Label>
-                    <CheckBox HorizontalAlignment="Right" 
-                              Grid.Column="3" 
+                <TextBox Height="70"
+                         Grid.Row="1"
+                         AcceptsReturn="True"
+                         TextWrapping="Wrap"
+                         Text="{Binding AppendOrPrependContent}" />
+                <Grid ColumnDefinitions="Auto,Auto,Auto,*"
+                      Grid.Row="2">
+                    <Label Grid.Column="0"
+                           VerticalAlignment="Center">
+                        Use:
+                    </Label>
+                    <NumericUpDown Grid.Column="1"
+                                   ShowButtonSpinner="False"
+                                   Value="{Binding AppendOrPrependNewLines}"
+                                   IsEnabled="{Binding IsAppendOrPrependEnabled}" />
+                    <Label Margin="10 0 0 0"
+                           Grid.Column="2"
+                           VerticalAlignment="Center">
+                        newlines
+                    </Label>
+                    <CheckBox HorizontalAlignment="Right"
+                              Grid.Column="3"
                               IsChecked="{Binding ShouldSortMetadataAfterAppendOrPrepend}"
                               IsEnabled="{Binding IsAppendOrPrependEnabled}">
-                              Sort meta data after
+                        Sort meta data after
                     </CheckBox>
                 </Grid>
             </Grid>
         </HeaderedContentControl>
-        <HeaderedContentControl Header="Files" Margin="3" Grid.Row="1" Background="Black">
-            <Grid Margin="3" RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,*">
-                <ComboBox Grid.Column="0" Grid.Row="0" SelectedIndex="{Binding FileType}">
+        <HeaderedContentControl Header="Files"
+                                Margin="3"
+                                Grid.Row="1"
+                                Background="Black">
+            <Grid Margin="3"
+                  RowDefinitions="Auto,Auto,Auto"
+                  ColumnDefinitions="*,*">
+                <ComboBox Grid.Column="0"
+                          Grid.Row="0"
+                          SelectedIndex="{Binding FileType}">
                     <ComboBoxItem>Choose a task...</ComboBoxItem>
                     <ComboBoxItem>Replace file:</ComboBoxItem>
                     <ComboBoxItem>Remove file:</ComboBoxItem>
                     <ComboBoxItem>Comment out file:</ComboBoxItem>
                 </ComboBox>
-                <TextBox HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="0" Text="{Binding SourceFile}">
+                <TextBox HorizontalAlignment="Stretch"
+                         Grid.Column="1"
+                         Grid.Row="0"
+                         Text="{Binding SourceFile}">
                     <TextBox.IsEnabled>
                         <MultiBinding Converter="{x:Static utils:Converters.FirstEqualsToAnyConverter}">
                             <Binding Path="FileType" />
@@ -48,7 +90,9 @@
                         </MultiBinding>
                     </TextBox.IsEnabled>
                 </TextBox>
-                <Label HorizontalAlignment="Right" Grid.Column="0" Grid.Row="1">
+                <Label HorizontalAlignment="Right"
+                       Grid.Column="0"
+                       Grid.Row="1">
                     <Label.IsVisible>
                         <MultiBinding Converter="{x:Static utils:Converters.FirstEqualsToAnyConverter}">
                             <Binding Path="FileType" />
@@ -57,7 +101,9 @@
                     </Label.IsVisible>
                     With:
                 </Label>
-                <Label HorizontalAlignment="Right" Grid.Column="0" Grid.Row="1">
+                <Label HorizontalAlignment="Right"
+                       Grid.Column="0"
+                       Grid.Row="1">
                     <Label.IsVisible>
                         <MultiBinding Converter="{x:Static utils:Converters.FirstEqualsToAnyConverter}">
                             <Binding Path="FileType" />
@@ -66,7 +112,10 @@
                     </Label.IsVisible>
                     Comment:
                 </Label>
-                <TextBox HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="1" Text="{Binding ReplaceFileOrComment}">
+                <TextBox HorizontalAlignment="Stretch"
+                         Grid.Column="1"
+                         Grid.Row="1"
+                         Text="{Binding ReplaceFileOrComment}">
                     <TextBox.IsEnabled>
                         <MultiBinding Converter="{x:Static utils:Converters.FirstEqualsToAnyConverter}">
                             <Binding Path="FileType" />
@@ -75,7 +124,9 @@
                         </MultiBinding>
                     </TextBox.IsEnabled>
                 </TextBox>
-                <CheckBox Grid.Row="2" Grid.Column="0" IsChecked="{Binding SkipIfNoFileChanged}">
+                <CheckBox Grid.Row="2"
+                          Grid.Column="0"
+                          IsChecked="{Binding SkipIfNoFileChanged}">
                     <CheckBox.IsEnabled>
                         <MultiBinding Converter="{x:Static utils:Converters.FirstEqualsToAnyConverter}">
                             <Binding Path="FileType" />
@@ -88,15 +139,25 @@
                 </CheckBox>
             </Grid>
         </HeaderedContentControl>
-        <HeaderedContentControl Header="Categories" Margin="3" Grid.Row="2" Background="Black">
-            <Grid Margin="3" RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,*">
-                <ComboBox Grid.Column="0" Grid.Row="0" SelectedIndex="{Binding CategoryType}">
+        <HeaderedContentControl Header="Categories"
+                                Margin="3"
+                                Grid.Row="2"
+                                Background="Black">
+            <Grid Margin="3"
+                  RowDefinitions="Auto,Auto,Auto"
+                  ColumnDefinitions="*,*">
+                <ComboBox Grid.Column="0"
+                          Grid.Row="0"
+                          SelectedIndex="{Binding CategoryType}">
                     <ComboBoxItem>Choose a task...</ComboBoxItem>
                     <ComboBoxItem>Replace category:</ComboBoxItem>
                     <ComboBoxItem>Add category:</ComboBoxItem>
                     <ComboBoxItem>Remove category:</ComboBoxItem>
                 </ComboBox>
-                <TextBox HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="0" Text="{Binding SourceCategory}">
+                <TextBox HorizontalAlignment="Stretch"
+                         Grid.Column="1"
+                         Grid.Row="0"
+                         Text="{Binding SourceCategory}">
                     <TextBox.IsEnabled>
                         <MultiBinding Converter="{x:Static utils:Converters.FirstEqualsToAnyConverter}">
                             <Binding Path="CategoryType" />
@@ -106,7 +167,9 @@
                         </MultiBinding>
                     </TextBox.IsEnabled>
                 </TextBox>
-                <Label HorizontalAlignment="Right" Grid.Column="0" Grid.Row="1">
+                <Label HorizontalAlignment="Right"
+                       Grid.Column="0"
+                       Grid.Row="1">
                     <Label.IsVisible>
                         <MultiBinding Converter="{x:Static utils:Converters.FirstEqualsToAnyConverter}">
                             <Binding Path="CategoryType" />
@@ -115,7 +178,10 @@
                     </Label.IsVisible>
                     With:
                 </Label>
-                <TextBox HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="1" Text="{Binding ReplaceCategory}">
+                <TextBox HorizontalAlignment="Stretch"
+                         Grid.Column="1"
+                         Grid.Row="1"
+                         Text="{Binding ReplaceCategory}">
                     <TextBox.IsEnabled>
                         <MultiBinding Converter="{x:Static utils:Converters.FirstEqualsToAnyConverter}">
                             <Binding Path="CategoryType" />
@@ -123,7 +189,9 @@
                         </MultiBinding>
                     </TextBox.IsEnabled>
                 </TextBox>
-                <CheckBox Grid.Row="2" Grid.Column="0" IsChecked="{Binding SkipIfNoCategoryChanged}">
+                <CheckBox Grid.Row="2"
+                          Grid.Column="0"
+                          IsChecked="{Binding SkipIfNoCategoryChanged}">
                     <CheckBox.IsEnabled>
                         <MultiBinding Converter="{x:Static utils:Converters.FirstEqualsToAnyConverter}">
                             <Binding Path="CategoryType" />
@@ -134,7 +202,9 @@
                     </CheckBox.IsEnabled>
                     Skip if no category changed
                 </CheckBox>
-                <CheckBox Grid.Row="2" Grid.Column="1" IsChecked="{Binding RemoveSortkey}">
+                <CheckBox Grid.Row="2"
+                          Grid.Column="1"
+                          IsChecked="{Binding RemoveSortkey}">
                     <CheckBox.IsEnabled>
                         <MultiBinding Converter="{x:Static utils:Converters.FirstEqualsToAnyConverter}">
                             <Binding Path="CategoryType" />

@@ -2,8 +2,17 @@
 
 public sealed partial class PreferencesViewModel : ViewModelBase
 {
-    private readonly ISettingsService _settingsService;
     private readonly IMessengerWrapper _messenger;
+    private readonly ISettingsService _settingsService;
+
+    [ObservableProperty] private ObservableCollection<string> _languages = new(
+    [
+        "en",
+        "hy",
+        "hyw",
+        "es",
+        "ru"
+    ]);
 
     public PreferencesViewModel(ISettingsService settingsService, IMessengerWrapper messenger)
     {
@@ -22,30 +31,31 @@ public sealed partial class PreferencesViewModel : ViewModelBase
         SelectedProject = settingsService.GetCurrentSettings().UserWiki.Project;
     }
 
-    [ObservableProperty] private bool _minimizeToSystray;
-    [ObservableProperty] private bool _warnOnExit;
-    [ObservableProperty] private bool _savePageListWithSettings;
-    [ObservableProperty] private bool _lowThreadPriority;
-    [ObservableProperty] private bool _previewDiffInBotMode;
-    [ObservableProperty] private bool _enableLogging;
-    [ObservableProperty] private ProjectEnum _selectedProject = ProjectEnum.Wikipedia;
-    [ObservableProperty] private ObservableCollection<ProjectEnum> _projects = new(Enum.GetValues<ProjectEnum>());
-    [ObservableProperty] private string _selectedLanguage = "en";
+    [ObservableProperty] public partial bool MinimizeToSystray { get; set; }
 
-    [ObservableProperty]
-    private ObservableCollection<string> _languages = new(
-    [
-        "en",
-        "hy",
-        "hyw",
-        "es",
-        "ru"
-    ]);
+    [ObservableProperty] public partial bool WarnOnExit { get; set; }
 
-    [ObservableProperty] private bool _suppressUsingAwb;
-    [ObservableProperty] private bool _ignoreNoBots;
-    [ObservableProperty] private bool _emptyPageListOnProjectChange;
-    [ObservableProperty] private Alerts _alerts;
+    [ObservableProperty] public partial bool SavePageListWithSettings { get; set; }
+
+    [ObservableProperty] public partial bool LowThreadPriority { get; set; }
+
+    [ObservableProperty] public partial bool PreviewDiffInBotMode { get; set; }
+
+    [ObservableProperty] public partial bool EnableLogging { get; set; }
+
+    [ObservableProperty] public partial ProjectEnum SelectedProject { get; set; } = ProjectEnum.Wikipedia;
+
+    [ObservableProperty] public partial ObservableCollection<ProjectEnum> Projects { get; set; } = new(Enum.GetValues<ProjectEnum>());
+
+    [ObservableProperty] public partial string SelectedLanguage { get; set; } = "en";
+
+    [ObservableProperty] public partial bool SuppressUsingAwb { get; set; }
+
+    [ObservableProperty] public partial bool IgnoreNoBots { get; set; }
+
+    [ObservableProperty] public partial bool EmptyPageListOnProjectChange { get; set; }
+
+    [ObservableProperty] public partial Alerts Alerts { get; set; }
 
     [RelayCommand]
     private void Save(IDialog dialog)
@@ -64,26 +74,47 @@ public sealed partial class PreferencesViewModel : ViewModelBase
 
 public partial class Alerts : ObservableObject
 {
-    [ObservableProperty] private bool _ambiguousCitationDates;
-    [ObservableProperty] private bool _containsSicTag;
-    [ObservableProperty] private bool _dabPageWithRef;
-    [ObservableProperty] private bool _deadLinks;
-    [ObservableProperty] private bool _duplicateParametersInWpBannerShell;
-    [ObservableProperty] private bool _hasRefAfterReferences;
-    [ObservableProperty] private bool _hasFootnotesTemplate;
-    [ObservableProperty] private bool _headersWithWikilinks;
-    [ObservableProperty] private bool _invalidCitationParameters;
-    [ObservableProperty] private bool _linksWithDoublePipes;
-    [ObservableProperty] private bool _linksWithNoTarget;
-    [ObservableProperty] private bool _longArticleWithStubTag;
-    [ObservableProperty] private bool _multipleDefaultSort;
-    [ObservableProperty] private bool _noCategory;
-    [ObservableProperty] private bool _seeAlsoOutOfPlace;
-    [ObservableProperty] private bool _startsWithHeading;
-    [ObservableProperty] private bool _unbalancedBrackets;
-    [ObservableProperty] private bool _unclosedTags;
-    [ObservableProperty] private bool _unformattedReferences;
-    [ObservableProperty] private bool _unknownParametersInMultipleIssues;
-    [ObservableProperty] private bool _unknownParametersInWpBannerShell;
-    [ObservableProperty] private bool _editorsSignatureOrLink;
+    [ObservableProperty] public partial bool AmbiguousCitationDates { get; set; }
+
+    [ObservableProperty] public partial bool ContainsSicTag { get; set; }
+
+    [ObservableProperty] public partial bool DabPageWithRef { get; set; }
+
+    [ObservableProperty] public partial bool DeadLinks { get; set; }
+
+    [ObservableProperty] public partial bool DuplicateParametersInWpBannerShell { get; set; }
+
+    [ObservableProperty] public partial bool HasRefAfterReferences { get; set; }
+
+    [ObservableProperty] public partial bool HasFootnotesTemplate { get; set; }
+
+    [ObservableProperty] public partial bool HeadersWithWikilinks { get; set; }
+
+    [ObservableProperty] public partial bool InvalidCitationParameters { get; set; }
+
+    [ObservableProperty] public partial bool LinksWithDoublePipes { get; set; }
+
+    [ObservableProperty] public partial bool LinksWithNoTarget { get; set; }
+
+    [ObservableProperty] public partial bool LongArticleWithStubTag { get; set; }
+
+    [ObservableProperty] public partial bool MultipleDefaultSort { get; set; }
+
+    [ObservableProperty] public partial bool NoCategory { get; set; }
+
+    [ObservableProperty] public partial bool SeeAlsoOutOfPlace { get; set; }
+
+    [ObservableProperty] public partial bool StartsWithHeading { get; set; }
+
+    [ObservableProperty] public partial bool UnbalancedBrackets { get; set; }
+
+    [ObservableProperty] public partial bool UnclosedTags { get; set; }
+
+    [ObservableProperty] public partial bool UnformattedReferences { get; set; }
+
+    [ObservableProperty] public partial bool UnknownParametersInMultipleIssues { get; set; }
+
+    [ObservableProperty] public partial bool UnknownParametersInWpBannerShell { get; set; }
+
+    [ObservableProperty] public partial bool EditorsSignatureOrLink { get; set; }
 }

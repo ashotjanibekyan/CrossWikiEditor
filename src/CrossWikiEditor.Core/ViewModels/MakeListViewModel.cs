@@ -4,14 +4,14 @@ namespace CrossWikiEditor.Core.ViewModels;
 
 public sealed partial class MakeListViewModel : ViewModelBase
 {
-    private readonly ILogger _logger;
-    private readonly IDialogService _dialogService;
     private readonly IWikiClientCache _clientCache;
+    private readonly IDialogService _dialogService;
+    private readonly IFileDialogService _fileDialogService;
+    private readonly ILogger _logger;
     private readonly IPageService _pageService;
+    private readonly ISettingsService _settingsService;
     private readonly ISystemService _systemService;
     private readonly IViewModelFactory _viewModelFactory;
-    private readonly IFileDialogService _fileDialogService;
-    private readonly ISettingsService _settingsService;
 
     public MakeListViewModel(
         IMessengerWrapper messenger,
@@ -41,13 +41,23 @@ public sealed partial class MakeListViewModel : ViewModelBase
         messenger.Register<PageSkippedMessage>(this, (recipient, message) => Pages.Remove(Pages.First(p => p.Title == message.Page.Title)));
     }
 
+    [ObservableProperty] public partial ObservableCollection<IListProvider> ListProviders { get; set; }
+
+    [ObservableProperty] public partial IListProvider SelectedListProvider { get; set; }
+
+    [ObservableProperty] public partial ObservableCollection<WikiPageModel> Pages { get; set; } = [];
+
+    [ObservableProperty] public partial ObservableCollection<WikiPageModel> SelectedPages { get; set; } = [];
+
+    [ObservableProperty] public partial string NewPageTitle { get; set; } = string.Empty;
+
     [RelayCommand]
     private async Task AddNewPage()
     {
         if (!string.IsNullOrWhiteSpace(NewPageTitle))
         {
             Result<WikiPageModel> result = await _clientCache.GetWikiPageModel(_settingsService.CurrentApiUrl, NewPageTitle);
-            if (result is { IsSuccessful: true, Value: not null })
+            if (result is {IsSuccessful: true, Value: not null})
             {
                 Pages.Add(result.Value);
             }
@@ -87,7 +97,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
             _ => throw new UnreachableException("Wait what? A list is either limited or unlimited.")
         };
 
-        if (result is { IsSuccessful: true, Value: not null })
+        if (result is {IsSuccessful: true, Value: not null})
         {
             Pages.AddRange(result.Value);
         }
@@ -103,7 +113,8 @@ public sealed partial class MakeListViewModel : ViewModelBase
     {
         foreach (WikiPageModel selectedPage in SelectedPages)
         {
-            _systemService.OpenLinkInBrowser($"{_settingsService.GetCurrentSettings().GetIndexUrl()}title={HttpUtility.UrlEncode(selectedPage.Title)}");
+            _systemService.OpenLinkInBrowser(
+                $"{_settingsService.GetCurrentSettings().GetIndexUrl()}title={HttpUtility.UrlEncode(selectedPage.Title)}");
         }
     }
 
@@ -153,13 +164,14 @@ public sealed partial class MakeListViewModel : ViewModelBase
         {
             return;
         }
+
         string[] titles = clipboardText.Split([Environment.NewLine],
             StringSplitOptions.None);
         string urlApi = _settingsService.CurrentApiUrl;
         foreach (string title in titles)
         {
             Result<WikiPageModel> result = await _clientCache.GetWikiPageModel(urlApi, title);
-            if (result is { IsSuccessful: true, Value: not null })
+            if (result is {IsSuccessful: true, Value: not null})
             {
                 Pages.Add(result.Value);
             }
@@ -286,13 +298,16 @@ public sealed partial class MakeListViewModel : ViewModelBase
         {
             return;
         }
+
         string suggestedTitle = SelectedListProvider.Title;
         if (!string.IsNullOrWhiteSpace(SelectedListProvider.Param))
         {
             suggestedTitle += $"_{SelectedListProvider.Param}";
         }
+
         suggestedTitle += $"_{DateTime.Now.ToString("yyyy-MM-dd-HH-mm", CultureInfo.InvariantCulture)}.txt";
-        (_, Func<Task<Stream>>? openWriteStream) = await _fileDialogService.SaveFilePickerAsync("Save pages", suggestedFileName: suggestedTitle.ToFilenameSafe());
+        (_, Func<Task<Stream>>? openWriteStream) =
+            await _fileDialogService.SaveFilePickerAsync("Save pages", suggestedFileName: suggestedTitle.ToFilenameSafe());
         if (openWriteStream is not null)
         {
             Stream stream = await openWriteStream();
@@ -316,10 +331,4 @@ public sealed partial class MakeListViewModel : ViewModelBase
     {
         Pages = Pages.OrderByDescending<WikiPageModel, string>(x => x.Title).ToObservableCollection();
     }
-
-    [ObservableProperty] private ObservableCollection<IListProvider> _listProviders;
-    [ObservableProperty] private IListProvider _selectedListProvider;
-    [ObservableProperty] private ObservableCollection<WikiPageModel> _pages = [];
-    [ObservableProperty] private ObservableCollection<WikiPageModel> _selectedPages = [];
-    [ObservableProperty] private string _newPageTitle = string.Empty;
 }

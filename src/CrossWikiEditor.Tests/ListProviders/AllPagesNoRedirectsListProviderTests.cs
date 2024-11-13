@@ -18,16 +18,22 @@ public sealed class AllPagesNoRedirectsListProviderTests : ListProvidersBaseTest
     }
 
     [Test]
-    public new async Task CanMake_ShouldBeFalse_WhenGetAdditionalParamsNotCalled() =>
+    public new async Task CanMake_ShouldBeFalse_WhenGetAdditionalParamsNotCalled()
+    {
         await base.CanMake_ShouldBeFalse_WhenGetAdditionalParamsNotCalled();
+    }
 
     [Test]
-    public async Task CanMake_ShouldBeFalse_WhenGetAdditionalParamsReturnsEmptyList() =>
+    public async Task CanMake_ShouldBeFalse_WhenGetAdditionalParamsReturnsEmptyList()
+    {
         await base.CanMake_ShouldBeFalse_WhenGetAdditionalParamsReturnsEmptyList(_selectNamespacesViewModel);
+    }
 
     [Test]
-    public async Task CanMake_ShouldBeTrue_WhenGetAdditionalParamsReturnsNonEmptyList() =>
+    public async Task CanMake_ShouldBeTrue_WhenGetAdditionalParamsReturnsNonEmptyList()
+    {
         await base.CanMake_ShouldBeTrue_WhenGetAdditionalParamsReturnsNonEmptyList(_selectNamespacesViewModel);
+    }
 
     [Test]
     public async Task MakeList_ShouldReturnPageServiceResults()

@@ -42,8 +42,9 @@ file static class Mapper
 }
 
 /// <summary>
-/// Realm is great but we use a tiny fraction of its capabilities and it is responsible for 30% of the final filesize of the app.
-/// Write the content on a file instead for now.
+///     Realm is great but we use a tiny fraction of its capabilities and it is responsible for 30% of the final filesize
+///     of the app.
+///     Write the content on a file instead for now.
 /// </summary>
 public sealed class SimpleJsonProfileRepository(IStringEncryptionService stringEncryptionService) : IProfileRepository
 {
@@ -74,6 +75,7 @@ public sealed class SimpleJsonProfileRepository(IStringEncryptionService stringE
             profiles.Remove(p);
             profiles.Add(profile);
         }
+
         SaveAll(profiles);
     }
 
@@ -85,22 +87,10 @@ public sealed class SimpleJsonProfileRepository(IStringEncryptionService stringE
             {
                 SaveAll([]);
             }
+
             string json = File.ReadAllText(JsonName);
             List<JsonProfile>? jsonProfiles = JsonSerializer.Deserialize<List<JsonProfile>>(json);
             return jsonProfiles is null ? [] : jsonProfiles.ConvertAll(p => Mapper.JsonProfileToProfile(p, stringEncryptionService));
-        }
-    }
-
-    private void SaveAll(List<Profile> profiles)
-    {
-        lock (_profileJsonLock)
-        {
-            List<JsonProfile> jsonProfiles = profiles.ConvertAll(p => Mapper.ProfileToJsonProfile(p, stringEncryptionService));
-            string json = JsonSerializer.Serialize(jsonProfiles, new JsonSerializerOptions()
-            {
-                WriteIndented = true
-            });
-            File.WriteAllText(JsonName, json);
         }
     }
 
@@ -112,6 +102,20 @@ public sealed class SimpleJsonProfileRepository(IStringEncryptionService stringE
         {
             profiles.Remove(p);
         }
+
         SaveAll(profiles);
+    }
+
+    private void SaveAll(List<Profile> profiles)
+    {
+        lock (_profileJsonLock)
+        {
+            List<JsonProfile> jsonProfiles = profiles.ConvertAll(p => Mapper.ProfileToJsonProfile(p, stringEncryptionService));
+            string json = JsonSerializer.Serialize(jsonProfiles, new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
+            File.WriteAllText(JsonName, json);
+        }
     }
 }

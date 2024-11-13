@@ -40,6 +40,7 @@ public static class StringExtensions
         {
             return isCaseSensitive ? str.Contains(value) : str.Contains(value, StringComparison.OrdinalIgnoreCase);
         }
+
         Regex r = isCaseSensitive ? new Regex(value) : new Regex(value, RegexOptions.IgnoreCase);
         return r.IsMatch(str);
     }

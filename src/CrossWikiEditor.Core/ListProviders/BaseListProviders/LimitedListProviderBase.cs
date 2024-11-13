@@ -9,6 +9,7 @@ public interface ILimitedListProvider : IListProvider
 public abstract class LimitedListProviderBase(IDialogService dialogService) : ListProviderBase, ILimitedListProvider
 {
     protected IDialogService DialogService => dialogService;
+
     public async Task<int> GetLimit()
     {
         return await dialogService.ShowDialog<int?>(new PromptViewModel("How many page", "Limit: ")

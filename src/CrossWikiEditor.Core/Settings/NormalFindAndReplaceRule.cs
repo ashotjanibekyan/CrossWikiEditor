@@ -1,6 +1,7 @@
 ﻿namespace CrossWikiEditor.Core.Settings;
 
-public partial class NormalFindAndReplaceRule(string find,
+public partial class NormalFindAndReplaceRule(
+    string find,
     string replaceWith,
     bool caseSensitive,
     bool regex,
@@ -15,15 +16,25 @@ public partial class NormalFindAndReplaceRule(string find,
     {
     }
 
-    [ObservableProperty] private string _find = find;
-    [ObservableProperty] private string _replaceWith = replaceWith;
-    [ObservableProperty] private bool _caseSensitive = caseSensitive;
-    [ObservableProperty] private bool _regex = regex;
-    [ObservableProperty] private bool _multiLine = multiLine;
-    [ObservableProperty] private bool _singleLine = singleLine;
-    [ObservableProperty] private bool _minor = minor;
-    [ObservableProperty] private bool _afterFixes = afterFixes;
-    [ObservableProperty] private bool _enabled = enabled;
-    [ObservableProperty] private string _comment = comment;
+    [ObservableProperty] public partial string Find { get; set; } = find;
+
+    [ObservableProperty] public partial string ReplaceWith { get; set; } = replaceWith;
+
+    [ObservableProperty] public partial bool CaseSensitive { get; set; } = caseSensitive;
+
+    [ObservableProperty] public partial bool Regex { get; set; } = regex;
+
+    [ObservableProperty] public partial bool MultiLine { get; set; } = multiLine;
+
+    [ObservableProperty] public partial bool SingleLine { get; set; } = singleLine;
+
+    [ObservableProperty] public partial bool Minor { get; set; } = minor;
+
+    [ObservableProperty] public partial bool AfterFixes { get; set; } = afterFixes;
+
+    [ObservableProperty] public partial bool Enabled { get; set; } = enabled;
+
+    [ObservableProperty] public partial string Comment { get; set; } = comment;
+
     public bool IsEmpty => string.IsNullOrEmpty(Find);
 }

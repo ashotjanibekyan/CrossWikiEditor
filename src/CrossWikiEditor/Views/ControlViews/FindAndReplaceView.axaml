@@ -6,44 +6,98 @@
         xmlns:controlViewModels="clr-namespace:CrossWikiEditor.Core.ViewModels.ControlViewModels;assembly=CrossWikiEditor.Core"
         Classes="DialogWindow"
         SizeToContent="Width"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d"
+        d:DesignWidth="800"
+        d:DesignHeight="450"
         x:Class="CrossWikiEditor.Views.ControlViews.FindAndReplaceView"
         x:DataType="controlViewModels:FindAndReplaceViewModel"
         x:Name="This"
         Title="Find and Replace">
-    <Grid RowDefinitions="Auto,*" Margin="4">
-        <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,Auto,Auto" RowDefinitions="Auto,Auto,Auto">
-            <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding IgnoreLinks}" Content="Ignore external/interwiki links, images, nowiki, math and &lt;!- -&gt;" />
-            <CheckBox Grid.Column="0" Grid.Row="1" IsChecked="{Binding IgnoreMore}" Content="Ignore templates, refs, link targets, and headings" />
-            <TextBlock Grid.Column="0" Grid.Row="2">
+    <Grid RowDefinitions="Auto,*"
+          Margin="4">
+        <Grid Grid.Row="0"
+              ColumnDefinitions="Auto,Auto,Auto,Auto"
+              RowDefinitions="Auto,Auto,Auto">
+            <CheckBox Grid.Column="0"
+                      Grid.Row="0"
+                      IsChecked="{Binding IgnoreLinks}"
+                      Content="Ignore external/interwiki links, images, nowiki, math and &lt;!- -&gt;" />
+            <CheckBox Grid.Column="0"
+                      Grid.Row="1"
+                      IsChecked="{Binding IgnoreMore}"
+                      Content="Ignore templates, refs, link targets, and headings" />
+            <TextBlock Grid.Column="0"
+                       Grid.Row="2">
                 <Run>See </Run>
-                <controls:Hyperlink Text="regular expressions on Wikipedia" Href="https://en.wikipedia.org/wiki/Regular_expression"  />
+                <controls:Hyperlink Text="regular expressions on Wikipedia"
+                                    Href="https://en.wikipedia.org/wiki/Regular_expression" />
                 <Run> / in </Run>
-                <controls:Hyperlink Text=".NET docs" Href="https://learn.microsoft.com/en-us/dotnet/standard/base-types/regular-expressions"  />
+                <controls:Hyperlink Text=".NET docs"
+                                    Href="https://learn.microsoft.com/en-us/dotnet/standard/base-types/regular-expressions" />
             </TextBlock>
-            
-            <CheckBox Grid.Column="1" Grid.Row="0" IsChecked="{Binding AddToSummary}" Content="Add replacements to edit summary" />
-            <Grid Grid.Column="1" Grid.Row="2" ColumnDefinitions="Auto,*,Auto">
-                <TextBlock Grid.Column="0" Text="Search: " />
+
+            <CheckBox Grid.Column="1"
+                      Grid.Row="0"
+                      IsChecked="{Binding AddToSummary}"
+                      Content="Add replacements to edit summary" />
+            <Grid Grid.Column="1"
+                  Grid.Row="2"
+                  ColumnDefinitions="Auto,*,Auto">
+                <TextBlock Grid.Column="0"
+                           Text="Search: " />
                 <TextBox Grid.Column="1" />
-                <Button Grid.Column="2" Content="Ok" />
+                <Button Grid.Column="2"
+                        Content="Ok" />
             </Grid>
-            <Button Grid.Column="2" Grid.Row="0" Content="Ok" Command="{Binding SaveCommand}" CommandParameter="{Binding #This}" />
-            <Button Grid.Column="3" Grid.Row="0" Content="Cancel" />
-            <Button Grid.Column="3" Grid.Row="1" Content="Clear" Command="{Binding CleanCommand}" />
+            <Button Grid.Column="2"
+                    Grid.Row="0"
+                    Content="Ok"
+                    Command="{Binding SaveCommand}"
+                    CommandParameter="{Binding #This}" />
+            <Button Grid.Column="3"
+                    Grid.Row="0"
+                    Content="Cancel" />
+            <Button Grid.Column="3"
+                    Grid.Row="1"
+                    Content="Clear"
+                    Command="{Binding CleanCommand}" />
         </Grid>
-        <DataGrid Grid.Row="1" MinHeight="200" ItemsSource="{Binding NormalFindAndReplaceRules}" CanUserResizeColumns="True" CanUserSortColumns="False">
+        <DataGrid Grid.Row="1"
+                  MinHeight="200"
+                  ItemsSource="{Binding NormalFindAndReplaceRules}"
+                  CanUserResizeColumns="True"
+                  CanUserSortColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Find" Binding="{Binding Find}" IsReadOnly="False" />
-                <DataGridTextColumn Header="Replace with" Binding="{Binding ReplaceWith}" IsReadOnly="False" />
-                <DataGridCheckBoxColumn Header="Case sensitive" Binding="{Binding CaseSensitive}" IsReadOnly="False" />
-                <DataGridCheckBoxColumn Header="Regex" Binding="{Binding Regex}" IsReadOnly="False" />
-                <DataGridCheckBoxColumn Header="MultiLine" Binding="{Binding MultiLine}" IsReadOnly="False" />
-                <DataGridCheckBoxColumn Header="SingleLine" Binding="{Binding SingleLine}" IsReadOnly="False" />
-                <DataGridCheckBoxColumn Header="Minor" Binding="{Binding Minor}" IsReadOnly="False" />
-                <DataGridCheckBoxColumn Header="After fixes" Binding="{Binding AfterFixes}" IsReadOnly="False" />
-                <DataGridCheckBoxColumn Header="Enabled" Binding="{Binding Enabled}" IsReadOnly="False" />
-                <DataGridTextColumn Header="Comment" Binding="{Binding Comment}" IsReadOnly="False" />
+                <DataGridTextColumn Header="Find"
+                                    Binding="{Binding Find}"
+                                    IsReadOnly="False" />
+                <DataGridTextColumn Header="Replace with"
+                                    Binding="{Binding ReplaceWith}"
+                                    IsReadOnly="False" />
+                <DataGridCheckBoxColumn Header="Case sensitive"
+                                        Binding="{Binding CaseSensitive}"
+                                        IsReadOnly="False" />
+                <DataGridCheckBoxColumn Header="Regex"
+                                        Binding="{Binding Regex}"
+                                        IsReadOnly="False" />
+                <DataGridCheckBoxColumn Header="MultiLine"
+                                        Binding="{Binding MultiLine}"
+                                        IsReadOnly="False" />
+                <DataGridCheckBoxColumn Header="SingleLine"
+                                        Binding="{Binding SingleLine}"
+                                        IsReadOnly="False" />
+                <DataGridCheckBoxColumn Header="Minor"
+                                        Binding="{Binding Minor}"
+                                        IsReadOnly="False" />
+                <DataGridCheckBoxColumn Header="After fixes"
+                                        Binding="{Binding AfterFixes}"
+                                        IsReadOnly="False" />
+                <DataGridCheckBoxColumn Header="Enabled"
+                                        Binding="{Binding Enabled}"
+                                        IsReadOnly="False" />
+                <DataGridTextColumn Header="Comment"
+                                    Binding="{Binding Comment}"
+                                    IsReadOnly="False" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

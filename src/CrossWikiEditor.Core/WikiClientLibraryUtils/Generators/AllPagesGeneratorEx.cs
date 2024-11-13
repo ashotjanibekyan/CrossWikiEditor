@@ -19,7 +19,7 @@ public sealed class AllPagesGeneratorEx(WikiSite site) : AllPagesGenerator(site)
             {"apminsize", MinPageContentLength},
             {"apmaxsize", MaxPageContentLength},
             {"apprtype", ProtectionType},
-            {"apprlevel", ProtectionLevel},
+            {"apprlevel", ProtectionLevel}
         };
     }
 }

@@ -1,5 +1,3 @@
-using CrossWikiEditor.Core.Utils;
-
 namespace CrossWikiEditor.Tests.ViewModels;
 
 public sealed class ProfilesViewModelTests : BaseTest
@@ -33,15 +31,15 @@ public sealed class ProfilesViewModelTests : BaseTest
     public void LoginCommand_ShouldLogin_WhenSelectedUserIsValid()
     {
         // arrange
-        var profile = new Profile()
+        var profile = new Profile
         {
             Username = "username",
             Password = "password"
         };
         _sut.SelectedProfile = profile;
-        _settingsService.GetCurrentSettings().Returns(new UserSettings()
+        _settingsService.GetCurrentSettings().Returns(new UserSettings
         {
-            UserWiki = new("hy", ProjectEnum.Wikipedia)
+            UserWiki = new UserWiki("hy", ProjectEnum.Wikipedia)
         });
         _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Unit.Default);
 
@@ -59,16 +57,16 @@ public sealed class ProfilesViewModelTests : BaseTest
     public void LoginCommand_ShouldSetCurrentUserPref_WhenProfileHasDefaultPref()
     {
         // arrange
-        var profile = new Profile()
+        var profile = new Profile
         {
             Username = "username",
             Password = "password",
             DefaultSettingsPath = "some/settings/path/file.xml"
         };
         _sut.SelectedProfile = profile;
-        var userSettings = new UserSettings()
+        var userSettings = new UserSettings
         {
-            UserWiki = new("hy", ProjectEnum.Wikipedia)
+            UserWiki = new UserWiki("hy", ProjectEnum.Wikipedia)
         };
         _settingsService.GetSettingsByPath(profile.DefaultSettingsPath).Returns(userSettings);
         _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Unit.Default);
@@ -89,15 +87,15 @@ public sealed class ProfilesViewModelTests : BaseTest
     public void LoginCommand_ShouldAlertDefaultMessage_WhenLoginIsUnSuccessfulAndThereIsNoMessage()
     {
         // arrange
-        var profile = new Profile()
+        var profile = new Profile
         {
             Username = "username",
             Password = "password"
         };
         _sut.SelectedProfile = profile;
-        _settingsService.GetCurrentSettings().Returns(new UserSettings()
+        _settingsService.GetCurrentSettings().Returns(new UserSettings
         {
-            UserWiki = new("hy", ProjectEnum.Wikipedia)
+            UserWiki = new UserWiki("hy", ProjectEnum.Wikipedia)
         });
         _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(new Exception(string.Empty));
 
@@ -115,15 +113,15 @@ public sealed class ProfilesViewModelTests : BaseTest
     public void LoginCommand_ShouldAlertErrorMessage_WhenLoginIsUnSuccessful()
     {
         // arrange
-        var profile = new Profile()
+        var profile = new Profile
         {
             Username = "username",
             Password = "password"
         };
         _sut.SelectedProfile = profile;
-        _settingsService.GetCurrentSettings().Returns(new UserSettings()
+        _settingsService.GetCurrentSettings().Returns(new UserSettings
         {
-            UserWiki = new("hy", ProjectEnum.Wikipedia)
+            UserWiki = new UserWiki("hy", ProjectEnum.Wikipedia)
         });
         _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(new Exception("this is an error message"));
 
@@ -153,7 +151,7 @@ public sealed class ProfilesViewModelTests : BaseTest
     public void AddCommand_ShouldUpdateProfiles_WhenAddOrEditProfileViewModelReturnsTrue()
     {
         // arrange
-        var newProfiles = new List<Profile>()
+        var newProfiles = new List<Profile>
         {
             new()
             {
@@ -283,9 +281,9 @@ public sealed class ProfilesViewModelTests : BaseTest
         // arrange
         _sut.Username = "username";
         _sut.Password = "Qwer1234";
-        _settingsService.GetCurrentSettings().Returns(new UserSettings()
+        _settingsService.GetCurrentSettings().Returns(new UserSettings
         {
-            UserWiki = new("hyw", ProjectEnum.Wikipedia)
+            UserWiki = new UserWiki("hyw", ProjectEnum.Wikipedia)
         });
         _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Unit.Default);
 
@@ -326,9 +324,9 @@ public sealed class ProfilesViewModelTests : BaseTest
         // arrange
         _sut.Username = "username";
         _sut.Password = "Qwer1234";
-        _settingsService.GetCurrentSettings().Returns(new UserSettings()
+        _settingsService.GetCurrentSettings().Returns(new UserSettings
         {
-            UserWiki = new("hyw", ProjectEnum.Wikipedia)
+            UserWiki = new UserWiki("hyw", ProjectEnum.Wikipedia)
         });
         _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Unit.Default);
 
@@ -346,9 +344,9 @@ public sealed class ProfilesViewModelTests : BaseTest
         // arrange
         _sut.Username = "username";
         _sut.Password = "Qwer1234";
-        _settingsService.GetCurrentSettings().Returns(new UserSettings()
+        _settingsService.GetCurrentSettings().Returns(new UserSettings
         {
-            UserWiki = new("hyw", ProjectEnum.Wikipedia)
+            UserWiki = new UserWiki("hyw", ProjectEnum.Wikipedia)
         });
         _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(new Exception("Password is wrong"));
 
@@ -366,9 +364,9 @@ public sealed class ProfilesViewModelTests : BaseTest
         // arrange
         _sut.Username = "username";
         _sut.Password = "Qwer1234";
-        _settingsService.GetCurrentSettings().Returns(new UserSettings()
+        _settingsService.GetCurrentSettings().Returns(new UserSettings
         {
-            UserWiki = new("hy", ProjectEnum.Wikipedia)
+            UserWiki = new UserWiki("hy", ProjectEnum.Wikipedia)
         });
         _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(new Exception(errorMessage));
 

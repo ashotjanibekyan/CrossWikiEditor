@@ -1,7 +1,6 @@
 using CrossWikiEditor.Core;
 using CrossWikiEditor.Core.Services;
 using CrossWikiEditor.Core.ViewModels;
-
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CrossWikiEditor.Services;

@@ -54,7 +54,7 @@ public sealed class StringExtensionsTests
         const string substring = "test";
 
         // Act
-        bool result = input.Contains(substring, isRegex: false);
+        bool result = input.Contains(substring, false);
 
         // Assert
         result.Should().BeTrue();
@@ -68,7 +68,7 @@ public sealed class StringExtensionsTests
         const string substring = "missing";
 
         // Act
-        bool result = input.Contains(substring, isRegex: false);
+        bool result = input.Contains(substring, false);
 
         // Assert
         result.Should().BeFalse();
@@ -82,7 +82,7 @@ public sealed class StringExtensionsTests
         const string regexPattern = @"\d{3}-\d{3}-\d{4}";
 
         // Act
-        bool result = input.Contains(regexPattern, isRegex: true);
+        bool result = input.Contains(regexPattern, true);
 
         // Assert
         result.Should().BeTrue();
@@ -96,7 +96,7 @@ public sealed class StringExtensionsTests
         const string regexPattern = @"\d{3}-\d{3}-\d{4}";
 
         // Act
-        bool result = input.Contains(regexPattern, isRegex: true);
+        bool result = input.Contains(regexPattern, true);
 
         // Assert
         result.Should().BeFalse();
@@ -110,7 +110,7 @@ public sealed class StringExtensionsTests
         // arrange
 
         // act
-        bool result = text.Contains(substring, isRegex: false, isCaseSensitive: true);
+        bool result = text.Contains(substring, false, true);
 
         // assert
         return result;
@@ -124,7 +124,7 @@ public sealed class StringExtensionsTests
         // arrange
 
         // act
-        bool result = text.Contains(substring, isRegex: false, isCaseSensitive: false);
+        bool result = text.Contains(substring, false, false);
 
         // assert
         return result;

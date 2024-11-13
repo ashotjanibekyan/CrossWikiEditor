@@ -2,8 +2,8 @@
 
 public interface IDialog
 {
-    void Close(object? dialogResult);
     object? DataContext { get; set; }
+    void Close(object? dialogResult);
 }
 
 public interface IOwner;

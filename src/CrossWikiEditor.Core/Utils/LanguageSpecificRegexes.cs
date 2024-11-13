@@ -18,6 +18,9 @@ public sealed class LanguageSpecificRegexes : IAsyncInitialization
         messenger.Register<ProjectChangedMessage>(this, (_, _) => InitAsync = InitializeAsync());
     }
 
+    public Regex? ExtractTitle { get; private set; }
+    public Task InitAsync { get; private set; }
+
     private async Task InitializeAsync()
     {
         string apiRoot = _settingsService.CurrentApiUrl;
@@ -36,7 +39,4 @@ public sealed class LanguageSpecificRegexes : IAsyncInitialization
              + Regex.Escape(url[pos..]) + "/wiki/)";
         ExtractTitle = new Regex("^" + s + "([^?&]*)$");
     }
-
-    public Regex? ExtractTitle { get; private set; }
-    public Task InitAsync { get; private set; }
 }
