@@ -1,9 +1,24 @@
 namespace CrossWikiEditor.Core.ViewModels;
 
-public partial class FilterViewModel(List<WikiNamespace> subjectNamespaces, List<WikiNamespace> talkNamespaces,
-        TextFileListProvider textFileListProvider)
-    : ViewModelBase
+public partial class FilterViewModel : ViewModelBase
 {
+    private readonly TextFileListProvider _textFileListProvider;
+
+    public FilterViewModel(
+        List<WikiNamespace> subjectNamespaces, 
+        List<WikiNamespace> talkNamespaces,
+        TextFileListProvider textFileListProvider)
+    {
+        _textFileListProvider = textFileListProvider;
+        SubjectNamespaces = subjectNamespaces.ToObservableCollection();
+        TalkNamespaces = talkNamespaces.ToObservableCollection();
+        Pages = [];
+        SetOperations = new[] { Models.SetOperations.SymmetricDifference, Models.SetOperations.Intersection }.ToObservableCollection();
+        RemoveTitlesContaining = string.Empty;
+        KeepTitlesContaining = string.Empty;
+        SelectedSetOperations = Models.SetOperations.SymmetricDifference;
+    }
+
     [RelayCommand]
     private void Save(IDialog dialog)
     {
@@ -29,11 +44,11 @@ public partial class FilterViewModel(List<WikiNamespace> subjectNamespaces, List
     [RelayCommand]
     private async Task OpenFile()
     {
-        await textFileListProvider.GetAdditionalParams();
+        await _textFileListProvider.GetAdditionalParams();
 
-        if (textFileListProvider.CanMake)
+        if (_textFileListProvider.CanMake)
         {
-            Result<List<WikiPageModel>> result = await textFileListProvider.MakeList();
+            Result<List<WikiPageModel>> result = await _textFileListProvider.MakeList();
             if (result is { IsSuccessful: true, Value: not null })
             {
                 Pages = result.Value.ToObservableCollection();
@@ -61,20 +76,16 @@ public partial class FilterViewModel(List<WikiNamespace> subjectNamespaces, List
             .ToObservableCollection();
     }
 
-    [ObservableProperty] private ObservableCollection<WikiNamespace> _subjectNamespaces = subjectNamespaces.ToObservableCollection();
-    [ObservableProperty] private ObservableCollection<WikiNamespace> _talkNamespaces = talkNamespaces.ToObservableCollection();
-    [ObservableProperty] private ObservableCollection<WikiPageModel> _pages = [];
-
-    [ObservableProperty]
-    private ObservableCollection<SetOperations> _setOperations =
-        new[] { Models.SetOperations.SymmetricDifference, Models.SetOperations.Intersection }.ToObservableCollection();
-
-    [ObservableProperty] private bool _isAllTalkChecked;
-    [ObservableProperty] private bool _isAllSubjectChecked;
-    [ObservableProperty] private bool _useRegex;
-    [ObservableProperty] private bool _sortAlphabetically;
-    [ObservableProperty] private bool _removeDuplicates;
-    [ObservableProperty] private string _removeTitlesContaining = string.Empty;
-    [ObservableProperty] private string _keepTitlesContaining = string.Empty;
-    [ObservableProperty] private SetOperations _selectedSetOperations = Models.SetOperations.SymmetricDifference;
+    [ObservableProperty] public partial ObservableCollection<WikiNamespace> SubjectNamespaces { get; set; }
+    [ObservableProperty] public partial ObservableCollection<WikiNamespace> TalkNamespaces { get; set; }
+    [ObservableProperty] public partial ObservableCollection<WikiPageModel> Pages { get; set; }
+    [ObservableProperty] public partial ObservableCollection<SetOperations> SetOperations { get; set; }
+    [ObservableProperty] public partial bool IsAllTalkChecked { get; set; }
+    [ObservableProperty] public partial bool IsAllSubjectChecked { get; set; }
+    [ObservableProperty] public partial bool UseRegex { get; set; }
+    [ObservableProperty] public partial bool SortAlphabetically { get; set; }
+    [ObservableProperty] public partial bool RemoveDuplicates { get; set; }
+    [ObservableProperty] public partial string RemoveTitlesContaining { get; set; }
+    [ObservableProperty] public partial string KeepTitlesContaining { get; set; }
+    [ObservableProperty] public partial SetOperations SelectedSetOperations { get; set; }
 }

@@ -21,19 +21,20 @@ public sealed partial class OptionsViewModel : ViewModelBase
         _dialogService = dialogService;
         _settingsService = settingsService;
         _generalOptions = _settingsService.GetCurrentSettings().GeneralOptions;
+        NormalFindAndReplaceRules = [];
         PopulateProperties();
         PropertyChanged += OptionsViewModel_PropertyChanged;
     }
 
-    [ObservableProperty] private bool _autoTag;
-    [ObservableProperty] private bool _applyGeneralFixes;
-    [ObservableProperty] private bool _unicodifyWholePage;
-    [ObservableProperty] private bool _findAndReplace;
-    [ObservableProperty] private bool _skipIfNoReplacement;
-    [ObservableProperty] private bool _skipIfOnlyMinorReplacementMade;
-    [ObservableProperty] private bool _regexTypoFixing;
-    [ObservableProperty] private bool _skipIfNoTypoFixed;
-    [ObservableProperty] private NormalFindAndReplaceRules _normalFindAndReplaceRules = [];
+    [ObservableProperty] public partial bool AutoTag { get;set; }
+    [ObservableProperty] public partial bool ApplyGeneralFixes { get; set; }
+    [ObservableProperty] public partial bool UnicodifyWholePage { get; set; }
+    [ObservableProperty] public partial bool FindAndReplace { get; set; }
+    [ObservableProperty] public partial bool SkipIfNoReplacement { get; set; }
+    [ObservableProperty] public partial bool SkipIfOnlyMinorReplacementMade { get; set; }
+    [ObservableProperty] public partial bool RegexTypoFixing { get; set; }
+    [ObservableProperty] public partial bool SkipIfNoTypoFixed { get; set; }
+    [ObservableProperty] public partial NormalFindAndReplaceRules NormalFindAndReplaceRules { get; set; }
 
     [RelayCommand]
     private async Task OpenNormalFindAndReplaceDialog()

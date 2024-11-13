@@ -4,8 +4,9 @@ public sealed partial class EditBoxViewModel : ViewModelBase
 {
     public EditBoxViewModel(IMessengerWrapper messenger)
     {
+        Content = string.Empty;
         messenger.Register<PageUpdatingMessage>(this, (recipient, message) => Content = message.NewContent);
     }
 
-    [ObservableProperty] private string _content = string.Empty;
+    [ObservableProperty] public partial string Content {  get; set; }
 }

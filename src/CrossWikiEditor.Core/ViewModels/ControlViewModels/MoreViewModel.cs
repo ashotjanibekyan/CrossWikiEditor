@@ -19,25 +19,35 @@ public sealed partial class MoreViewModel : ViewModelBase
         _dialogService = dialogService;
         _settingsService = settingsService;
         _moreOptions = _settingsService.GetCurrentSettings().MoreOptions;
+        IsAppendOrPrependEnabled = false;
+        IsAppend = true;
+        AppendOrPrependContent = string.Empty;
+        FileType = FileTaskType.None;
+        SourceFile = string.Empty;
+        ReplaceFileOrComment = string.Empty;
+        CategoryType = CategoryTaskType.None;
+        SourceCategory = string.Empty;
+        ReplaceCategory = string.Empty;
         PopulateProperties();
     }
 
-    [ObservableProperty] private bool _isAppendOrPrependEnabled = false;
-    [ObservableProperty] private bool _isAppend = true;
-    [ObservableProperty] private string _appendOrPrependContent = string.Empty;
-    [ObservableProperty] private int _appendOrPrependNewLines = 0;
-    [ObservableProperty] private bool _shouldSortMetadataAfterAppendOrPrepend;
 
-    [ObservableProperty] private FileTaskType _fileType = FileTaskType.None;
-    [ObservableProperty] private string _sourceFile = string.Empty;
-    [ObservableProperty] private string _replaceFileOrComment = string.Empty;
-    [ObservableProperty] private bool _skipIfNoFileChanged;
+    [ObservableProperty] public partial bool IsAppendOrPrependEnabled { get; set; }
+    [ObservableProperty] public partial bool IsAppend { get; set; }
+    [ObservableProperty] public partial string AppendOrPrependContent { get; set; }
+    [ObservableProperty] public partial int AppendOrPrependNewLines { get; set; }
+    [ObservableProperty] public partial bool ShouldSortMetadataAfterAppendOrPrepend { get; set; }
 
-    [ObservableProperty] private CategoryTaskType _categoryType = CategoryTaskType.None;
-    [ObservableProperty] private string _sourceCategory = string.Empty;
-    [ObservableProperty] private string _replaceCategory = string.Empty;
-    [ObservableProperty] private bool _skipIfNoCategoryChanged;
-    [ObservableProperty] private bool _removeSortkey;
+    [ObservableProperty] public partial FileTaskType FileType { get; set; }
+    [ObservableProperty] public partial string SourceFile { get; set; }
+    [ObservableProperty] public partial string ReplaceFileOrComment { get; set; }
+    [ObservableProperty] public partial bool SkipIfNoFileChanged { get; set; }
+
+    [ObservableProperty] public partial CategoryTaskType CategoryType { get; set; }
+    [ObservableProperty] public partial string SourceCategory { get; set; }
+    [ObservableProperty] public partial string ReplaceCategory { get; set; }
+    [ObservableProperty] public partial bool SkipIfNoCategoryChanged { get; set; }
+    [ObservableProperty] public partial bool RemoveSortkey { get; set; }
 
     partial void OnIsAppendOrPrependEnabledChanged(bool value) => _moreOptions.IsAppendPrependEnabled = value;
     partial void OnIsAppendChanged(bool value) => _moreOptions.IsAppend = value;

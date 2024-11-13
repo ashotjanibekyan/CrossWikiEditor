@@ -8,7 +8,7 @@
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0-preview1" />
         <PackageReference Include="CXuesong.MW.WikiClientLibrary" Version="0.8.0" />
         <PackageReference Include="HtmlAgilityPack" Version="1.11.70" />
         <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />

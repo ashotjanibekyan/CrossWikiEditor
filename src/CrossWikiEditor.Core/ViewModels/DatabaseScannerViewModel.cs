@@ -2,45 +2,70 @@ using System.Diagnostics;
 
 namespace CrossWikiEditor.Core.ViewModels;
 
-public sealed partial class DatabaseScannerViewModel(ISettingsService settingsService,
-    IWikiClientCache wikiClientCache,
-    IFileDialogService fileDialogService) : ViewModelBase
+public sealed partial class DatabaseScannerViewModel : ViewModelBase
 {
     private Task? _scannerTask;
     private Task? _updateUiTask;
     private CancellationTokenSource _scannerCancellationTokenSource = new();
     private readonly ConcurrentQueue<string> _titlesQueue = new();
+    private readonly ISettingsService _settingsService;
+    private readonly IWikiClientCache _wikiClientCache;
+    private readonly IFileDialogService _fileDialogService;
     public EventHandler<string>? _convertedTextChanged;
 
-    [ObservableProperty] private ObservableCollection<WikiNamespace> _subjectNamespaces = [];
-    [ObservableProperty] private ObservableCollection<WikiNamespace> _talkNamespaces = [];
-    [ObservableProperty] private ObservableCollection<WikiPageModel> _pages = [];
+    public DatabaseScannerViewModel(
+        ISettingsService settingsService,
+        IWikiClientCache wikiClientCache,
+        IFileDialogService fileDialogService)
+    {
+        _settingsService = settingsService;
+        _wikiClientCache = wikiClientCache;
+        _fileDialogService = fileDialogService;
+        SubjectNamespaces = [];
+        TalkNamespaces = [];
+        Pages = [];
+        TitleContains = string.Empty;
+        TitleNotContains = string.Empty;
+        DatabaseFile = string.Empty;
+        SiteName = string.Empty;
+        Base = string.Empty;
+        Generator = string.Empty;
+        Case = string.Empty;
+        MinStartYear = new(new DateTime(2000, 1, 1));
+        MinEndYear = new(new DateTime(2000, 1, 1));
+        ConvertedText = string.Empty;
+        NumberOfPagesOnEachSection = 25;
+    }
 
-    [ObservableProperty] private bool _isTitleContainsEnabled;
-    [ObservableProperty] private bool _isTitleNotContainsEnabled;
-    [ObservableProperty] private string _titleContains = string.Empty;
-    [ObservableProperty] private string _titleNotContains = string.Empty;
-    [ObservableProperty] private bool _isTitleContainsRegex;
-    [ObservableProperty] private bool _isTitleContainsCaseSensitive;
+    [ObservableProperty] public partial ObservableCollection<WikiNamespace> SubjectNamespaces { get; set; }
+    [ObservableProperty] public partial ObservableCollection<WikiNamespace> TalkNamespaces { get; set; }
+    [ObservableProperty] public partial ObservableCollection<WikiPageModel> Pages { get; set; }
 
-    [ObservableProperty] private bool _isAllTalkChecked;
-    [ObservableProperty] private bool _isAllSubjectChecked;
-    [ObservableProperty] private string _databaseFile = string.Empty;
-    [ObservableProperty] private string _siteName = string.Empty;
-    [ObservableProperty] private string _base = string.Empty;
-    [ObservableProperty] private string _generator = string.Empty;
-    [ObservableProperty] private string _case = string.Empty;
+    [ObservableProperty] public partial bool IsTitleContainsEnabled { get; set;}
+    [ObservableProperty] public partial bool IsTitleNotContainsEnabled { get; set; }
+    [ObservableProperty] public partial string TitleContains {get;set;}
+    [ObservableProperty] public partial string TitleNotContains { get; set; }
+    [ObservableProperty] public partial bool IsTitleContainsRegex {get;set;}
+    [ObservableProperty] public partial bool IsTitleContainsCaseSensitive { get; set; }
 
-    [ObservableProperty] private bool _isSearchDateChecked;
-    [ObservableProperty] private DateTimeOffset _selectedStartDate;
-    [ObservableProperty] private DateTimeOffset _selectedEndDate;
-    [ObservableProperty] private DateTimeOffset _minStartYear = new(new DateTime(2000, 1, 1));
-    [ObservableProperty] private DateTimeOffset _minEndYear = new(new DateTime(2000, 1, 1));
+    [ObservableProperty] public partial bool IsAllTalkChecked { get; set; }
+    [ObservableProperty] public partial bool IsAllSubjectChecked { get; set; }
+    [ObservableProperty] public partial string DatabaseFile { get; set; }
+    [ObservableProperty] public partial string SiteName { get; set; }
+    [ObservableProperty] public partial string Base { get; set; }
+    [ObservableProperty] public partial string Generator { get; set; }
+    [ObservableProperty] public partial string Case { get; set; }
 
-    [ObservableProperty] private string _convertedText = string.Empty;
-    [ObservableProperty] private bool _isAlphabetisedHeading;
-    [ObservableProperty] private int _numberOfPagesOnEachSection = 25;
-    [ObservableProperty] private bool _isNumericList;
+    [ObservableProperty] public partial bool IsSearchDateChecked { get; set; }
+    [ObservableProperty] public partial DateTimeOffset SelectedStartDate { get; set; }
+    [ObservableProperty] public partial DateTimeOffset SelectedEndDate { get; set; }
+    [ObservableProperty] public partial DateTimeOffset MinStartYear { get; set; }
+    [ObservableProperty] public partial DateTimeOffset MinEndYear { get; set; }
+
+    [ObservableProperty] public partial string ConvertedText { get; set; }
+    [ObservableProperty] public partial bool IsAlphabetisedHeading { get; set; }
+    [ObservableProperty] public partial int NumberOfPagesOnEachSection { get; set; }
+    [ObservableProperty] public partial bool IsNumericList { get; set; }
 
     partial void OnIsAllTalkCheckedChanged(bool value)
     {
@@ -59,7 +84,7 @@ public sealed partial class DatabaseScannerViewModel(ISettingsService settingsSe
     [RelayCommand]
     public async Task BrowseCommand()
     {
-        string[]? result = await fileDialogService.OpenFilePickerAsync("Open Database dump", false);
+        string[]? result = await _fileDialogService.OpenFilePickerAsync("Open Database dump", false);
         if (result is not { Length: 1 })
         {
             return;
@@ -80,7 +105,7 @@ public sealed partial class DatabaseScannerViewModel(ISettingsService settingsSe
 
         _updateUiTask = Task.Run(async () =>
         {
-            WikiSite wikiSite = await wikiClientCache.GetWikiSite(settingsService.CurrentApiUrl);
+            WikiSite wikiSite = await _wikiClientCache.GetWikiSite(_settingsService.CurrentApiUrl);
             while (_scannerTask != null)
             {
                 UpdateUi(wikiSite);

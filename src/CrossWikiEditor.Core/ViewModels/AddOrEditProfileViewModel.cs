@@ -1,23 +1,38 @@
 ﻿namespace CrossWikiEditor.Core.ViewModels;
 
-public sealed partial class AddOrEditProfileViewModel(IFileDialogService fileDialogService,
+public sealed partial class AddOrEditProfileViewModel : ViewModelBase
+{
+    private readonly IFileDialogService _fileDialogService;
+    private readonly IProfileRepository _profileRepository;
+    private readonly int _id;
+
+    public AddOrEditProfileViewModel(
+        IFileDialogService fileDialogService,
         IProfileRepository profileRepository,
         int id)
-    : ViewModelBase
-{
-    public bool IsEdit => id != -1;
+    {
+        _fileDialogService = fileDialogService;
+        _profileRepository = profileRepository;
+        _id = id;
+        Username = string.Empty;
+        Password = string.Empty;
+        DefaultSettingsPath = string.Empty;
+        Notes = string.Empty;
+    }
 
-    [ObservableProperty] private string _username = string.Empty;
-    [ObservableProperty] private string _password = string.Empty;
-    [ObservableProperty] private string _defaultSettingsPath = string.Empty;
-    [ObservableProperty] private bool _shouldSavePassword;
-    [ObservableProperty] private bool _shouldSelectDefaultSettings;
-    [ObservableProperty] private string _notes = string.Empty;
+    public bool IsEdit => _id != -1;
+
+    [ObservableProperty] public partial string Username { get; set; }
+    [ObservableProperty] public partial string Password { get; set; }
+    [ObservableProperty] public partial string DefaultSettingsPath { get; set; }
+    [ObservableProperty] public partial bool ShouldSavePassword { get; set; }
+    [ObservableProperty] public partial bool ShouldSelectDefaultSettings { get; set; }
+    [ObservableProperty] public partial string Notes { get; set; }
 
     [RelayCommand]
     private async Task Browse()
     {
-        string[]? result = await fileDialogService.OpenFilePickerAsync("Select settings file", false, ["*.xml"]);
+        string[]? result = await _fileDialogService.OpenFilePickerAsync("Select settings file", false, ["*.xml"]);
         if (result?.Length == 1)
         {
             DefaultSettingsPath = result[0];
@@ -56,12 +71,12 @@ public sealed partial class AddOrEditProfileViewModel(IFileDialogService fileDia
 
         if (IsEdit)
         {
-            profile.Id = id;
-            profileRepository.Update(profile);
+            profile.Id = _id;
+            _profileRepository.Update(profile);
         }
         else
         {
-            profileRepository.Insert(profile);
+            _profileRepository.Insert(profile);
         }
 
         dialog.Close(true);
