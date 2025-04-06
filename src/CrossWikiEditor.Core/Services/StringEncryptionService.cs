@@ -1,4 +1,8 @@
-﻿namespace CrossWikiEditor.Core.Services;
+﻿using System.IO;
+using System.Security.Cryptography;
+using System.Text;
+
+namespace CrossWikiEditor.Core.Services;
 
 public interface IStringEncryptionService
 {
@@ -6,8 +10,17 @@ public interface IStringEncryptionService
     string DecryptStringFromBytes(byte[] encryptedBytes);
 }
 
-public sealed class StringEncryptionService(byte[] key, byte[] iv) : IStringEncryptionService
+public sealed class StringEncryptionService : IStringEncryptionService
 {
+    private readonly byte[] _key;
+    private readonly byte[] _iv;
+
+    public StringEncryptionService(byte[] key, byte[] iv)
+    {
+        _key = key;
+        _iv = iv;
+    }
+
     private static readonly byte[] Salt =
     [
         130, 172, 223, 224, 181, 229, 138, 159, 136, 84, 68, 219, 64, 243, 115, 223, 223, 18, 132, 188, 12, 1, 108, 54, 184, 239, 230, 98, 195, 119,
@@ -17,8 +30,8 @@ public sealed class StringEncryptionService(byte[] key, byte[] iv) : IStringEncr
     public byte[] EncryptStringToBytes(string plainText)
     {
         using var aes = Aes.Create();
-        aes.Key = key;
-        aes.IV = iv;
+        aes.Key = _key;
+        aes.IV = _iv;
 
         using ICryptoTransform encryptor = aes.CreateEncryptor();
         using var ms = new MemoryStream();
@@ -35,8 +48,8 @@ public sealed class StringEncryptionService(byte[] key, byte[] iv) : IStringEncr
     public string DecryptStringFromBytes(byte[] encryptedBytes)
     {
         using var aes = Aes.Create();
-        aes.Key = key;
-        aes.IV = iv;
+        aes.Key = _key;
+        aes.IV = _iv;
 
         using ICryptoTransform decryptor = aes.CreateDecryptor();
         using var ms = new MemoryStream(encryptedBytes);

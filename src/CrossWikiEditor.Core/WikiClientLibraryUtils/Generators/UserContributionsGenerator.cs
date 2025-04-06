@@ -1,5 +1,14 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using CrossWikiEditor.Core.Utils;
+using Newtonsoft.Json.Linq;
+using WikiClientLibrary.Generators;
+using WikiClientLibrary.Generators.Primitive;
+using WikiClientLibrary.Infrastructures;
+using WikiClientLibrary.Pages;
 using WikiClientLibrary.Pages.Queries;
+using WikiClientLibrary.Sites;
 
 namespace CrossWikiEditor.Core.WikiClientLibraryUtils.Generators;
 

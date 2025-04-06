@@ -1,4 +1,12 @@
-﻿namespace CrossWikiEditor.Core.ViewModels;
+﻿using System.Threading.Tasks;
+using CrossWikiEditor.Core.Messages;
+using CrossWikiEditor.Core.Services;
+using CrossWikiEditor.Core.Utils;
+using CrossWikiEditor.Core.ViewModels.ControlViewModels;
+using CrossWikiEditor.Core.ViewModels.MenuViewModels;
+using CrossWikiEditor.Core.ViewModels.ReportViewModels;
+
+namespace CrossWikiEditor.Core.ViewModels;
 
 public sealed class MainWindowViewModel : ViewModelBase
 {

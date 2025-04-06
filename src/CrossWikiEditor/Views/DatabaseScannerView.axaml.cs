@@ -1,4 +1,5 @@
-﻿using Avalonia.Controls;
+﻿using System;
+using Avalonia.Controls;
 using CrossWikiEditor.Core;
 using CrossWikiEditor.Core.ViewModels;
 

@@ -1,9 +1,17 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
+using WikiClientLibrary.Generators.Primitive;
+using WikiClientLibrary.Pages;
+using WikiClientLibrary.Sites;
 
 namespace CrossWikiEditor.Core.WikiClientLibraryUtils.Generators;
 
-public sealed class AllUsersPageGenerator(WikiSite site) : WikiList<WikiPage>(site)
+public sealed class AllUsersPageGenerator : WikiList<WikiPage>
 {
+    public AllUsersPageGenerator(WikiSite site) : base(site)
+    {
+    }
+
     public string? StartFrom { get; set; } = null;
     public override string ListName => "allusers";
 

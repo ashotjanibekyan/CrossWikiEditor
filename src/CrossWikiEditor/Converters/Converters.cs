@@ -1,4 +1,5 @@
-﻿using Avalonia.Data.Converters;
+﻿using System.Linq;
+using Avalonia.Data.Converters;
 using CrossWikiEditor.Core.Models;
 
 namespace CrossWikiEditor.Converters;

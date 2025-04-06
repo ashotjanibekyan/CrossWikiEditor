@@ -3,7 +3,6 @@
         <OutputType>WinExe</OutputType>
         <TargetFramework>net9.0</TargetFramework>
         <LangVersion>preview</LangVersion>
-        <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
@@ -22,16 +21,16 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="11.2.2"/>
-        <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.1.0"/>
-        <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.2.2"/>
-        <PackageReference Include="Avalonia.Desktop" Version="11.2.2"/>
+        <PackageReference Include="Avalonia" Version="11.2.6" />
+        <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.2.0"/>
+        <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.2.6"/>
+        <PackageReference Include="Avalonia.Desktop" Version="11.2.6"/>
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.2"/>
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.6"/>
         <PackageReference Include="Avalonia.HtmlRenderer" Version="11.0.0"/>
-        <PackageReference Include="Avalonia.Themes.Simple" Version="11.2.2"/>
-        <PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.2.0.1"/>
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0"/>
+        <PackageReference Include="Avalonia.Themes.Simple" Version="11.2.6"/>
+        <PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.2.0.14" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.3" />
     </ItemGroup>
 
     <ItemGroup>

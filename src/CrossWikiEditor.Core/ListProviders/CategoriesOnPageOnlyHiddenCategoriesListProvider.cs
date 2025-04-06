@@ -1,10 +1,20 @@
-﻿namespace CrossWikiEditor.Core.ListProviders;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using CrossWikiEditor.Core.Models;
+using CrossWikiEditor.Core.Services;
+using CrossWikiEditor.Core.Services.WikiServices;
+using CrossWikiEditor.Core.Utils;
 
-public sealed class CategoriesOnPageOnlyHiddenCategoriesListProvider(
-    ICategoryService categoryService,
-    IDialogService dialogService,
-    ISettingsService settingsService) : CategoriesOnPageListProvider(categoryService, dialogService, settingsService)
+namespace CrossWikiEditor.Core.ListProviders;
+
+public sealed class CategoriesOnPageOnlyHiddenCategoriesListProvider : CategoriesOnPageListProvider
 {
+    public CategoriesOnPageOnlyHiddenCategoriesListProvider(ICategoryService categoryService,
+        IDialogService dialogService,
+        ISettingsService settingsService) : base(categoryService, dialogService, settingsService)
+    {
+    }
+
     public override string Title => "Categories on page (only hidden categories)";
 
     public override async Task<Result<List<WikiPageModel>>> MakeList(int limit)

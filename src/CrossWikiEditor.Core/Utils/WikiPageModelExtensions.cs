@@ -1,3 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using CrossWikiEditor.Core.Models;
+
 namespace CrossWikiEditor.Core.Utils;
 
 public static class WikiPageModelExtensions

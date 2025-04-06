@@ -1,9 +1,18 @@
+using System;
+using System.Linq;
+
 namespace CrossWikiEditor.Core.Settings;
 
-public sealed class UserWiki(string? languageCode, ProjectEnum project)
+public sealed class UserWiki
 {
-    public string? LanguageCode { get; set; } = languageCode;
-    public ProjectEnum Project { get; set; } = project;
+    public UserWiki(string? languageCode, ProjectEnum project)
+    {
+        LanguageCode = languageCode;
+        Project = project;
+    }
+
+    public string? LanguageCode { get; set; }
+    public ProjectEnum Project { get; set; }
 
     public string GetBaseUrl()
     {

@@ -1,20 +1,40 @@
-﻿namespace CrossWikiEditor.Core.Services.WikiServices;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using CrossWikiEditor.Core.Models;
+using CrossWikiEditor.Core.Utils;
+using CrossWikiEditor.Core.WikiClientLibraryUtils.Generators;
+using Serilog;
+using WikiClientLibrary.Generators;
+using WikiClientLibrary.Pages;
+using WikiClientLibrary.Sites;
 
-public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger)
-    : IPageService
+namespace CrossWikiEditor.Core.Services.WikiServices;
+
+public sealed class PageService : IPageService
 {
+    private readonly IWikiClientCache _wikiClientCache;
+    private readonly ILogger _logger;
+
+    public PageService(IWikiClientCache wikiClientCache, ILogger logger)
+    {
+        _wikiClientCache = wikiClientCache;
+        _logger = logger;
+    }
+
     public async Task<Result<List<WikiPageModel>>> FilesOnPage(string apiRoot, string pageName, int limit)
     {
         try
         {
-            WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
+            WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot);
             var gen = new FilesGenerator(site, pageName);
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
             return result.ConvertAll(x => new WikiPageModel(x));
         }
         catch (Exception e)
         {
-            logger.Fatal(e, "Failed to get pages. Site {Site}, page: {Page}, limit: {Limit}", apiRoot, pageName, limit);
+            _logger.Fatal(e, "Failed to get pages. Site {Site}, page: {Page}, limit: {Limit}", apiRoot, pageName, limit);
             return e;
         }
     }
@@ -23,7 +43,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
     {
         try
         {
-            WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
+            WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot);
             var gen = new RandomPageGenerator(site)
             {
                 NamespaceIds = namespaces,
@@ -40,7 +60,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
         }
         catch (Exception e)
         {
-            logger.Fatal(e, "Failed to get pages. Site {Root}, namespaces: {Namespaces}, limit: {Limit}", apiRoot, namespaces, limit);
+            _logger.Fatal(e, "Failed to get pages. Site {Root}, namespaces: {Namespaces}, limit: {Limit}", apiRoot, namespaces, limit);
             return e;
         }
     }
@@ -54,14 +74,14 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
                 fileName = $"File:{fileName}";
             }
 
-            WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
+            WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot);
             var gen = new FileUsageGenerator(site, fileName);
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
             return result.ConvertAll(x => new WikiPageModel(x));
         }
         catch (Exception e)
         {
-            logger.Fatal(e, "Failed to get pages. Site {Site}, file: {File}, limit: {Limit}", apiRoot, fileName, limit);
+            _logger.Fatal(e, "Failed to get pages. Site {Site}, file: {File}, limit: {Limit}", apiRoot, fileName, limit);
             return e;
         }
     }
@@ -70,14 +90,14 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
     {
         try
         {
-            WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
+            WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot);
             var gen = new LinksGenerator(site, pageName);
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
             return result.ConvertAll(x => new WikiPageModel(x));
         }
         catch (Exception e)
         {
-            logger.Fatal(e, "Failed to get pages. Site {Site}, page: {Page}, limit: {Limit}", apiRoot, pageName, limit);
+            _logger.Fatal(e, "Failed to get pages. Site {Site}, page: {Page}, limit: {Limit}", apiRoot, pageName, limit);
             return e;
         }
     }
@@ -86,7 +106,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
     {
         try
         {
-            WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
+            WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot);
             var gen = new RecentChangesGenerator(site)
             {
                 TypeFilters = RecentChangesFilterTypes.Create,
@@ -98,7 +118,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
         }
         catch (Exception e)
         {
-            logger.Fatal(e, "Failed to get pages. Site {Site}, limit: {Limit}", apiRoot, limit);
+            _logger.Fatal(e, "Failed to get pages. Site {Site}, limit: {Limit}", apiRoot, limit);
             return e;
         }
     }
@@ -107,7 +127,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
     {
         try
         {
-            WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
+            WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot);
             var gen = new TransclusionsGenerator(site, pageName)
             {
                 PaginationSize = 500
@@ -117,7 +137,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
         }
         catch (Exception e)
         {
-            logger.Fatal(e, "Failed to get pages. Site {Site}, page: {Page}, limit: {Limit}", apiRoot, pageName, limit);
+            _logger.Fatal(e, "Failed to get pages. Site {Site}, page: {Page}, limit: {Limit}", apiRoot, pageName, limit);
             return e;
         }
     }
@@ -126,7 +146,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
     {
         try
         {
-            WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
+            WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot);
             var gen = new TranscludedInGenerator(site, pageName)
             {
                 PaginationSize = 500,
@@ -137,7 +157,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
         }
         catch (Exception e)
         {
-            logger.Fatal(e, "Failed to get pages. Site {Site}, page: {Page}, namespaces: {Namespaces}, limit: {Limit}", apiRoot, pageName, namespaces,
+            _logger.Fatal(e, "Failed to get pages. Site {Site}, page: {Page}, namespaces: {Namespaces}, limit: {Limit}", apiRoot, pageName, namespaces,
                 limit);
             return e;
         }
@@ -152,7 +172,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
     {
         try
         {
-            WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
+            WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot);
             var gen = new BacklinksGenerator(site, title)
             {
                 PaginationSize = 500,
@@ -170,7 +190,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
         }
         catch (Exception e)
         {
-            logger.Fatal(e,
+            _logger.Fatal(e,
                 "Failed to get pages. Site {Site}, title: {Title}, namespaces: {Namespaces}, allowRedirectLinks: {AllowRedirectLinks}, filterRedirects: {FilterRedirects}, limit: {Limit}",
                 apiRoot, title, namespaces, allowRedirectLinks, filterRedirects, limit);
             return e;
@@ -181,14 +201,14 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
     {
         try
         {
-            WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
+            WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot);
             var gen = new PagesWithPropGenerator(site, param);
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
             return result.ConvertAll(x => new WikiPageModel(x));
         }
         catch (Exception e)
         {
-            logger.Fatal(e, "Failed to get pages. Site {Site}, property name: {Keyword}, limit: {Limit}", apiRoot, param, limit);
+            _logger.Fatal(e, "Failed to get pages. Site {Site}, property name: {Keyword}, limit: {Limit}", apiRoot, param, limit);
             return e;
         }
     }
@@ -219,7 +239,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
     {
         try
         {
-            WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
+            WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot);
             var gen = new AllPagesGeneratorEx(site)
             {
                 PaginationSize = 500,
@@ -231,7 +251,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
         }
         catch (Exception e)
         {
-            logger.Fatal(e, "Failed to get pages. Site {Site}, protectType: {ProtectType}, protectLevel: {ProtectLevel}, limit: {Limit}", apiRoot,
+            _logger.Fatal(e, "Failed to get pages. Site {Site}, protectType: {ProtectType}, protectLevel: {ProtectLevel}, limit: {Limit}", apiRoot,
                 protectType, protectLevel, limit);
             return e;
         }
@@ -241,7 +261,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
     {
         try
         {
-            WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
+            WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot);
             var gen = new SearchGenerator(site, keyword)
             {
                 NamespaceIds = namespaces,
@@ -252,7 +272,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
         }
         catch (Exception e)
         {
-            logger.Fatal(e, "Failed to get pages. Site {Site}, keyword: {Keyword}, namespaces: {Namespaces}, limit: {Limit}", apiRoot, keyword,
+            _logger.Fatal(e, "Failed to get pages. Site {Site}, keyword: {Keyword}, namespaces: {Namespaces}, limit: {Limit}", apiRoot, keyword,
                 namespaces, limit);
             return e;
         }
@@ -262,7 +282,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
     {
         try
         {
-            WikiSite wikiSite = await wikiClientCache.GetWikiSite(apiRoot);
+            WikiSite wikiSite = await _wikiClientCache.GetWikiSite(apiRoot);
             var gen = new RecentChangesGenerator(wikiSite)
             {
                 NamespaceIds = namespaces
@@ -272,7 +292,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
         }
         catch (Exception e)
         {
-            logger.Fatal(e, "Failed to get pages. Site: {ApiRoot}, namespaces: {Namespaces}, limit: {Limit}", apiRoot, namespaces, limit);
+            _logger.Fatal(e, "Failed to get pages. Site: {ApiRoot}, namespaces: {Namespaces}, limit: {Limit}", apiRoot, namespaces, limit);
             return e;
         }
     }
@@ -281,7 +301,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
     {
         try
         {
-            WikiSite wikiSite = await wikiClientCache.GetWikiSite(apiRoot);
+            WikiSite wikiSite = await _wikiClientCache.GetWikiSite(apiRoot);
             var gen = new ExternalUrlUsageGenerator(wikiSite)
             {
                 Url = url
@@ -292,7 +312,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
         }
         catch (Exception e)
         {
-            logger.Fatal(e, "Failed to get pages. Site: {ApiRoot}, Url: {Url} limit: {Limit}", apiRoot, url, limit);
+            _logger.Fatal(e, "Failed to get pages. Site: {ApiRoot}, Url: {Url} limit: {Limit}", apiRoot, url, limit);
             return e;
         }
     }
@@ -330,7 +350,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
     {
         try
         {
-            WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
+            WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot);
             var gen = new AllPagesGenerator(site)
             {
                 NamespaceId = namespaceId,
@@ -353,7 +373,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
         }
         catch (Exception e)
         {
-            logger.Fatal(e,
+            _logger.Fatal(e,
                 "Failed to get pages. Site {Site}, start title: {StartTitle}, prefix: {Prefix}, namespace: {NamespaceId}, redirectsFilter {RedirectsFilter}, limit: {Limit}",
                 apiRoot,
                 startTitle, prefix, namespaceId, redirectsFilter, limit);
@@ -369,7 +389,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
         }
         catch (Exception e)
         {
-            logger.Fatal(e, "Failed to get pages. {WikiPageModel}", page);
+            _logger.Fatal(e, "Failed to get pages. {WikiPageModel}", page);
             return e;
         }
     }
@@ -382,7 +402,7 @@ public sealed class PageService(IWikiClientCache wikiClientCache, ILogger logger
         }
         catch (Exception e)
         {
-            logger.Fatal(e, "Failed to get pages. {WikiPageModel}", page);
+            _logger.Fatal(e, "Failed to get pages. {WikiPageModel}", page);
             return e;
         }
     }

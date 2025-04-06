@@ -1,4 +1,7 @@
-﻿namespace CrossWikiEditor.Core.WikiClientLibraryUtils;
+﻿using System;
+using WikiClientLibrary.Generators;
+
+namespace CrossWikiEditor.Core.WikiClientLibraryUtils;
 
 public static class WikiSiteExtensions
 {

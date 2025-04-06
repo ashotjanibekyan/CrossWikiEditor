@@ -1,34 +1,55 @@
-﻿namespace CrossWikiEditor.Core.ViewModels.MenuViewModels;
+﻿using System;
+using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.Input;
+using CrossWikiEditor.Core.Services;
+using CrossWikiEditor.Core.Settings;
+using CrossWikiEditor.Core.Utils;
 
-public sealed partial class FileMenuViewModel(
-    IViewModelFactory viewModelFactory,
-    IFileDialogService fileDialogService,
-    ISettingsService settingsService,
-    IDialogService dialogService,
-    IMessengerWrapper messenger)
+namespace CrossWikiEditor.Core.ViewModels.MenuViewModels;
+
+public sealed partial class FileMenuViewModel
 {
+    private readonly IViewModelFactory _viewModelFactory;
+    private readonly IFileDialogService _fileDialogService;
+    private readonly ISettingsService _settingsService;
+    private readonly IDialogService _dialogService;
+    private readonly IMessengerWrapper _messenger;
+
+    public FileMenuViewModel(IViewModelFactory viewModelFactory,
+        IFileDialogService fileDialogService,
+        ISettingsService settingsService,
+        IDialogService dialogService,
+        IMessengerWrapper messenger)
+    {
+        _viewModelFactory = viewModelFactory;
+        _fileDialogService = fileDialogService;
+        _settingsService = settingsService;
+        _dialogService = dialogService;
+        _messenger = messenger;
+    }
+
     [RelayCommand]
     private void ResetToDefaultSettings()
     {
-        settingsService.SetCurrentSettings(settingsService.GetDefaultSettings());
+        _settingsService.SetCurrentSettings(_settingsService.GetDefaultSettings());
     }
 
     [RelayCommand]
     private async Task OpenSettings()
     {
-        string[]? result = await fileDialogService.OpenFilePickerAsync("Select settings", false, ["*.json"]);
+        string[]? result = await _fileDialogService.OpenFilePickerAsync("Select settings", false, ["*.json"]);
         if (result is {Length: 1})
         {
             string newSettingsPath = result[0];
             try
             {
-                UserSettings? newUserSettings = settingsService.GetSettingsByPath(newSettingsPath) ??
+                UserSettings? newUserSettings = _settingsService.GetSettingsByPath(newSettingsPath) ??
                                                 throw new InvalidOperationException("Failed to load the settings");
-                settingsService.SetCurrentSettings(newUserSettings);
+                _settingsService.SetCurrentSettings(newUserSettings);
             }
             catch (InvalidOperationException)
             {
-                await dialogService.Alert("Failed to load the settings", "Failed to load the settings. Are you sure it is in the correct format?");
+                await _dialogService.Alert("Failed to load the settings", "Failed to load the settings. Are you sure it is in the correct format?");
             }
         }
     }
@@ -36,7 +57,7 @@ public sealed partial class FileMenuViewModel(
     [RelayCommand]
     private void SaveSettings()
     {
-        settingsService.SaveCurrentSettings();
+        _settingsService.SaveCurrentSettings();
     }
 
     [RelayCommand]
@@ -54,7 +75,7 @@ public sealed partial class FileMenuViewModel(
     [RelayCommand]
     private async Task LoginProfiles()
     {
-        await dialogService.ShowDialog<bool>(viewModelFactory.GetProfilesViewModel());
+        await _dialogService.ShowDialog<bool>(_viewModelFactory.GetProfilesViewModel());
     }
 
     [RelayCommand]
@@ -72,6 +93,6 @@ public sealed partial class FileMenuViewModel(
     [RelayCommand]
     private void Exit()
     {
-        messenger.Send(new ExitApplicationMessage());
+        _messenger.Send(new ExitApplicationMessage());
     }
 }

@@ -1,9 +1,17 @@
-﻿namespace CrossWikiEditor.Core.ViewModels;
+﻿using CommunityToolkit.Mvvm.Input;
 
-public sealed partial class AlertViewModel(string title, string contentText) : ViewModelBase
+namespace CrossWikiEditor.Core.ViewModels;
+
+public sealed partial class AlertViewModel : ViewModelBase
 {
-    public string ContentText { get; } = contentText;
-    public string Title { get; } = title;
+    public AlertViewModel(string title, string contentText)
+    {
+        ContentText = contentText;
+        Title = title;
+    }
+
+    public string ContentText { get; }
+    public string Title { get; }
 
     [RelayCommand]
     private void Ok(IDialog dialog)

@@ -1,7 +1,28 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using CrossWikiEditor.Core.Models;
+using CrossWikiEditor.Core.Utils;
+using Serilog;
+using WikiClientLibrary;
+using WikiClientLibrary.Generators;
+using WikiClientLibrary.Pages;
+using WikiClientLibrary.Sites;
+
 namespace CrossWikiEditor.Core.Services.WikiServices;
 
-public sealed class CategoryService(IWikiClientCache wikiClientCache, ILogger logger) : ICategoryService
+public sealed class CategoryService : ICategoryService
 {
+    private readonly IWikiClientCache _wikiClientCache;
+    private readonly ILogger _logger;
+
+    public CategoryService(IWikiClientCache wikiClientCache, ILogger logger)
+    {
+        _wikiClientCache = wikiClientCache;
+        _logger = logger;
+    }
+
     public async Task<Result<List<WikiPageModel>>> GetCategoriesOf(string apiRoot, string pageName, int limit, bool includeHidden = true,
         bool onlyHidden = false)
     {
@@ -12,7 +33,7 @@ public sealed class CategoryService(IWikiClientCache wikiClientCache, ILogger lo
                 return new List<WikiPageModel>();
             }
 
-            WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
+            WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot);
             var catGen = new CategoriesGenerator(site, pageName)
             {
                 HiddenCategoryFilter = PropertyFilterOption.Disable
@@ -32,7 +53,7 @@ public sealed class CategoryService(IWikiClientCache wikiClientCache, ILogger lo
         }
         catch (Exception e)
         {
-            logger.Fatal(e,
+            _logger.Fatal(e,
                 "Failed to get pages. Site: {Site}, page: {Page}, includeHidden: {IncludeHidden}, onlyHidden: {OnlyHidden}, limit: {Limit}",
                 apiRoot, pageName, includeHidden, onlyHidden, limit);
             return e;
@@ -49,7 +70,7 @@ public sealed class CategoryService(IWikiClientCache wikiClientCache, ILogger lo
         try
         {
             List<List<WikiPage>> resultByDepth = [];
-            WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
+            WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot);
             var catGen = new CategoryMembersGenerator(new WikiPage(site, categoryName));
             resultByDepth.Add(await catGen.EnumPagesAsync().Take(limit).ToListAsync());
 
@@ -75,7 +96,7 @@ public sealed class CategoryService(IWikiClientCache wikiClientCache, ILogger lo
         }
         catch (Exception e)
         {
-            logger.Fatal(e, "Failed to get pages. Category: {CategoryName}, recursive: {Recursive}, limit: {Limit}", categoryName, recursive, limit);
+            _logger.Fatal(e, "Failed to get pages. Category: {CategoryName}, recursive: {Recursive}, limit: {Limit}", categoryName, recursive, limit);
             return e;
         }
     }
@@ -84,7 +105,7 @@ public sealed class CategoryService(IWikiClientCache wikiClientCache, ILogger lo
     {
         try
         {
-            WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
+            WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot);
             var gen = new AllCategoriesGenerator(site)
             {
                 StartTitle = startTitle
@@ -94,7 +115,7 @@ public sealed class CategoryService(IWikiClientCache wikiClientCache, ILogger lo
         }
         catch (Exception e)
         {
-            logger.Fatal(e, "Failed to get pages. Site {Site}, start title: {StartTitle}, limit: {Limit}", apiRoot, startTitle, limit);
+            _logger.Fatal(e, "Failed to get pages. Site {Site}, start title: {StartTitle}, limit: {Limit}", apiRoot, startTitle, limit);
             return e;
         }
     }

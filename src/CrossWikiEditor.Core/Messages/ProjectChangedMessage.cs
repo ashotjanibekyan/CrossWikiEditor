@@ -1,5 +1,11 @@
-﻿namespace CrossWikiEditor.Core.Messages;
+﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+using CrossWikiEditor.Core.Settings;
 
-public sealed class ProjectChangedMessage(ProjectEnum project) : ValueChangedMessage<ProjectEnum>(project)
+namespace CrossWikiEditor.Core.Messages;
+
+public sealed class ProjectChangedMessage : ValueChangedMessage<ProjectEnum>
 {
+    public ProjectChangedMessage(ProjectEnum project) : base(project)
+    {
+    }
 }

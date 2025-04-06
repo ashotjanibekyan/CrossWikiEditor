@@ -1,4 +1,7 @@
-﻿namespace CrossWikiEditor.Core.ViewModels;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+
+namespace CrossWikiEditor.Core.ViewModels;
 
 public sealed partial class SelectProtectionSelectionPageViewModel : ViewModelBase
 {

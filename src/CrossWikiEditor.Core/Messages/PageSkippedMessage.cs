@@ -1,9 +1,17 @@
+using CrossWikiEditor.Core.Models;
+
 namespace CrossWikiEditor.Core.Messages;
 
-public sealed class PageSkippedMessage(WikiPageModel wikiPageModel, SkipReason skipReason)
+public sealed class PageSkippedMessage
 {
-    public WikiPageModel Page { get; } = wikiPageModel;
-    public SkipReason SkipReason { get; } = skipReason;
+    public PageSkippedMessage(WikiPageModel wikiPageModel, SkipReason skipReason)
+    {
+        Page = wikiPageModel;
+        SkipReason = skipReason;
+    }
+
+    public WikiPageModel Page { get; }
+    public SkipReason SkipReason { get; }
 }
 
 public enum SkipReason

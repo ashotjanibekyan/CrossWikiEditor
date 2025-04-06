@@ -1,11 +1,21 @@
-﻿namespace CrossWikiEditor.Core.ListProviders;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using CrossWikiEditor.Core.Models;
+using CrossWikiEditor.Core.Services;
+using CrossWikiEditor.Core.Services.WikiServices;
+using CrossWikiEditor.Core.Utils;
 
-public sealed class LinksOnPageRedListProvider(
-    IDialogService dialogService,
-    IPageService pageService,
-    ISettingsService settingsService)
-    : LinksOnPageListProvider(dialogService, pageService, settingsService)
+namespace CrossWikiEditor.Core.ListProviders;
+
+public sealed class LinksOnPageRedListProvider : LinksOnPageListProvider
 {
+    public LinksOnPageRedListProvider(IDialogService dialogService,
+        IPageService pageService,
+        ISettingsService settingsService) : base(dialogService, pageService, settingsService)
+    {
+    }
+
     public override string Title => "Links on page (only redlinks)";
 
     public override async Task<Result<List<WikiPageModel>>> MakeList(int limit)

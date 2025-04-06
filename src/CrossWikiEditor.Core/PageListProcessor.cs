@@ -1,4 +1,16 @@
-﻿namespace CrossWikiEditor.Core;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using CrossWikiEditor.Core.Messages;
+using CrossWikiEditor.Core.Models;
+using CrossWikiEditor.Core.Services;
+using CrossWikiEditor.Core.Settings;
+using CrossWikiEditor.Core.Utils;
+using WikiClientLibrary.Pages;
+
+namespace CrossWikiEditor.Core;
 
 public sealed class PageListProcessor
 {

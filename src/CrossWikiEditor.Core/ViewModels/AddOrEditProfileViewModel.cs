@@ -1,4 +1,11 @@
-﻿namespace CrossWikiEditor.Core.ViewModels;
+﻿using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using CrossWikiEditor.Core.Models;
+using CrossWikiEditor.Core.Repositories;
+using CrossWikiEditor.Core.Services;
+
+namespace CrossWikiEditor.Core.ViewModels;
 
 public sealed partial class AddOrEditProfileViewModel : ViewModelBase
 {

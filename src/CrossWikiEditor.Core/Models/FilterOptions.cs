@@ -1,3 +1,7 @@
+using System.Collections.Generic;
+using System.Linq;
+using CrossWikiEditor.Core.Utils;
+
 namespace CrossWikiEditor.Core.Models;
 
 public enum SetOperations
@@ -6,24 +10,35 @@ public enum SetOperations
     Intersection
 }
 
-public class FilterOptions(
-    IReadOnlyCollection<int> namespacesToKeep,
-    string removeTitlesContaining,
-    string keepTitlesContaining,
-    bool useRegex,
-    bool sortAlphabetically,
-    bool removeDuplicates,
-    SetOperations setOperation,
-    IReadOnlyCollection<WikiPageModel> filterPages)
+public class FilterOptions
 {
-    public IReadOnlyCollection<int> NamespacesToKeep { get; } = namespacesToKeep;
-    public string RemoveTitlesContaining { get; } = removeTitlesContaining;
-    public string KeepTitlesContaining { get; } = keepTitlesContaining;
-    public bool UseRegex { get; } = useRegex;
-    public bool SortAlphabetically { get; } = sortAlphabetically;
-    public bool RemoveDuplicates { get; } = removeDuplicates;
-    public SetOperations SetOperation { get; } = setOperation;
-    public IReadOnlyCollection<WikiPageModel> FilterPages { get; } = filterPages;
+    public FilterOptions(IReadOnlyCollection<int> namespacesToKeep,
+        string removeTitlesContaining,
+        string keepTitlesContaining,
+        bool useRegex,
+        bool sortAlphabetically,
+        bool removeDuplicates,
+        SetOperations setOperation,
+        IReadOnlyCollection<WikiPageModel> filterPages)
+    {
+        NamespacesToKeep = namespacesToKeep;
+        RemoveTitlesContaining = removeTitlesContaining;
+        KeepTitlesContaining = keepTitlesContaining;
+        UseRegex = useRegex;
+        SortAlphabetically = sortAlphabetically;
+        RemoveDuplicates = removeDuplicates;
+        SetOperation = setOperation;
+        FilterPages = filterPages;
+    }
+
+    public IReadOnlyCollection<int> NamespacesToKeep { get; }
+    public string RemoveTitlesContaining { get; }
+    public string KeepTitlesContaining { get; }
+    public bool UseRegex { get; }
+    public bool SortAlphabetically { get; }
+    public bool RemoveDuplicates { get; }
+    public SetOperations SetOperation { get; }
+    public IReadOnlyCollection<WikiPageModel> FilterPages { get; }
 
     public List<WikiPageModel> PerRemoveDuplicates(IEnumerable<WikiPageModel> pages)
     {

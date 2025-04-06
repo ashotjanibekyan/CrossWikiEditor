@@ -1,4 +1,6 @@
-﻿namespace CrossWikiEditor.Core.Utils;
+﻿using CommunityToolkit.Mvvm.Messaging;
+
+namespace CrossWikiEditor.Core.Utils;
 
 public interface IMessengerWrapper
 {
@@ -12,23 +14,30 @@ public interface IMessengerWrapper
         where TMessage : class;
 }
 
-public sealed class MessengerWrapper(IMessenger messenger) : IMessengerWrapper
+public sealed class MessengerWrapper : IMessengerWrapper
 {
+    private readonly IMessenger _messenger;
+
+    public MessengerWrapper(IMessenger messenger)
+    {
+        _messenger = messenger;
+    }
+
     public TMessage Send<TMessage>(TMessage message)
         where TMessage : class
     {
-        return messenger.Send(message);
+        return _messenger.Send(message);
     }
 
     public void Register<TMessage>(object recipient, MessageHandler<object, TMessage> handler)
         where TMessage : class
     {
-        messenger.Register(recipient, handler);
+        _messenger.Register(recipient, handler);
     }
 
     public void Unregister<TMessage>(object recipient)
         where TMessage : class
     {
-        messenger.Unregister<TMessage>(recipient);
+        _messenger.Unregister<TMessage>(recipient);
     }
 }

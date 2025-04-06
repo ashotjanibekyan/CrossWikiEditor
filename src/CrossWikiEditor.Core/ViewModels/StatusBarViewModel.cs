@@ -1,3 +1,11 @@
+using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using CrossWikiEditor.Core.Messages;
+using CrossWikiEditor.Core.Services;
+using CrossWikiEditor.Core.Settings;
+using CrossWikiEditor.Core.Utils;
+
 namespace CrossWikiEditor.Core.ViewModels;
 
 public sealed partial class StatusBarViewModel : ViewModelBase

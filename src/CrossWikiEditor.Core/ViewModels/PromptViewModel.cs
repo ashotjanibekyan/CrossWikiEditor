@@ -1,10 +1,18 @@
-﻿namespace CrossWikiEditor.Core.ViewModels;
+﻿using CommunityToolkit.Mvvm.Input;
 
-public sealed partial class PromptViewModel(string title, string text) : ViewModelBase
+namespace CrossWikiEditor.Core.ViewModels;
+
+public sealed partial class PromptViewModel : ViewModelBase
 {
+    public PromptViewModel(string title, string text)
+    {
+        Title = title;
+        Text = text;
+    }
+
     public required bool IsNumeric { get; init; }
-    public string Title { get; } = title;
-    public string Text { get; } = text;
+    public string Title { get; }
+    public string Text { get; }
     public int Value { get; set; }
 
     [RelayCommand]

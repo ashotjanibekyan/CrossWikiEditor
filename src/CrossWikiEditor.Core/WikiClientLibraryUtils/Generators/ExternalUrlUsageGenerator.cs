@@ -1,9 +1,19 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Web;
+using Newtonsoft.Json.Linq;
+using WikiClientLibrary.Generators.Primitive;
+using WikiClientLibrary.Infrastructures;
+using WikiClientLibrary.Sites;
 
 namespace CrossWikiEditor.Core.WikiClientLibraryUtils.Generators;
 
-public sealed class ExternalUrlUsageGenerator(WikiSite site) : WikiList<ExternalUrlUsageItem>(site)
+public sealed class ExternalUrlUsageGenerator : WikiList<ExternalUrlUsageItem>
 {
+    public ExternalUrlUsageGenerator(WikiSite site) : base(site)
+    {
+    }
+
     public override string ListName => "exturlusage";
     public IEnumerable<int>? NamespaceIds { get; set; }
     public string? Url { get; set; }

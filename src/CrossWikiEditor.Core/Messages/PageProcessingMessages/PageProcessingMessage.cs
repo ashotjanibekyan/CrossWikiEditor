@@ -1,9 +1,19 @@
-﻿namespace CrossWikiEditor.Core;
+﻿using CrossWikiEditor.Core.Models;
+
+namespace CrossWikiEditor.Core;
 
 /// <summary>
 ///     This message is fired the program starts processing the page (local changes, before saving).
 /// </summary>
-public sealed class PageProcessingMessage(WikiPageModel wikiPageModel)
+public sealed class PageProcessingMessage
 {
-    public WikiPageModel Page { get; } = wikiPageModel;
+    /// <summary>
+    ///     This message is fired the program starts processing the page (local changes, before saving).
+    /// </summary>
+    public PageProcessingMessage(WikiPageModel wikiPageModel)
+    {
+        Page = wikiPageModel;
+    }
+
+    public WikiPageModel Page { get; }
 }

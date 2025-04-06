@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using CrossWikiEditor.Core.Models;
+
 namespace CrossWikiEditor.Core.Repositories;
 
 public interface IProfileRepository

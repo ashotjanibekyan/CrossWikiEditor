@@ -1,4 +1,9 @@
-﻿namespace CrossWikiEditor.Core.Services;
+﻿using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+using CrossWikiEditor.Core.Utils;
+
+namespace CrossWikiEditor.Core.Services;
 
 public interface ISystemService
 {

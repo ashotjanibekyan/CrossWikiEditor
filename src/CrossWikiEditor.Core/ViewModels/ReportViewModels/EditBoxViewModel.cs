@@ -1,4 +1,8 @@
-﻿namespace CrossWikiEditor.Core.ViewModels.ReportViewModels;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CrossWikiEditor.Core.Messages;
+using CrossWikiEditor.Core.Utils;
+
+namespace CrossWikiEditor.Core.ViewModels.ReportViewModels;
 
 public sealed partial class EditBoxViewModel : ViewModelBase
 {

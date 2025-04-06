@@ -1,4 +1,16 @@
-﻿namespace CrossWikiEditor.Core.Services.WikiServices;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using CrossWikiEditor.Core.Models;
+using CrossWikiEditor.Core.Utils;
+using CrossWikiEditor.Core.WikiClientLibraryUtils.Generators;
+using Serilog;
+using WikiClientLibrary.Generators;
+using WikiClientLibrary.Pages;
+using WikiClientLibrary.Sites;
+
+namespace CrossWikiEditor.Core.Services.WikiServices;
 
 public interface IUserService
 {
@@ -8,20 +20,30 @@ public interface IUserService
     Task<Result<List<WikiPageModel>>> GetUserContributionsPages(string apiRoot, string username, int limit);
 }
 
-public sealed class UserService(IWikiClientCache wikiClientCache, ISettingsService settingsService, ILogger logger)
-    : IUserService
+public sealed class UserService : IUserService
 {
+    private readonly IWikiClientCache _wikiClientCache;
+    private readonly ISettingsService _settingsService;
+    private readonly ILogger _logger;
+
+    public UserService(IWikiClientCache wikiClientCache, ISettingsService settingsService, ILogger logger)
+    {
+        _wikiClientCache = wikiClientCache;
+        _settingsService = settingsService;
+        _logger = logger;
+    }
+
     public async Task<Result<Unit>> Login(Profile profile, string apiRoot)
     {
         try
         {
-            WikiSite site = await wikiClientCache.GetWikiSite(apiRoot, true);
+            WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot, true);
             await site.LoginAsync(profile.Username, profile.Password);
             return Unit.Default;
         }
         catch (Exception e)
         {
-            logger.Information(e, "Failed to login");
+            _logger.Information(e, "Failed to login");
             return e;
         }
     }
@@ -30,7 +52,7 @@ public sealed class UserService(IWikiClientCache wikiClientCache, ISettingsServi
     {
         try
         {
-            var gen = new AllUsersPageGenerator(await wikiClientCache.GetWikiSite(apiRoot))
+            var gen = new AllUsersPageGenerator(await _wikiClientCache.GetWikiSite(apiRoot))
             {
                 StartFrom = startFrom
             };
@@ -39,7 +61,7 @@ public sealed class UserService(IWikiClientCache wikiClientCache, ISettingsServi
         }
         catch (Exception e)
         {
-            logger.Fatal(e, "Failed to get users. Api: {Api}, startFrom: {StartFrom}, limit: {Limit}", apiRoot, startFrom, limit);
+            _logger.Fatal(e, "Failed to get users. Api: {Api}, startFrom: {StartFrom}, limit: {Limit}", apiRoot, startFrom, limit);
             return e;
         }
     }
@@ -48,14 +70,14 @@ public sealed class UserService(IWikiClientCache wikiClientCache, ISettingsServi
     {
         try
         {
-            WikiSite site = await wikiClientCache.GetWikiSite(settingsService.CurrentApiUrl);
+            WikiSite site = await _wikiClientCache.GetWikiSite(_settingsService.CurrentApiUrl);
             var gen = new MyWatchlistGenerator(site);
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
             return result.ConvertAll(x => new WikiPageModel(x));
         }
         catch (Exception e)
         {
-            logger.Fatal(e, "Failed to get watchlist pages");
+            _logger.Fatal(e, "Failed to get watchlist pages");
             return e;
         }
     }
@@ -64,7 +86,7 @@ public sealed class UserService(IWikiClientCache wikiClientCache, ISettingsServi
     {
         try
         {
-            WikiSite site = await wikiClientCache.GetWikiSite(apiRoot);
+            WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot);
             var gen = new UserContributionsGenerator(site, new List<string> {username})
             {
                 IncludeTitle = true,
@@ -75,7 +97,7 @@ public sealed class UserService(IWikiClientCache wikiClientCache, ISettingsServi
         }
         catch (Exception e)
         {
-            logger.Fatal(e, "Failed to get user contrib pages");
+            _logger.Fatal(e, "Failed to get user contrib pages");
             return e;
         }
     }

@@ -1,7 +1,15 @@
-﻿namespace CrossWikiEditor.Core.WikiClientLibraryUtils.Generators;
+﻿using System.Collections.Generic;
+using WikiClientLibrary.Generators;
+using WikiClientLibrary.Sites;
 
-public sealed class AllPagesGeneratorEx(WikiSite site) : AllPagesGenerator(site)
+namespace CrossWikiEditor.Core.WikiClientLibraryUtils.Generators;
+
+public sealed class AllPagesGeneratorEx : AllPagesGenerator
 {
+    public AllPagesGeneratorEx(WikiSite site) : base(site)
+    {
+    }
+
     public string? ProtectionType { get; set; }
     public string? ProtectionLevel { get; set; }
 

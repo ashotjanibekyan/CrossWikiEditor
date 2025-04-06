@@ -1,4 +1,7 @@
-﻿namespace CrossWikiEditor.Core.Settings;
+﻿using System.Collections.Generic;
+using CrossWikiEditor.Core.ViewModels.ControlViewModels;
+
+namespace CrossWikiEditor.Core.Settings;
 
 /// <summary>
 ///     Corresponds to the <see cref="MoreViewModel" />
@@ -30,17 +33,27 @@ public enum CategoryTaskType
     Remove
 }
 
-public sealed class FileTask(FileTaskType type)
+public sealed class FileTask
 {
-    public FileTaskType Type { get; set; } = type;
+    public FileTask(FileTaskType type)
+    {
+        Type = type;
+    }
+
+    public FileTaskType Type { get; set; }
     public string SourceFile { get; set; } = string.Empty;
     public string ReplaceFileOrComment { get; set; } = string.Empty;
     public bool SkipIfNoChanged { get; set; }
 }
 
-public sealed class CategoryTask(CategoryTaskType type)
+public sealed class CategoryTask
 {
-    public CategoryTaskType Type { get; set; } = type;
+    public CategoryTask(CategoryTaskType type)
+    {
+        Type = type;
+    }
+
+    public CategoryTaskType Type { get; set; }
     public string SourceCategory { get; set; } = string.Empty;
     public string ReplaceCategory { get; set; } = string.Empty;
     public bool SkipIfNoChanged { get; set; }

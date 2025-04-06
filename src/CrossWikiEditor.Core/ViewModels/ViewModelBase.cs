@@ -1,3 +1,5 @@
-﻿namespace CrossWikiEditor.Core.ViewModels;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+
+namespace CrossWikiEditor.Core.ViewModels;
 
 public class ViewModelBase : ObservableObject;

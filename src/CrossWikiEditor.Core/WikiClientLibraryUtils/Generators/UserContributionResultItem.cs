@@ -1,10 +1,16 @@
 ﻿using Newtonsoft.Json;
+using WikiClientLibrary.Pages;
 
 namespace CrossWikiEditor.Core.WikiClientLibraryUtils.Generators;
 
-public sealed class UserContributionResultItem(WikiPage wikiPage)
+public sealed class UserContributionResultItem
 {
-    public WikiPage WikiPage { get; } = wikiPage;
+    public UserContributionResultItem(WikiPage wikiPage)
+    {
+        WikiPage = wikiPage;
+    }
+
+    public WikiPage WikiPage { get; }
 
     [JsonProperty("userid")] public int UserId { get; set; }
 

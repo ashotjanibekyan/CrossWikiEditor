@@ -1,4 +1,9 @@
-﻿namespace CrossWikiEditor.Core.Utils;
+﻿using System;
+using System.IO;
+using System.Text;
+using System.Text.RegularExpressions;
+
+namespace CrossWikiEditor.Core.Utils;
 
 public static class StringExtensions
 {

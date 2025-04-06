@@ -1,4 +1,11 @@
-﻿namespace CrossWikiEditor.Core.Utils;
+﻿using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using CrossWikiEditor.Core.Messages;
+using CrossWikiEditor.Core.Services;
+using CrossWikiEditor.Core.Services.WikiServices;
+using WikiClientLibrary.Sites;
+
+namespace CrossWikiEditor.Core.Utils;
 
 public sealed class LanguageSpecificRegexes : IAsyncInitialization
 {

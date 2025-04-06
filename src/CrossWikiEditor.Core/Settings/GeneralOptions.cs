@@ -1,4 +1,6 @@
-﻿namespace CrossWikiEditor.Core.Settings;
+﻿using CrossWikiEditor.Core.ViewModels.ControlViewModels;
+
+namespace CrossWikiEditor.Core.Settings;
 
 /// <summary>
 ///     Corresponds to the <see cref="OptionsViewModel" />

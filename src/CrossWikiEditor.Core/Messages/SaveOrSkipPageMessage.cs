@@ -1,6 +1,11 @@
 namespace CrossWikiEditor.Core.Messages;
 
-public sealed class SaveOrSkipPageMessage(bool shouldSavePage)
+public sealed class SaveOrSkipPageMessage
 {
-    public bool ShouldSavePage { get; } = shouldSavePage;
+    public SaveOrSkipPageMessage(bool shouldSavePage)
+    {
+        ShouldSavePage = shouldSavePage;
+    }
+
+    public bool ShouldSavePage { get; }
 }

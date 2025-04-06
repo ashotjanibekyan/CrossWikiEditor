@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace CrossWikiEditor.Core.Models;
 
 public sealed class DbPage

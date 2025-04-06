@@ -1,3 +1,9 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using CrossWikiEditor.Core.Models;
+using CrossWikiEditor.Core.Utils;
+using WikiClientLibrary.Generators;
+
 namespace CrossWikiEditor.Core.Services.WikiServices;
 
 public interface IPageService

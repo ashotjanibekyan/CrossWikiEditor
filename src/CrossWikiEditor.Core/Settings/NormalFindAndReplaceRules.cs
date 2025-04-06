@@ -1,4 +1,6 @@
-﻿namespace CrossWikiEditor.Core.Settings;
+﻿using System.Collections.Generic;
+
+namespace CrossWikiEditor.Core.Settings;
 
 public sealed class NormalFindAndReplaceRules : List<NormalFindAndReplaceRule>
 {

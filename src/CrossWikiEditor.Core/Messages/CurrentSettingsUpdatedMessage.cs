@@ -1,5 +1,11 @@
-﻿namespace CrossWikiEditor.Core.Messages;
+﻿using CommunityToolkit.Mvvm.Messaging.Messages;
+using CrossWikiEditor.Core.Settings;
 
-public sealed class CurrentSettingsUpdatedMessage(UserSettings newSettings) : ValueChangedMessage<UserSettings>(newSettings)
+namespace CrossWikiEditor.Core.Messages;
+
+public sealed class CurrentSettingsUpdatedMessage : ValueChangedMessage<UserSettings>
 {
+    public CurrentSettingsUpdatedMessage(UserSettings newSettings) : base(newSettings)
+    {
+    }
 }

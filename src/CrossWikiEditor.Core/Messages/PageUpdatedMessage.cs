@@ -1,6 +1,13 @@
-﻿namespace CrossWikiEditor.Core.Messages;
+﻿using CrossWikiEditor.Core.Models;
 
-public sealed class PageUpdatedMessage(WikiPageModel wikiPageModel)
+namespace CrossWikiEditor.Core.Messages;
+
+public sealed class PageUpdatedMessage
 {
-    public WikiPageModel Page { get; } = wikiPageModel;
+    public PageUpdatedMessage(WikiPageModel wikiPageModel)
+    {
+        Page = wikiPageModel;
+    }
+
+    public WikiPageModel Page { get; }
 }

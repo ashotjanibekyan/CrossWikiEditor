@@ -1,11 +1,30 @@
+using System;
+using System.Collections.Generic;
+using CrossWikiEditor.Core.Models;
+using CrossWikiEditor.Core.Services.WikiServices;
+using CrossWikiEditor.Core.Utils;
+using HtmlAgilityPack;
+using Serilog;
+
 namespace CrossWikiEditor.Core.Services.HtmlParsers;
 
-public sealed class HtmlAgilityPackParser(ILogger logger, ISettingsService settingsService, IWikiClientCache wikiClientCache)
+public sealed class HtmlAgilityPackParser
 {
+    private readonly ILogger _logger;
+    private readonly ISettingsService _settingsService;
+    private readonly IWikiClientCache _wikiClientCache;
+
+    public HtmlAgilityPackParser(ILogger logger, ISettingsService settingsService, IWikiClientCache wikiClientCache)
+    {
+        _logger = logger;
+        _settingsService = settingsService;
+        _wikiClientCache = wikiClientCache;
+    }
+
     public List<WikiPageModel> GetPages(string html)
     {
-        string baseUrl = settingsService.GetCurrentSettings().GetBaseUrl();
-        string apiUrl = settingsService.GetCurrentSettings().GetApiUrl();
+        string baseUrl = _settingsService.GetCurrentSettings().GetBaseUrl();
+        string apiUrl = _settingsService.GetCurrentSettings().GetApiUrl();
         var doc = new HtmlDocument();
         doc.LoadHtml(html);
 
@@ -25,12 +44,12 @@ public sealed class HtmlAgilityPackParser(ILogger logger, ISettingsService setti
                 if (hrefValue.Contains(baseUrl))
                 {
                     urls.Add(new WikiPageModel(Tools.GetPageTitleFromUrl(hrefValue[hrefValue.IndexOf(baseUrl, StringComparison.Ordinal)..]), apiUrl,
-                        wikiClientCache));
+                        _wikiClientCache));
                 }
             }
             catch (Exception ex)
             {
-                logger.Debug(ex, $"{nameof(HtmlAgilityPackParser)} failed to parse a URL");
+                _logger.Debug(ex, $"{nameof(HtmlAgilityPackParser)} failed to parse a URL");
             }
         }
 

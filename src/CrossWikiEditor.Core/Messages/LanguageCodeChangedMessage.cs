@@ -1,5 +1,10 @@
-﻿namespace CrossWikiEditor.Core.Messages;
+﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 
-public sealed class LanguageCodeChangedMessage(string languageCode) : ValueChangedMessage<string>(languageCode)
+namespace CrossWikiEditor.Core.Messages;
+
+public sealed class LanguageCodeChangedMessage : ValueChangedMessage<string>
 {
+    public LanguageCodeChangedMessage(string languageCode) : base(languageCode)
+    {
+    }
 }

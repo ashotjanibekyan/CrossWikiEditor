@@ -1,3 +1,5 @@
+using System;
+
 namespace CrossWikiEditor.Core.Models;
 
 public sealed class DbRevision

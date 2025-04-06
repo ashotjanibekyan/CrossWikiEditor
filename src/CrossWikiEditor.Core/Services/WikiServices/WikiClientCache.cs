@@ -1,4 +1,14 @@
-﻿namespace CrossWikiEditor.Core.Services.WikiServices;
+﻿using System;
+using System.Collections.Concurrent;
+using System.Threading.Tasks;
+using CrossWikiEditor.Core.Models;
+using CrossWikiEditor.Core.Utils;
+using Serilog;
+using WikiClientLibrary.Client;
+using WikiClientLibrary.Pages;
+using WikiClientLibrary.Sites;
+
+namespace CrossWikiEditor.Core.Services.WikiServices;
 
 public interface IWikiClientCache
 {
@@ -7,10 +17,16 @@ public interface IWikiClientCache
     Task<Result<WikiPageModel>> GetWikiPageModel(string apiRoot, string title);
 }
 
-public sealed class WikiClientCache(ILogger logger) : IWikiClientCache
+public sealed class WikiClientCache : IWikiClientCache
 {
     private readonly ConcurrentDictionary<string, WikiClient> _wikiClients = new();
     private readonly ConcurrentDictionary<string, WikiSite> _wikiSites = new();
+    private readonly ILogger _logger;
+
+    public WikiClientCache(ILogger logger)
+    {
+        _logger = logger;
+    }
 
     public WikiClient GetWikiClient(string apiRoot, bool forceNew = false)
     {
@@ -44,7 +60,7 @@ public sealed class WikiClientCache(ILogger logger) : IWikiClientCache
         }
         catch (Exception e)
         {
-            logger.Information(e, "Failed to create WikiPage for {} on {}", title, apiRoot);
+            _logger.Information(e, "Failed to create WikiPage for {} on {}", title, apiRoot);
             return e;
         }
     }

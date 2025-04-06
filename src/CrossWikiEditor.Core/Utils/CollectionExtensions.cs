@@ -1,4 +1,9 @@
-﻿namespace CrossWikiEditor.Core.Utils;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+
+namespace CrossWikiEditor.Core.Utils;
 
 public static class CollectionExtensions
 {

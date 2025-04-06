@@ -1,11 +1,16 @@
-﻿using System.Reflection;
+﻿using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using CrossWikiEditor.Core.Messages;
+using CrossWikiEditor.Core.Services;
+using CrossWikiEditor.Core.Settings;
+using CrossWikiEditor.Core.Utils;
 
 namespace CrossWikiEditor.Core.ViewModels.ControlViewModels;
 
 public sealed partial class OptionsViewModel : ViewModelBase
 {
     private readonly IDialogService _dialogService;
-    private readonly ISettingsService _settingsService;
     private GeneralOptions _generalOptions;
 
     public OptionsViewModel(
@@ -19,22 +24,39 @@ public sealed partial class OptionsViewModel : ViewModelBase
             PopulateProperties();
         });
         _dialogService = dialogService;
-        _settingsService = settingsService;
-        _generalOptions = _settingsService.GetCurrentSettings().GeneralOptions;
+        _generalOptions = settingsService.GetCurrentSettings().GeneralOptions;
         NormalFindAndReplaceRules = [];
         PopulateProperties();
-        PropertyChanged += OptionsViewModel_PropertyChanged;
     }
 
+    
     [ObservableProperty] public partial bool AutoTag { get; set; }
+    partial void OnAutoTagChanged(bool value) => _generalOptions.AutoTag = value;
+    
     [ObservableProperty] public partial bool ApplyGeneralFixes { get; set; }
+    partial void OnApplyGeneralFixesChanged(bool value) => _generalOptions.ApplyGeneralFixes = value;
+    
     [ObservableProperty] public partial bool UnicodifyWholePage { get; set; }
+    partial void OnUnicodifyWholePageChanged(bool value) => _generalOptions.UnicodifyWholePage = value;
+    
     [ObservableProperty] public partial bool FindAndReplace { get; set; }
+    partial void OnFindAndReplaceChanged(bool value) => _generalOptions.FindAndReplace = value;
+    
     [ObservableProperty] public partial bool SkipIfNoReplacement { get; set; }
+    partial void OnSkipIfNoReplacementChanged(bool value) => _generalOptions.SkipIfNoReplacement = value;
+    
     [ObservableProperty] public partial bool SkipIfOnlyMinorReplacementMade { get; set; }
+    partial void OnSkipIfOnlyMinorReplacementMadeChanged(bool value) => _generalOptions.SkipIfOnlyMinorReplacementMade = value;
+    
     [ObservableProperty] public partial bool RegexTypoFixing { get; set; }
-    [ObservableProperty] public partial bool SkipIfNoTypoFixed { get; set; }
+    partial void OnRegexTypoFixingChanged(bool value) => _generalOptions.RegexTypoFixing = value;
+    
+    [ObservableProperty] 
+    public partial bool SkipIfNoTypoFixed { get; set; }
+    partial void OnSkipIfNoTypoFixedChanged(bool value) => _generalOptions.SkipIfNoTypoFixed = value;
+    
     [ObservableProperty] public partial NormalFindAndReplaceRules NormalFindAndReplaceRules { get; set; }
+    partial void OnNormalFindAndReplaceRulesChanged(NormalFindAndReplaceRules value) => _generalOptions.NormalFindAndReplaceRules = value;
 
     [RelayCommand]
     private async Task OpenNormalFindAndReplaceDialog()
@@ -45,18 +67,6 @@ public sealed partial class OptionsViewModel : ViewModelBase
         {
             NormalFindAndReplaceRules = result;
         }
-    }
-
-    private void OptionsViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName is null)
-        {
-            return;
-        }
-
-        PropertyInfo property = typeof(OptionsViewModel).GetProperty(e.PropertyName!)!;
-        PropertyInfo targetProperty = typeof(GeneralOptions).GetProperty(e.PropertyName)!;
-        targetProperty.SetValue(_generalOptions, property.GetValue(this));
     }
 
     private void PopulateProperties()

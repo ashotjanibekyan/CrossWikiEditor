@@ -1,4 +1,6 @@
-﻿namespace CrossWikiEditor.Core.Utils;
+﻿using System;
+
+namespace CrossWikiEditor.Core.Utils;
 
 public readonly struct Unit : IEquatable<Unit>, IComparable<Unit>
 {

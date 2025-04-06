@@ -1,4 +1,10 @@
-﻿namespace CrossWikiEditor.Core.ViewModels.ControlViewModels;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CrossWikiEditor.Core.Messages;
+using CrossWikiEditor.Core.Services;
+using CrossWikiEditor.Core.Settings;
+using CrossWikiEditor.Core.Utils;
+
+namespace CrossWikiEditor.Core.ViewModels.ControlViewModels;
 
 public sealed partial class MoreViewModel : ViewModelBase
 {
