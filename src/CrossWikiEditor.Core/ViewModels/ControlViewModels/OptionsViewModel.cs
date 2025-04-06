@@ -25,7 +25,6 @@ public sealed partial class OptionsViewModel : ViewModelBase
         });
         _dialogService = dialogService;
         _generalOptions = settingsService.GetCurrentSettings().GeneralOptions;
-        NormalFindAndReplaceRules = [];
         PopulateProperties();
     }
 
@@ -54,8 +53,8 @@ public sealed partial class OptionsViewModel : ViewModelBase
     [ObservableProperty] 
     public partial bool SkipIfNoTypoFixed { get; set; }
     partial void OnSkipIfNoTypoFixedChanged(bool value) => _generalOptions.SkipIfNoTypoFixed = value;
-    
-    [ObservableProperty] public partial NormalFindAndReplaceRules NormalFindAndReplaceRules { get; set; }
+
+    [ObservableProperty] public partial NormalFindAndReplaceRules NormalFindAndReplaceRules { get; set; } = [];
     partial void OnNormalFindAndReplaceRulesChanged(NormalFindAndReplaceRules value) => _generalOptions.NormalFindAndReplaceRules = value;
 
     [RelayCommand]
