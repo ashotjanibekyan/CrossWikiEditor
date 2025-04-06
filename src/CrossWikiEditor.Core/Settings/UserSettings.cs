@@ -3,9 +3,10 @@ namespace CrossWikiEditor.Core.Settings;
 public sealed class UserSettings
 {
     public UserWiki UserWiki { get; set; } = new("hy", ProjectEnum.Wikipedia);
-    public SkipOptions SkipOptions { get; set; } = new();
     public GeneralOptions GeneralOptions { get; set; } = new();
     public MoreOptions MoreOptions { get; set; } = new();
+    public DisambigOptions DisambigOptions { get; set; } = new();
+    public SkipOptions SkipOptions { get; set; } = new();
     public bool IsBotMode { get; set; }
     public string DefaultSummary { get; set; } = string.Empty;
 
