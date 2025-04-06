@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CrossWikiEditor.Core.Utils;
+using CrossWikiEditor.Core.Utils.Extensions;
 using Newtonsoft.Json.Linq;
 using WikiClientLibrary.Generators;
 using WikiClientLibrary.Generators.Primitive;

@@ -1,4 +1,4 @@
-﻿namespace CrossWikiEditor.Core.Utils;
+﻿namespace CrossWikiEditor.Core.Utils.Extensions;
 
 public static class NumberExtensions
 {

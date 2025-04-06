@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace CrossWikiEditor.Core.Utils;
+namespace CrossWikiEditor.Core.Utils.Extensions;
 
 public static class CollectionExtensions
 {

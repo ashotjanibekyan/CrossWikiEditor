@@ -7,6 +7,7 @@ using CommunityToolkit.Mvvm.Input;
 using CrossWikiEditor.Core.ListProviders;
 using CrossWikiEditor.Core.Models;
 using CrossWikiEditor.Core.Utils;
+using CrossWikiEditor.Core.Utils.Extensions;
 
 namespace CrossWikiEditor.Core.ViewModels;
 

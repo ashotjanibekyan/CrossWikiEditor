@@ -1,4 +1,5 @@
 using System.Text;
+using CrossWikiEditor.Core.Utils.Extensions;
 
 namespace CrossWikiEditor.Tests.ViewModels;
 

@@ -17,6 +17,7 @@ using CrossWikiEditor.Core.Models;
 using CrossWikiEditor.Core.Services;
 using CrossWikiEditor.Core.Services.WikiServices;
 using CrossWikiEditor.Core.Utils;
+using CrossWikiEditor.Core.Utils.Extensions;
 using Serilog;
 
 namespace CrossWikiEditor.Core.ViewModels;

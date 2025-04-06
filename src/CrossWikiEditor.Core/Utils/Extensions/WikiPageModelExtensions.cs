@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using CrossWikiEditor.Core.Models;
 
-namespace CrossWikiEditor.Core.Utils;
+namespace CrossWikiEditor.Core.Utils.Extensions;
 
 public static class WikiPageModelExtensions
 {

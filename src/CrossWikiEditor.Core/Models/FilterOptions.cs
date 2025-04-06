@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CrossWikiEditor.Core.Utils;
+using CrossWikiEditor.Core.Utils.Extensions;
 
 namespace CrossWikiEditor.Core.Models;
 

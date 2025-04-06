@@ -1,4 +1,5 @@
 ﻿using CrossWikiEditor.Core.Services.WikiServices;
+using CrossWikiEditor.Core.Utils.Extensions;
 using WikiClientLibrary.Pages;
 
 namespace CrossWikiEditor.Tests.Utils;

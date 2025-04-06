@@ -5,6 +5,7 @@ using CrossWikiEditor.Core.Models;
 using CrossWikiEditor.Core.Repositories;
 using CrossWikiEditor.Core.Services.WikiServices;
 using CrossWikiEditor.Core.Utils;
+using CrossWikiEditor.Core.Utils.Extensions;
 using CrossWikiEditor.Core.ViewModels;
 using WikiClientLibrary.Sites;
 

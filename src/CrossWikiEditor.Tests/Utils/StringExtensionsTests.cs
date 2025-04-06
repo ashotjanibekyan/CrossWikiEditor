@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using CrossWikiEditor.Core.Utils.Extensions;
 
 namespace CrossWikiEditor.Tests.Utils;
 

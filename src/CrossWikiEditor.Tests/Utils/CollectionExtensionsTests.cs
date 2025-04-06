@@ -1,4 +1,6 @@
-﻿namespace CrossWikiEditor.Tests.Utils;
+﻿using CrossWikiEditor.Core.Utils.Extensions;
+
+namespace CrossWikiEditor.Tests.Utils;
 
 public sealed class CollectionExtensionsTests
 {

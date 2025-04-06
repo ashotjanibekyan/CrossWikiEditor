@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CrossWikiEditor.Core.Settings;
 using CrossWikiEditor.Core.Utils;
+using CrossWikiEditor.Core.Utils.Extensions;
 
 namespace CrossWikiEditor.Core.ViewModels.ControlViewModels;
 

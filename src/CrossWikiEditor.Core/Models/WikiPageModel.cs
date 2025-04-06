@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using CrossWikiEditor.Core.Services.WikiServices;
 using CrossWikiEditor.Core.Utils;
+using CrossWikiEditor.Core.Utils.Extensions;
 using WikiClientLibrary.Pages;
 using WikiClientLibrary.Sites;
 

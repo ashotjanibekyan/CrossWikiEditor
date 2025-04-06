@@ -2,6 +2,7 @@
 using System.Text;
 using System.Web;
 using CommunityToolkit.Mvvm.Messaging;
+using CrossWikiEditor.Core.Utils.Extensions;
 
 namespace CrossWikiEditor.Tests.ViewModels;
 

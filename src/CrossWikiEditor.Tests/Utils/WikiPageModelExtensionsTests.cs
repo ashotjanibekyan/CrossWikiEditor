@@ -1,3 +1,5 @@
+using CrossWikiEditor.Core.Utils.Extensions;
+
 namespace CrossWikiEditor.Tests.Utils;
 
 public class WikiPageModelExtensionsTests : BaseTest
