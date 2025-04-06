@@ -1,170 +1,186 @@
-﻿<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:viewModels="clr-namespace:CrossWikiEditor.Core.ViewModels;assembly=CrossWikiEditor.Core"
-        xmlns:controls="clr-namespace:CrossWikiEditor.Controls"
-        xmlns:models="clr-namespace:CrossWikiEditor.Core.Models;assembly=CrossWikiEditor.Core"
-        xmlns:avaloniaEdit="https://github.com/avaloniaui/avaloniaedit"
-        mc:Ignorable="d"
-        d:DesignWidth="800"
-        d:DesignHeight="450"
-        x:DataType="viewModels:DatabaseScannerViewModel"
-        x:Class="CrossWikiEditor.Views.DatabaseScannerView"
-        x:Name="This"
-        Title="DatabaseScannerView">
+﻿<Window
+    x:Class="CrossWikiEditor.Views.DatabaseScannerView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:avaloniaEdit="https://github.com/avaloniaui/avaloniaedit"
+    xmlns:controls="clr-namespace:CrossWikiEditor.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:CrossWikiEditor.Core.Models;assembly=CrossWikiEditor.Core"
+    xmlns:viewModels="clr-namespace:CrossWikiEditor.Core.ViewModels;assembly=CrossWikiEditor.Core"
+    x:Name="This"
+    Title="DatabaseScannerView"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="viewModels:DatabaseScannerViewModel"
+    mc:Ignorable="d">
     <Grid RowDefinitions="Auto,Auto">
-        <Grid Grid.Row="0"
-              ColumnDefinitions="*,Auto">
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
             <TabControl Grid.Column="0">
                 <TabItem Header="Database">
-                    <Grid ColumnDefinitions="Auto,*,Auto"
-                          RowDefinitions="1*,1*,1*,1*,1*">
-                        <TextBlock Grid.Row="0"
-                                   Grid.Column="0"
-                                   Text="Database file:" />
-                        <TextBox Grid.Row="0"
-                                 Grid.Column="1"
-                                 Text="{Binding DatabaseFile}"
-                                 IsReadOnly="True" />
-                        <Button Grid.Row="0"
-                                Grid.Column="2"
-                                Content="Browse..."
-                                Command="{Binding BrowseCommand}" />
+                    <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="1*,1*,1*,1*,1*">
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Text="Database file:" />
+                        <TextBox
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            IsReadOnly="True"
+                            Text="{Binding DatabaseFile}" />
+                        <Button
+                            Grid.Row="0"
+                            Grid.Column="2"
+                            Command="{Binding BrowseCommand}"
+                            Content="Browse..." />
 
-                        <TextBlock Grid.Row="1"
-                                   Grid.Column="0"
-                                   Text="Site name:" />
-                        <TextBox Grid.Row="1"
-                                 Grid.Column="1"
-                                 Grid.ColumnSpan="2"
-                                 Text="{Binding SiteName}"
-                                 IsReadOnly="True" />
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Text="Site name:" />
+                        <TextBox
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="2"
+                            IsReadOnly="True"
+                            Text="{Binding SiteName}" />
 
-                        <TextBlock Grid.Row="2"
-                                   Grid.Column="0"
-                                   Text="Base:" />
-                        <TextBlock Grid.Row="2"
-                                   Grid.Column="1"
-                                   IsVisible="{Binding Base, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
-                            <controls:Hyperlink Href="{Binding Base}"
-                                                Text="Main page" />
+                        <TextBlock
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            Text="Base:" />
+                        <TextBlock
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            IsVisible="{Binding Base, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                            <controls:Hyperlink Href="{Binding Base}" Text="Main page" />
                         </TextBlock>
 
-                        <TextBlock Grid.Row="3"
-                                   Grid.Column="0"
-                                   Text="Generator:" />
-                        <TextBox Grid.Row="3"
-                                 Grid.Column="1"
-                                 Grid.ColumnSpan="2"
-                                 Text="{Binding Generator}"
-                                 IsReadOnly="True" />
+                        <TextBlock
+                            Grid.Row="3"
+                            Grid.Column="0"
+                            Text="Generator:" />
+                        <TextBox
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="2"
+                            IsReadOnly="True"
+                            Text="{Binding Generator}" />
 
-                        <TextBlock Grid.Row="4"
-                                   Grid.Column="0"
-                                   Text="Case:" />
-                        <TextBox Grid.Row="4"
-                                 Grid.Column="1"
-                                 Grid.ColumnSpan="2"
-                                 Text="{Binding Case}"
-                                 IsReadOnly="True" />
+                        <TextBlock
+                            Grid.Row="4"
+                            Grid.Column="0"
+                            Text="Case:" />
+                        <TextBox
+                            Grid.Row="4"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="2"
+                            IsReadOnly="True"
+                            Text="{Binding Case}" />
                     </Grid>
                 </TabItem>
                 <TabItem Header="Namespace">
-                    <Grid ColumnDefinitions="1*,1*"
-                          RowDefinitions="Auto,*"
-                          Margin="4">
-                        <CheckBox Grid.Row="0"
-                                  Grid.Column="0"
-                                  Content="Subject"
-                                  IsChecked="{Binding IsAllSubjectChecked}"
-                                  Margin="4" />
-                        <ListBox Grid.Row="1"
-                                 Grid.Column="0"
-                                 SelectionMode="Multiple"
-                                 Margin="3"
-                                 ScrollViewer.HorizontalScrollBarVisibility="Visible"
-                                 ItemsSource="{Binding SubjectNamespaces}">
+                    <Grid
+                        Margin="4"
+                        ColumnDefinitions="1*,1*"
+                        RowDefinitions="Auto,*">
+                        <CheckBox
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Margin="4"
+                            Content="Subject"
+                            IsChecked="{Binding IsAllSubjectChecked}" />
+                        <ListBox
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Margin="3"
+                            ItemsSource="{Binding SubjectNamespaces}"
+                            ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                            SelectionMode="Multiple">
                             <ListBox.ItemTemplate>
                                 <DataTemplate DataType="models:WikiNamespace">
-                                    <CheckBox Content="{Binding Name}"
-                                              IsChecked="{Binding IsChecked}" />
+                                    <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}" />
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
 
-                        <CheckBox Grid.Row="0"
-                                  Grid.Column="1"
-                                  Content="Talk"
-                                  IsChecked="{Binding IsAllTalkChecked}"
-                                  Margin="4" />
-                        <ListBox Grid.Row="1"
-                                 Grid.Column="1"
-                                 SelectionMode="Multiple"
-                                 Margin="3"
-                                 ScrollViewer.HorizontalScrollBarVisibility="Visible"
-                                 ItemsSource="{Binding TalkNamespaces}">
+                        <CheckBox
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Margin="4"
+                            Content="Talk"
+                            IsChecked="{Binding IsAllTalkChecked}" />
+                        <ListBox
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Margin="3"
+                            ItemsSource="{Binding TalkNamespaces}"
+                            ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                            SelectionMode="Multiple">
                             <ListBox.ItemTemplate>
                                 <DataTemplate DataType="models:WikiNamespace">
-                                    <CheckBox Content="{Binding Name}"
-                                              IsChecked="{Binding IsChecked}" />
+                                    <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}" />
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
                     </Grid>
                 </TabItem>
                 <TabItem Header="Title">
-                    <Grid RowDefinitions="Auto,Auto,Auto"
-                          ColumnDefinitions="Auto,*">
-                        <CheckBox Grid.Column="0"
-                                  Grid.Row="0"
-                                  IsChecked="{Binding IsTitleContainsEnabled}"
-                                  Content="Contains:" />
-                        <TextBox Grid.Column="1"
-                                 Grid.Row="0"
-                                 IsEnabled="{Binding IsTitleContainsEnabled}"
-                                 Text="{Binding TitleContains}" />
+                    <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto">
+                        <CheckBox
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Content="Contains:"
+                            IsChecked="{Binding IsTitleContainsEnabled}" />
+                        <TextBox
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            IsEnabled="{Binding IsTitleContainsEnabled}"
+                            Text="{Binding TitleContains}" />
 
-                        <CheckBox Grid.Column="0"
-                                  Grid.Row="1"
-                                  IsChecked="{Binding IsTitleNotContainsEnabled}"
-                                  Content="Not contains:" />
-                        <TextBox Grid.Column="1"
-                                 Grid.Row="1"
-                                 IsEnabled="{Binding IsTitleNotContainsEnabled}"
-                                 Text="{Binding TitleNotContains}" />
+                        <CheckBox
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Content="Not contains:"
+                            IsChecked="{Binding IsTitleNotContainsEnabled}" />
+                        <TextBox
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            IsEnabled="{Binding IsTitleNotContainsEnabled}"
+                            Text="{Binding TitleNotContains}" />
 
-                        <StackPanel Grid.Column="1"
-                                    Grid.Row="2"
-                                    Orientation="Horizontal">
-                            <CheckBox IsChecked="{Binding IsTitleContainsRegex}"
-                                      Content="Regex" />
-                            <CheckBox IsChecked="{Binding IsTitleContainsCaseSensitive}"
-                                      Content="Case sensitive" />
+                        <StackPanel
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Orientation="Horizontal">
+                            <CheckBox Content="Regex" IsChecked="{Binding IsTitleContainsRegex}" />
+                            <CheckBox Content="Case sensitive" IsChecked="{Binding IsTitleContainsCaseSensitive}" />
                         </StackPanel>
                     </Grid>
                 </TabItem>
                 <TabItem Header="Revision">
                     <StackPanel>
-                        <CheckBox Content="Search date"
-                                  IsChecked="{Binding IsSearchDateChecked}" />
-                        <Grid RowDefinitions="Auto,Auto"
-                              ColumnDefinitions="Auto,Auto">
-                            <Label Grid.Row="0"
-                                   Grid.Column="0"
-                                   Content="From: " />
-                            <DatePicker Grid.Row="0"
-                                        Grid.Column="1"
-                                        MinYear="{Binding MinStartYear}"
-                                        SelectedDate="{Binding SelectedStartDate}" />
+                        <CheckBox Content="Search date" IsChecked="{Binding IsSearchDateChecked}" />
+                        <Grid ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto">
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Content="From: " />
+                            <DatePicker
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                MinYear="{Binding MinStartYear}"
+                                SelectedDate="{Binding SelectedStartDate}" />
 
-                            <Label Grid.Row="1"
-                                   Grid.Column="0"
-                                   Content="To: " />
-                            <DatePicker Grid.Row="1"
-                                        Grid.Column="1"
-                                        MinYear="{Binding MinEndYear}"
-                                        SelectedDate="{Binding SelectedEndDate}" />
+                            <Label
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Content="To: " />
+                            <DatePicker
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                MinYear="{Binding MinEndYear}"
+                                SelectedDate="{Binding SelectedEndDate}" />
                         </Grid>
                     </StackPanel>
                 </TabItem>
@@ -174,31 +190,33 @@
                 <TabItem Header="Help" />
             </TabControl>
             <StackPanel Grid.Column="1">
-                <Button Content="Start"
-                        Command="{Binding StartCommand}" />
-                <Button Content="Pause"
-                        Command="{Binding PauseCommand}" />
+                <Button Command="{Binding StartCommand}" Content="Start" />
+                <Button Command="{Binding PauseCommand}" Content="Pause" />
                 <Button Content="Reset" />
-                <Button Content="Use the list"
-                        Command="{Binding SaveCommand}"
-                        CommandParameter="{Binding #This}" />
+                <Button
+                    Command="{Binding SaveCommand}"
+                    CommandParameter="{Binding #This}"
+                    Content="Use the list" />
             </StackPanel>
         </Grid>
-        <Grid Grid.Row="1"
-              RowDefinitions="Auto,Auto"
-              ColumnDefinitions="1*,1*">
-            <Label Grid.Row="0"
-                   Grid.Column="0"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Center"
-                   Content="{Binding Pages.Count, StringFormat='{}{0} pages'}" />
-            <ListBox Grid.Row="1"
-                     Grid.Column="0"
-                     Height="500"
-                     SelectionMode="Single"
-                     Margin="3"
-                     ScrollViewer.HorizontalScrollBarVisibility="Visible"
-                     ItemsSource="{Binding Pages}">
+        <Grid
+            Grid.Row="1"
+            ColumnDefinitions="1*,1*"
+            RowDefinitions="Auto,Auto">
+            <Label
+                Grid.Row="0"
+                Grid.Column="0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Content="{Binding Pages.Count, StringFormat='{}{0} pages'}" />
+            <ListBox
+                Grid.Row="1"
+                Grid.Column="0"
+                Height="500"
+                Margin="3"
+                ItemsSource="{Binding Pages}"
+                ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                SelectionMode="Single">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="models:WikiPageModel">
                         <TextBlock Text="{Binding Title}" />
@@ -206,33 +224,31 @@
                 </ListBox.ItemTemplate>
             </ListBox>
 
-            <Label Grid.Row="0"
-                   Grid.Column="1"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Center"
-                   Content="Convert" />
-            <StackPanel Grid.Row="1"
-                        Grid.Column="1">
+            <Label
+                Grid.Row="0"
+                Grid.Column="1"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Content="Convert" />
+            <StackPanel Grid.Row="1" Grid.Column="1">
                 <StackPanel Orientation="Horizontal">
-                    <CheckBox Content="Add heading every"
-                              IsChecked="{Binding !IsAlphabetisedHeading}" />
+                    <CheckBox Content="Add heading every" IsChecked="{Binding !IsAlphabetisedHeading}" />
                     <NumericUpDown Value="{Binding NumberOfPagesOnEachSection}" />
-                    <Button Content="Make"
-                            Command="{Binding MakeCommand}" />
+                    <Button Command="{Binding MakeCommand}" Content="Make" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <CheckBox Content="Alphabetised headings"
-                              IsChecked="{Binding IsAlphabetisedHeading}" />
+                    <CheckBox Content="Alphabetised headings" IsChecked="{Binding IsAlphabetisedHeading}" />
                     <TextBlock Text="List type" />
-                    <RadioButton Content="#"
-                                 IsChecked="{Binding IsNumericList}"
-                                 GroupName="listType" />
-                    <RadioButton Content="*"
-                                 GroupName="listType" />
+                    <RadioButton
+                        Content="#"
+                        GroupName="listType"
+                        IsChecked="{Binding IsNumericList}" />
+                    <RadioButton Content="*" GroupName="listType" />
                 </StackPanel>
-                <avaloniaEdit:TextEditor Name="TextEditor"
-                                         IsReadOnly="True"
-                                         Height="500" />
+                <avaloniaEdit:TextEditor
+                    Name="TextEditor"
+                    Height="500"
+                    IsReadOnly="True" />
             </StackPanel>
         </Grid>
     </Grid>

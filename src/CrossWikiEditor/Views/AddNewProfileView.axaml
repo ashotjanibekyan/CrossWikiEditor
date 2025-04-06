@@ -1,88 +1,105 @@
-﻿<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:viewModels="clr-namespace:CrossWikiEditor.Core.ViewModels;assembly=CrossWikiEditor.Core"
-        SizeToContent="WidthAndHeight"
-        CanResize="False"
-        Classes="DialogWindow"
-        mc:Ignorable="d"
-        d:DesignWidth="400"
-        d:DesignHeight="200"
-        x:Class="CrossWikiEditor.Views.AddNewProfileView"
-        x:DataType="viewModels:AddOrEditProfileViewModel"
-        x:Name="This"
-        Title="Add New Profile">
-    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto"
-          ColumnDefinitions="Auto,*"
-          Margin="10"
-          Width="400">
-        <TextBlock Grid.Row="0"
-                   Grid.Column="0"
-                   VerticalAlignment="Center"
-                   Text="Username: " />
-        <TextBox Grid.Row="0"
-                 Grid.Column="1"
-                 Text="{Binding Username}" />
+﻿<Window
+    x:Class="CrossWikiEditor.Views.AddNewProfileView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:CrossWikiEditor.Core.ViewModels;assembly=CrossWikiEditor.Core"
+    x:Name="This"
+    Title="Add New Profile"
+    d:DesignHeight="200"
+    d:DesignWidth="400"
+    x:DataType="viewModels:AddOrEditProfileViewModel"
+    CanResize="False"
+    Classes="DialogWindow"
+    SizeToContent="WidthAndHeight"
+    mc:Ignorable="d">
+    <Grid
+        Width="400"
+        Margin="10"
+        ColumnDefinitions="Auto,*"
+        RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+        <TextBlock
+            Grid.Row="0"
+            Grid.Column="0"
+            VerticalAlignment="Center"
+            Text="Username: " />
+        <TextBox
+            Grid.Row="0"
+            Grid.Column="1"
+            Text="{Binding Username}" />
 
-        <CheckBox Grid.Row="1"
-                  Grid.ColumnSpan="2"
-                  Grid.Column="0"
-                  IsChecked="{Binding ShouldSavePassword}">
+        <CheckBox
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            IsChecked="{Binding ShouldSavePassword}">
             Save Password?
         </CheckBox>
 
-        <TextBlock Grid.Row="2"
-                   Grid.Column="0"
-                   VerticalAlignment="Center"
-                   Text="Password: " />
-        <TextBox Grid.Row="2"
-                 Grid.Column="1"
-                 Text="{Binding Password}"
-                 PasswordChar="*"
-                 IsEnabled="{Binding ShouldSavePassword}" />
+        <TextBlock
+            Grid.Row="2"
+            Grid.Column="0"
+            VerticalAlignment="Center"
+            Text="Password: " />
+        <TextBox
+            Grid.Row="2"
+            Grid.Column="1"
+            IsEnabled="{Binding ShouldSavePassword}"
+            PasswordChar="*"
+            Text="{Binding Password}" />
 
-        <CheckBox Grid.Row="3"
-                  Grid.ColumnSpan="2"
-                  Grid.Column="0"
-                  IsChecked="{Binding ShouldSelectDefaultSettings}">
+        <CheckBox
+            Grid.Row="3"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            IsChecked="{Binding ShouldSelectDefaultSettings}">
             Select default settings?
         </CheckBox>
 
-        <TextBlock Grid.Row="4"
-                   Grid.Column="0"
-                   VerticalAlignment="Center"
-                   Text="Path: " />
-        <Grid Grid.Row="4"
-              Grid.Column="1"
-              ColumnDefinitions="*,Auto"
-              IsEnabled="{Binding ShouldSelectDefaultSettings}">
-            <TextBox Grid.Column="0"
-                     IsReadOnly="True"
-                     Text="{Binding DefaultSettingsPath}" />
-            <Button Grid.Column="1"
-                    Command="{Binding BrowseCommand}"
-                    Content="Browse..." />
+        <TextBlock
+            Grid.Row="4"
+            Grid.Column="0"
+            VerticalAlignment="Center"
+            Text="Path: " />
+        <Grid
+            Grid.Row="4"
+            Grid.Column="1"
+            ColumnDefinitions="*,Auto"
+            IsEnabled="{Binding ShouldSelectDefaultSettings}">
+            <TextBox
+                Grid.Column="0"
+                IsReadOnly="True"
+                Text="{Binding DefaultSettingsPath}" />
+            <Button
+                Grid.Column="1"
+                Command="{Binding BrowseCommand}"
+                Content="Browse..." />
         </Grid>
 
-        <TextBlock Grid.Row="5"
-                   Grid.Column="0"
-                   VerticalAlignment="Center"
-                   Text="Notes: " />
-        <TextBox Grid.Row="5"
-                 Grid.Column="1"
-                 Text="{Binding Notes}" />
+        <TextBlock
+            Grid.Row="5"
+            Grid.Column="0"
+            VerticalAlignment="Center"
+            Text="Notes: " />
+        <TextBox
+            Grid.Row="5"
+            Grid.Column="1"
+            Text="{Binding Notes}" />
 
-        <StackPanel Grid.Row="6"
-                    Grid.Column="1"
-                    HorizontalAlignment="Right"
-                    Orientation="Horizontal">
-            <Button Command="{Binding SaveCommand}"
-                    CommandParameter="{Binding #This}"
-                    Content="Ok" />
-            <Button Command="{Binding CancelCommand}"
-                    CommandParameter="{Binding #This}"
-                    Content="Cancel" />
+        <StackPanel
+            Grid.Row="6"
+            Grid.Column="1"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
+            <Button
+                Command="{Binding SaveCommand}"
+                CommandParameter="{Binding #This}"
+                Content="Ok" />
+            <Button
+                Command="{Binding CancelCommand}"
+                CommandParameter="{Binding #This}"
+                Content="Cancel" />
         </StackPanel>
     </Grid>
 </Window>

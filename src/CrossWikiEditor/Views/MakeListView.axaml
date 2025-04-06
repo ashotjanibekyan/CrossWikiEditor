@@ -1,39 +1,43 @@
-<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:viewModels="clr-namespace:CrossWikiEditor.Core.ViewModels;assembly=CrossWikiEditor.Core"
-             xmlns:converters="clr-namespace:CrossWikiEditor.Converters"
-             xmlns:models="clr-namespace:CrossWikiEditor.Core.Models;assembly=CrossWikiEditor.Core"
-             x:DataType="viewModels:MakeListViewModel"
-             x:Name="This"
-             mc:Ignorable="d"
-             d:DesignWidth="800"
-             d:DesignHeight="450"
-             x:Class="CrossWikiEditor.Views.MakeListView">
-    <Grid RowDefinitions="Auto,Auto,Auto,Auto,*,Auto"
-          Margin="3">
-        <Label Grid.Row="0"
-               Margin="3"
-               Content="Make list"
-               HorizontalAlignment="Center" />
-        <Grid Grid.Row="1"
-              Margin="3"
-              ColumnDefinitions="Auto,*"
-              RowDefinitions="Auto,Auto"
-              VerticalAlignment="Center">
-            <Label Grid.Row="0"
-                   Grid.Column="0"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Right">
+<UserControl
+    x:Class="CrossWikiEditor.Views.MakeListView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:CrossWikiEditor.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:CrossWikiEditor.Core.Models;assembly=CrossWikiEditor.Core"
+    xmlns:viewModels="clr-namespace:CrossWikiEditor.Core.ViewModels;assembly=CrossWikiEditor.Core"
+    x:Name="This"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="viewModels:MakeListViewModel"
+    mc:Ignorable="d">
+    <Grid Margin="3" RowDefinitions="Auto,Auto,Auto,Auto,*,Auto">
+        <Label
+            Grid.Row="0"
+            Margin="3"
+            HorizontalAlignment="Center"
+            Content="Make list" />
+        <Grid
+            Grid.Row="1"
+            Margin="3"
+            VerticalAlignment="Center"
+            ColumnDefinitions="Auto,*"
+            RowDefinitions="Auto,Auto">
+            <Label
+                Grid.Row="0"
+                Grid.Column="0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center">
                 Source:
             </Label>
-            <ComboBox Grid.Row="0"
-                      Grid.Column="1"
-                      HorizontalAlignment="Stretch"
-                      SelectedIndex="0"
-                      ItemsSource="{Binding ListProviders}"
-                      SelectedItem="{Binding SelectedListProvider}">
+            <ComboBox
+                Grid.Row="0"
+                Grid.Column="1"
+                HorizontalAlignment="Stretch"
+                ItemsSource="{Binding ListProviders}"
+                SelectedIndex="0"
+                SelectedItem="{Binding SelectedListProvider}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Title}" />
@@ -41,93 +45,96 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
 
-            <Label Grid.Row="1"
-                   IsVisible="{Binding SelectedListProvider.ParamTitle, Converter={x:Static converters:Converters.IsNotNullOrWhiteSpace}}"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Right"
-                   Grid.Column="0"
-                   Content="{Binding SelectedListProvider.ParamTitle, StringFormat='{}{0}:'}" />
-            <TextBox Grid.Row="1"
-                     Grid.Column="1"
-                     IsEnabled="{Binding SelectedListProvider.ParamTitle, Converter={x:Static converters:Converters.IsNotNullOrWhiteSpace}}"
-                     Text="{Binding SelectedListProvider.Param}"
-                     HorizontalAlignment="Stretch" />
+            <Label
+                Grid.Row="1"
+                Grid.Column="0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Content="{Binding SelectedListProvider.ParamTitle, StringFormat='{}{0}:'}"
+                IsVisible="{Binding SelectedListProvider.ParamTitle, Converter={x:Static converters:Converters.IsNotNullOrWhiteSpace}}" />
+            <TextBox
+                Grid.Row="1"
+                Grid.Column="1"
+                HorizontalAlignment="Stretch"
+                IsEnabled="{Binding SelectedListProvider.ParamTitle, Converter={x:Static converters:Converters.IsNotNullOrWhiteSpace}}"
+                Text="{Binding SelectedListProvider.Param}" />
         </Grid>
-        <Label Grid.Row="2"
-               HorizontalAlignment="Left"
-               VerticalAlignment="Center"
-               Content="{Binding Pages.Count, StringFormat='{}{0} pages'}" />
-        <Button Grid.Row="2"
-                Margin="3"
-                HorizontalAlignment="Center"
-                Command="{Binding MakeListCommand}">
+        <Label
+            Grid.Row="2"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            Content="{Binding Pages.Count, StringFormat='{}{0} pages'}" />
+        <Button
+            Grid.Row="2"
+            Margin="3"
+            HorizontalAlignment="Center"
+            Command="{Binding MakeListCommand}">
             Make list
         </Button>
-        <Grid Grid.Row="3"
-              Margin="3"
-              ColumnDefinitions="*,Auto"
-              VerticalAlignment="Center">
-            <TextBox Grid.Column="0"
-                     Text="{Binding NewPageTitle}"
-                     HorizontalAlignment="Stretch" />
-            <Button Grid.Column="1"
-                    Command="{Binding AddNewPageCommand}"
-                    VerticalAlignment="Center">
+        <Grid
+            Grid.Row="3"
+            Margin="3"
+            VerticalAlignment="Center"
+            ColumnDefinitions="*,Auto">
+            <TextBox
+                Grid.Column="0"
+                HorizontalAlignment="Stretch"
+                Text="{Binding NewPageTitle}" />
+            <Button
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                Command="{Binding AddNewPageCommand}">
                 +
             </Button>
         </Grid>
         <Grid Grid.Row="4">
-            <ListBox SelectionMode="Multiple"
-                     Margin="3"
-                     ScrollViewer.HorizontalScrollBarVisibility="Visible"
-                     ItemsSource="{Binding Pages}"
-                     SelectedItems="{Binding SelectedPages}">
+            <ListBox
+                Margin="3"
+                ItemsSource="{Binding Pages}"
+                ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                SelectedItems="{Binding SelectedPages}"
+                SelectionMode="Multiple">
                 <ListBox.ContextMenu>
                     <ContextMenu>
-                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}"
-                                  Command="{Binding OpenInBrowserCommand}"
-                                  Header="Open in browser"
-                                  HotKey="Ctrl+Shift+P" />
-                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}"
-                                  Command="{Binding OpenHistoryInBrowserCommand}"
-                                  Header="Open history in browser"
-                                  HotKey="Ctrl+Shift+H" />
+                        <MenuItem
+                            Command="{Binding OpenInBrowserCommand}"
+                            Header="Open in browser"
+                            HotKey="Ctrl+Shift+P"
+                            IsEnabled="{Binding !!SelectedPages.Count}" />
+                        <MenuItem
+                            Command="{Binding OpenHistoryInBrowserCommand}"
+                            Header="Open history in browser"
+                            HotKey="Ctrl+Shift+H"
+                            IsEnabled="{Binding !!SelectedPages.Count}" />
                         <Separator />
-                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}"
-                                  Command="{Binding CutCommand}"
-                                  Header="Cut"
-                                  HotKey="Ctrl+X" />
-                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}"
-                                  Command="{Binding CopyCommand}"
-                                  Header="Copy"
-                                  HotKey="Ctrl+C" />
-                        <MenuItem Header="Paste"
-                                  Command="{Binding PasteCommand}"
-                                  HotKey="Ctrl+V" />
+                        <MenuItem
+                            Command="{Binding CutCommand}"
+                            Header="Cut"
+                            HotKey="Ctrl+X"
+                            IsEnabled="{Binding !!SelectedPages.Count}" />
+                        <MenuItem
+                            Command="{Binding CopyCommand}"
+                            Header="Copy"
+                            HotKey="Ctrl+C"
+                            IsEnabled="{Binding !!SelectedPages.Count}" />
+                        <MenuItem
+                            Command="{Binding PasteCommand}"
+                            Header="Paste"
+                            HotKey="Ctrl+V" />
                         <Separator />
-                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}"
-                                  Header="Select">
-                            <MenuItem Header="All"
-                                      Command="{Binding SelectAllCommand}" />
-                            <MenuItem Header="None"
-                                      Command="{Binding SelectNoneCommand}" />
-                            <MenuItem Header="Inverse"
-                                      Command="{Binding SelectInverseCommand}" />
+                        <MenuItem Header="Select" IsEnabled="{Binding !!SelectedPages.Count}">
+                            <MenuItem Command="{Binding SelectAllCommand}" Header="All" />
+                            <MenuItem Command="{Binding SelectNoneCommand}" Header="None" />
+                            <MenuItem Command="{Binding SelectInverseCommand}" Header="Inverse" />
                         </MenuItem>
-                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}"
-                                  Header="Remove">
-                            <MenuItem Header="Selected"
-                                      Command="{Binding RemoveSelectedCommand}" />
-                            <MenuItem Header="All"
-                                      Command="{Binding RemoveAllCommand}" />
-                            <MenuItem Header="Duplicate"
-                                      Command="{Binding RemoveDuplicateCommand}" />
-                            <MenuItem Header="Non-main space"
-                                      Command="{Binding RemoveNonMainSpaceCommand}" />
+                        <MenuItem Header="Remove" IsEnabled="{Binding !!SelectedPages.Count}">
+                            <MenuItem Command="{Binding RemoveSelectedCommand}" Header="Selected" />
+                            <MenuItem Command="{Binding RemoveAllCommand}" Header="All" />
+                            <MenuItem Command="{Binding RemoveDuplicateCommand}" Header="Duplicate" />
+                            <MenuItem Command="{Binding RemoveNonMainSpaceCommand}" Header="Non-main space" />
                         </MenuItem>
                         <Separator />
-                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}"
-                                  Header="Add selected to list from...">
+                        <MenuItem Header="Add selected to list from..." IsEnabled="{Binding !!SelectedPages.Count}">
                             <MenuItem Header="temp" />
                             <MenuItem Header="temp" />
                             <MenuItem Header="temp" />
@@ -151,32 +158,40 @@
                             <MenuItem Header="temp" />
                         </MenuItem>
                         <Separator />
-                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}"
-                                  Command="{Binding MoveToTopCommand}"
-                                  Header="Move to top" />
-                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}"
-                                  Command="{Binding MoveToBottomCommand}"
-                                  Header="Move to bottom" />
+                        <MenuItem
+                            Command="{Binding MoveToTopCommand}"
+                            Header="Move to top"
+                            IsEnabled="{Binding !!SelectedPages.Count}" />
+                        <MenuItem
+                            Command="{Binding MoveToBottomCommand}"
+                            Header="Move to bottom"
+                            IsEnabled="{Binding !!SelectedPages.Count}" />
                         <Separator />
-                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}"
-                                  Command="{Binding ConvertToTalkPagesCommand}"
-                                  Header="Convert to talk pages" />
-                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}"
-                                  Command="{Binding ConvertFromTalkPagesCommand}"
-                                  Header="Convert from talk pages" />
+                        <MenuItem
+                            Command="{Binding ConvertToTalkPagesCommand}"
+                            Header="Convert to talk pages"
+                            IsEnabled="{Binding !!SelectedPages.Count}" />
+                        <MenuItem
+                            Command="{Binding ConvertFromTalkPagesCommand}"
+                            Header="Convert from talk pages"
+                            IsEnabled="{Binding !!SelectedPages.Count}" />
                         <Separator />
-                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}"
-                                  Command="{Binding FilterCommand}"
-                                  Header="Filter" />
-                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}"
-                                  Command="{Binding SaveListCommand}"
-                                  Header="Save list" />
-                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}"
-                                  Command="{Binding SortAlphabeticallyCommand}"
-                                  Header="Sort alphabetically" />
-                        <MenuItem IsEnabled="{Binding !!SelectedPages.Count}"
-                                  Command="{Binding SortReverseAlphabeticallyCommand}"
-                                  Header="Sort reverse alphabetically" />
+                        <MenuItem
+                            Command="{Binding FilterCommand}"
+                            Header="Filter"
+                            IsEnabled="{Binding !!SelectedPages.Count}" />
+                        <MenuItem
+                            Command="{Binding SaveListCommand}"
+                            Header="Save list"
+                            IsEnabled="{Binding !!SelectedPages.Count}" />
+                        <MenuItem
+                            Command="{Binding SortAlphabeticallyCommand}"
+                            Header="Sort alphabetically"
+                            IsEnabled="{Binding !!SelectedPages.Count}" />
+                        <MenuItem
+                            Command="{Binding SortReverseAlphabeticallyCommand}"
+                            Header="Sort reverse alphabetically"
+                            IsEnabled="{Binding !!SelectedPages.Count}" />
                     </ContextMenu>
                 </ListBox.ContextMenu>
                 <ListBox.ItemTemplate>
@@ -184,8 +199,7 @@
                         <TextBlock Text="{Binding Title}">
                             <Interaction.Behaviors>
                                 <EventTriggerBehavior EventName="DoubleTapped">
-                                    <InvokeCommandAction
-                                        Command="{ReflectionBinding #This.DataContext.OpenInBrowserCommand}" />
+                                    <InvokeCommandAction Command="{ReflectionBinding #This.DataContext.OpenInBrowserCommand}" />
                                 </EventTriggerBehavior>
                             </Interaction.Behaviors>
                         </TextBlock>
@@ -193,20 +207,21 @@
                 </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
-        <Grid Grid.Row="5"
-              ColumnDefinitions="*,*">
-            <Button Grid.Column="0"
-                    x:Name="RemoveButton"
-                    HorizontalContentAlignment="Center"
-                    HorizontalAlignment="Center"
-                    Command="{Binding RemoveCommand}">
+        <Grid Grid.Row="5" ColumnDefinitions="*,*">
+            <Button
+                x:Name="RemoveButton"
+                Grid.Column="0"
+                HorizontalAlignment="Center"
+                HorizontalContentAlignment="Center"
+                Command="{Binding RemoveCommand}">
                 Remove
             </Button>
-            <Button Grid.Column="1"
-                    HorizontalContentAlignment="Center"
-                    HorizontalAlignment="Center"
-                    Width="{Binding #RemoveButton.Bounds.Width}"
-                    Command="{Binding FilterCommand}">
+            <Button
+                Grid.Column="1"
+                Width="{Binding #RemoveButton.Bounds.Width}"
+                HorizontalAlignment="Center"
+                HorizontalContentAlignment="Center"
+                Command="{Binding FilterCommand}">
                 Filter
             </Button>
         </Grid>

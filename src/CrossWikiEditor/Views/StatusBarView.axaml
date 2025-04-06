@@ -1,25 +1,25 @@
-<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:viewModels="clr-namespace:CrossWikiEditor.Core.ViewModels;assembly=CrossWikiEditor.Core"
-             x:CompileBindings="True"
-             x:DataType="viewModels:StatusBarViewModel"
-             mc:Ignorable="d"
-             d:DesignWidth="800"
-             d:DesignHeight="450"
-             x:Class="CrossWikiEditor.Views.StatusBarView">
-    <StackPanel Orientation="Horizontal"
-                HorizontalAlignment="Right">
+<UserControl
+    x:Class="CrossWikiEditor.Views.StatusBarView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:CrossWikiEditor.Core.ViewModels;assembly=CrossWikiEditor.Core"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:CompileBindings="True"
+    x:DataType="viewModels:StatusBarViewModel"
+    mc:Ignorable="d">
+    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
         <Label>Pages/min: 0</Label>
         <Label>Edits/min: 0</Label>
         <Label>Edits: 0</Label>
         <Label>Skipped: 0</Label>
         <Label>New: 0</Label>
-        <Button Command="{Binding CurrentWikiClickedCommand}"
-                Classes="Transparent"
-                Content="{Binding CurrentWiki}" />
-        <Button Command="{Binding UsernameClickedCommand}"
-                Content="{Binding Username}" />
+        <Button
+            Classes="Transparent"
+            Command="{Binding CurrentWikiClickedCommand}"
+            Content="{Binding CurrentWiki}" />
+        <Button Command="{Binding UsernameClickedCommand}" Content="{Binding Username}" />
     </StackPanel>
 </UserControl>

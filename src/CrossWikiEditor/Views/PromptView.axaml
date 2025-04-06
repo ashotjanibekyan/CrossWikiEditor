@@ -1,39 +1,43 @@
-﻿<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:viewModels="clr-namespace:CrossWikiEditor.Core.ViewModels;assembly=CrossWikiEditor.Core"
-        CanResize="False"
-        SizeToContent="WidthAndHeight"
-        MinWidth="100"
-        Classes="DialogWindow"
-        mc:Ignorable="d"
-        d:DesignWidth="200"
-        d:DesignHeight="450"
-        x:Class="CrossWikiEditor.Views.PromptView"
-        x:DataType="viewModels:PromptViewModel"
-        x:Name="This"
-        Title="{Binding Title}">
-    <Grid ColumnDefinitions="1*,1*"
-          RowDefinitions="Auto,Auto">
-        <TextBlock Grid.Column="0"
-                   Grid.Row="0"
-                   Text="{Binding Text}" />
-        <NumericUpDown Grid.Column="1"
-                       Grid.Row="0"
-                       Value="{Binding Value}" />
+﻿<Window
+    x:Class="CrossWikiEditor.Views.PromptView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:CrossWikiEditor.Core.ViewModels;assembly=CrossWikiEditor.Core"
+    x:Name="This"
+    Title="{Binding Title}"
+    MinWidth="100"
+    d:DesignHeight="450"
+    d:DesignWidth="200"
+    x:DataType="viewModels:PromptViewModel"
+    CanResize="False"
+    Classes="DialogWindow"
+    SizeToContent="WidthAndHeight"
+    mc:Ignorable="d">
+    <Grid ColumnDefinitions="1*,1*" RowDefinitions="Auto,Auto">
+        <TextBlock
+            Grid.Row="0"
+            Grid.Column="0"
+            Text="{Binding Text}" />
+        <NumericUpDown
+            Grid.Row="0"
+            Grid.Column="1"
+            Value="{Binding Value}" />
 
-        <Button Grid.Column="0"
-                Grid.Row="1"
-                Width="90"
-                Content="Ok"
-                Command="{Binding OkCommand}"
-                CommandParameter="{Binding #This}" />
-        <Button Grid.Column="1"
-                Grid.Row="1"
-                Width="90"
-                Content="Cancel"
-                Command="{Binding CancelCommand}"
-                CommandParameter="{Binding #This}" />
+        <Button
+            Grid.Row="1"
+            Grid.Column="0"
+            Width="90"
+            Command="{Binding OkCommand}"
+            CommandParameter="{Binding #This}"
+            Content="Ok" />
+        <Button
+            Grid.Row="1"
+            Grid.Column="1"
+            Width="90"
+            Command="{Binding CancelCommand}"
+            CommandParameter="{Binding #This}"
+            Content="Cancel" />
     </Grid>
 </Window>

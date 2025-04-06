@@ -1,32 +1,28 @@
-﻿<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:viewModels="clr-namespace:CrossWikiEditor.Core.ViewModels;assembly=CrossWikiEditor.Core"
-        SizeToContent="WidthAndHeight"
-        Classes="DialogWindow"
-        MaxHeight="400"
-        MaxWidth="600"
-        x:DataType="viewModels:PreferencesViewModel"
-        mc:Ignorable="d"
-        d:DesignWidth="600"
-        d:DesignHeight="400"
-        x:Class="CrossWikiEditor.Views.PreferencesView"
-        x:Name="This"
-        Title="Preferences">
-    <Grid RowDefinitions="*,Auto"
-          Margin="10">
+﻿<Window
+    x:Class="CrossWikiEditor.Views.PreferencesView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:CrossWikiEditor.Core.ViewModels;assembly=CrossWikiEditor.Core"
+    x:Name="This"
+    Title="Preferences"
+    MaxWidth="600"
+    MaxHeight="400"
+    d:DesignHeight="400"
+    d:DesignWidth="600"
+    x:DataType="viewModels:PreferencesViewModel"
+    Classes="DialogWindow"
+    SizeToContent="WidthAndHeight"
+    mc:Ignorable="d">
+    <Grid Margin="10" RowDefinitions="*,Auto">
         <TabControl Grid.Row="0">
             <TabItem Header="General">
                 <StackPanel>
-                    <CheckBox IsChecked="{Binding MinimizeToSystray}"
-                              Content="Minimize to notification area (systray)" />
-                    <CheckBox IsChecked="{Binding WarnOnExit}"
-                              Content="Warn on exit" />
-                    <CheckBox IsChecked="{Binding SavePageListWithSettings}"
-                              Content="Save page list with settings" />
-                    <CheckBox IsChecked="{Binding LowThreadPriority}"
-                              Content="Low thread priority (works better in background)" />
+                    <CheckBox Content="Minimize to notification area (systray)" IsChecked="{Binding MinimizeToSystray}" />
+                    <CheckBox Content="Warn on exit" IsChecked="{Binding WarnOnExit}" />
+                    <CheckBox Content="Save page list with settings" IsChecked="{Binding SavePageListWithSettings}" />
+                    <CheckBox Content="Low thread priority (works better in background)" IsChecked="{Binding LowThreadPriority}" />
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="On load: " />
                         <ComboBox SelectedIndex="0">
@@ -34,49 +30,47 @@
                             <ComboBoxItem Content="Show preview" />
                         </ComboBox>
                     </StackPanel>
-                    <CheckBox IsChecked="{Binding PreviewDiffInBotMode}"
-                              Content="Preview the Diff in Bot Mode" />
-                    <CheckBox IsChecked="{Binding EnableLogging}"
-                              Content="Enable Logging" />
+                    <CheckBox Content="Preview the Diff in Bot Mode" IsChecked="{Binding PreviewDiffInBotMode}" />
+                    <CheckBox Content="Enable Logging" IsChecked="{Binding EnableLogging}" />
                 </StackPanel>
             </TabItem>
-            <TabItem Header="Site"
-                     IsSelected="True">
+            <TabItem Header="Site" IsSelected="True">
                 <StackPanel>
-                    <Grid ColumnDefinitions="Auto,*"
-                          RowDefinitions="Auto,Auto,Auto">
-                        <TextBlock Grid.Row="0"
-                                   Grid.Column="0"
-                                   Text="Project:" />
-                        <ComboBox Grid.Row="0"
-                                  Grid.Column="1"
-                                  ItemsSource="{Binding Projects}"
-                                  SelectedItem="{Binding SelectedProject}" />
+                    <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto">
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Text="Project:" />
+                        <ComboBox
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            ItemsSource="{Binding Projects}"
+                            SelectedItem="{Binding SelectedProject}" />
 
-                        <TextBlock Grid.Row="1"
-                                   Grid.Column="0"
-                                   Text="Language:" />
-                        <ComboBox Grid.Row="1"
-                                  Grid.Column="1"
-                                  ItemsSource="{Binding Languages}"
-                                  SelectedItem="{Binding SelectedLanguage}" />
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Text="Language:" />
+                        <ComboBox
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            ItemsSource="{Binding Languages}"
+                            SelectedItem="{Binding SelectedLanguage}" />
 
-                        <CheckBox Grid.Row="2"
-                                  Grid.Column="1"
-                                  IsChecked="{Binding SuppressUsingAwb}"
-                                  Content="Suppress &quot;Using AWB&quot;" />
+                        <CheckBox
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Content="Suppress &quot;Using AWB&quot;"
+                            IsChecked="{Binding SuppressUsingAwb}" />
                     </Grid>
                     <TextBlock Text="Wikis not related to Wikimedia are not guaranteed to function properly." />
-                    <CheckBox IsChecked="{Binding IgnoreNoBots}"
-                              Content="Ignore {{bots}} and {{nobots}}" />
-                    <CheckBox IsChecked="{Binding EmptyPageListOnProjectChange}"
-                              Content="Empty page list on project change" />
+                    <CheckBox Content="Ignore {{bots}} and {{nobots}}" IsChecked="{Binding IgnoreNoBots}" />
+                    <CheckBox Content="Empty page list on project change" IsChecked="{Binding EmptyPageListOnProjectChange}" />
                 </StackPanel>
             </TabItem>
             <TabItem Header="Editing and saving">
                 <StackPanel>
-                    <HeaderedContentControl Background="Black"
-                                            Header="Auto save edit box">
+                    <HeaderedContentControl Background="Black" Header="Auto save edit box">
                         <StackPanel Margin="6">
                             <StackPanel Orientation="Horizontal">
                                 <CheckBox Content="Automatically save edit box every" />
@@ -84,11 +78,9 @@
                                 <Label Content="seconds" />
                             </StackPanel>
                             <Grid ColumnDefinitions="Auto,*,Auto">
-                                <Label Grid.Column="0"
-                                       Content="File: " />
+                                <Label Grid.Column="0" Content="File: " />
                                 <TextBox Grid.Column="1" />
-                                <Button Grid.Column="2"
-                                        Content="Browse" />
+                                <Button Grid.Column="2" Content="Browse" />
                             </Grid>
                         </StackPanel>
                     </HeaderedContentControl>
@@ -96,55 +88,58 @@
                     <CheckBox Content="Display moving average timer" />
                     <CheckBox Content="Add &quot;using AWB&quot; to when deleting or protecting pages" />
 
-                    <StackPanel Orientation="Horizontal"
-                                Spacing="10">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
                         <Label Content="When ready to save: " />
                         <CheckBox Content="Flash" />
                         <CheckBox Content="Beep" />
                     </StackPanel>
-                    <Button Content="Set edit box font"
-                            HorizontalAlignment="Right" />
+                    <Button HorizontalAlignment="Right" Content="Set edit box font" />
                 </StackPanel>
             </TabItem>
             <TabItem Header="Tools">
-                <Grid ColumnDefinitions="Auto,*"
-                      RowDefinitions="Auto,Auto,Auto">
-                    <TextBlock Grid.Row="0"
-                               Grid.Column="0"
-                               VerticalAlignment="Center"
-                               Text="Add current article list to List Comparer:" />
-                    <TextBlock Grid.Row="1"
-                               Grid.Column="0"
-                               VerticalAlignment="Center"
-                               Text="Add current article list to List Splitter:" />
-                    <TextBlock Grid.Row="2"
-                               Grid.Column="0"
-                               VerticalAlignment="Center"
-                               Text="Add Database Scanner results to current list:" />
+                <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto">
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        Text="Add current article list to List Comparer:" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        Text="Add current article list to List Splitter:" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        Text="Add Database Scanner results to current list:" />
 
-                    <ComboBox Grid.Row="0"
-                              Grid.Column="1"
-                              Margin="5"
-                              Width="150"
-                              SelectedIndex="0">
+                    <ComboBox
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Width="150"
+                        Margin="5"
+                        SelectedIndex="0">
                         <ComboBoxItem Content="Ask" />
                         <ComboBoxItem Content="Always" />
                         <ComboBoxItem Content="Never" />
                     </ComboBox>
-                    <ComboBox Grid.Row="1"
-                              Grid.Column="1"
-                              Margin="5"
-                              Width="150"
-                              SelectedIndex="0">
+                    <ComboBox
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Width="150"
+                        Margin="5"
+                        SelectedIndex="0">
                         <ComboBoxItem Content="Ask" />
                         <ComboBoxItem Content="Always" />
                         <ComboBoxItem Content="Never" />
                     </ComboBox>
-                    <ComboBox Grid.Row="2"
-                              Grid.Column="1"
-                              Margin="5"
-                              Width="150"
-                              SelectedIndex="0">
+                    <ComboBox
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Width="150"
+                        Margin="5"
+                        SelectedIndex="0">
                         <ComboBoxItem Content="Ask" />
                         <ComboBoxItem Content="Always" />
                         <ComboBoxItem Content="Never" />
@@ -162,66 +157,44 @@
             <TabItem Header="Alerts">
                 <ScrollViewer>
                     <StackPanel>
-                        <CheckBox Content="Ambiguous citation dates"
-                                  IsChecked="{Binding Alerts.AmbiguousCitationDates}" />
-                        <CheckBox Content="Contains 'sic' tag"
-                                  IsChecked="{Binding Alerts.ContainsSicTag}" />
-                        <CheckBox Content="DAB page with &lt;ref&gt;s"
-                                  IsChecked="{Binding Alerts.DabPageWithRef}" />
-                        <CheckBox Content="Dead links"
-                                  IsChecked="{Binding Alerts.DeadLinks}" />
-                        <CheckBox Content="Duplicate parameters in WPBannerShell"
-                                  IsChecked="{Binding Alerts.DuplicateParametersInWpBannerShell}" />
-                        <CheckBox Content="Has &lt;ref> after &lt;/references>"
-                                  IsChecked="{Binding Alerts.HasRefAfterReferences}" />
-                        <CheckBox Content="Has 'No/More footnotes' template yet many references"
-                                  IsChecked="{Binding Alerts.HasFootnotesTemplate}" />
-                        <CheckBox Content="Headers with wikilinks"
-                                  IsChecked="{Binding Alerts.HeadersWithWikilinks}" />
-                        <CheckBox Content="Invalid citation parameters"
-                                  IsChecked="{Binding Alerts.InvalidCitationParameters}" />
-                        <CheckBox Content="Links with double pipes"
-                                  IsChecked="{Binding Alerts.LinksWithDoublePipes}" />
-                        <CheckBox Content="Links with no target"
-                                  IsChecked="{Binding Alerts.LinksWithNoTarget}" />
-                        <CheckBox Content="Long article with stub tag"
-                                  IsChecked="{Binding Alerts.LongArticleWithStubTag}" />
-                        <CheckBox Content="Multiple DEFAULTSORT"
-                                  IsChecked="{Binding Alerts.MultipleDefaultSort}" />
-                        <CheckBox Content="No category (may be one in a template)"
-                                  IsChecked="{Binding Alerts.NoCategory}" />
-                        <CheckBox Content="See also section out of place"
-                                  IsChecked="{Binding Alerts.SeeAlsoOutOfPlace}" />
-                        <CheckBox Content="Starts with heading"
-                                  IsChecked="{Binding Alerts.StartsWithHeading}" />
-                        <CheckBox Content="Unbalanced brackets"
-                                  IsChecked="{Binding Alerts.UnbalancedBrackets}" />
-                        <CheckBox Content="Unclosed tags"
-                                  IsChecked="{Binding Alerts.UnclosedTags}" />
-                        <CheckBox Content="Unformatted references"
-                                  IsChecked="{Binding Alerts.UnformattedReferences}" />
-                        <CheckBox Content="Unknown parameters in multiple issues"
-                                  IsChecked="{Binding Alerts.UnknownParametersInMultipleIssues}" />
-                        <CheckBox Content="Unknown parameters in WPBannerShell"
-                                  IsChecked="{Binding Alerts.UnknownParametersInWpBannerShell}" />
-                        <CheckBox Content="Editor's signature or link to user space"
-                                  IsChecked="{Binding Alerts.EditorsSignatureOrLink}" />
+                        <CheckBox Content="Ambiguous citation dates" IsChecked="{Binding Alerts.AmbiguousCitationDates}" />
+                        <CheckBox Content="Contains 'sic' tag" IsChecked="{Binding Alerts.ContainsSicTag}" />
+                        <CheckBox Content="DAB page with &lt;ref&gt;s" IsChecked="{Binding Alerts.DabPageWithRef}" />
+                        <CheckBox Content="Dead links" IsChecked="{Binding Alerts.DeadLinks}" />
+                        <CheckBox Content="Duplicate parameters in WPBannerShell" IsChecked="{Binding Alerts.DuplicateParametersInWpBannerShell}" />
+                        <CheckBox Content="Has &lt;ref&gt; after &lt;/references&gt;" IsChecked="{Binding Alerts.HasRefAfterReferences}" />
+                        <CheckBox Content="Has 'No/More footnotes' template yet many references" IsChecked="{Binding Alerts.HasFootnotesTemplate}" />
+                        <CheckBox Content="Headers with wikilinks" IsChecked="{Binding Alerts.HeadersWithWikilinks}" />
+                        <CheckBox Content="Invalid citation parameters" IsChecked="{Binding Alerts.InvalidCitationParameters}" />
+                        <CheckBox Content="Links with double pipes" IsChecked="{Binding Alerts.LinksWithDoublePipes}" />
+                        <CheckBox Content="Links with no target" IsChecked="{Binding Alerts.LinksWithNoTarget}" />
+                        <CheckBox Content="Long article with stub tag" IsChecked="{Binding Alerts.LongArticleWithStubTag}" />
+                        <CheckBox Content="Multiple DEFAULTSORT" IsChecked="{Binding Alerts.MultipleDefaultSort}" />
+                        <CheckBox Content="No category (may be one in a template)" IsChecked="{Binding Alerts.NoCategory}" />
+                        <CheckBox Content="See also section out of place" IsChecked="{Binding Alerts.SeeAlsoOutOfPlace}" />
+                        <CheckBox Content="Starts with heading" IsChecked="{Binding Alerts.StartsWithHeading}" />
+                        <CheckBox Content="Unbalanced brackets" IsChecked="{Binding Alerts.UnbalancedBrackets}" />
+                        <CheckBox Content="Unclosed tags" IsChecked="{Binding Alerts.UnclosedTags}" />
+                        <CheckBox Content="Unformatted references" IsChecked="{Binding Alerts.UnformattedReferences}" />
+                        <CheckBox Content="Unknown parameters in multiple issues" IsChecked="{Binding Alerts.UnknownParametersInMultipleIssues}" />
+                        <CheckBox Content="Unknown parameters in WPBannerShell" IsChecked="{Binding Alerts.UnknownParametersInWpBannerShell}" />
+                        <CheckBox Content="Editor's signature or link to user space" IsChecked="{Binding Alerts.EditorsSignatureOrLink}" />
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
         </TabControl>
-        <Grid Grid.Row="1"
-              ColumnDefinitions="Auto,*,Auto,Auto">
-            <TextBlock Grid.Column="0"
-                       Text=" &quot;Save settings as default&quot; to retain values" />
-            <Button Grid.Column="2"
-                    Content="Ok"
-                    Command="{Binding SaveCommand}"
-                    CommandParameter="{Binding #This}" />
-            <Button Grid.Column="3"
-                    Content="Cancel"
-                    Command="{Binding CancelCommand}"
-                    CommandParameter="{Binding #This}" />
+        <Grid Grid.Row="1" ColumnDefinitions="Auto,*,Auto,Auto">
+            <TextBlock Grid.Column="0" Text=" &quot;Save settings as default&quot; to retain values" />
+            <Button
+                Grid.Column="2"
+                Command="{Binding SaveCommand}"
+                CommandParameter="{Binding #This}"
+                Content="Ok" />
+            <Button
+                Grid.Column="3"
+                Command="{Binding CancelCommand}"
+                CommandParameter="{Binding #This}"
+                Content="Cancel" />
         </Grid>
     </Grid>
 </Window>

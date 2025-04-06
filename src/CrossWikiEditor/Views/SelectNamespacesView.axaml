@@ -1,53 +1,57 @@
-﻿<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:viewModels="clr-namespace:CrossWikiEditor.Core.ViewModels;assembly=CrossWikiEditor.Core"
-        xmlns:models="clr-namespace:CrossWikiEditor.Core.Models;assembly=CrossWikiEditor.Core"
-        SizeToContent="WidthAndHeight"
-        Classes="DialogWindow"
-        mc:Ignorable="d"
-        x:Class="CrossWikiEditor.Views.SelectNamespacesView"
-        x:DataType="viewModels:SelectNamespacesViewModel"
-        x:Name="This"
-        Title="SelectNamespacesView">
-    <Grid RowDefinitions="Auto,300,Auto"
-          Margin="4">
-        <CheckBox Grid.Row="0"
-                  Content="Select all"
-                  IsVisible="{Binding IsMultiselect}"
-                  IsChecked="{Binding IsAllSelected}"
-                  Margin="4" />
-        <ListBox Grid.Row="1"
-                 SelectionMode="Single"
-                 IsVisible="{Binding IsMultiselect}"
-                 Margin="3"
-                 ScrollViewer.HorizontalScrollBarVisibility="Visible"
-                 ItemsSource="{Binding Namespaces}">
+﻿<Window
+    x:Class="CrossWikiEditor.Views.SelectNamespacesView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:CrossWikiEditor.Core.Models;assembly=CrossWikiEditor.Core"
+    xmlns:viewModels="clr-namespace:CrossWikiEditor.Core.ViewModels;assembly=CrossWikiEditor.Core"
+    x:Name="This"
+    Title="SelectNamespacesView"
+    x:DataType="viewModels:SelectNamespacesViewModel"
+    Classes="DialogWindow"
+    SizeToContent="WidthAndHeight"
+    mc:Ignorable="d">
+    <Grid Margin="4" RowDefinitions="Auto,300,Auto">
+        <CheckBox
+            Grid.Row="0"
+            Margin="4"
+            Content="Select all"
+            IsChecked="{Binding IsAllSelected}"
+            IsVisible="{Binding IsMultiselect}" />
+        <ListBox
+            Grid.Row="1"
+            Margin="3"
+            IsVisible="{Binding IsMultiselect}"
+            ItemsSource="{Binding Namespaces}"
+            ScrollViewer.HorizontalScrollBarVisibility="Visible"
+            SelectionMode="Single">
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="models:WikiNamespace">
-                    <CheckBox Content="{Binding Name}"
-                              IsChecked="{Binding IsChecked}" />
+                    <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <ListBox Grid.Row="1"
-                 SelectionMode="Single"
-                 IsVisible="{Binding !IsMultiselect}"
-                 Margin="3"
-                 ScrollViewer.HorizontalScrollBarVisibility="Visible"
-                 ItemsSource="{Binding Namespaces}">
+        <ListBox
+            Grid.Row="1"
+            Margin="3"
+            IsVisible="{Binding !IsMultiselect}"
+            ItemsSource="{Binding Namespaces}"
+            ScrollViewer.HorizontalScrollBarVisibility="Visible"
+            SelectionMode="Single">
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="models:WikiNamespace">
-                    <RadioButton Content="{Binding Name}"
-                                 GroupName="groupname"
-                                 IsChecked="{Binding IsChecked}" />
+                    <RadioButton
+                        Content="{Binding Name}"
+                        GroupName="groupname"
+                        IsChecked="{Binding IsChecked}" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <Button Grid.Row="2"
-                Content="Select"
-                Command="{Binding SelectCommand}"
-                CommandParameter="{Binding #This}" />
+        <Button
+            Grid.Row="2"
+            Command="{Binding SelectCommand}"
+            CommandParameter="{Binding #This}"
+            Content="Select" />
     </Grid>
 </Window>

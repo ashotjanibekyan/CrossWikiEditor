@@ -1,58 +1,58 @@
-﻿<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:viewModels="clr-namespace:CrossWikiEditor.Core.ViewModels;assembly=CrossWikiEditor.Core"
-        xmlns:models="clr-namespace:CrossWikiEditor.Core.Models;assembly=CrossWikiEditor.Core"
-        Classes="DialogWindow"
-        SizeToContent="WidthAndHeight"
-        mc:Ignorable="d"
-        d:DesignWidth="800"
-        d:DesignHeight="450"
-        x:DataType="viewModels:SelectNamespacesAndRedirectFilterViewModel"
-        x:Class="CrossWikiEditor.Views.SelectNamespacesAndRedirectFilterView"
-        x:Name="This"
-        Title="Select namespaces and redirect filter">
-    <Grid RowDefinitions="300,Auto"
-          Margin="4">
-        <HeaderedContentControl Grid.RowSpan=""
-                                Header="The namespace to enumerate">
-            <Grid RowDefinitions="Auto,*"
-                  Margin="4">
-                <CheckBox Grid.Row="0"
-                          Grid.Column="0"
-                          Content="Select all"
-                          IsChecked="{Binding IsAllNamespacesChecked}"
-                          Margin="4" />
-                <ListBox Grid.Row="1"
-                         Grid.Column="0"
-                         SelectionMode="Multiple"
-                         Margin="3"
-                         ScrollViewer.HorizontalScrollBarVisibility="Visible"
-                         ItemsSource="{Binding Namespaces}">
+﻿<Window
+    x:Class="CrossWikiEditor.Views.SelectNamespacesAndRedirectFilterView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:CrossWikiEditor.Core.Models;assembly=CrossWikiEditor.Core"
+    xmlns:viewModels="clr-namespace:CrossWikiEditor.Core.ViewModels;assembly=CrossWikiEditor.Core"
+    x:Name="This"
+    Title="Select namespaces and redirect filter"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="viewModels:SelectNamespacesAndRedirectFilterViewModel"
+    Classes="DialogWindow"
+    SizeToContent="WidthAndHeight"
+    mc:Ignorable="d">
+    <Grid Margin="4" RowDefinitions="300,Auto">
+        <HeaderedContentControl Grid.RowSpan="" Header="The namespace to enumerate">
+            <Grid Margin="4" RowDefinitions="Auto,*">
+                <CheckBox
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Margin="4"
+                    Content="Select all"
+                    IsChecked="{Binding IsAllNamespacesChecked}" />
+                <ListBox
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Margin="3"
+                    ItemsSource="{Binding Namespaces}"
+                    ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                    SelectionMode="Multiple">
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="models:WikiNamespace">
-                            <CheckBox Content="{Binding Name}"
-                                      IsChecked="{Binding IsChecked}" />
+                            <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}" />
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
             </Grid>
         </HeaderedContentControl>
-        <StackPanel Grid.Row="1"
-                    Spacing="4">
+        <StackPanel Grid.Row="1" Spacing="4">
             <TextBlock>How to filter for redirects</TextBlock>
             <ComboBox SelectedIndex="{Binding SelectedRedirectFilter}">
                 <ComboBoxItem>Both</ComboBoxItem>
                 <ComboBoxItem>Only redirects</ComboBoxItem>
                 <ComboBoxItem>No redirects</ComboBoxItem>
             </ComboBox>
-            <CheckBox IsVisible="{Binding IsIncludeRedirectsVisible}"
-                      Content="Include links to redirects too"
-                      IsChecked="{Binding IncludeRedirects}" />
-            <Button Command="{Binding OkCommand}"
-                    CommandParameter="{Binding #This}"
-                    Content="Ok" />
+            <CheckBox
+                Content="Include links to redirects too"
+                IsChecked="{Binding IncludeRedirects}"
+                IsVisible="{Binding IsIncludeRedirectsVisible}" />
+            <Button
+                Command="{Binding OkCommand}"
+                CommandParameter="{Binding #This}"
+                Content="Ok" />
         </StackPanel>
     </Grid>
 </Window>

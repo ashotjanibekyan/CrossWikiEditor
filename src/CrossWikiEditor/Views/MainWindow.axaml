@@ -1,97 +1,87 @@
-<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:views="clr-namespace:CrossWikiEditor.Views"
-        xmlns:controlViews="clr-namespace:CrossWikiEditor.Views.ControlViews"
-        xmlns:reportViews="clr-namespace:CrossWikiEditor.Views.ReportViews"
-        xmlns:viewModels="clr-namespace:CrossWikiEditor.Core.ViewModels;assembly=CrossWikiEditor.Core"
-        xmlns:av="clr-namespace:TheArtOfDev.HtmlRenderer.Avalonia;assembly=Avalonia.HtmlRenderer"
-        WindowState="Maximized"
-        mc:Ignorable="d"
-        d:DesignWidth="800"
-        d:DesignHeight="450"
-        x:Class="CrossWikiEditor.Views.MainWindow"
-        x:DataType="viewModels:MainWindowViewModel"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="CrossWikiEditor">
+<Window
+    x:Class="CrossWikiEditor.Views.MainWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:av="clr-namespace:TheArtOfDev.HtmlRenderer.Avalonia;assembly=Avalonia.HtmlRenderer"
+    xmlns:controlViews="clr-namespace:CrossWikiEditor.Views.ControlViews"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:reportViews="clr-namespace:CrossWikiEditor.Views.ReportViews"
+    xmlns:viewModels="clr-namespace:CrossWikiEditor.Core.ViewModels;assembly=CrossWikiEditor.Core"
+    xmlns:views="clr-namespace:CrossWikiEditor.Views"
+    Title="CrossWikiEditor"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="viewModels:MainWindowViewModel"
+    Icon="/Assets/avalonia-logo.ico"
+    WindowState="Maximized"
+    mc:Ignorable="d">
 
-    <Grid RowDefinitions="Auto,*,Auto"
-          Margin="1">
-        <views:MenuView Grid.Row="0"
-                        Grid.Column="0"
-                        DataContext="{Binding MenuViewModel}" />
-        <Grid Grid.Row="1"
-              RowDefinitions="*,1,*">
+    <Grid Margin="1" RowDefinitions="Auto,*,Auto">
+        <views:MenuView
+            Grid.Row="0"
+            Grid.Column="0"
+            DataContext="{Binding MenuViewModel}" />
+        <Grid Grid.Row="1" RowDefinitions="*,1,*">
             <Grid Grid.Row="0">
                 <av:HtmlPanel x:Name="_htmlPanel" />
             </Grid>
-            <GridSplitter Grid.Row="1"
-                          Background="Black"
-                          ResizeDirection="Rows" />
+            <GridSplitter
+                Grid.Row="1"
+                Background="Black"
+                ResizeDirection="Rows" />
             <Grid Grid.Row="2">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"
-                                          MinWidth="200" />
+                        <ColumnDefinition Width="Auto" MinWidth="200" />
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <views:MakeListView Grid.Column="0"
-                                        DataContext="{Binding MakeListViewModel}" />
-                    <GridSplitter Grid.Column="1"
-                                  Background="Black"
-                                  ResizeDirection="Columns" />
-                    <Grid Column="2"
-                          Width="450">
+                    <views:MakeListView Grid.Column="0" DataContext="{Binding MakeListViewModel}" />
+                    <GridSplitter
+                        Grid.Column="1"
+                        Background="Black"
+                        ResizeDirection="Columns" />
+                    <Grid Width="450" Column="2">
                         <TabControl>
-                            <TabItem Header="Options"
-                                     FontSize="14">
+                            <TabItem FontSize="14" Header="Options">
                                 <controlViews:OptionsView DataContext="{Binding OptionsViewModel}" />
                             </TabItem>
-                            <TabItem Header="More"
-                                     FontSize="14">
+                            <TabItem FontSize="14" Header="More">
                                 <controlViews:MoreView DataContext="{Binding MoreViewModel}" />
                             </TabItem>
-                            <TabItem Header="Disambig"
-                                     FontSize="14">
+                            <TabItem FontSize="14" Header="Disambig">
                                 <controlViews:DisambigView DataContext="{Binding DisambigViewModel}" />
                             </TabItem>
-                            <TabItem Header="Skip"
-                                     FontSize="14">
+                            <TabItem FontSize="14" Header="Skip">
                                 <controlViews:SkipView DataContext="{Binding SkipViewModel}" />
                             </TabItem>
-                            <TabItem Header="Start"
-                                     FontSize="14">
+                            <TabItem FontSize="14" Header="Start">
                                 <controlViews:StartView DataContext="{Binding StartViewModel}" />
                             </TabItem>
                         </TabControl>
                     </Grid>
-                    <GridSplitter Grid.Column="3"
-                                  Background="Black"
-                                  ResizeDirection="Columns" />
+                    <GridSplitter
+                        Grid.Column="3"
+                        Background="Black"
+                        ResizeDirection="Columns" />
                     <Grid Column="4">
                         <TabControl>
-                            <TabItem Header="Edit box"
-                                     FontSize="14">
+                            <TabItem FontSize="14" Header="Edit box">
                                 <reportViews:EditBoxView DataContext="{Binding EditBoxViewModel}" />
                             </TabItem>
-                            <TabItem Header="History"
-                                     FontSize="14">
+                            <TabItem FontSize="14" Header="History">
                                 <reportViews:HistoryView DataContext="{Binding HistoryViewModel}" />
                             </TabItem>
-                            <TabItem Header="What links here"
-                                     FontSize="14">
+                            <TabItem FontSize="14" Header="What links here">
                                 <reportViews:WhatLinksHereView DataContext="{Binding WhatLinksHereViewModel}" />
                             </TabItem>
-                            <TabItem Header="Logs"
-                                     FontSize="14">
+                            <TabItem FontSize="14" Header="Logs">
                                 <reportViews:LogsView DataContext="{Binding LogsViewModel}" />
                             </TabItem>
-                            <TabItem Header="Page logs"
-                                     FontSize="14">
+                            <TabItem FontSize="14" Header="Page logs">
                                 <reportViews:PageLogsView DataContext="{Binding PageLogsViewModel}" />
                             </TabItem>
                         </TabControl>
@@ -99,8 +89,9 @@
                 </Grid>
             </Grid>
         </Grid>
-        <views:StatusBarView Grid.Row="2"
-                             Grid.Column="0"
-                             DataContext="{Binding StatusBarViewModel}" />
+        <views:StatusBarView
+            Grid.Row="2"
+            Grid.Column="0"
+            DataContext="{Binding StatusBarViewModel}" />
     </Grid>
 </Window>

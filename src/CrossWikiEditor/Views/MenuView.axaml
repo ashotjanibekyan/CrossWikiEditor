@@ -1,36 +1,28 @@
-<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:menuViewModels="clr-namespace:CrossWikiEditor.Core.ViewModels.MenuViewModels;assembly=CrossWikiEditor.Core"
-             x:DataType="menuViewModels:MenuViewModel"
-             mc:Ignorable="d"
-             d:DesignWidth="800"
-             d:DesignHeight="450"
-             x:Class="CrossWikiEditor.Views.MenuView">
+<UserControl
+    x:Class="CrossWikiEditor.Views.MenuView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:menuViewModels="clr-namespace:CrossWikiEditor.Core.ViewModels.MenuViewModels;assembly=CrossWikiEditor.Core"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="menuViewModels:MenuViewModel"
+    mc:Ignorable="d">
     <Menu>
         <MenuItem Header="File">
-            <MenuItem Header="Reset to original default settings"
-                      Command="{Binding FileMenuViewModel.ResetToDefaultSettingsCommand}" />
-            <MenuItem Header="Open settings..."
-                      Command="{Binding FileMenuViewModel.OpenSettingsCommand}" />
+            <MenuItem Command="{Binding FileMenuViewModel.ResetToDefaultSettingsCommand}" Header="Reset to original default settings" />
+            <MenuItem Command="{Binding FileMenuViewModel.OpenSettingsCommand}" Header="Open settings..." />
             <Separator />
-            <MenuItem Header="Save settings"
-                      Command="{Binding FileMenuViewModel.SaveSettingsCommand}" />
-            <MenuItem Header="Save settings as..."
-                      Command="{Binding FileMenuViewModel.SaveSettingsAsCommand}" />
-            <MenuItem Header="Save settings as default"
-                      Command="{Binding FileMenuViewModel.SaveSettingsAsDefaultCommand}" />
+            <MenuItem Command="{Binding FileMenuViewModel.SaveSettingsCommand}" Header="Save settings" />
+            <MenuItem Command="{Binding FileMenuViewModel.SaveSettingsAsCommand}" Header="Save settings as..." />
+            <MenuItem Command="{Binding FileMenuViewModel.SaveSettingsAsDefaultCommand}" Header="Save settings as default" />
             <Separator />
-            <MenuItem Header="Login/Profiles..."
-                      Command="{Binding FileMenuViewModel.LoginProfilesCommand}" />
-            <MenuItem Header="Log out"
-                      Command="{Binding FileMenuViewModel.LogoutCommand}" />
-            <MenuItem Header="Refresh Status/Typos"
-                      Command="{Binding FileMenuViewModel.RefreshStatusAndTyposCommand}" />
+            <MenuItem Command="{Binding FileMenuViewModel.LoginProfilesCommand}" Header="Login/Profiles..." />
+            <MenuItem Command="{Binding FileMenuViewModel.LogoutCommand}" Header="Log out" />
+            <MenuItem Command="{Binding FileMenuViewModel.RefreshStatusAndTyposCommand}" Header="Refresh Status/Typos" />
             <Separator />
-            <MenuItem Header="Exit"
-                      Command="{Binding FileMenuViewModel.ExitCommand}" />
+            <MenuItem Command="{Binding FileMenuViewModel.ExitCommand}" Header="Exit" />
         </MenuItem>
         <MenuItem Header="View">
             <MenuItem Header="Show toolbar" />
