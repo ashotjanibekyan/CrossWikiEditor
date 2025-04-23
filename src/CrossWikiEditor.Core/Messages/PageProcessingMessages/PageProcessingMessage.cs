@@ -1,6 +1,6 @@
 ﻿using CrossWikiEditor.Core.Models;
 
-namespace CrossWikiEditor.Core;
+namespace CrossWikiEditor.Core.Messages.PageProcessingMessages;
 
 /// <summary>
 ///     This message is fired the program starts processing the page (local changes, before saving).

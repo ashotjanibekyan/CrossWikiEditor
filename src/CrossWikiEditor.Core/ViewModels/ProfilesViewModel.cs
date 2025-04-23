@@ -21,12 +21,14 @@ public sealed partial class ProfilesViewModel : ViewModelBase
     private readonly ISettingsService _settingsService;
     private readonly IMessengerWrapper _messenger;
 
-    public ProfilesViewModel(IFileDialogService fileDialogService,
+    public ProfilesViewModel(
+        IFileDialogService fileDialogService,
         IDialogService dialogService,
         IProfileRepository profileRepository,
         IUserService userService,
         ISettingsService settingsService,
-        IMessengerWrapper messenger)
+        IMessengerWrapper messenger
+    )
     {
         _fileDialogService = fileDialogService;
         _dialogService = dialogService;
@@ -34,12 +36,15 @@ public sealed partial class ProfilesViewModel : ViewModelBase
         _userService = userService;
         _settingsService = settingsService;
         _messenger = messenger;
-        Profiles = new ObservableCollection<Profile>(profileRepository.GetAll() ?? []);
+        var profiles = _profileRepository.GetAll();
+        Profiles = new ObservableCollection<Profile>(profileRepository.GetAll());
     }
 
-    [ObservableProperty] public partial Profile? SelectedProfile { get; set; }
+    [ObservableProperty]
+    public partial Profile? SelectedProfile { get; set; }
 
-    [ObservableProperty] public partial ObservableCollection<Profile> Profiles { get; set; }
+    [ObservableProperty]
+    public partial ObservableCollection<Profile> Profiles { get; set; }
 
     public string Username { get; set; } = "";
     public string Password { get; set; } = "";
@@ -77,9 +82,9 @@ public sealed partial class ProfilesViewModel : ViewModelBase
             Username = SelectedProfile.Username,
             DefaultSettingsPath = SelectedProfile.DefaultSettingsPath,
             Notes = SelectedProfile.Notes,
-            Password = SelectedProfile.Password ?? string.Empty,
+            Password = SelectedProfile.Password,
             ShouldSavePassword = SelectedProfile.IsPasswordSaved,
-            ShouldSelectDefaultSettings = !string.IsNullOrEmpty(SelectedProfile.DefaultSettingsPath)
+            ShouldSelectDefaultSettings = !string.IsNullOrEmpty(SelectedProfile.DefaultSettingsPath),
         };
         if (await _dialogService.ShowDialog<bool>(vm))
         {
@@ -108,11 +113,7 @@ public sealed partial class ProfilesViewModel : ViewModelBase
             return;
         }
 
-        var profile = new Profile
-        {
-            Username = Username,
-            Password = Password
-        };
+        var profile = new Profile { Username = Username, Password = Password };
         await Login(profile, dialog);
     }
 
@@ -122,7 +123,7 @@ public sealed partial class ProfilesViewModel : ViewModelBase
         currentUserSettings ??= _settingsService.GetCurrentSettings();
 
         Result<Unit> loginResult = await _userService.Login(profile, currentUserSettings.GetApiUrl());
-        if (loginResult is {IsSuccessful: true})
+        if (loginResult is { IsSuccessful: true })
         {
             _messenger.Send(new NewAccountLoggedInMessage(profile));
             if (!string.IsNullOrEmpty(profile.DefaultSettingsPath))
@@ -140,8 +141,10 @@ public sealed partial class ProfilesViewModel : ViewModelBase
             }
             else
             {
-                await _dialogService.Alert("Login Attempt Unsuccessful",
-                    "Login Attempt Unsuccessful: Please ensure an active internet connection and verify the accuracy of your provided username and password.");
+                await _dialogService.Alert(
+                    "Login Attempt Unsuccessful",
+                    "Login Attempt Unsuccessful: Please ensure an active internet connection and verify the accuracy of your provided username and password."
+                );
             }
         }
     }

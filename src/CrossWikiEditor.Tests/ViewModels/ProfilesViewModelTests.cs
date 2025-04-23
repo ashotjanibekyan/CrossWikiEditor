@@ -33,24 +33,18 @@ public sealed class ProfilesViewModelTests : BaseTest
     public void LoginCommand_ShouldLogin_WhenSelectedUserIsValid()
     {
         // arrange
-        var profile = new Profile
-        {
-            Username = "username",
-            Password = "password"
-        };
+        var profile = new Profile { Username = "username", Password = "password" };
         _sut.SelectedProfile = profile;
-        _settingsService.GetCurrentSettings().Returns(new UserSettings
-        {
-            UserWiki = new UserWiki("hy", ProjectEnum.Wikipedia)
-        });
+        _settingsService.GetCurrentSettings().Returns(new UserSettings { UserWiki = new UserWiki("hy", ProjectEnum.Wikipedia) });
         _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Unit.Default);
 
         // act
         _sut.LoginCommand.Execute(_dialog);
 
         // assert
-        _userService.Received(1).Login(Arg.Is<Profile>(p => p.Username == profile.Username && p.Password == profile.Password),
-            "https://hy.wikipedia.org/w/api.php?");
+        _userService
+            .Received(1)
+            .Login(Arg.Is<Profile>(p => p.Username == profile.Username && p.Password == profile.Password), "https://hy.wikipedia.org/w/api.php?");
         _dialogService.Received(0).Alert(Arg.Any<string>(), Arg.Any<string>());
         _dialog.Received(1).Close(true);
     }
@@ -63,13 +57,10 @@ public sealed class ProfilesViewModelTests : BaseTest
         {
             Username = "username",
             Password = "password",
-            DefaultSettingsPath = "some/settings/path/file.xml"
+            DefaultSettingsPath = "some/settings/path/file.xml",
         };
         _sut.SelectedProfile = profile;
-        var userSettings = new UserSettings
-        {
-            UserWiki = new UserWiki("hy", ProjectEnum.Wikipedia)
-        };
+        var userSettings = new UserSettings { UserWiki = new UserWiki("hy", ProjectEnum.Wikipedia) };
         _settingsService.GetSettingsByPath(profile.DefaultSettingsPath).Returns(userSettings);
         _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Unit.Default);
 
@@ -77,10 +68,10 @@ public sealed class ProfilesViewModelTests : BaseTest
         _sut.LoginCommand.Execute(_dialog);
 
         // assert
-        _settingsService.Received(1)
-            .SetCurrentSettings(userSettings);
-        _userService.Received(1).Login(Arg.Is<Profile>(p => p.Username == profile.Username && p.Password == profile.Password),
-            "https://hy.wikipedia.org/w/api.php?");
+        _settingsService.Received(1).SetCurrentSettings(userSettings);
+        _userService
+            .Received(1)
+            .Login(Arg.Is<Profile>(p => p.Username == profile.Username && p.Password == profile.Password), "https://hy.wikipedia.org/w/api.php?");
         _dialogService.Received(0).Alert(Arg.Any<string>(), Arg.Any<string>());
         _dialog.Received(1).Close(true);
     }
@@ -89,50 +80,42 @@ public sealed class ProfilesViewModelTests : BaseTest
     public void LoginCommand_ShouldAlertDefaultMessage_WhenLoginIsUnSuccessfulAndThereIsNoMessage()
     {
         // arrange
-        var profile = new Profile
-        {
-            Username = "username",
-            Password = "password"
-        };
+        var profile = new Profile { Username = "username", Password = "password" };
         _sut.SelectedProfile = profile;
-        _settingsService.GetCurrentSettings().Returns(new UserSettings
-        {
-            UserWiki = new UserWiki("hy", ProjectEnum.Wikipedia)
-        });
+        _settingsService.GetCurrentSettings().Returns(new UserSettings { UserWiki = new UserWiki("hy", ProjectEnum.Wikipedia) });
         _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(new Exception(string.Empty));
 
         // act
         _sut.LoginCommand.Execute(_dialog);
 
         // assert
-        _userService.Received(1).Login(Arg.Is<Profile>(p => p.Username == profile.Username && p.Password == profile.Password),
-            "https://hy.wikipedia.org/w/api.php?");
-        _dialogService.Received(1).Alert("Login Attempt Unsuccessful",
-            "Login Attempt Unsuccessful: Please ensure an active internet connection and verify the accuracy of your provided username and password.");
+        _userService
+            .Received(1)
+            .Login(Arg.Is<Profile>(p => p.Username == profile.Username && p.Password == profile.Password), "https://hy.wikipedia.org/w/api.php?");
+        _dialogService
+            .Received(1)
+            .Alert(
+                "Login Attempt Unsuccessful",
+                "Login Attempt Unsuccessful: Please ensure an active internet connection and verify the accuracy of your provided username and password."
+            );
     }
 
     [Test]
     public void LoginCommand_ShouldAlertErrorMessage_WhenLoginIsUnSuccessful()
     {
         // arrange
-        var profile = new Profile
-        {
-            Username = "username",
-            Password = "password"
-        };
+        var profile = new Profile { Username = "username", Password = "password" };
         _sut.SelectedProfile = profile;
-        _settingsService.GetCurrentSettings().Returns(new UserSettings
-        {
-            UserWiki = new UserWiki("hy", ProjectEnum.Wikipedia)
-        });
+        _settingsService.GetCurrentSettings().Returns(new UserSettings { UserWiki = new UserWiki("hy", ProjectEnum.Wikipedia) });
         _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(new Exception("this is an error message"));
 
         // act
         _sut.LoginCommand.Execute(_dialog);
 
         // assert
-        _userService.Received(1).Login(Arg.Is<Profile>(p => p.Username == profile.Username && p.Password == profile.Password),
-            "https://hy.wikipedia.org/w/api.php?");
+        _userService
+            .Received(1)
+            .Login(Arg.Is<Profile>(p => p.Username == profile.Username && p.Password == profile.Password), "https://hy.wikipedia.org/w/api.php?");
         _dialogService.Received(1).Alert("Login Attempt Unsuccessful", "this is an error message");
     }
 
@@ -145,8 +128,7 @@ public sealed class ProfilesViewModelTests : BaseTest
         _sut.AddCommand.Execute(null);
 
         // assert
-        _dialogService.Received(1)
-            .ShowDialog<bool>(Arg.Is<AddOrEditProfileViewModel>(vm => !vm.IsEdit));
+        _dialogService.Received(1).ShowDialog<bool>(Arg.Is<AddOrEditProfileViewModel>(vm => !vm.IsEdit));
     }
 
     [Test]
@@ -155,16 +137,8 @@ public sealed class ProfilesViewModelTests : BaseTest
         // arrange
         var newProfiles = new List<Profile>
         {
-            new()
-            {
-                Username = "username",
-                Password = "Qwer1234"
-            },
-            new()
-            {
-                Username = "username2",
-                Password = "Qwer1234"
-            }
+            new() { Username = "username", Password = "Qwer1234" },
+            new() { Username = "username2", Password = "Qwer1234" },
         };
         _dialogService.ShowDialog<bool>(Arg.Is<AddOrEditProfileViewModel>(vm => !vm.IsEdit)).Returns(true);
         _profileRepository.GetAll().Returns(newProfiles);
@@ -202,10 +176,18 @@ public sealed class ProfilesViewModelTests : BaseTest
         _sut.EditCommand.Execute(null);
 
         // assert
-        _dialogService.Received(1).ShowDialog<bool>(Arg.Is<AddOrEditProfileViewModel>(vm =>
-            vm.Username == profile.Username && vm.DefaultSettingsPath == profile.DefaultSettingsPath && vm.Notes == profile.Notes &&
-            vm.Password == profile.Password && vm.ShouldSavePassword == profile.IsPasswordSaved &&
-            vm.ShouldSelectDefaultSettings == !string.IsNullOrEmpty(profile.DefaultSettingsPath)));
+        _dialogService
+            .Received(1)
+            .ShowDialog<bool>(
+                Arg.Is<AddOrEditProfileViewModel>(vm =>
+                    vm.Username == profile.Username
+                    && vm.DefaultSettingsPath == profile.DefaultSettingsPath
+                    && vm.Notes == profile.Notes
+                    && vm.Password == profile.Password
+                    && vm.ShouldSavePassword == profile.IsPasswordSaved
+                    && vm.ShouldSelectDefaultSettings == !string.IsNullOrEmpty(profile.DefaultSettingsPath)
+                )
+            );
     }
 
     [Test]
@@ -283,18 +265,16 @@ public sealed class ProfilesViewModelTests : BaseTest
         // arrange
         _sut.Username = "username";
         _sut.Password = "Qwer1234";
-        _settingsService.GetCurrentSettings().Returns(new UserSettings
-        {
-            UserWiki = new UserWiki("hyw", ProjectEnum.Wikipedia)
-        });
+        _settingsService.GetCurrentSettings().Returns(new UserSettings { UserWiki = new UserWiki("hyw", ProjectEnum.Wikipedia) });
         _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Unit.Default);
 
         // act
         _sut.QuickLoginCommand.Execute(_dialog);
 
         // assert
-        _userService.Received(1).Login(Arg.Is<Profile>(p => p.Username == "username" && p.Password == "Qwer1234"),
-            "https://hyw.wikipedia.org/w/api.php?");
+        _userService
+            .Received(1)
+            .Login(Arg.Is<Profile>(p => p.Username == "username" && p.Password == "Qwer1234"), "https://hyw.wikipedia.org/w/api.php?");
         _dialog.Received(1).Close(true);
     }
 
@@ -302,7 +282,8 @@ public sealed class ProfilesViewModelTests : BaseTest
     [Combinatorial]
     public void QuickLoginCommand_ShouldReturn_WhenUsernameOrPasswordIsMissing(
         [Values("username", "", " ")] string username,
-        [Values("password", "", " ")] string password)
+        [Values("password", "", " ")] string password
+    )
     {
         // arrange
         if (!string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password))
@@ -326,10 +307,7 @@ public sealed class ProfilesViewModelTests : BaseTest
         // arrange
         _sut.Username = "username";
         _sut.Password = "Qwer1234";
-        _settingsService.GetCurrentSettings().Returns(new UserSettings
-        {
-            UserWiki = new UserWiki("hyw", ProjectEnum.Wikipedia)
-        });
+        _settingsService.GetCurrentSettings().Returns(new UserSettings { UserWiki = new UserWiki("hyw", ProjectEnum.Wikipedia) });
         _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(Unit.Default);
 
         // act
@@ -346,10 +324,7 @@ public sealed class ProfilesViewModelTests : BaseTest
         // arrange
         _sut.Username = "username";
         _sut.Password = "Qwer1234";
-        _settingsService.GetCurrentSettings().Returns(new UserSettings
-        {
-            UserWiki = new UserWiki("hyw", ProjectEnum.Wikipedia)
-        });
+        _settingsService.GetCurrentSettings().Returns(new UserSettings { UserWiki = new UserWiki("hyw", ProjectEnum.Wikipedia) });
         _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(new Exception("Password is wrong"));
 
         // act
@@ -366,17 +341,18 @@ public sealed class ProfilesViewModelTests : BaseTest
         // arrange
         _sut.Username = "username";
         _sut.Password = "Qwer1234";
-        _settingsService.GetCurrentSettings().Returns(new UserSettings
-        {
-            UserWiki = new UserWiki("hy", ProjectEnum.Wikipedia)
-        });
+        _settingsService.GetCurrentSettings().Returns(new UserSettings { UserWiki = new UserWiki("hy", ProjectEnum.Wikipedia) });
         _userService.Login(Arg.Any<Profile>(), Arg.Any<string>()).Returns(new Exception(errorMessage));
 
         // act
         _sut.QuickLoginCommand.Execute(_dialog);
 
         // assert
-        _dialogService.Received(1).Alert("Login Attempt Unsuccessful",
-            "Login Attempt Unsuccessful: Please ensure an active internet connection and verify the accuracy of your provided username and password.");
+        _dialogService
+            .Received(1)
+            .Alert(
+                "Login Attempt Unsuccessful",
+                "Login Attempt Unsuccessful: Please ensure an active internet connection and verify the accuracy of your provided username and password."
+            );
     }
 }

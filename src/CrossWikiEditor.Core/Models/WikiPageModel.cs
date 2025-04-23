@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CrossWikiEditor.Core.Services.WikiServices;
-using CrossWikiEditor.Core.Utils;
 using CrossWikiEditor.Core.Utils.Extensions;
 using WikiClientLibrary.Pages;
 using WikiClientLibrary.Sites;
@@ -76,13 +75,15 @@ public sealed class WikiPageModel : IEquatable<WikiPageModel>, IComparable<WikiP
             return false;
         }
 
-        return await _wikiPage.EditAsync(new WikiPageEditOptions
-        {
-            Content = content,
-            Summary = summary,
-            Bot = isBot,
-            Minor = isMinor
-        });
+        return await _wikiPage.EditAsync(
+            new WikiPageEditOptions
+            {
+                Content = content,
+                Summary = summary,
+                Bot = isBot,
+                Minor = isMinor,
+            }
+        );
     }
 
     public async Task<bool> Exists()

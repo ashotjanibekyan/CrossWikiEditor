@@ -17,5 +17,5 @@ public enum ProjectEnum
     Incubator,
     Wikia,
     Fandom,
-    Custom
+    Custom,
 }

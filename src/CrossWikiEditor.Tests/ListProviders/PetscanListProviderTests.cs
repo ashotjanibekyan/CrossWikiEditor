@@ -47,9 +47,7 @@ public sealed class PetscanListProviderTests : ListProvidersBaseTest<PetscanList
         // arrange
         const int id = 1234;
         _httpClientFactory.CreateClient("Petscan").Returns(new HttpClient(_mockHttpMessageHandler));
-        _mockHttpMessageHandler
-            .When($"https://petscan.wmflabs.org/?psid={id}&format=plain")
-            .Throw(new Exception("exception message"));
+        _mockHttpMessageHandler.When($"https://petscan.wmflabs.org/?psid={id}&format=plain").Throw(new Exception("exception message"));
         _sut.Param = id.ToString();
 
         // act
@@ -128,6 +126,6 @@ public sealed class PetscanListProviderTests : ListProvidersBaseTest<PetscanList
     {
         _sut.Title.Should().Be("Petscan");
         _sut.ParamTitle.Should().Be("PSID");
-        _mockHttpMessageHandler?.Dispose();
+        _mockHttpMessageHandler.Dispose();
     }
 }

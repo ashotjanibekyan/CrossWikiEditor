@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.Input;
+using CrossWikiEditor.Core.Messages;
 using CrossWikiEditor.Core.Services;
 using CrossWikiEditor.Core.Settings;
 using CrossWikiEditor.Core.Utils;
@@ -15,11 +16,13 @@ public sealed partial class FileMenuViewModel
     private readonly IDialogService _dialogService;
     private readonly IMessengerWrapper _messenger;
 
-    public FileMenuViewModel(IViewModelFactory viewModelFactory,
+    public FileMenuViewModel(
+        IViewModelFactory viewModelFactory,
         IFileDialogService fileDialogService,
         ISettingsService settingsService,
         IDialogService dialogService,
-        IMessengerWrapper messenger)
+        IMessengerWrapper messenger
+    )
     {
         _viewModelFactory = viewModelFactory;
         _fileDialogService = fileDialogService;
@@ -38,13 +41,13 @@ public sealed partial class FileMenuViewModel
     private async Task OpenSettings()
     {
         string[]? result = await _fileDialogService.OpenFilePickerAsync("Select settings", false, ["*.json"]);
-        if (result is {Length: 1})
+        if (result is { Length: 1 })
         {
             string newSettingsPath = result[0];
             try
             {
-                UserSettings? newUserSettings = _settingsService.GetSettingsByPath(newSettingsPath) ??
-                                                throw new InvalidOperationException("Failed to load the settings");
+                UserSettings newUserSettings =
+                    _settingsService.GetSettingsByPath(newSettingsPath) ?? throw new InvalidOperationException("Failed to load the settings");
                 _settingsService.SetCurrentSettings(newUserSettings);
             }
             catch (InvalidOperationException)

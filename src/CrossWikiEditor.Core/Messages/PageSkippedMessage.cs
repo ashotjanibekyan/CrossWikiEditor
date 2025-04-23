@@ -18,5 +18,5 @@ public enum SkipReason
 {
     Manual,
     ErrorProcessing,
-    NoChanges
+    NoChanges,
 }

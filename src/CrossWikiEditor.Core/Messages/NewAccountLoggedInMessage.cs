@@ -5,7 +5,6 @@ namespace CrossWikiEditor.Core.Messages;
 
 public sealed class NewAccountLoggedInMessage : ValueChangedMessage<Profile>
 {
-    public NewAccountLoggedInMessage(Profile profile) : base(profile)
-    {
-    }
+    public NewAccountLoggedInMessage(Profile profile)
+        : base(profile) { }
 }

@@ -52,10 +52,7 @@ public sealed class UserService : IUserService
     {
         try
         {
-            var gen = new AllUsersPageGenerator(await _wikiClientCache.GetWikiSite(apiRoot))
-            {
-                StartFrom = startFrom
-            };
+            var gen = new AllUsersPageGenerator(await _wikiClientCache.GetWikiSite(apiRoot)) { StartFrom = startFrom };
             List<WikiPage> result = await gen.EnumItemsAsync().Take(limit).ToListAsync();
             return result.ConvertAll(x => new WikiPageModel(x));
         }
@@ -87,11 +84,7 @@ public sealed class UserService : IUserService
         try
         {
             WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot);
-            var gen = new UserContributionsGenerator(site, new List<string> {username})
-            {
-                IncludeTitle = true,
-                IncludeIds = true
-            };
+            var gen = new UserContributionsGenerator(site, new List<string> { username }) { IncludeTitle = true, IncludeIds = true };
             List<UserContributionResultItem> result = await gen.EnumItemsAsync().Take(limit).ToListAsync();
             return result.ConvertAll(item => new WikiPageModel(item.WikiPage));
         }

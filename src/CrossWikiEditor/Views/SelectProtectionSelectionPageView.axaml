@@ -13,7 +13,7 @@
     Classes="DialogWindow"
     SizeToContent="WidthAndHeight"
     mc:Ignorable="d">
-    <Grid ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto">
+    <Grid                    ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto">
         <Label Grid.Row="0" Grid.Column="0">
             Type
         </Label>

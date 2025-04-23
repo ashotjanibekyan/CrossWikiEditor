@@ -4,7 +4,6 @@ using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CrossWikiEditor.Core.Settings;
-using CrossWikiEditor.Core.Utils;
 using CrossWikiEditor.Core.Utils.Extensions;
 
 namespace CrossWikiEditor.Core.ViewModels.ControlViewModels;
@@ -25,13 +24,17 @@ public partial class FindAndReplaceViewModel : ViewModelBase
         AddToSummary = normalFindAndReplaceRules.AddToSummary;
     }
 
-    [ObservableProperty] public partial ObservableCollection<NormalFindAndReplaceRule> NormalFindAndReplaceRules { get; set; }
+    [ObservableProperty]
+    public partial ObservableCollection<NormalFindAndReplaceRule> NormalFindAndReplaceRules { get; set; }
 
-    [ObservableProperty] public partial bool IgnoreLinks { get; set; }
+    [ObservableProperty]
+    public partial bool IgnoreLinks { get; set; }
 
-    [ObservableProperty] public partial bool IgnoreMore { get; set; }
+    [ObservableProperty]
+    public partial bool IgnoreMore { get; set; }
 
-    [ObservableProperty] public partial bool AddToSummary { get; set; }
+    [ObservableProperty]
+    public partial bool AddToSummary { get; set; }
 
     [RelayCommand]
     private void Clean()
@@ -52,7 +55,7 @@ public partial class FindAndReplaceViewModel : ViewModelBase
         {
             IgnoreLinks = IgnoreLinks,
             IgnoreMore = IgnoreMore,
-            AddToSummary = AddToSummary
+            AddToSummary = AddToSummary,
         };
 
         dialog.Close(rules);
@@ -60,7 +63,7 @@ public partial class FindAndReplaceViewModel : ViewModelBase
 
     private void OnModelPropertyChanged(object? sender, PropertyChangedEventArgs args)
     {
-        if (NormalFindAndReplaceRules.LastOrDefault() is not {IsEmpty: false})
+        if (NormalFindAndReplaceRules.LastOrDefault() is not { IsEmpty: false })
         {
             return;
         }

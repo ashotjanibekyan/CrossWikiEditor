@@ -4,7 +4,6 @@ using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CrossWikiEditor.Core.Models;
-using CrossWikiEditor.Core.Utils;
 using CrossWikiEditor.Core.Utils.Extensions;
 
 namespace CrossWikiEditor.Core.ViewModels;
@@ -20,9 +19,11 @@ public sealed partial class SelectNamespacesViewModel : ViewModelBase
     [ObservableProperty]
     public partial ObservableCollection<WikiNamespace> Namespaces { get; set; }
 
-    [ObservableProperty] public partial bool IsAllSelected { get; set; }
+    [ObservableProperty]
+    public partial bool IsAllSelected { get; set; }
 
-    [ObservableProperty] public partial bool IsMultiselect { get; set; }
+    [ObservableProperty]
+    public partial bool IsMultiselect { get; set; }
 
     [RelayCommand]
     private void Select(IDialog dialog)
@@ -32,9 +33,6 @@ public sealed partial class SelectNamespacesViewModel : ViewModelBase
 
     partial void OnIsAllSelectedChanged(bool value)
     {
-        Namespaces = Namespaces
-            .ToList()
-            .Select(x => new WikiNamespace(x.Id, x.Name, value))
-            .ToObservableCollection();
+        Namespaces = Namespaces.ToList().Select(x => new WikiNamespace(x.Id, x.Name, value)).ToObservableCollection();
     }
 }

@@ -27,8 +27,8 @@ public sealed class MessengerWrapperTests
         // Arrange
         IMessenger? mockMessenger = Substitute.For<IMessenger>();
         var wrapper = new MessengerWrapper(mockMessenger);
-        object? recipient = new();
-        MessageHandler<object, StartBotMessage> handler = (sender, args) => { };
+        object recipient = new();
+        MessageHandler<object, StartBotMessage> handler = (_, _) => { };
 
         // Act
         wrapper.Register(recipient, handler);

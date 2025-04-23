@@ -12,7 +12,6 @@ using CommunityToolkit.Mvvm.Input;
 using CrossWikiEditor.Core.Models;
 using CrossWikiEditor.Core.Services;
 using CrossWikiEditor.Core.Services.WikiServices;
-using CrossWikiEditor.Core.Utils;
 using CrossWikiEditor.Core.Utils.Extensions;
 using WikiClientLibrary.Pages;
 using WikiClientLibrary.Sites;
@@ -30,10 +29,7 @@ public sealed partial class DatabaseScannerViewModel : ViewModelBase
     private Task? _scannerTask;
     private Task? _updateUiTask;
 
-    public DatabaseScannerViewModel(
-        ISettingsService settingsService,
-        IWikiClientCache wikiClientCache,
-        IFileDialogService fileDialogService)
+    public DatabaseScannerViewModel(ISettingsService settingsService, IWikiClientCache wikiClientCache, IFileDialogService fileDialogService)
     {
         _settingsService = settingsService;
         _wikiClientCache = wikiClientCache;
@@ -54,55 +50,96 @@ public sealed partial class DatabaseScannerViewModel : ViewModelBase
         NumberOfPagesOnEachSection = 25;
     }
 
-    [ObservableProperty] public partial ObservableCollection<WikiNamespace> SubjectNamespaces { get; set; }
-    [ObservableProperty] public partial ObservableCollection<WikiNamespace> TalkNamespaces { get; set; }
-    [ObservableProperty] public partial ObservableCollection<WikiPageModel> Pages { get; set; }
+    [ObservableProperty]
+    public partial ObservableCollection<WikiNamespace> SubjectNamespaces { get; set; }
 
-    [ObservableProperty] public partial bool IsTitleContainsEnabled { get; set; }
-    [ObservableProperty] public partial bool IsTitleNotContainsEnabled { get; set; }
-    [ObservableProperty] public partial string TitleContains { get; set; }
-    [ObservableProperty] public partial string TitleNotContains { get; set; }
-    [ObservableProperty] public partial bool IsTitleContainsRegex { get; set; }
-    [ObservableProperty] public partial bool IsTitleContainsCaseSensitive { get; set; }
+    [ObservableProperty]
+    public partial ObservableCollection<WikiNamespace> TalkNamespaces { get; set; }
 
-    [ObservableProperty] public partial bool IsAllTalkChecked { get; set; }
-    [ObservableProperty] public partial bool IsAllSubjectChecked { get; set; }
-    [ObservableProperty] public partial string DatabaseFile { get; set; }
-    [ObservableProperty] public partial string SiteName { get; set; }
-    [ObservableProperty] public partial string Base { get; set; }
-    [ObservableProperty] public partial string Generator { get; set; }
-    [ObservableProperty] public partial string Case { get; set; }
+    [ObservableProperty]
+    public partial ObservableCollection<WikiPageModel> Pages { get; set; }
 
-    [ObservableProperty] public partial bool IsSearchDateChecked { get; set; }
-    [ObservableProperty] public partial DateTimeOffset SelectedStartDate { get; set; }
-    [ObservableProperty] public partial DateTimeOffset SelectedEndDate { get; set; }
-    [ObservableProperty] public partial DateTimeOffset MinStartYear { get; set; }
-    [ObservableProperty] public partial DateTimeOffset MinEndYear { get; set; }
+    [ObservableProperty]
+    public partial bool IsTitleContainsEnabled { get; set; }
 
-    [ObservableProperty] public partial string ConvertedText { get; set; }
-    [ObservableProperty] public partial bool IsAlphabetisedHeading { get; set; }
-    [ObservableProperty] public partial int NumberOfPagesOnEachSection { get; set; }
-    [ObservableProperty] public partial bool IsNumericList { get; set; }
+    [ObservableProperty]
+    public partial bool IsTitleNotContainsEnabled { get; set; }
+
+    [ObservableProperty]
+    public partial string TitleContains { get; set; }
+
+    [ObservableProperty]
+    public partial string TitleNotContains { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsTitleContainsRegex { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsTitleContainsCaseSensitive { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsAllTalkChecked { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsAllSubjectChecked { get; set; }
+
+    [ObservableProperty]
+    public partial string DatabaseFile { get; set; }
+
+    [ObservableProperty]
+    public partial string SiteName { get; set; }
+
+    [ObservableProperty]
+    public partial string Base { get; set; }
+
+    [ObservableProperty]
+    public partial string Generator { get; set; }
+
+    [ObservableProperty]
+    public partial string Case { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsSearchDateChecked { get; set; }
+
+    [ObservableProperty]
+    public partial DateTimeOffset SelectedStartDate { get; set; }
+
+    [ObservableProperty]
+    public partial DateTimeOffset SelectedEndDate { get; set; }
+
+    [ObservableProperty]
+    public partial DateTimeOffset MinStartYear { get; set; }
+
+    [ObservableProperty]
+    public partial DateTimeOffset MinEndYear { get; set; }
+
+    [ObservableProperty]
+    public partial string ConvertedText { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsAlphabetisedHeading { get; set; }
+
+    [ObservableProperty]
+    public partial int NumberOfPagesOnEachSection { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsNumericList { get; set; }
 
     partial void OnIsAllTalkCheckedChanged(bool value)
     {
-        TalkNamespaces = TalkNamespaces
-            .Select(x => new WikiNamespace(x.Id, x.Name, value))
-            .ToObservableCollection();
+        TalkNamespaces = TalkNamespaces.Select(x => new WikiNamespace(x.Id, x.Name, value)).ToObservableCollection();
     }
 
     partial void OnIsAllSubjectCheckedChanged(bool value)
     {
-        SubjectNamespaces = SubjectNamespaces
-            .Select(x => new WikiNamespace(x.Id, x.Name, value))
-            .ToObservableCollection();
+        SubjectNamespaces = SubjectNamespaces.Select(x => new WikiNamespace(x.Id, x.Name, value)).ToObservableCollection();
     }
 
     [RelayCommand]
     public async Task BrowseCommand()
     {
         string[]? result = await _fileDialogService.OpenFilePickerAsync("Open Database dump", false);
-        if (result is not {Length: 1})
+        if (result is not { Length: 1 })
         {
             return;
         }
@@ -184,7 +221,7 @@ public sealed partial class DatabaseScannerViewModel : ViewModelBase
             DbPage page = ParsePageElement(reader);
             if (ShouldIncludePage(page))
             {
-                _titlesQueue.Enqueue(page.Title!);
+                _titlesQueue.Enqueue(page.Title);
             }
         }
 
@@ -292,14 +329,14 @@ public sealed partial class DatabaseScannerViewModel : ViewModelBase
                 }
             }
 
-            if (reader is {NodeType: XmlNodeType.EndElement, Name: "page"})
+            if (reader is { NodeType: XmlNodeType.EndElement, Name: "page" })
             {
                 return new DbPage
                 {
                     Id = id,
                     Ns = ns,
                     Revision = revisions,
-                    Title = title
+                    Title = title,
                 };
             }
         }
@@ -356,7 +393,7 @@ public sealed partial class DatabaseScannerViewModel : ViewModelBase
                 }
             }
 
-            if (reader is {NodeType: XmlNodeType.EndElement, Name: "revision"})
+            if (reader is { NodeType: XmlNodeType.EndElement, Name: "revision" })
             {
                 return new DbRevision
                 {
@@ -369,7 +406,7 @@ public sealed partial class DatabaseScannerViewModel : ViewModelBase
                     Model = model,
                     Text = text,
                     TextSize = textSize,
-                    Sha1 = sha1
+                    Sha1 = sha1,
                 };
             }
         }
@@ -393,13 +430,9 @@ public sealed partial class DatabaseScannerViewModel : ViewModelBase
                     break;
             }
 
-            if (reader is {NodeType: XmlNodeType.EndElement, Name: "contributor"})
+            if (reader is { NodeType: XmlNodeType.EndElement, Name: "contributor" })
             {
-                return new DbContributor
-                {
-                    Id = id,
-                    Username = username
-                };
+                return new DbContributor { Id = id, Username = username };
             }
         }
 
@@ -431,7 +464,7 @@ public sealed partial class DatabaseScannerViewModel : ViewModelBase
                 }
             }
 
-            if (reader is {NodeType: XmlNodeType.EndElement, Name: "siteinfo"})
+            if (reader is { NodeType: XmlNodeType.EndElement, Name: "siteinfo" })
             {
                 break;
             }
@@ -460,7 +493,7 @@ public sealed partial class DatabaseScannerViewModel : ViewModelBase
                 }
             }
 
-            if (reader is {NodeType: XmlNodeType.EndElement, Name: "namespaces"})
+            if (reader is { NodeType: XmlNodeType.EndElement, Name: "namespaces" })
             {
                 break;
             }

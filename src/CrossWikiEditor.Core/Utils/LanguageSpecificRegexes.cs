@@ -13,10 +13,7 @@ public sealed class LanguageSpecificRegexes : IAsyncInitialization
     private readonly IWikiClientCache _wikiClientCache;
     private WikiSite? _site;
 
-    public LanguageSpecificRegexes(
-        ISettingsService settingsService,
-        IWikiClientCache wikiClientCache,
-        IMessengerWrapper messenger)
+    public LanguageSpecificRegexes(ISettingsService settingsService, IWikiClientCache wikiClientCache, IMessengerWrapper messenger)
     {
         _settingsService = settingsService;
         _wikiClientCache = wikiClientCache;
@@ -37,13 +34,12 @@ public sealed class LanguageSpecificRegexes : IAsyncInitialization
 
     private void MakeRegexes()
     {
-        string? url = _settingsService.GetCurrentSettings().GetBaseUrl();
-        string? urlLong = _settingsService.GetCurrentSettings().GetLongBaseUrl();
+        string url = _settingsService.GetCurrentSettings().GetBaseUrl();
+        string urlLong = _settingsService.GetCurrentSettings().GetLongBaseUrl();
 
         int pos = Tools.FirstDifference(url, urlLong);
         string s = Regex.Escape(urlLong[..pos]).Replace("https://", "https?://");
-        s += "(?:" + Regex.Escape(urlLong[pos..]) + @"index\.php(?:\?title=|/)|"
-             + Regex.Escape(url[pos..]) + "/wiki/)";
+        s += "(?:" + Regex.Escape(urlLong[pos..]) + @"index\.php(?:\?title=|/)|" + Regex.Escape(url[pos..]) + "/wiki/)";
         ExtractTitle = new Regex("^" + s + "([^?&]*)$");
     }
 }

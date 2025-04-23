@@ -17,9 +17,12 @@ public sealed class CategoryRecursiveUserDefinedLevelListProvider : LimitedListP
     private readonly ICategoryService _categoryService;
     private readonly ISettingsService _settingsService;
 
-    public CategoryRecursiveUserDefinedLevelListProvider(ICategoryService categoryService,
+    public CategoryRecursiveUserDefinedLevelListProvider(
+        ICategoryService categoryService,
         IDialogService dialogService,
-        ISettingsService settingsService) : base(dialogService)
+        ISettingsService settingsService
+    )
+        : base(dialogService)
     {
         _categoryService = categoryService;
         _settingsService = settingsService;
@@ -31,11 +34,9 @@ public sealed class CategoryRecursiveUserDefinedLevelListProvider : LimitedListP
 
     public async Task GetAdditionalParams()
     {
-        int? result = await DialogService.ShowDialog<int?>(new PromptViewModel("Number", "Recursion depth: ")
-        {
-            IsNumeric = true,
-            Value = _recursionLevel ?? 1
-        });
+        int? result = await DialogService.ShowDialog<int?>(
+            new PromptViewModel("Number", "Recursion depth: ") { IsNumeric = true, Value = _recursionLevel ?? 1 }
+        );
         if (result is not null)
         {
             _recursionLevel = result;
@@ -50,7 +51,7 @@ public sealed class CategoryRecursiveUserDefinedLevelListProvider : LimitedListP
         }
 
         UserSettings userSettings = _settingsService.GetCurrentSettings();
-        Result<List<WikiPageModel>> result = await _categoryService.GetPagesOfCategory(userSettings.GetApiUrl(), Param, limit, (int) _recursionLevel);
+        Result<List<WikiPageModel>> result = await _categoryService.GetPagesOfCategory(userSettings.GetApiUrl(), Param, limit, (int)_recursionLevel);
         _recursionLevel = null;
         return result;
     }

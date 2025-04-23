@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using CrossWikiEditor.Core.Messages;
+using CrossWikiEditor.Core.Messages.PageProcessingMessages;
 using CrossWikiEditor.Core.Utils;
 
 namespace CrossWikiEditor.Core.ViewModels.ControlViewModels;
@@ -13,10 +14,10 @@ public sealed partial class StartViewModel : ViewModelBase
     public StartViewModel(IMessengerWrapper messenger)
     {
         _messenger = messenger;
-        _messenger.Register<PageProcessingMessage>(this, (r, m) => _isProcessing = true);
-        _messenger.Register<PageProcessedMessage>(this, (r, m) => _isProcessing = false);
-        _messenger.Register<PageSavingMessage>(this, (r, m) => _isSaving = true);
-        _messenger.Register<PageSavedMessage>(this, (r, m) => _isSaving = false);
+        _messenger.Register<PageProcessingMessage>(this, (_, _) => _isProcessing = true);
+        _messenger.Register<PageProcessedMessage>(this, (_, _) => _isProcessing = false);
+        _messenger.Register<PageSavingMessage>(this, (_, _) => _isSaving = true);
+        _messenger.Register<PageSavedMessage>(this, (_, _) => _isSaving = false);
     }
 
     private bool IsBusy => _isProcessing || _isSaving;

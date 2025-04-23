@@ -11,12 +11,13 @@ namespace CrossWikiEditor.Core.ListProviders;
 
 public sealed class AllPagesNoRedirectsListProvider : AllPagesListProviderBase
 {
-    public AllPagesNoRedirectsListProvider(IDialogService dialogService,
+    public AllPagesNoRedirectsListProvider(
+        IDialogService dialogService,
         IPageService pageService,
         ISettingsService settingsService,
-        IViewModelFactory viewModelFactory) : base(dialogService, pageService, viewModelFactory, settingsService)
-    {
-    }
+        IViewModelFactory viewModelFactory
+    )
+        : base(dialogService, pageService, viewModelFactory, settingsService) { }
 
     public override string Title => "All Pages (no redirects)";
 

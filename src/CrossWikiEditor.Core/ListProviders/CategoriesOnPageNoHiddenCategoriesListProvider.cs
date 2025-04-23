@@ -9,11 +9,12 @@ namespace CrossWikiEditor.Core.ListProviders;
 
 public sealed class CategoriesOnPageNoHiddenCategoriesListProvider : CategoriesOnPageListProvider
 {
-    public CategoriesOnPageNoHiddenCategoriesListProvider(ICategoryService categoryService,
+    public CategoriesOnPageNoHiddenCategoriesListProvider(
+        ICategoryService categoryService,
         IDialogService dialogService,
-        ISettingsService settingsService) : base(categoryService, dialogService, settingsService)
-    {
-    }
+        ISettingsService settingsService
+    )
+        : base(categoryService, dialogService, settingsService) { }
 
     public override string Title => "Categories on page (no hidden categories)";
 

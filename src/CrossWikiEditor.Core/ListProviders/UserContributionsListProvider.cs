@@ -13,9 +13,8 @@ public sealed class UserContributionsListProvider : LimitedListProviderBase
     private readonly ISettingsService _settingsService;
     private readonly IUserService _userService;
 
-    public UserContributionsListProvider(IDialogService dialogService,
-        ISettingsService settingsService,
-        IUserService userService) : base(dialogService)
+    public UserContributionsListProvider(IDialogService dialogService, ISettingsService settingsService, IUserService userService)
+        : base(dialogService)
     {
         _settingsService = settingsService;
         _userService = userService;

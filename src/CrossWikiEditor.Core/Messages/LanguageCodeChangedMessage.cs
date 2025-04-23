@@ -4,7 +4,6 @@ namespace CrossWikiEditor.Core.Messages;
 
 public sealed class LanguageCodeChangedMessage : ValueChangedMessage<string>
 {
-    public LanguageCodeChangedMessage(string languageCode) : base(languageCode)
-    {
-    }
+    public LanguageCodeChangedMessage(string languageCode)
+        : base(languageCode) { }
 }

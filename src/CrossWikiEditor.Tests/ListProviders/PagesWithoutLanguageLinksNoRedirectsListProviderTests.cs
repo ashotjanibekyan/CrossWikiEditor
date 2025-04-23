@@ -10,7 +10,7 @@ public sealed class PagesWithoutLanguageLinksNoRedirectsListProviderTests : List
         _selectNamespacesViewModel = new SelectNamespacesViewModel([], false);
         _sut = new PagesWithoutLanguageLinksNoRedirectsListProvider(_dialogService, _pageService, _settingsService, _viewModelFactory)
         {
-            Param = "start from here"
+            Param = "start from here",
         };
         _dialogService.ShowDialog<int[]?>(_selectNamespacesViewModel).Returns([7, 2, 3, 9]);
         _viewModelFactory.GetSelectNamespacesViewModel(false).Returns(_selectNamespacesViewModel);
@@ -39,8 +39,8 @@ public sealed class PagesWithoutLanguageLinksNoRedirectsListProviderTests : List
     public async Task MakeList_ShouldReturnPageServiceResults()
     {
         // arrange
-        _pageService.GetAllPages(_userSettings.GetApiUrl(), _sut.Param, 7, PropertyFilterOption.WithoutProperty, PropertyFilterOption.WithoutProperty,
-                73)
+        _pageService
+            .GetAllPages(_userSettings.GetApiUrl(), _sut.Param, 7, PropertyFilterOption.WithoutProperty, PropertyFilterOption.WithoutProperty, 73)
             .Returns(_expectedPages);
 
         await MakeList_ShouldReturnServiceResults(_expectedPages);
@@ -50,8 +50,8 @@ public sealed class PagesWithoutLanguageLinksNoRedirectsListProviderTests : List
     public async Task MakeList_ShouldReturnUnsuccessfulResult_WhenPageServiceReturnsUnsuccessfulResult()
     {
         // arrange
-        _pageService.GetAllPages(_userSettings.GetApiUrl(), _sut.Param, 7, PropertyFilterOption.WithoutProperty, PropertyFilterOption.WithoutProperty,
-                73)
+        _pageService
+            .GetAllPages(_userSettings.GetApiUrl(), _sut.Param, 7, PropertyFilterOption.WithoutProperty, PropertyFilterOption.WithoutProperty, 73)
             .Returns(new Exception("failed to get pages"));
 
         // act

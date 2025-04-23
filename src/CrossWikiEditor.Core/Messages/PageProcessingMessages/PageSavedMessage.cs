@@ -1,7 +1,7 @@
 using System;
 using CrossWikiEditor.Core.Models;
 
-namespace CrossWikiEditor.Core;
+namespace CrossWikiEditor.Core.Messages.PageProcessingMessages;
 
 /// <summary>
 ///     Message is fired when the page has been saved.
@@ -11,7 +11,6 @@ public sealed class PageSavedMessage
     /// <summary>
     ///     Message is fired when the page has been saved.
     /// </summary>
-    /// <param name="wikiPageModel"></param>
     public PageSavedMessage(WikiPageModel wikiPageModel, bool isSuccessful, Exception? exception = null)
     {
         Page = wikiPageModel;

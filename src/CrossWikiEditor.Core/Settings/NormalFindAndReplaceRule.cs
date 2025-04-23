@@ -4,11 +4,11 @@ namespace CrossWikiEditor.Core.Settings;
 
 public partial class NormalFindAndReplaceRule : ObservableObject
 {
-    public NormalFindAndReplaceRule() : this("", "", false, false, false, false, false, false, false, "")
-    {
-    }
+    public NormalFindAndReplaceRule()
+        : this("", "", false, false, false, false, false, false, false, "") { }
 
-    public NormalFindAndReplaceRule(string find,
+    public NormalFindAndReplaceRule(
+        string find,
         string replaceWith,
         bool caseSensitive,
         bool regex,
@@ -17,7 +17,8 @@ public partial class NormalFindAndReplaceRule : ObservableObject
         bool minor,
         bool afterFixes,
         bool enabled,
-        string comment)
+        string comment
+    )
     {
         Find = find;
         ReplaceWith = replaceWith;
@@ -31,25 +32,35 @@ public partial class NormalFindAndReplaceRule : ObservableObject
         Comment = comment;
     }
 
-    [ObservableProperty] public partial string Find { get; set; }
+    [ObservableProperty]
+    public partial string Find { get; set; }
 
-    [ObservableProperty] public partial string ReplaceWith { get; set; }
+    [ObservableProperty]
+    public partial string ReplaceWith { get; set; }
 
-    [ObservableProperty] public partial bool CaseSensitive { get; set; }
+    [ObservableProperty]
+    public partial bool CaseSensitive { get; set; }
 
-    [ObservableProperty] public partial bool Regex { get; set; }
+    [ObservableProperty]
+    public partial bool Regex { get; set; }
 
-    [ObservableProperty] public partial bool MultiLine { get; set; }
+    [ObservableProperty]
+    public partial bool MultiLine { get; set; }
 
-    [ObservableProperty] public partial bool SingleLine { get; set; }
+    [ObservableProperty]
+    public partial bool SingleLine { get; set; }
 
-    [ObservableProperty] public partial bool Minor { get; set; }
+    [ObservableProperty]
+    public partial bool Minor { get; set; }
 
-    [ObservableProperty] public partial bool AfterFixes { get; set; }
+    [ObservableProperty]
+    public partial bool AfterFixes { get; set; }
 
-    [ObservableProperty] public partial bool Enabled { get; set; }
+    [ObservableProperty]
+    public partial bool Enabled { get; set; }
 
-    [ObservableProperty] public partial string Comment { get; set; }
+    [ObservableProperty]
+    public partial string Comment { get; set; }
 
     public bool IsEmpty => string.IsNullOrEmpty(Find);
 }

@@ -7,24 +7,24 @@ namespace CrossWikiEditor.Tests.ListProviders;
 public sealed class HtmlScraperListProviderTests : ListProvidersBaseTest<HtmlScraperListProvider>
 {
     private readonly string _htmlWithDuplicateLinks = """
-                                                      <html>
-                                                          <body>
-                                                              <a href="https://hy.wikipedia.org/wiki/Kotlin" >Kotlin programming language</a>
-                                                              <a href="https://hy.wikipedia.org/wiki/%D5%8C%D5%A5%D5%B8_%D5%A4%D5%B2%D5%B5%D5%A1%D5%AF" >Ռեո դղյակ</a>
-                                                              <a href="https://hy.wikipedia.org/wiki/%D5%8C%D5%A5%D5%B8_%D5%A4%D5%B2%D5%B5%D5%A1%D5%AF" >Ռեո դղյակ</a>
-                                                              <a href="https://hy.wikipedia.org/wiki/%D5%8C%D5%A5%D5%B8_%D5%A4%D5%B2%D5%B5%D5%A1%D5%AF" >Ռեո դղյակ</a>
-                                                              <a href="https://hy.wikipedia.org/wiki/%D5%8C%D5%A5%D5%B8_%D5%A4%D5%B2%D5%B5%D5%A1%D5%AF" >Ռեո դղյակ</a>
-                                                              <a href="https://hy.wikipedia.org/wiki/%D5%8C%D5%A5%D5%B8_%D5%A4%D5%B2%D5%B5%D5%A1%D5%AF" >Ռեո դղյակ</a>
-                                                          </body>
-                                                      </html>
-                                                      """;
+        <html>
+            <body>
+                <a href="https://hy.wikipedia.org/wiki/Kotlin" >Kotlin programming language</a>
+                <a href="https://hy.wikipedia.org/wiki/%D5%8C%D5%A5%D5%B8_%D5%A4%D5%B2%D5%B5%D5%A1%D5%AF" >Ռեո դղյակ</a>
+                <a href="https://hy.wikipedia.org/wiki/%D5%8C%D5%A5%D5%B8_%D5%A4%D5%B2%D5%B5%D5%A1%D5%AF" >Ռեո դղյակ</a>
+                <a href="https://hy.wikipedia.org/wiki/%D5%8C%D5%A5%D5%B8_%D5%A4%D5%B2%D5%B5%D5%A1%D5%AF" >Ռեո դղյակ</a>
+                <a href="https://hy.wikipedia.org/wiki/%D5%8C%D5%A5%D5%B8_%D5%A4%D5%B2%D5%B5%D5%A1%D5%AF" >Ռեո դղյակ</a>
+                <a href="https://hy.wikipedia.org/wiki/%D5%8C%D5%A5%D5%B8_%D5%A4%D5%B2%D5%B5%D5%A1%D5%AF" >Ռեո դղյակ</a>
+            </body>
+        </html>
+        """;
 
     private readonly string _htmlWithoutLinks = """
-                                                <html>
-                                                    <body>
-                                                    </body>
-                                                </html>
-                                                """;
+        <html>
+            <body>
+            </body>
+        </html>
+        """;
 
     private IHttpClientFactory _httpClientFactory;
     private MockHttpMessageHandler _mockHttpMessageHandler;
@@ -36,8 +36,12 @@ public sealed class HtmlScraperListProviderTests : ListProvidersBaseTest<HtmlScr
         SetUpUserSettings("hy", ProjectEnum.Wikipedia);
         _httpClientFactory = Substitute.For<IHttpClientFactory>();
         _mockHttpMessageHandler = new MockHttpMessageHandler();
-        _sut = new HtmlScraperListProvider(new HtmlAgilityPackParser(_logger, _settingsService, _wikiClientCache), _httpClientFactory, _logger,
-            new SimpleHtmlParser(_logger, _settingsService, _wikiClientCache));
+        _sut = new HtmlScraperListProvider(
+            new HtmlAgilityPackParser(_logger, _settingsService, _wikiClientCache),
+            _httpClientFactory,
+            _logger,
+            new SimpleHtmlParser(_logger, _settingsService, _wikiClientCache)
+        );
     }
 
     [Test]
@@ -58,9 +62,7 @@ public sealed class HtmlScraperListProviderTests : ListProvidersBaseTest<HtmlScr
         // arrange
         _sut.Param = "https://en.wikipedia.org/wiki/Magic_string";
         _httpClientFactory.CreateClient("Scraper").Returns(new HttpClient(_mockHttpMessageHandler));
-        _mockHttpMessageHandler
-            .When(_sut.Param)
-            .Respond(HttpStatusCode.Found, new StringContent("error message"));
+        _mockHttpMessageHandler.When(_sut.Param).Respond(HttpStatusCode.Found, new StringContent("error message"));
 
         // act
         Result<List<WikiPageModel>> result = await _sut.MakeList();
@@ -77,9 +79,7 @@ public sealed class HtmlScraperListProviderTests : ListProvidersBaseTest<HtmlScr
         // arrange
         _sut.Param = "https://en.wikipedia.org/wiki/Magic_string";
         _httpClientFactory.CreateClient("Scraper").Returns(new HttpClient(_mockHttpMessageHandler));
-        _mockHttpMessageHandler
-            .When(_sut.Param)
-            .Respond("application/text", _htmlWithDuplicateLinks);
+        _mockHttpMessageHandler.When(_sut.Param).Respond("application/text", _htmlWithDuplicateLinks);
 
         // act
         Result<List<WikiPageModel>> result = await _sut.MakeList();
@@ -97,9 +97,7 @@ public sealed class HtmlScraperListProviderTests : ListProvidersBaseTest<HtmlScr
         // arrange
         _sut.Param = "https://en.wikipedia.org/wiki/Magic_string";
         _httpClientFactory.CreateClient("Scraper").Returns(new HttpClient(_mockHttpMessageHandler));
-        _mockHttpMessageHandler
-            .When(_sut.Param)
-            .Respond("application/text", _htmlWithoutLinks);
+        _mockHttpMessageHandler.When(_sut.Param).Respond("application/text", _htmlWithoutLinks);
 
         // act
         Result<List<WikiPageModel>> result = await _sut.MakeList();
@@ -115,6 +113,6 @@ public sealed class HtmlScraperListProviderTests : ListProvidersBaseTest<HtmlScr
     {
         _sut.Title.Should().Be("HTML Scraper");
         _sut.ParamTitle.Should().Be("URL");
-        _mockHttpMessageHandler?.Dispose();
+        _mockHttpMessageHandler.Dispose();
     }
 }

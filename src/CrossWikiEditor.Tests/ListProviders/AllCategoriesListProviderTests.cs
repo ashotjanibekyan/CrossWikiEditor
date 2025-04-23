@@ -7,10 +7,7 @@ public sealed class AllCategoriesListProviderTests : ListProvidersBaseTest<AllCa
     {
         SetUpServices();
         SetUpUserSettings("hyw", ProjectEnum.Wikipedia);
-        _sut = new AllCategoriesListProvider(_categoryService, _dialogService, _settingsService)
-        {
-            Param = "start from here"
-        };
+        _sut = new AllCategoriesListProvider(_categoryService, _dialogService, _settingsService) { Param = "start from here" };
         _expectedPages = Fakers.GetWikiPageModelFaker(_userSettings.GetApiUrl(), _wikiClientCache).Generate(4);
     }
 

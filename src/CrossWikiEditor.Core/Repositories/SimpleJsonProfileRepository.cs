@@ -28,7 +28,7 @@ file static class Mapper
             IsPasswordSaved = profile.IsPasswordSaved,
             Notes = profile.Notes,
             Password = stringEncryptionService.EncryptStringToBytes(profile.Password),
-            Username = profile.Username
+            Username = profile.Username,
         };
     }
 
@@ -41,7 +41,7 @@ file static class Mapper
             IsPasswordSaved = realmProfile.IsPasswordSaved,
             Password = stringEncryptionService.DecryptStringFromBytes(realmProfile.Password),
             Notes = realmProfile.Notes,
-            Username = realmProfile.Username
+            Username = realmProfile.Username,
         };
     }
 }
@@ -127,10 +127,7 @@ public sealed class SimpleJsonProfileRepository : IProfileRepository
         lock (_profileJsonLock)
         {
             List<JsonProfile> jsonProfiles = profiles.ConvertAll(p => Mapper.ProfileToJsonProfile(p, _stringEncryptionService));
-            string json = JsonSerializer.Serialize(jsonProfiles, new JsonSerializerOptions
-            {
-                WriteIndented = true
-            });
+            string json = JsonSerializer.Serialize(jsonProfiles, new JsonSerializerOptions { WriteIndented = true });
             File.WriteAllText(JsonName, json);
         }
     }

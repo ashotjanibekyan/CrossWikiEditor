@@ -11,12 +11,13 @@ namespace CrossWikiEditor.Core.ListProviders;
 
 public sealed class PagesWithoutLanguageLinksNoRedirectsListProvider : AllPagesListProviderBase
 {
-    public PagesWithoutLanguageLinksNoRedirectsListProvider(IDialogService dialogService,
+    public PagesWithoutLanguageLinksNoRedirectsListProvider(
+        IDialogService dialogService,
         IPageService pageService,
         ISettingsService settingsService,
-        IViewModelFactory viewModelFactory) : base(dialogService, pageService, viewModelFactory, settingsService)
-    {
-    }
+        IViewModelFactory viewModelFactory
+    )
+        : base(dialogService, pageService, viewModelFactory, settingsService) { }
 
     public override string Title => "Pages without language links (no redirects)";
 

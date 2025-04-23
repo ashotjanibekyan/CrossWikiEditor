@@ -22,7 +22,7 @@ public enum FileTaskType
     None,
     Replace,
     Remove,
-    CommentOut
+    CommentOut,
 }
 
 public enum CategoryTaskType
@@ -30,7 +30,7 @@ public enum CategoryTaskType
     None,
     Replace,
     Add,
-    Remove
+    Remove,
 }
 
 public sealed class FileTask

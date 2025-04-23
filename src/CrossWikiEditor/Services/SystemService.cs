@@ -26,11 +26,7 @@ public sealed class SystemService : ISystemService
     {
         try
         {
-            var psi = new ProcessStartInfo
-            {
-                FileName = url,
-                UseShellExecute = true
-            };
+            var psi = new ProcessStartInfo { FileName = url, UseShellExecute = true };
             Process.Start(psi);
             return Unit.Default;
         }

@@ -23,8 +23,13 @@ public sealed class CategoryService : ICategoryService
         _logger = logger;
     }
 
-    public async Task<Result<List<WikiPageModel>>> GetCategoriesOf(string apiRoot, string pageName, int limit, bool includeHidden = true,
-        bool onlyHidden = false)
+    public async Task<Result<List<WikiPageModel>>> GetCategoriesOf(
+        string apiRoot,
+        string pageName,
+        int limit,
+        bool includeHidden = true,
+        bool onlyHidden = false
+    )
     {
         try
         {
@@ -34,10 +39,7 @@ public sealed class CategoryService : ICategoryService
             }
 
             WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot);
-            var catGen = new CategoriesGenerator(site, pageName)
-            {
-                HiddenCategoryFilter = PropertyFilterOption.Disable
-            };
+            var catGen = new CategoriesGenerator(site, pageName) { HiddenCategoryFilter = PropertyFilterOption.Disable };
             if (!includeHidden)
             {
                 catGen.HiddenCategoryFilter = PropertyFilterOption.WithoutProperty;
@@ -53,9 +55,15 @@ public sealed class CategoryService : ICategoryService
         }
         catch (Exception e)
         {
-            _logger.Fatal(e,
+            _logger.Fatal(
+                e,
                 "Failed to get pages. Site: {Site}, page: {Page}, includeHidden: {IncludeHidden}, onlyHidden: {OnlyHidden}, limit: {Limit}",
-                apiRoot, pageName, includeHidden, onlyHidden, limit);
+                apiRoot,
+                pageName,
+                includeHidden,
+                onlyHidden,
+                limit
+            );
             return e;
         }
     }
@@ -106,10 +114,7 @@ public sealed class CategoryService : ICategoryService
         try
         {
             WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot);
-            var gen = new AllCategoriesGenerator(site)
-            {
-                StartTitle = startTitle
-            };
+            var gen = new AllCategoriesGenerator(site) { StartTitle = startTitle };
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
             return result.ConvertAll(x => new WikiPageModel(x));
         }

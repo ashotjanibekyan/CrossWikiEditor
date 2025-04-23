@@ -43,7 +43,8 @@ public sealed partial class MakeListViewModel : ViewModelBase
         IViewModelFactory viewModelFactory,
         IFileDialogService fileDialogService,
         ISettingsService settingsService,
-        IEnumerable<IListProvider> listProviders)
+        IEnumerable<IListProvider> listProviders
+    )
     {
         _logger = logger;
         _dialogService = dialogService;
@@ -57,19 +58,24 @@ public sealed partial class MakeListViewModel : ViewModelBase
         ListProviders = listProviders.OrderBy(l => l.Title).ToObservableCollection();
         SelectedListProvider = ListProviders[0];
 
-        messenger.Register<PageUpdatedMessage>(this, (recipient, message) => Pages.Remove(Pages.First(p => p.Title == message.Page.Title)));
-        messenger.Register<PageSkippedMessage>(this, (recipient, message) => Pages.Remove(Pages.First(p => p.Title == message.Page.Title)));
+        messenger.Register<PageUpdatedMessage>(this, (_, message) => Pages.Remove(Pages.First(p => p.Title == message.Page.Title)));
+        messenger.Register<PageSkippedMessage>(this, (_, message) => Pages.Remove(Pages.First(p => p.Title == message.Page.Title)));
     }
 
-    [ObservableProperty] public partial ObservableCollection<IListProvider> ListProviders { get; set; }
+    [ObservableProperty]
+    public partial ObservableCollection<IListProvider> ListProviders { get; set; }
 
-    [ObservableProperty] public partial IListProvider SelectedListProvider { get; set; }
+    [ObservableProperty]
+    public partial IListProvider SelectedListProvider { get; set; }
 
-    [ObservableProperty] public partial ObservableCollection<WikiPageModel> Pages { get; set; } = [];
+    [ObservableProperty]
+    public partial ObservableCollection<WikiPageModel> Pages { get; set; } = [];
 
-    [ObservableProperty] public partial ObservableCollection<WikiPageModel> SelectedPages { get; set; } = [];
+    [ObservableProperty]
+    public partial ObservableCollection<WikiPageModel> SelectedPages { get; set; } = [];
 
-    [ObservableProperty] public partial string NewPageTitle { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string NewPageTitle { get; set; } = string.Empty;
 
     [RelayCommand]
     private async Task AddNewPage()
@@ -77,7 +83,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
         if (!string.IsNullOrWhiteSpace(NewPageTitle))
         {
             Result<WikiPageModel> result = await _clientCache.GetWikiPageModel(_settingsService.CurrentApiUrl, NewPageTitle);
-            if (result is {IsSuccessful: true, Value: not null})
+            if (result is { IsSuccessful: true, Value: not null })
             {
                 Pages.Add(result.Value);
             }
@@ -114,17 +120,16 @@ public sealed partial class MakeListViewModel : ViewModelBase
         {
             ILimitedListProvider limitedListProvider => await limitedListProvider.MakeList(await limitedListProvider.GetLimit()),
             IUnlimitedListProvider unlimitedListProvider => await unlimitedListProvider.MakeList(),
-            _ => throw new UnreachableException("Wait what? A list is either limited or unlimited.")
+            _ => throw new UnreachableException("Wait what? A list is either limited or unlimited."),
         };
 
-        if (result is {IsSuccessful: true, Value: not null})
+        if (result is { IsSuccessful: true, Value: not null })
         {
             Pages.AddRange(result.Value);
         }
         else
         {
-            await _dialogService.Alert("Failed to get the list",
-                result.ErrorMessage ?? "Failed to get the list. Please make sure you have internet access.");
+            await _dialogService.Alert("Failed to get the list", result.ErrorMessage);
         }
     }
 
@@ -134,7 +139,8 @@ public sealed partial class MakeListViewModel : ViewModelBase
         foreach (WikiPageModel selectedPage in SelectedPages)
         {
             _systemService.OpenLinkInBrowser(
-                $"{_settingsService.GetCurrentSettings().GetIndexUrl()}title={HttpUtility.UrlEncode(selectedPage.Title)}");
+                $"{_settingsService.GetCurrentSettings().GetIndexUrl()}title={HttpUtility.UrlEncode(selectedPage.Title)}"
+            );
         }
     }
 
@@ -161,7 +167,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
         }
 
         await _systemService.SetClipboardTextAsync(string.Join(Environment.NewLine, SelectedPages.Select<WikiPageModel, string>(x => x.Title)));
-        Pages.Remove([..SelectedPages]);
+        Pages.Remove([.. SelectedPages]);
         SelectedPages = [];
     }
 
@@ -185,13 +191,12 @@ public sealed partial class MakeListViewModel : ViewModelBase
             return;
         }
 
-        string[] titles = clipboardText.Split([Environment.NewLine],
-            StringSplitOptions.None);
+        string[] titles = clipboardText.Split([Environment.NewLine], StringSplitOptions.None);
         string urlApi = _settingsService.CurrentApiUrl;
         foreach (string title in titles)
         {
             Result<WikiPageModel> result = await _clientCache.GetWikiPageModel(urlApi, title);
-            if (result is {IsSuccessful: true, Value: not null})
+            if (result is { IsSuccessful: true, Value: not null })
             {
                 Pages.Add(result.Value);
             }
@@ -224,7 +229,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
     [RelayCommand]
     private void RemoveSelected()
     {
-        Pages.Remove([..SelectedPages]);
+        Pages.Remove([.. SelectedPages]);
         SelectedPages.Clear();
     }
 
@@ -270,7 +275,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
     [RelayCommand]
     private void ConvertToTalkPages()
     {
-        List<WikiPageModel>? talkPages = _pageService.ConvertToTalk([..Pages]).Value;
+        List<WikiPageModel>? talkPages = _pageService.ConvertToTalk([.. Pages]).Value;
         if (talkPages is not null)
         {
             Pages = talkPages.ToObservableCollection();
@@ -280,7 +285,7 @@ public sealed partial class MakeListViewModel : ViewModelBase
     [RelayCommand]
     private void ConvertFromTalkPages()
     {
-        List<WikiPageModel>? subjectPages = _pageService.ConvertToSubject([..Pages]).Value;
+        List<WikiPageModel>? subjectPages = _pageService.ConvertToSubject([.. Pages]).Value;
         if (subjectPages is not null)
         {
             Pages = subjectPages.ToObservableCollection();
@@ -326,8 +331,10 @@ public sealed partial class MakeListViewModel : ViewModelBase
         }
 
         suggestedTitle += $"_{DateTime.Now.ToString("yyyy-MM-dd-HH-mm", CultureInfo.InvariantCulture)}.txt";
-        (_, Func<Task<Stream>>? openWriteStream) =
-            await _fileDialogService.SaveFilePickerAsync("Save pages", suggestedFileName: suggestedTitle.ToFilenameSafe());
+        (_, Func<Task<Stream>>? openWriteStream) = await _fileDialogService.SaveFilePickerAsync(
+            "Save pages",
+            suggestedFileName: suggestedTitle.ToFilenameSafe()
+        );
         if (openWriteStream is not null)
         {
             Stream stream = await openWriteStream();

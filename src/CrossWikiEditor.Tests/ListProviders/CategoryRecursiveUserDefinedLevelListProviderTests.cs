@@ -7,12 +7,8 @@ public sealed class CategoryRecursiveUserDefinedLevelListProviderTests : ListPro
     {
         SetUpServices();
         SetUpUserSettings("hyw", ProjectEnum.Wikipedia);
-        _sut = new CategoryRecursiveUserDefinedLevelListProvider(_categoryService, _dialogService, _settingsService)
-        {
-            Param = "my prefix"
-        };
-        _dialogService.ShowDialog<int?>(Arg.Is<PromptViewModel>(vm => vm.IsNumeric && vm.Text == "Recursion depth: "))
-            .Returns(12);
+        _sut = new CategoryRecursiveUserDefinedLevelListProvider(_categoryService, _dialogService, _settingsService) { Param = "my prefix" };
+        _dialogService.ShowDialog<int?>(Arg.Is<PromptViewModel>(vm => vm.IsNumeric && vm.Text == "Recursion depth: ")).Returns(12);
         _expectedPages = Fakers.GetWikiPageModelFaker(_userSettings.GetApiUrl(), _wikiClientCache).Generate(4);
     }
 
@@ -26,13 +22,11 @@ public sealed class CategoryRecursiveUserDefinedLevelListProviderTests : ListPro
         _sut.Param = param;
         if (recLevelSelected)
         {
-            _dialogService.ShowDialog<int?>(Arg.Is<PromptViewModel>(vm => vm.IsNumeric && vm.Text == "Recursion depth: "))
-                .Returns(12);
+            _dialogService.ShowDialog<int?>(Arg.Is<PromptViewModel>(vm => vm.IsNumeric && vm.Text == "Recursion depth: ")).Returns(12);
         }
         else
         {
-            _dialogService.ShowDialog<int?>(Arg.Is<PromptViewModel>(vm => vm.IsNumeric && vm.Text == "Recursion depth: "))
-                .Returns((int?) null);
+            _dialogService.ShowDialog<int?>(Arg.Is<PromptViewModel>(vm => vm.IsNumeric && vm.Text == "Recursion depth: ")).Returns((int?)null);
         }
 
         // act
@@ -46,8 +40,7 @@ public sealed class CategoryRecursiveUserDefinedLevelListProviderTests : ListPro
     public async Task MakeList_ShouldReturnPageServiceResults()
     {
         // arrange
-        _categoryService.GetPagesOfCategory(_userSettings.GetApiUrl(), _sut.Param, 73, 12)
-            .Returns(_expectedPages);
+        _categoryService.GetPagesOfCategory(_userSettings.GetApiUrl(), _sut.Param, 73, 12).Returns(_expectedPages);
 
         await MakeList_ShouldReturnServiceResults(_expectedPages);
     }
@@ -56,8 +49,7 @@ public sealed class CategoryRecursiveUserDefinedLevelListProviderTests : ListPro
     public async Task MakeList_ShouldReturnUnsuccessfulResult_WhenPageServiceReturnsUnsuccessfulResult()
     {
         // arrange
-        _categoryService.GetPagesOfCategory(_userSettings.GetApiUrl(), _sut.Param, 73, 12)
-            .Returns(new Exception("failed to get pages"));
+        _categoryService.GetPagesOfCategory(_userSettings.GetApiUrl(), _sut.Param, 73, 12).Returns(new Exception("failed to get pages"));
 
         // act
         await _sut.GetAdditionalParams();

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CrossWikiEditor.Core.Messages;
+using CrossWikiEditor.Core.Messages.PageProcessingMessages;
 using CrossWikiEditor.Core.Models;
 using CrossWikiEditor.Core.Services;
 using CrossWikiEditor.Core.Settings;
@@ -16,23 +17,16 @@ public sealed class PageListProcessor
 {
     private readonly IMessengerWrapper _messenger;
     private readonly List<WikiPageModel> _pages;
-    private readonly ISettingsService _settingsService;
     private readonly UserSettings _userSettings;
     private bool _isAlive = true;
     private TaskCompletionSource<bool>? _shouldSaveTaskCompletionSource;
 
-    public PageListProcessor(
-        IMessengerWrapper messenger,
-        ISettingsService settingsService,
-        List<WikiPageModel> pages,
-        NormalFindAndReplaceRules normalFindAndReplaceRules)
+    public PageListProcessor(IMessengerWrapper messenger, ISettingsService settingsService, List<WikiPageModel> pages)
     {
         _messenger = messenger;
-        _settingsService = settingsService;
         _userSettings = settingsService.GetCurrentSettings();
         _pages = pages;
-        messenger.Register<SaveOrSkipPageMessage>(this,
-            (recipient, message) => _shouldSaveTaskCompletionSource?.TrySetResult(message.ShouldSavePage));
+        messenger.Register<SaveOrSkipPageMessage>(this, (_, message) => _shouldSaveTaskCompletionSource?.TrySetResult(message.ShouldSavePage));
     }
 
     public async Task Start()
@@ -100,14 +94,20 @@ public sealed class PageListProcessor
                 else
                 {
                     var regex = new Regex(normalFindAndReplaceRule.Find);
-                    newContent = regex.Replace(newContent, match =>
-                    {
-                        string replacedValue = normalFindAndReplaceRule.ReplaceWith;
-                        replacedValue = Regex.Replace(replacedValue, @"\$([1-9])",
-                            groupReference => match.Groups[int.Parse(groupReference.Groups[1].Value)].Value);
-                        replacements.Add(Tuple.Create(match.Value, replacedValue));
-                        return replacedValue;
-                    });
+                    newContent = regex.Replace(
+                        newContent,
+                        match =>
+                        {
+                            string replacedValue = normalFindAndReplaceRule.ReplaceWith;
+                            replacedValue = Regex.Replace(
+                                replacedValue,
+                                @"\$([1-9])",
+                                groupReference => match.Groups[int.Parse(groupReference.Groups[1].Value)].Value
+                            );
+                            replacements.Add(Tuple.Create(match.Value, replacedValue));
+                            return replacedValue;
+                        }
+                    );
                 }
             }
 

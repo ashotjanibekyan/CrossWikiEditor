@@ -20,10 +20,7 @@ public sealed class Hyperlink : InlineUIContainer
     {
         _underline = new Underline();
 
-        _textBlock = new TextBlock
-        {
-            Inlines = [_underline]
-        };
+        _textBlock = new TextBlock { Inlines = [_underline] };
 
         _button = new Button
         {
@@ -32,7 +29,7 @@ public sealed class Hyperlink : InlineUIContainer
             Padding = new Thickness(),
             Cursor = new Cursor(StandardCursorType.Hand),
             Content = _textBlock,
-            Command = new RelayCommand(() => OpenUrl(Href))
+            Command = new RelayCommand(() => OpenUrl(Href)),
         };
 
         Child = _button;
@@ -62,11 +59,7 @@ public sealed class Hyperlink : InlineUIContainer
 
     private static void OpenUrl(string url)
     {
-        var psi = new ProcessStartInfo
-        {
-            FileName = url,
-            UseShellExecute = true
-        };
+        var psi = new ProcessStartInfo { FileName = url, UseShellExecute = true };
         Process.Start(psi);
     }
 }

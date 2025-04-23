@@ -39,12 +39,17 @@ public sealed class HtmlAgilityPackParser
         {
             try
             {
-                string? hrefValue = link.GetAttributeValue("href", string.Empty);
+                string hrefValue = link.GetAttributeValue("href", string.Empty);
 
                 if (hrefValue.Contains(baseUrl))
                 {
-                    urls.Add(new WikiPageModel(Tools.GetPageTitleFromUrl(hrefValue[hrefValue.IndexOf(baseUrl, StringComparison.Ordinal)..]), apiUrl,
-                        _wikiClientCache));
+                    urls.Add(
+                        new WikiPageModel(
+                            Tools.GetPageTitleFromUrl(hrefValue[hrefValue.IndexOf(baseUrl, StringComparison.Ordinal)..]),
+                            apiUrl,
+                            _wikiClientCache
+                        )
+                    );
                 }
             }
             catch (Exception ex)

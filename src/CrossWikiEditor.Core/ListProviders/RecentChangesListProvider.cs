@@ -15,10 +15,13 @@ public sealed class RecentChangesListProvider : LimitedListProviderBase, INeedNa
     private readonly ISettingsService _settingsService;
     private readonly IViewModelFactory _viewModelFactory;
 
-    public RecentChangesListProvider(IDialogService dialogService,
+    public RecentChangesListProvider(
+        IDialogService dialogService,
         IPageService pageService,
         ISettingsService settingsService,
-        IViewModelFactory viewModelFactory) : base(dialogService)
+        IViewModelFactory viewModelFactory
+    )
+        : base(dialogService)
     {
         _pageService = pageService;
         _settingsService = settingsService;
@@ -27,7 +30,7 @@ public sealed class RecentChangesListProvider : LimitedListProviderBase, INeedNa
 
     public override string Title => "Recent Changes";
     public override string ParamTitle => "";
-    public override bool CanMake => _namespaces is {Length: > 0};
+    public override bool CanMake => _namespaces is { Length: > 0 };
 
     public async Task GetAdditionalParams()
     {

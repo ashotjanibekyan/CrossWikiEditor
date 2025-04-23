@@ -17,8 +17,6 @@ internal static class Program
     // Avalonia configuration, don't remove; also used by visual designer.
     private static AppBuilder BuildAvaloniaApp()
     {
-        return AppBuilder.Configure<App>()
-            .UsePlatformDetect()
-            .LogToTrace();
+        return AppBuilder.Configure<App>().UsePlatformDetect().LogToTrace();
     }
 }

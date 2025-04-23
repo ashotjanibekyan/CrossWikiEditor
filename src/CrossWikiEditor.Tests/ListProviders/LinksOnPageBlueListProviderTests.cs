@@ -12,10 +12,7 @@ public sealed class LinksOnPageBlueListProviderTests : ListProvidersBaseTest<Lin
         SetUpUserSettings("hyw", ProjectEnum.Wikipedia);
         _wikiClientCache = new WikiClientCache(Substitute.For<ILogger>());
         _selectNamespacesViewModel = new SelectNamespacesViewModel([], false);
-        _sut = new LinksOnPageBlueListProvider(_dialogService, _pageService, _settingsService)
-        {
-            Param = "start from here"
-        };
+        _sut = new LinksOnPageBlueListProvider(_dialogService, _pageService, _settingsService) { Param = "start from here" };
         _expectedPages = Fakers.GetWikiPageModelFaker(_userSettings.GetApiUrl(), _wikiClientCache).Generate(4);
         _expectedPages.Add(new WikiPageModel("Գրիգոր Ամիրեանի Բնակելի Տուն", _userSettings.GetApiUrl(), _wikiClientCache));
         _expectedPages.Add(new WikiPageModel("8 Յուլիս", _userSettings.GetApiUrl(), _wikiClientCache));
@@ -37,22 +34,21 @@ public sealed class LinksOnPageBlueListProviderTests : ListProvidersBaseTest<Lin
     public async Task MakeList_ShouldReturnBluePageServiceResults()
     {
         // arrange
-        _pageService.LinksOnPage(_userSettings.GetApiUrl(), _sut.Param, 73)
-            .Returns(_expectedPages);
+        _pageService.LinksOnPage(_userSettings.GetApiUrl(), _sut.Param, 73).Returns(_expectedPages);
 
         await MakeList_ShouldReturnServiceResults(
-        [
-            new WikiPageModel("8 Յուլիս", _userSettings.GetApiUrl(), _wikiClientCache),
-            new WikiPageModel("Գրիգոր Ամիրեանի Բնակելի Տուն", _userSettings.GetApiUrl(), _wikiClientCache)
-        ]);
+            [
+                new WikiPageModel("8 Յուլիս", _userSettings.GetApiUrl(), _wikiClientCache),
+                new WikiPageModel("Գրիգոր Ամիրեանի Բնակելի Տուն", _userSettings.GetApiUrl(), _wikiClientCache),
+            ]
+        );
     }
 
     [Test]
     public async Task MakeList_ShouldReturnUnsuccessfulResult_WhenPageServiceReturnsUnsuccessfulResult()
     {
         // arrange
-        _pageService.LinksOnPage(_userSettings.GetApiUrl(), _sut.Param, 73)
-            .Returns(new Exception("failed to get pages"));
+        _pageService.LinksOnPage(_userSettings.GetApiUrl(), _sut.Param, 73).Returns(new Exception("failed to get pages"));
 
         // act
         Result<List<WikiPageModel>> result = await _sut.MakeList(73);

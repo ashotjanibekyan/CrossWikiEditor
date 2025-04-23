@@ -13,10 +13,7 @@ public sealed partial class AddOrEditProfileViewModel : ViewModelBase
     private readonly int _id;
     private readonly IProfileRepository _profileRepository;
 
-    public AddOrEditProfileViewModel(
-        IFileDialogService fileDialogService,
-        IProfileRepository profileRepository,
-        int id)
+    public AddOrEditProfileViewModel(IFileDialogService fileDialogService, IProfileRepository profileRepository, int id)
     {
         _fileDialogService = fileDialogService;
         _profileRepository = profileRepository;
@@ -29,12 +26,23 @@ public sealed partial class AddOrEditProfileViewModel : ViewModelBase
 
     public bool IsEdit => _id != -1;
 
-    [ObservableProperty] public partial string Username { get; set; }
-    [ObservableProperty] public partial string Password { get; set; }
-    [ObservableProperty] public partial string DefaultSettingsPath { get; set; }
-    [ObservableProperty] public partial bool ShouldSavePassword { get; set; }
-    [ObservableProperty] public partial bool ShouldSelectDefaultSettings { get; set; }
-    [ObservableProperty] public partial string Notes { get; set; }
+    [ObservableProperty]
+    public partial string Username { get; set; }
+
+    [ObservableProperty]
+    public partial string Password { get; set; }
+
+    [ObservableProperty]
+    public partial string DefaultSettingsPath { get; set; }
+
+    [ObservableProperty]
+    public partial bool ShouldSavePassword { get; set; }
+
+    [ObservableProperty]
+    public partial bool ShouldSelectDefaultSettings { get; set; }
+
+    [ObservableProperty]
+    public partial string Notes { get; set; }
 
     [RelayCommand]
     private async Task Browse()
@@ -73,7 +81,7 @@ public sealed partial class AddOrEditProfileViewModel : ViewModelBase
             DefaultSettingsPath = ShouldSelectDefaultSettings ? DefaultSettingsPath : string.Empty,
             IsPasswordSaved = ShouldSavePassword,
             Password = ShouldSavePassword ? Password : string.Empty,
-            Notes = Notes
+            Notes = Notes,
         };
 
         if (IsEdit)

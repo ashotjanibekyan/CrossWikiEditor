@@ -15,10 +15,13 @@ public sealed class AllPagesWithPrefixListProvider : LimitedListProviderBase, IN
     private readonly ISettingsService _settingsService;
     private readonly IViewModelFactory _viewModelFactory;
 
-    public AllPagesWithPrefixListProvider(IDialogService dialogService,
+    public AllPagesWithPrefixListProvider(
+        IDialogService dialogService,
         IPageService pageService,
         ISettingsService settingsService,
-        IViewModelFactory viewModelFactory) : base(dialogService)
+        IViewModelFactory viewModelFactory
+    )
+        : base(dialogService)
     {
         _pageService = pageService;
         _settingsService = settingsService;
@@ -27,7 +30,7 @@ public sealed class AllPagesWithPrefixListProvider : LimitedListProviderBase, IN
 
     public override string Title => "All Pages with prefix (Prefixindex)";
     public override string ParamTitle => "Prefix";
-    public override bool CanMake => _namespaces is {Length: 1};
+    public override bool CanMake => _namespaces is { Length: 1 };
 
     public async Task GetAdditionalParams()
     {

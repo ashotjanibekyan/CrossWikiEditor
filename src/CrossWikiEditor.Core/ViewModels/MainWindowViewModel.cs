@@ -13,7 +13,8 @@ public sealed class MainWindowViewModel : ViewModelBase
     private PageListProcessor? _listProcessor;
     private Task? _myBot;
 
-    public MainWindowViewModel(StatusBarViewModel statusBarViewModel,
+    public MainWindowViewModel(
+        StatusBarViewModel statusBarViewModel,
         MakeListViewModel makeListViewModel,
         OptionsViewModel optionsViewModel,
         MoreViewModel moreViewModel,
@@ -27,7 +28,8 @@ public sealed class MainWindowViewModel : ViewModelBase
         LogsViewModel logsViewModel,
         PageLogsViewModel pageLogsViewModel,
         IMessengerWrapper messenger,
-        ISettingsService settingsService)
+        ISettingsService settingsService
+    )
     {
         Instance = this;
         StatusBarViewModel = statusBarViewModel;
@@ -43,17 +45,19 @@ public sealed class MainWindowViewModel : ViewModelBase
         WhatLinksHereViewModel = whatLinksHereViewModel;
         LogsViewModel = logsViewModel;
         PageLogsViewModel = pageLogsViewModel;
-        messenger.Register<StartBotMessage>(this, (recipient, message) =>
-        {
-            _myBot = Task.Run(async () =>
+        messenger.Register<StartBotMessage>(
+            this,
+            (_, _) =>
             {
-                _listProcessor?.Stop();
-                _listProcessor = new PageListProcessor(messenger, settingsService, [..MakeListViewModel.Pages],
-                    OptionsViewModel.NormalFindAndReplaceRules);
-                await _listProcessor.Start();
-            });
-        });
-        messenger.Register<StopBotMessage>(this, (recipient, message) => _listProcessor?.Stop());
+                _myBot = Task.Run(async () =>
+                {
+                    _listProcessor?.Stop();
+                    _listProcessor = new PageListProcessor(messenger, settingsService, [.. MakeListViewModel.Pages]);
+                    await _listProcessor.Start();
+                });
+            }
+        );
+        messenger.Register<StopBotMessage>(this, (_, _) => _listProcessor?.Stop());
     }
 
     public static MainWindowViewModel? Instance { get; private set; }

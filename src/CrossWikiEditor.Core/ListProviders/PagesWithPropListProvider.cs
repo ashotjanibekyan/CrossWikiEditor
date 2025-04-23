@@ -13,9 +13,8 @@ public sealed class PagesWithPropListProvider : LimitedListProviderBase
     private readonly IPageService _pageService;
     private readonly ISettingsService _settingsService;
 
-    public PagesWithPropListProvider(IDialogService dialogService,
-        IPageService pageService,
-        ISettingsService settingsService) : base(dialogService)
+    public PagesWithPropListProvider(IDialogService dialogService, IPageService pageService, ISettingsService settingsService)
+        : base(dialogService)
     {
         _pageService = pageService;
         _settingsService = settingsService;

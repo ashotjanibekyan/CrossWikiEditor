@@ -24,10 +24,7 @@ public sealed class StatusBarViewModelTests : BaseTest
         _sut = new StatusBarViewModel(_viewModelFactory, _dialogService, _settingsService, messenger);
 
         // act
-        messenger.Send(new NewAccountLoggedInMessage(new Profile
-        {
-            Username = "this is a new username"
-        }));
+        messenger.Send(new NewAccountLoggedInMessage(new Profile { Username = "this is a new username" }));
 
         // assert
         _sut.Username.Should().Be("this is a new username");
@@ -65,10 +62,7 @@ public sealed class StatusBarViewModelTests : BaseTest
     public void CurrentWiki_ShouldComeFromCurrentPref()
     {
         // arrange
-        _settingsService.GetCurrentSettings().Returns(new UserSettings
-        {
-            UserWiki = new UserWiki("hyw", ProjectEnum.Wikipedia)
-        });
+        _settingsService.GetCurrentSettings().Returns(new UserSettings { UserWiki = new UserWiki("hyw", ProjectEnum.Wikipedia) });
 
         // act
         _sut = new StatusBarViewModel(_viewModelFactory, _dialogService, _settingsService, _messenger);
@@ -100,8 +94,15 @@ public sealed class StatusBarViewModelTests : BaseTest
     public void UsernameClickedCommand_ShouldOpenPreferencesView()
     {
         // arrange
-        var profilesViewModel = new ProfilesViewModel(_fileDialogService, _dialogService, _profileRepository, _userService, _settingsService,
-            _messenger);
+        _profileRepository.GetAll().Returns([]);
+        var profilesViewModel = new ProfilesViewModel(
+            _fileDialogService,
+            _dialogService,
+            _profileRepository,
+            _userService,
+            _settingsService,
+            _messenger
+        );
         _dialogService.ShowDialog<bool>(Arg.Any<PreferencesViewModel>()).Returns(true);
         _viewModelFactory.GetProfilesViewModel().Returns(profilesViewModel);
 

@@ -57,10 +57,7 @@ public class SettingsServiceTests
     public void Constructor_WhenSettingsFileExists_ShouldLoadSettingsFromFile()
     {
         // Arrange
-        var expectedSettings = new UserSettings
-        {
-            UserWiki = new UserWiki("fr", ProjectEnum.Wikisource)
-        };
+        var expectedSettings = new UserSettings { UserWiki = new UserWiki("fr", ProjectEnum.Wikisource) };
 
         string json = JsonSerializer.Serialize(expectedSettings);
         File.WriteAllText(_testSettingsPath, json);
@@ -82,13 +79,9 @@ public class SettingsServiceTests
         var service = new SettingsService(_messenger);
 
         // Assert
-        _messenger.Received(1).Register(
-            Arg.Is(service),
-            Arg.Any<MessageHandler<object, LanguageCodeChangedMessage>>());
+        _messenger.Received(1).Register(Arg.Is(service), Arg.Any<MessageHandler<object, LanguageCodeChangedMessage>>());
 
-        _messenger.Received(1).Register(
-            Arg.Is(service),
-            Arg.Any<MessageHandler<object, ProjectChangedMessage>>());
+        _messenger.Received(1).Register(Arg.Is(service), Arg.Any<MessageHandler<object, ProjectChangedMessage>>());
     }
 
     [Test]
@@ -110,10 +103,7 @@ public class SettingsServiceTests
     {
         // Arrange
         var service = new SettingsService(_messenger);
-        var expectedSettings = new UserSettings
-        {
-            UserWiki = new UserWiki("de", ProjectEnum.Wikipedia)
-        };
+        var expectedSettings = new UserSettings { UserWiki = new UserWiki("de", ProjectEnum.Wikipedia) };
 
         string tempPath = "./temp_settings.json";
         string json = JsonSerializer.Serialize(expectedSettings);
@@ -168,10 +158,7 @@ public class SettingsServiceTests
     public void SaveCurrentSettings_WhenSettingsFileExists_ShouldBackupAndCreateNewFile()
     {
         // Arrange
-        var initialSettings = new UserSettings
-        {
-            UserWiki = new UserWiki("es", ProjectEnum.Wikibooks)
-        };
+        var initialSettings = new UserSettings { UserWiki = new UserWiki("es", ProjectEnum.Wikibooks) };
 
         string json = JsonSerializer.Serialize(initialSettings);
         File.WriteAllText(_testSettingsPath, json);
@@ -195,10 +182,7 @@ public class SettingsServiceTests
     public void GetCurrentSettings_ShouldReturnCurrentSettings()
     {
         // Arrange
-        var expectedSettings = new UserSettings
-        {
-            UserWiki = new UserWiki("it", ProjectEnum.Wiktionary)
-        };
+        var expectedSettings = new UserSettings { UserWiki = new UserWiki("it", ProjectEnum.Wiktionary) };
 
         string json = JsonSerializer.Serialize(expectedSettings);
         File.WriteAllText(_testSettingsPath, json);
@@ -218,10 +202,7 @@ public class SettingsServiceTests
     public void CurrentApiUrl_ShouldReturnUrlFromCurrentSettings()
     {
         // Arrange
-        var expectedSettings = new UserSettings
-        {
-            UserWiki = new UserWiki("en", ProjectEnum.Wikipedia)
-        };
+        var expectedSettings = new UserSettings { UserWiki = new UserWiki("en", ProjectEnum.Wikipedia) };
 
         string json = JsonSerializer.Serialize(expectedSettings);
         File.WriteAllText(_testSettingsPath, json);
@@ -240,10 +221,7 @@ public class SettingsServiceTests
     {
         // Arrange
         var service = new SettingsService(_messenger);
-        var newSettings = new UserSettings
-        {
-            UserWiki = new UserWiki("ja", ProjectEnum.Wikivoyage)
-        };
+        var newSettings = new UserSettings { UserWiki = new UserWiki("ja", ProjectEnum.Wikivoyage) };
 
         // Act
         service.SetCurrentSettings(newSettings);
@@ -252,8 +230,7 @@ public class SettingsServiceTests
         UserSettings currentSettings = service.GetCurrentSettings();
         currentSettings.Should().Be(newSettings);
 
-        _messenger.Received(1).Send(Arg.Is<CurrentSettingsUpdatedMessage>(
-            msg => msg.Value == newSettings));
+        _messenger.Received(1).Send(Arg.Is<CurrentSettingsUpdatedMessage>(msg => msg.Value == newSettings));
     }
 
     [Test]
@@ -262,10 +239,12 @@ public class SettingsServiceTests
         // Arrange
         MessageHandler<object, LanguageCodeChangedMessage>? capturedHandler = null;
 
-        _messenger.When(x => x.Register(
-            Arg.Any<object>(),
-            Arg.Any<MessageHandler<object, LanguageCodeChangedMessage>>())
-        ).Do(callInfo => { capturedHandler = callInfo.ArgAt<MessageHandler<object, LanguageCodeChangedMessage>>(1); });
+        _messenger
+            .When(x => x.Register(Arg.Any<object>(), Arg.Any<MessageHandler<object, LanguageCodeChangedMessage>>()))
+            .Do(callInfo =>
+            {
+                capturedHandler = callInfo.ArgAt<MessageHandler<object, LanguageCodeChangedMessage>>(1);
+            });
 
         var service = new SettingsService(_messenger);
         capturedHandler.Should().NotBeNull("because message handler should be registered");
@@ -284,10 +263,12 @@ public class SettingsServiceTests
         // Arrange
         MessageHandler<object, ProjectChangedMessage>? capturedHandler = null;
 
-        _messenger.When(x => x.Register(
-            Arg.Any<object>(),
-            Arg.Any<MessageHandler<object, ProjectChangedMessage>>())
-        ).Do(callInfo => { capturedHandler = callInfo.ArgAt<MessageHandler<object, ProjectChangedMessage>>(1); });
+        _messenger
+            .When(x => x.Register(Arg.Any<object>(), Arg.Any<MessageHandler<object, ProjectChangedMessage>>()))
+            .Do(callInfo =>
+            {
+                capturedHandler = callInfo.ArgAt<MessageHandler<object, ProjectChangedMessage>>(1);
+            });
 
         var service = new SettingsService(_messenger);
         capturedHandler.Should().NotBeNull("because message handler should be registered");

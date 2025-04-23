@@ -4,7 +4,7 @@ public enum RedirectFilter
 {
     All,
     Redirects,
-    NoRedirects
+    NoRedirects,
 }
 
 public record NamespacesAndRedirectFilterOptions
@@ -20,10 +20,10 @@ public record NamespacesAndRedirectFilterOptions
     public bool IncludeRedirects { get; init; }
     public RedirectFilter RedirectFilter { get; init; }
 
-    public void Deconstruct(out int[] Namespaces, out bool IncludeRedirects, out RedirectFilter RedirectFilter)
+    public void Deconstruct(out int[] namespaces, out bool includeRedirects, out RedirectFilter redirectFilter)
     {
-        Namespaces = this.Namespaces;
-        IncludeRedirects = this.IncludeRedirects;
-        RedirectFilter = this.RedirectFilter;
+        namespaces = Namespaces;
+        includeRedirects = IncludeRedirects;
+        redirectFilter = RedirectFilter;
     }
 }

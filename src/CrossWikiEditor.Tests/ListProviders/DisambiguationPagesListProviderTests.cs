@@ -7,10 +7,7 @@ public sealed class DisambiguationPagesListProviderTests : ListProvidersBaseTest
     {
         SetUpServices();
         SetUpUserSettings("hyw", ProjectEnum.Wikipedia);
-        _sut = new DisambiguationPagesListProvider(_dialogService, _pageService, _settingsService)
-        {
-            Param = "start from here"
-        };
+        _sut = new DisambiguationPagesListProvider(_dialogService, _pageService, _settingsService) { Param = "start from here" };
         _expectedPages = Fakers.GetWikiPageModelFaker(_userSettings.GetApiUrl(), _wikiClientCache).Generate(4);
     }
 
@@ -18,8 +15,7 @@ public sealed class DisambiguationPagesListProviderTests : ListProvidersBaseTest
     public async Task MakeList_ShouldReturnPageServiceResults()
     {
         // arrange
-        _pageService.GetPagesWithProp(_userSettings.GetApiUrl(), "disambiguation", 73)
-            .Returns(_expectedPages);
+        _pageService.GetPagesWithProp(_userSettings.GetApiUrl(), "disambiguation", 73).Returns(_expectedPages);
 
         await MakeList_ShouldReturnServiceResults(_expectedPages);
     }

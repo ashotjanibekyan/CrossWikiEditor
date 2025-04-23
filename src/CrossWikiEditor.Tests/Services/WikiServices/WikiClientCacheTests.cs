@@ -115,7 +115,8 @@ public sealed class WikiClientCacheTests : BaseTest
 
         // assert
         result.IsSuccessful.Should().BeFalse();
-        result.ErrorMessage.Should()
+        result
+            .ErrorMessage.Should()
             .Be("An invalid request URI was provided. Either the request URI must be an absolute URI or BaseAddress must be set.");
     }
 

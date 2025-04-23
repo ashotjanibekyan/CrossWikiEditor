@@ -12,7 +12,8 @@ public sealed class MyWatchlistListProvider : LimitedListProviderBase
 {
     private readonly IUserService _userService;
 
-    public MyWatchlistListProvider(IDialogService dialogService, IUserService userService) : base(dialogService)
+    public MyWatchlistListProvider(IDialogService dialogService, IUserService userService)
+        : base(dialogService)
     {
         _userService = userService;
     }

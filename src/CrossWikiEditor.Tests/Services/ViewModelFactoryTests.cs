@@ -16,12 +16,7 @@ public sealed class ViewModelFactoryTests : BaseTest
             _userService,
             _settingsService,
             _messenger,
-            new TextFileListProvider(
-                _fileDialogService,
-                _systemService,
-                _settingsService,
-                _wikiClientCache
-            )
+            new TextFileListProvider(_fileDialogService, _systemService, _settingsService, _wikiClientCache)
         );
     }
 
@@ -29,6 +24,7 @@ public sealed class ViewModelFactoryTests : BaseTest
     public void GetProfilesViewModel_ReturnsDifferentObjectEachTime()
     {
         // arrange
+        _profileRepository.GetAll().Returns([]);
 
         // act
         ProfilesViewModel obj1 = _sut.GetProfilesViewModel();

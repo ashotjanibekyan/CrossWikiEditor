@@ -15,10 +15,13 @@ public sealed class RandomListProvider : LimitedListProviderBase, INeedAdditiona
     private readonly ISettingsService _settingsService;
     private readonly IViewModelFactory _viewModelFactory;
 
-    public RandomListProvider(IDialogService dialogService,
+    public RandomListProvider(
+        IDialogService dialogService,
         IPageService pageService,
         ISettingsService settingsService,
-        IViewModelFactory viewModelFactory) : base(dialogService)
+        IViewModelFactory viewModelFactory
+    )
+        : base(dialogService)
     {
         _pageService = pageService;
         _settingsService = settingsService;
@@ -31,9 +34,9 @@ public sealed class RandomListProvider : LimitedListProviderBase, INeedAdditiona
 
     public async Task GetAdditionalParams()
     {
-        NamespacesAndRedirectFilterOptions? result =
-            await DialogService.ShowDialog<NamespacesAndRedirectFilterOptions>(
-                await _viewModelFactory.GetSelectNamespacesAndRedirectFilterViewModel(false));
+        NamespacesAndRedirectFilterOptions? result = await DialogService.ShowDialog<NamespacesAndRedirectFilterOptions>(
+            await _viewModelFactory.GetSelectNamespacesAndRedirectFilterViewModel(false)
+        );
         if (result is not null)
         {
             _options = result;
@@ -50,8 +53,9 @@ public sealed class RandomListProvider : LimitedListProviderBase, INeedAdditiona
                 RedirectFilter.All => null,
                 RedirectFilter.Redirects => true,
                 RedirectFilter.NoRedirects => false,
-                _ => null
+                _ => null,
             },
-            limit);
+            limit
+        );
     }
 }

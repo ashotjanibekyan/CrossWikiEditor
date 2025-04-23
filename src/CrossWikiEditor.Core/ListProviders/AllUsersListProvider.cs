@@ -13,9 +13,8 @@ public sealed class AllUsersListProvider : LimitedListProviderBase
     private readonly ISettingsService _settingsService;
     private readonly IUserService _userService;
 
-    public AllUsersListProvider(IDialogService dialogService,
-        ISettingsService settingsService,
-        IUserService userService) : base(dialogService)
+    public AllUsersListProvider(IDialogService dialogService, ISettingsService settingsService, IUserService userService)
+        : base(dialogService)
     {
         _settingsService = settingsService;
         _userService = userService;

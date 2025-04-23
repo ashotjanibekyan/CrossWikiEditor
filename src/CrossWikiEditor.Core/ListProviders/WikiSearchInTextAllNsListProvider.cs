@@ -13,9 +13,8 @@ public sealed class WikiSearchInTextAllNsListProvider : LimitedListProviderBase
     private readonly IPageService _pageService;
     private readonly ISettingsService _settingsService;
 
-    public WikiSearchInTextAllNsListProvider(IDialogService dialogService,
-        IPageService pageService,
-        ISettingsService settingsService) : base(dialogService)
+    public WikiSearchInTextAllNsListProvider(IDialogService dialogService, IPageService pageService, ISettingsService settingsService)
+        : base(dialogService)
     {
         _pageService = pageService;
         _settingsService = settingsService;

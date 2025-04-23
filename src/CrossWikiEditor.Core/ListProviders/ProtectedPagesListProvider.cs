@@ -16,10 +16,13 @@ public sealed class ProtectedPagesListProvider : LimitedListProviderBase, INeedA
     private readonly ISettingsService _settingsService;
     private readonly IViewModelFactory _viewModelFactory;
 
-    public ProtectedPagesListProvider(IDialogService dialogService,
+    public ProtectedPagesListProvider(
+        IDialogService dialogService,
         IPageService pageService,
         ISettingsService settingsService,
-        IViewModelFactory viewModelFactory) : base(dialogService)
+        IViewModelFactory viewModelFactory
+    )
+        : base(dialogService)
     {
         _pageService = pageService;
         _settingsService = settingsService;
@@ -32,8 +35,9 @@ public sealed class ProtectedPagesListProvider : LimitedListProviderBase, INeedA
 
     public async Task GetAdditionalParams()
     {
-        (_protectionType, _protectionLevel) =
-            await DialogService.ShowDialog<(string, string)>(_viewModelFactory.GetSelectProtectionSelectionPageViewModel());
+        (_protectionType, _protectionLevel) = await DialogService.ShowDialog<(string, string)>(
+            _viewModelFactory.GetSelectProtectionSelectionPageViewModel()
+        );
     }
 
     public override async Task<Result<List<WikiPageModel>>> MakeList(int limit)

@@ -16,9 +16,7 @@ public sealed class SimpleHtmlParser
     private readonly ISettingsService _settingsService;
     private readonly IWikiClientCache _wikiClientCache;
 
-    public SimpleHtmlParser(ILogger logger,
-        ISettingsService settingsService,
-        IWikiClientCache wikiClientCache)
+    public SimpleHtmlParser(ILogger logger, ISettingsService settingsService, IWikiClientCache wikiClientCache)
     {
         _logger = logger;
         _settingsService = settingsService;

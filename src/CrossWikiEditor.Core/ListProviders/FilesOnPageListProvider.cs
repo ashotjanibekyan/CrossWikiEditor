@@ -13,9 +13,8 @@ public sealed class FilesOnPageListProvider : LimitedListProviderBase
     private readonly IPageService _pageService;
     private readonly ISettingsService _settingsService;
 
-    public FilesOnPageListProvider(IDialogService dialogService,
-        IPageService pageService,
-        ISettingsService settingsService) : base(dialogService)
+    public FilesOnPageListProvider(IDialogService dialogService, IPageService pageService, ISettingsService settingsService)
+        : base(dialogService)
     {
         _pageService = pageService;
         _settingsService = settingsService;

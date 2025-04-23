@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using CrossWikiEditor.Core.Utils;
 using CrossWikiEditor.Core.Utils.Extensions;
 
 namespace CrossWikiEditor.Core.Models;
@@ -8,19 +7,21 @@ namespace CrossWikiEditor.Core.Models;
 public enum SetOperations
 {
     SymmetricDifference,
-    Intersection
+    Intersection,
 }
 
 public class FilterOptions
 {
-    public FilterOptions(IReadOnlyCollection<int> namespacesToKeep,
+    public FilterOptions(
+        IReadOnlyCollection<int> namespacesToKeep,
         string removeTitlesContaining,
         string keepTitlesContaining,
         bool useRegex,
         bool sortAlphabetically,
         bool removeDuplicates,
         SetOperations setOperation,
-        IReadOnlyCollection<WikiPageModel> filterPages)
+        IReadOnlyCollection<WikiPageModel> filterPages
+    )
     {
         NamespacesToKeep = namespacesToKeep;
         RemoveTitlesContaining = removeTitlesContaining;
@@ -86,6 +87,6 @@ public class FilterOptions
 
     public List<WikiPageModel> PerSortAlphabetically(IEnumerable<WikiPageModel> pages)
     {
-        return SortAlphabetically ? [..pages.OrderBy(p => p.Title)] : pages.ToList();
+        return SortAlphabetically ? [.. pages.OrderBy(p => p.Title)] : pages.ToList();
     }
 }

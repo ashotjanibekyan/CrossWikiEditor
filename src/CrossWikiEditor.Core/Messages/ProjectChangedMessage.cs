@@ -5,7 +5,6 @@ namespace CrossWikiEditor.Core.Messages;
 
 public sealed class ProjectChangedMessage : ValueChangedMessage<ProjectEnum>
 {
-    public ProjectChangedMessage(ProjectEnum project) : base(project)
-    {
-    }
+    public ProjectChangedMessage(ProjectEnum project)
+        : base(project) { }
 }

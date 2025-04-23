@@ -20,14 +20,13 @@ public static class ServicesModule
         (byte[] key, byte[] iv) = StringEncryptionService.GenerateKeyAndIv("SHOULD IMPLEMENT THIS LATER");
         IStringEncryptionService stringEncryptionService = new StringEncryptionService(key, iv);
 
-        Logger logger = new LoggerConfiguration()
-            .WriteTo.Async(a => a.File(new JsonFormatter(), "log.json"))
+        Logger logger = new LoggerConfiguration().WriteTo.Async(a => a.File(new JsonFormatter(), "log.json"))
 #if DEBUG
-            .MinimumLevel.Verbose()
+        .MinimumLevel.Verbose()
 #else
             .MinimumLevel.Information()
 #endif
-            .CreateLogger();
+        .CreateLogger();
 
         services.AddSingleton<IViewModelFactory, ViewModelFactory>();
         services.AddSingleton<IFileDialogService, FileDialogService>();

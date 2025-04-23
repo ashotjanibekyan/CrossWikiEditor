@@ -32,7 +32,9 @@ public static class WikiPageModelExtensions
     {
         string seperator = isNumericList ? "#" : "*";
         var sb = new StringBuilder();
-        IEnumerable<IEnumerable<WikiPageModel>> pages = wikiPageModels.GroupBy(p => char.ToLower(p.Title[0])).OrderBy(p => p.First().Title)
+        IEnumerable<IEnumerable<WikiPageModel>> pages = wikiPageModels
+            .GroupBy(p => char.ToLower(p.Title[0]))
+            .OrderBy(p => p.First().Title)
             .Select(l => l.OrderBy(p => p.Title));
         foreach (IEnumerable<WikiPageModel> section in pages)
         {

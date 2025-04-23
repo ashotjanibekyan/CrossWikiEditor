@@ -13,9 +13,8 @@ public sealed class CategoryRecursiveListProvider : LimitedListProviderBase
     private readonly ICategoryService _categoryService;
     private readonly ISettingsService _settingsService;
 
-    public CategoryRecursiveListProvider(ICategoryService categoryService,
-        IDialogService dialogService,
-        ISettingsService settingsService) : base(dialogService)
+    public CategoryRecursiveListProvider(ICategoryService categoryService, IDialogService dialogService, ISettingsService settingsService)
+        : base(dialogService)
     {
         _categoryService = categoryService;
         _settingsService = settingsService;

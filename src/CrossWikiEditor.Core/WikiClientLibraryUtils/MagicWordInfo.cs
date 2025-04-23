@@ -10,11 +10,14 @@ namespace CrossWikiEditor.Core.WikiClientLibraryUtils;
 [JsonObject(MemberSerialization.OptIn)]
 public sealed class MagicWordInfo
 {
-    [JsonProperty] public string Name { get; private set; } = "";
+    [JsonProperty]
+    public string Name { get; private set; } = "";
 
-    [JsonProperty] public IReadOnlyCollection<string> Aliases { get; private set; } = [];
+    [JsonProperty]
+    public IReadOnlyCollection<string> Aliases { get; private set; } = [];
 
-    [JsonProperty("case-sensitive")] public bool CaseSensitive { get; private set; }
+    [JsonProperty("case-sensitive")]
+    public bool CaseSensitive { get; private set; }
 
     public override string ToString()
     {

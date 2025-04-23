@@ -19,10 +19,12 @@ public sealed class TextFileListProvider : UnlimitedListProviderBase, INeedAddit
     private readonly ISettingsService _settingsService;
     private readonly IWikiClientCache _wikiClientCache;
 
-    public TextFileListProvider(IFileDialogService fileDialogService,
+    public TextFileListProvider(
+        IFileDialogService fileDialogService,
         ISystemService systemService,
         ISettingsService settingsService,
-        IWikiClientCache wikiClientCache)
+        IWikiClientCache wikiClientCache
+    )
     {
         _fileDialogService = fileDialogService;
         _systemService = systemService;
@@ -51,17 +53,23 @@ public sealed class TextFileListProvider : UnlimitedListProviderBase, INeedAddit
             string pageText = await _systemService.ReadAllTextAsync(textFile, Encoding.Default);
             if (Tools.WikiLinkRegex().IsMatch(pageText))
             {
-                titles.AddRange(Tools.WikiLinkRegex()
-                    .Matches(pageText)
-                    .Select(m => m.Groups[1].Value)
-                    .Where(title => !Tools.FromFileRegex().IsMatch(title) && !title.StartsWith("#"))
-                    .Select(Tools.RemoveSyntax));
+                titles.AddRange(
+                    Tools
+                        .WikiLinkRegex()
+                        .Matches(pageText)
+                        .Select(m => m.Groups[1].Value)
+                        .Where(title => !Tools.FromFileRegex().IsMatch(title) && !title.StartsWith("#"))
+                        .Select(Tools.RemoveSyntax)
+                );
             }
             else
             {
-                titles.AddRange(pageText.Split(new[] {"\r\n", "\n"}, StringSplitOptions.RemoveEmptyEntries)
-                    .Where(s => s.Trim().Length != 0)
-                    .Select(Tools.RemoveSyntax));
+                titles.AddRange(
+                    pageText
+                        .Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries)
+                        .Where(s => s.Trim().Length != 0)
+                        .Select(Tools.RemoveSyntax)
+                );
             }
         }
 

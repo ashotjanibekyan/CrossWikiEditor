@@ -1,6 +1,7 @@
 namespace CrossWikiEditor.Tests.ListProviders;
 
-public abstract class ListProvidersBaseTest<T> : BaseTest where T : ListProviderBase
+public abstract class ListProvidersBaseTest<T> : BaseTest
+    where T : ListProviderBase
 {
     protected List<WikiPageModel> _expectedPages;
     protected SelectNamespacesAndRedirectFilterViewModel _selectNamespacesAndRedirectFilterViewModel;
@@ -38,8 +39,9 @@ public abstract class ListProvidersBaseTest<T> : BaseTest where T : ListProvider
         }
 
         // arrange
-        _dialogService.ShowDialog<int?>(Arg.Is<PromptViewModel>(vm =>
-            vm.IsNumeric && vm.Value == 50 && vm.Title == "How many page" && vm.Text == "Limit: ")).Returns(42);
+        _dialogService
+            .ShowDialog<int?>(Arg.Is<PromptViewModel>(vm => vm.IsNumeric && vm.Value == 50 && vm.Title == "How many page" && vm.Text == "Limit: "))
+            .Returns(42);
 
         // act
         int result = await limitedListProvider.GetLimit();
@@ -50,10 +52,7 @@ public abstract class ListProvidersBaseTest<T> : BaseTest where T : ListProvider
 
     protected void SetUpUserSettings(string languageCode, ProjectEnum project)
     {
-        _userSettings = new UserSettings
-        {
-            UserWiki = new UserWiki(languageCode, project)
-        };
+        _userSettings = new UserSettings { UserWiki = new UserWiki(languageCode, project) };
         _settingsService.GetCurrentSettings().Returns(_userSettings);
         _settingsService.CurrentApiUrl.Returns(_userSettings.GetApiUrl());
     }

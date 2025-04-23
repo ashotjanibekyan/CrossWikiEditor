@@ -10,9 +10,8 @@ namespace CrossWikiEditor.Core.WikiClientLibraryUtils.Generators;
 
 public sealed class ExternalUrlUsageGenerator : WikiList<ExternalUrlUsageItem>
 {
-    public ExternalUrlUsageGenerator(WikiSite site) : base(site)
-    {
-    }
+    public ExternalUrlUsageGenerator(WikiSite site)
+        : base(site) { }
 
     public override string ListName => "exturlusage";
     public IEnumerable<int>? NamespaceIds { get; set; }
@@ -23,17 +22,17 @@ public sealed class ExternalUrlUsageGenerator : WikiList<ExternalUrlUsageItem>
     {
         return new Dictionary<string, object?>
         {
-            {"euprop", "ids|title|url"},
-            {"euprotocol", Protocol},
-            {"euquery", HttpUtility.UrlEncode(Url)},
-            {"eunamespace", NamespaceIds == null ? null : MediaWikiHelper.JoinValues(NamespaceIds)},
-            {"eulimit", PaginationSize}
+            { "euprop", "ids|title|url" },
+            { "euprotocol", Protocol },
+            { "euquery", HttpUtility.UrlEncode(Url) },
+            { "eunamespace", NamespaceIds == null ? null : MediaWikiHelper.JoinValues(NamespaceIds) },
+            { "eulimit", PaginationSize },
         };
     }
 
     protected override ExternalUrlUsageItem ItemFromJson(JToken json)
     {
-        var jsonObj = (JObject) json;
+        var jsonObj = (JObject)json;
         JToken? pageId = jsonObj["pageid"];
         JToken? ns = jsonObj["ns"];
         JToken? title = jsonObj["title"];
@@ -48,7 +47,7 @@ public sealed class ExternalUrlUsageGenerator : WikiList<ExternalUrlUsageItem>
             PageId = pageId.Value<int>(),
             NamespaceId = ns.Value<int>(),
             Title = title.Value<string>() ?? string.Empty,
-            Url = url.Value<string>() ?? string.Empty
+            Url = url.Value<string>() ?? string.Empty,
         };
     }
 }

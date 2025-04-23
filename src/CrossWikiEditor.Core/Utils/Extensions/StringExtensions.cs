@@ -20,11 +20,7 @@ public static class StringExtensions
         return result.ToString();
     }
 
-    public static bool Contains(
-        this string str,
-        string value,
-        bool isRegex,
-        RegexOptions regexOptions = RegexOptions.Multiline)
+    public static bool Contains(this string str, string value, bool isRegex, RegexOptions regexOptions = RegexOptions.Multiline)
     {
         if (!isRegex)
         {
@@ -35,11 +31,7 @@ public static class StringExtensions
         return r.IsMatch(str);
     }
 
-    public static bool Contains(
-        this string str,
-        string value,
-        bool isRegex,
-        bool isCaseSensitive)
+    public static bool Contains(this string str, string value, bool isRegex, bool isCaseSensitive)
     {
         if (!isRegex)
         {

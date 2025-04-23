@@ -16,7 +16,9 @@ public sealed class UserWiki
 
     public string GetBaseUrl()
     {
-        if (!string.IsNullOrEmpty(LanguageCode) && new[]
+        if (
+            !string.IsNullOrEmpty(LanguageCode)
+            && new[]
             {
                 ProjectEnum.Wikipedia,
                 ProjectEnum.Wiktionary,
@@ -25,8 +27,9 @@ public sealed class UserWiki
                 ProjectEnum.Wikiversity,
                 ProjectEnum.Wikivoyage,
                 ProjectEnum.Wikibooks,
-                ProjectEnum.Wikinews
-            }.Contains(Project))
+                ProjectEnum.Wikinews,
+            }.Contains(Project)
+        )
         {
             return $"https://{LanguageCode}.{Project.ToString().ToLower()}.org";
         }
@@ -36,7 +39,9 @@ public sealed class UserWiki
 
     public string GetLongBaseUrl()
     {
-        if (!string.IsNullOrEmpty(LanguageCode) && new[]
+        if (
+            !string.IsNullOrEmpty(LanguageCode)
+            && new[]
             {
                 ProjectEnum.Wikipedia,
                 ProjectEnum.Wiktionary,
@@ -45,8 +50,9 @@ public sealed class UserWiki
                 ProjectEnum.Wikiversity,
                 ProjectEnum.Wikivoyage,
                 ProjectEnum.Wikibooks,
-                ProjectEnum.Wikinews
-            }.Contains(Project))
+                ProjectEnum.Wikinews,
+            }.Contains(Project)
+        )
         {
             return $"https://{LanguageCode}.{Project.ToString().ToLower()}.org/w/";
         }
@@ -56,7 +62,9 @@ public sealed class UserWiki
 
     public string GetApiUrl()
     {
-        if (!string.IsNullOrEmpty(LanguageCode) && new[]
+        if (
+            !string.IsNullOrEmpty(LanguageCode)
+            && new[]
             {
                 ProjectEnum.Wikipedia,
                 ProjectEnum.Wiktionary,
@@ -65,8 +73,9 @@ public sealed class UserWiki
                 ProjectEnum.Wikiversity,
                 ProjectEnum.Wikivoyage,
                 ProjectEnum.Wikibooks,
-                ProjectEnum.Wikinews
-            }.Contains(Project))
+                ProjectEnum.Wikinews,
+            }.Contains(Project)
+        )
         {
             return $"https://{LanguageCode}.{Project.ToString().ToLower()}.org/w/api.php?";
         }
@@ -76,7 +85,9 @@ public sealed class UserWiki
 
     public string GetIndexUrl()
     {
-        if (!string.IsNullOrEmpty(LanguageCode) && new[]
+        if (
+            !string.IsNullOrEmpty(LanguageCode)
+            && new[]
             {
                 ProjectEnum.Wikipedia,
                 ProjectEnum.Wiktionary,
@@ -85,8 +96,9 @@ public sealed class UserWiki
                 ProjectEnum.Wikiversity,
                 ProjectEnum.Wikivoyage,
                 ProjectEnum.Wikibooks,
-                ProjectEnum.Wikinews
-            }.Contains(Project))
+                ProjectEnum.Wikinews,
+            }.Contains(Project)
+        )
         {
             return $"https://{LanguageCode}.{Project.ToString().ToLower()}.org/w/index.php?";
         }

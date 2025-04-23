@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CrossWikiEditor.Core.Utils;
 using CrossWikiEditor.Core.Utils.Extensions;
 using Newtonsoft.Json.Linq;
 using WikiClientLibrary.Generators;
@@ -22,7 +21,8 @@ public sealed class UserContributionsGenerator : WikiList<UserContributionResult
     /// <summary>
     ///     Create a wikilist of user contributions by usernames.
     /// </summary>
-    public UserContributionsGenerator(WikiSite site, List<string> usernames) : base(site)
+    public UserContributionsGenerator(WikiSite site, List<string> usernames)
+        : base(site)
     {
         _usernames = usernames;
         _userIds = null;
@@ -32,7 +32,8 @@ public sealed class UserContributionsGenerator : WikiList<UserContributionResult
     /// <summary>
     ///     Create a wikilist of user contributions by user ids.
     /// </summary>
-    public UserContributionsGenerator(WikiSite site, List<int> userIds) : base(site)
+    public UserContributionsGenerator(WikiSite site, List<int> userIds)
+        : base(site)
     {
         _usernames = null;
         _userIds = userIds;
@@ -42,7 +43,8 @@ public sealed class UserContributionsGenerator : WikiList<UserContributionResult
     /// <summary>
     ///     Create a wikilist of user contributions by user prefixes.
     /// </summary>
-    public UserContributionsGenerator(WikiSite site, string userPrefix) : base(site)
+    public UserContributionsGenerator(WikiSite site, string userPrefix)
+        : base(site)
     {
         _usernames = null;
         _userIds = null;
@@ -156,14 +158,14 @@ public sealed class UserContributionsGenerator : WikiList<UserContributionResult
     {
         var request = new Dictionary<string, object?>
         {
-            {"ucstart", StartTime},
-            {"ucend", EndTime},
-            {"ucprop", PrepareUcProp()},
-            {"ucshow", PrepareUcShow()},
-            {"ucdir", OrderDescending ? "newer" : "older"},
-            {"uctag", Tag},
-            {"uclimit", PaginationSize},
-            {"ucnamespace", NamespaceId}
+            { "ucstart", StartTime },
+            { "ucend", EndTime },
+            { "ucprop", PrepareUcProp() },
+            { "ucshow", PrepareUcShow() },
+            { "ucdir", OrderDescending ? "newer" : "older" },
+            { "uctag", Tag },
+            { "uclimit", PaginationSize },
+            { "ucnamespace", NamespaceId },
         };
         if (_usernames != null)
         {
@@ -190,12 +192,10 @@ public sealed class UserContributionsGenerator : WikiList<UserContributionResult
         }
 
         var wikiPage = new WikiPage(Site, title.Value<string>() ?? string.Empty);
-        MediaWikiHelper.PopulatePageFromJson(wikiPage, (JObject) json, new WikiPageQueryProvider
-        {
-            Properties = []
-        });
+        MediaWikiHelper.PopulatePageFromJson(wikiPage, (JObject)json, new WikiPageQueryProvider { Properties = [] });
         return new UserContributionResultItem(wikiPage);
     } // ReSharper disable EnforceIfStatementBraces
+
     private string PrepareUcProp()
     {
         var props = new List<string>();
@@ -220,7 +220,7 @@ public sealed class UserContributionsGenerator : WikiList<UserContributionResult
             AutoPatrolledFilter.ToString("autopatrolled", "!autopatrolled", null),
             MinorFilter.ToString("minor", "!minor", null),
             PatrolledFilter.ToString("patrolled", "!patrolled", null),
-            TopFilter.ToString("top", "!top", null)
+            TopFilter.ToString("top", "!top", null),
         };
         return string.Join('|', props.Where(p => p != null));
     }

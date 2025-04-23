@@ -26,11 +26,7 @@ public abstract class LimitedListProviderBase : ListProviderBase, ILimitedListPr
 
     public async Task<int> GetLimit()
     {
-        return await _dialogService.ShowDialog<int?>(new PromptViewModel("How many page", "Limit: ")
-        {
-            IsNumeric = true,
-            Value = 50
-        }) ?? 50;
+        return await _dialogService.ShowDialog<int?>(new PromptViewModel("How many page", "Limit: ") { IsNumeric = true, Value = 50 }) ?? 50;
     }
 
     public abstract Task<Result<List<WikiPageModel>>> MakeList(int limit);

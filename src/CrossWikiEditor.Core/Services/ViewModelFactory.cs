@@ -33,14 +33,16 @@ public sealed class ViewModelFactory : IViewModelFactory
     private readonly IMessengerWrapper _messenger;
     private readonly TextFileListProvider _textFileListProvider;
 
-    public ViewModelFactory(IFileDialogService fileDialogService,
+    public ViewModelFactory(
+        IFileDialogService fileDialogService,
         IDialogService dialogService,
         IProfileRepository profileRepository,
         IWikiClientCache wikiClientCache,
         IUserService userService,
         ISettingsService settingsService,
         IMessengerWrapper messenger,
-        TextFileListProvider textFileListProvider)
+        TextFileListProvider textFileListProvider
+    )
     {
         _fileDialogService = fileDialogService;
         _dialogService = dialogService;
@@ -64,13 +66,14 @@ public sealed class ViewModelFactory : IViewModelFactory
 
     public async Task<FilterViewModel> GetFilterViewModel()
     {
-        WikiSite? site = await _wikiClientCache.GetWikiSite(_settingsService.CurrentApiUrl);
+        WikiSite site = await _wikiClientCache.GetWikiSite(_settingsService.CurrentApiUrl);
         WikiNamespace[] namespaces = site.Namespaces.Select(x => new WikiNamespace(x.Id, x.CustomName)).ToArray();
 
         return new FilterViewModel(
             namespaces.Where(x => x.Id.IsEven()).ToList(),
             namespaces.Where(x => x.Id.IsOdd()).ToList(),
-            _textFileListProvider);
+            _textFileListProvider
+        );
     }
 
     public async Task<SelectNamespacesViewModel> GetSelectNamespacesViewModel(bool isMultiselect = true)
@@ -84,10 +87,7 @@ public sealed class ViewModelFactory : IViewModelFactory
     {
         WikiSite site = await _wikiClientCache.GetWikiSite(_settingsService.CurrentApiUrl);
         WikiNamespace[] namespaces = site.Namespaces.Select(x => new WikiNamespace(x.Id, x.CustomName)).ToArray();
-        return new SelectNamespacesAndRedirectFilterViewModel([.. namespaces])
-        {
-            IsIncludeRedirectsVisible = isIncludeRedirectsVisible
-        };
+        return new SelectNamespacesAndRedirectFilterViewModel([.. namespaces]) { IsIncludeRedirectsVisible = isIncludeRedirectsVisible };
     }
 
     public SelectProtectionSelectionPageViewModel GetSelectProtectionSelectionPageViewModel()

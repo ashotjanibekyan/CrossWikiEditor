@@ -70,15 +70,17 @@ public sealed class SimpleJsonProfileRepositoryTests
         _sut.Insert(profiles[2]);
 
         // act
-        _sut.Update(new Profile
-        {
-            Id = 23,
-            DefaultSettingsPath = "few",
-            Username = "fweew",
-            IsPasswordSaved = true,
-            Notes = "hth3",
-            Password = "0r23v"
-        });
+        _sut.Update(
+            new Profile
+            {
+                Id = 23,
+                DefaultSettingsPath = "few",
+                Username = "fweew",
+                IsPasswordSaved = true,
+                Notes = "hth3",
+                Password = "0r23v",
+            }
+        );
 
         // assert
         List<Profile> existingProfiles = _sut.GetAll();
@@ -102,7 +104,7 @@ public sealed class SimpleJsonProfileRepositoryTests
             Username = "fweew",
             IsPasswordSaved = true,
             Notes = "hth3",
-            Password = "0r23v"
+            Password = "0r23v",
         };
         _sut.Update(newProfile);
 

@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using CrossWikiEditor.Core;
+using CrossWikiEditor.Core.Messages;
 using CrossWikiEditor.Core.Repositories;
 using CrossWikiEditor.Core.Utils;
 using CrossWikiEditor.Core.ViewModels;
@@ -19,7 +20,7 @@ public sealed class App : Application
 
     public App()
     {
-        string? appData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CrossWikiBrowser");
+        string appData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CrossWikiBrowser");
         if (!Directory.Exists(appData))
         {
             Directory.CreateDirectory(appData);
@@ -47,7 +48,7 @@ public sealed class App : Application
             services.AddSingleton<LanguageSpecificRegexes>();
             services.AddHttpClient();
             ServiceProvider sp = services.BuildServiceProvider();
-            sp.GetRequiredService<IMessengerWrapper>().Register<ExitApplicationMessage>(this, (r, m) => desktop.Shutdown());
+            sp.GetRequiredService<IMessengerWrapper>().Register<ExitApplicationMessage>(this, (_, _) => desktop.Shutdown());
             _mainWindow.DataContext = sp.GetRequiredService<MainWindowViewModel>();
             desktop.MainWindow = _mainWindow;
         }

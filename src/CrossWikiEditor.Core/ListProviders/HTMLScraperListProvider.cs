@@ -18,10 +18,12 @@ public sealed class HtmlScraperListProvider : UnlimitedListProviderBase
     private readonly ILogger _logger;
     private readonly SimpleHtmlParser _simpleHtmlParser;
 
-    public HtmlScraperListProvider(HtmlAgilityPackParser htmlAgilityPackParser,
+    public HtmlScraperListProvider(
+        HtmlAgilityPackParser htmlAgilityPackParser,
         IHttpClientFactory httpClientFactory,
         ILogger logger,
-        SimpleHtmlParser simpleHtmlParser)
+        SimpleHtmlParser simpleHtmlParser
+    )
     {
         _htmlAgilityPackParser = htmlAgilityPackParser;
         _httpClientFactory = httpClientFactory;

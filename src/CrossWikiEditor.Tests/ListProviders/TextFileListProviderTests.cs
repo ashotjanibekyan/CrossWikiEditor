@@ -16,15 +16,15 @@ public sealed class TextFileListProviderTests : ListProvidersBaseTest<TextFileLi
     {
         // arrange
         const string text = """
-                            *[[title1]]
+            *[[title1]]
 
 
-                            * [[Category:title (f e )2|few (fewcas)]]
+            * [[Category:title (f e )2|few (fewcas)]]
 
 
-                            *     [[title3]]
-                            *     [[titl e3|display]]
-                            """;
+            *     [[title3]]
+            *     [[titl e3|display]]
+            """;
         SetupForSingleFile(text);
 
         // act
@@ -45,15 +45,15 @@ public sealed class TextFileListProviderTests : ListProvidersBaseTest<TextFileLi
     {
         // arrange
         const string text = """
-                            #[[title1]]
+            #[[title1]]
 
 
-                            # [[Category:title (f e )2|few (fewcas)]]
+            # [[Category:title (f e )2|few (fewcas)]]
 
 
-                            #     [[title3]]
-                            #     [[titl e3|display]]
-                            """;
+            #     [[title3]]
+            #     [[titl e3|display]]
+            """;
         SetupForSingleFile(text);
 
         // act
@@ -74,12 +74,12 @@ public sealed class TextFileListProviderTests : ListProvidersBaseTest<TextFileLi
     {
         // arrange
         const string text = """
-                            title1
-                            title2
+            title1
+            title2
 
 
-                            title3
-                            """;
+            title3
+            """;
         SetupForSingleFile(text);
 
         // act
@@ -98,9 +98,7 @@ public sealed class TextFileListProviderTests : ListProvidersBaseTest<TextFileLi
     public async Task GetAdditionalParams_ShouldMakeCanMakeTrue_WhenFileIsSelected()
     {
         // arrange
-        _fileDialogService
-            .OpenFilePickerAsync("Select text files to extract pages", true)
-            .Returns(["some/path/text.txt"]);
+        _fileDialogService.OpenFilePickerAsync("Select text files to extract pages", true).Returns(["some/path/text.txt"]);
 
         // act
         await _sut.GetAdditionalParams();
@@ -114,9 +112,7 @@ public sealed class TextFileListProviderTests : ListProvidersBaseTest<TextFileLi
     public async Task GetAdditionalParams_ShouldNotMakeCanMakeTrue_WhenFileIsSelected()
     {
         // arrange
-        _fileDialogService
-            .OpenFilePickerAsync("Select text files to extract pages", true)
-            .Returns(null as string[]);
+        _fileDialogService.OpenFilePickerAsync("Select text files to extract pages", true).Returns(null as string[]);
 
         // act
         await _sut.GetAdditionalParams();
@@ -135,11 +131,7 @@ public sealed class TextFileListProviderTests : ListProvidersBaseTest<TextFileLi
 
     private void SetupForSingleFile(string text)
     {
-        _fileDialogService
-            .OpenFilePickerAsync("Select text files to extract pages", true)
-            .Returns(["path/to/file1/text.txt"]);
-        _systemService
-            .ReadAllTextAsync("path/to/file1/text.txt", Encoding.Default)
-            .Returns(text);
+        _fileDialogService.OpenFilePickerAsync("Select text files to extract pages", true).Returns(["path/to/file1/text.txt"]);
+        _systemService.ReadAllTextAsync("path/to/file1/text.txt", Encoding.Default).Returns(text);
     }
 }

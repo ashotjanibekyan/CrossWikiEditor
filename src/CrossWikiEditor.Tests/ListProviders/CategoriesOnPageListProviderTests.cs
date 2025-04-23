@@ -7,10 +7,7 @@ public sealed class CategoriesOnPageListProviderTests : ListProvidersBaseTest<Ca
     {
         SetUpServices();
         SetUpUserSettings("hyw", ProjectEnum.Wikipedia);
-        _sut = new CategoriesOnPageListProvider(_categoryService, _dialogService, _settingsService)
-        {
-            Param = "page"
-        };
+        _sut = new CategoriesOnPageListProvider(_categoryService, _dialogService, _settingsService) { Param = "page" };
         _expectedPages = Fakers.GetWikiPageModelFaker(_userSettings.GetApiUrl(), _wikiClientCache).Generate(4);
     }
 
@@ -30,8 +27,7 @@ public sealed class CategoriesOnPageListProviderTests : ListProvidersBaseTest<Ca
     public async Task MakeList_ShouldReturnServiceResults()
     {
         // arrange
-        _categoryService.GetCategoriesOf(_settingsService.CurrentApiUrl, _sut.Param, 73)
-            .Returns(_expectedPages);
+        _categoryService.GetCategoriesOf(_settingsService.CurrentApiUrl, _sut.Param, 73).Returns(_expectedPages);
 
         await base.MakeList_ShouldReturnServiceResults(_expectedPages);
     }
@@ -40,8 +36,7 @@ public sealed class CategoriesOnPageListProviderTests : ListProvidersBaseTest<Ca
     public async Task MakeList_ShouldReturnUnsuccessfulResult_WhenServiceReturnsUnsuccessfulResult()
     {
         // arrange
-        _categoryService.GetCategoriesOf(_settingsService.CurrentApiUrl, _sut.Param, 73)
-            .Returns(new Exception("failed to get pages"));
+        _categoryService.GetCategoriesOf(_settingsService.CurrentApiUrl, _sut.Param, 73).Returns(new Exception("failed to get pages"));
 
         // act
         Result<List<WikiPageModel>> result = await _sut.MakeList(73);

@@ -11,12 +11,13 @@ namespace CrossWikiEditor.Core.ListProviders;
 
 public sealed class AllPagesListProvider : AllPagesListProviderBase
 {
-    public AllPagesListProvider(IDialogService dialogService,
+    public AllPagesListProvider(
+        IDialogService dialogService,
         IPageService pageService,
         ISettingsService settingsService,
-        IViewModelFactory viewModelFactory) : base(dialogService, pageService, viewModelFactory, settingsService)
-    {
-    }
+        IViewModelFactory viewModelFactory
+    )
+        : base(dialogService, pageService, viewModelFactory, settingsService) { }
 
     public override string Title => "All Pages";
 

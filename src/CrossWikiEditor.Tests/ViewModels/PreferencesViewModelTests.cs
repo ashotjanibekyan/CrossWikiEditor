@@ -13,8 +13,8 @@ public sealed class PreferencesViewModelTests : BaseTest
 
     [Test]
     public void SaveCommand_ShouldSendProjectChangedMessage(
-        [Values(ProjectEnum.Mediawiki, ProjectEnum.Commons, ProjectEnum.Wikia)]
-        ProjectEnum project)
+        [Values(ProjectEnum.Mediawiki, ProjectEnum.Commons, ProjectEnum.Wikia)] ProjectEnum project
+    )
     {
         // arrange
         _sut.SelectedProject = project;
@@ -28,8 +28,7 @@ public sealed class PreferencesViewModelTests : BaseTest
     }
 
     [Test]
-    public void SaveCommand_ShouldSendLanguageCodeChangedMessage(
-        [Values("hy", "hyw", "en")] string language)
+    public void SaveCommand_ShouldSendLanguageCodeChangedMessage([Values("hy", "hyw", "en")] string language)
     {
         // arrange
         _sut.SelectedLanguage = language;

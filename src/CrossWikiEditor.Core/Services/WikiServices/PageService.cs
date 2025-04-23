@@ -52,8 +52,8 @@ public sealed class PageService : IPageService
                 {
                     true => PropertyFilterOption.WithProperty,
                     false => PropertyFilterOption.WithoutProperty,
-                    null => PropertyFilterOption.Disable
-                }
+                    null => PropertyFilterOption.Disable,
+                },
             };
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
             return result.ConvertAll(x => new WikiPageModel(x));
@@ -111,7 +111,7 @@ public sealed class PageService : IPageService
             {
                 TypeFilters = RecentChangesFilterTypes.Create,
                 RedirectsFilter = PropertyFilterOption.WithoutProperty,
-                NamespaceIds = namespaces
+                NamespaceIds = namespaces,
             };
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
             return result.ConvertAll(x => new WikiPageModel(x));
@@ -128,10 +128,7 @@ public sealed class PageService : IPageService
         try
         {
             WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot);
-            var gen = new TransclusionsGenerator(site, pageName)
-            {
-                PaginationSize = 500
-            };
+            var gen = new TransclusionsGenerator(site, pageName) { PaginationSize = 500 };
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
             return result.ConvertAll(x => new WikiPageModel(x));
         }
@@ -147,28 +144,32 @@ public sealed class PageService : IPageService
         try
         {
             WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot);
-            var gen = new TranscludedInGenerator(site, pageName)
-            {
-                PaginationSize = 500,
-                NamespaceIds = namespaces
-            };
+            var gen = new TranscludedInGenerator(site, pageName) { PaginationSize = 500, NamespaceIds = namespaces };
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
             return result.ConvertAll(x => new WikiPageModel(x));
         }
         catch (Exception e)
         {
-            _logger.Fatal(e, "Failed to get pages. Site {Site}, page: {Page}, namespaces: {Namespaces}, limit: {Limit}", apiRoot, pageName, namespaces,
-                limit);
+            _logger.Fatal(
+                e,
+                "Failed to get pages. Site {Site}, page: {Page}, namespaces: {Namespaces}, limit: {Limit}",
+                apiRoot,
+                pageName,
+                namespaces,
+                limit
+            );
             return e;
         }
     }
 
-    public async Task<Result<List<WikiPageModel>>> GetPagesLinkedTo(string apiRoot,
+    public async Task<Result<List<WikiPageModel>>> GetPagesLinkedTo(
+        string apiRoot,
         string title,
         int[]? namespaces,
         bool allowRedirectLinks,
         bool? filterRedirects,
-        int limit)
+        int limit
+    )
     {
         try
         {
@@ -181,18 +182,25 @@ public sealed class PageService : IPageService
                 {
                     true => PropertyFilterOption.WithProperty,
                     false => PropertyFilterOption.WithoutProperty,
-                    null => PropertyFilterOption.Disable
+                    null => PropertyFilterOption.Disable,
                 },
-                AllowRedirectedLinks = allowRedirectLinks
+                AllowRedirectedLinks = allowRedirectLinks,
             };
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
             return result.ConvertAll(x => new WikiPageModel(x));
         }
         catch (Exception e)
         {
-            _logger.Fatal(e,
+            _logger.Fatal(
+                e,
                 "Failed to get pages. Site {Site}, title: {Title}, namespaces: {Namespaces}, allowRedirectLinks: {AllowRedirectLinks}, filterRedirects: {FilterRedirects}, limit: {Limit}",
-                apiRoot, title, namespaces, allowRedirectLinks, filterRedirects, limit);
+                apiRoot,
+                title,
+                namespaces,
+                allowRedirectLinks,
+                filterRedirects,
+                limit
+            );
             return e;
         }
     }
@@ -215,17 +223,17 @@ public sealed class PageService : IPageService
 
     public async Task<Result<List<WikiPageModel>>> GetAllFiles(string apiRoot, string startTitle, int limit)
     {
-        return await GetAllPages(
-            apiRoot,
-            startTitle,
-            6,
-            PropertyFilterOption.Disable,
-            PropertyFilterOption.Disable,
-            limit);
+        return await GetAllPages(apiRoot, startTitle, 6, PropertyFilterOption.Disable, PropertyFilterOption.Disable, limit);
     }
 
-    public async Task<Result<List<WikiPageModel>>> GetAllPages(string apiRoot, string startTitle, int namespaceId,
-        PropertyFilterOption redirectsFilter, PropertyFilterOption langLinksFilter, int limit)
+    public async Task<Result<List<WikiPageModel>>> GetAllPages(
+        string apiRoot,
+        string startTitle,
+        int namespaceId,
+        PropertyFilterOption redirectsFilter,
+        PropertyFilterOption langLinksFilter,
+        int limit
+    )
     {
         return await GetAllPages(apiRoot, namespaceId, redirectsFilter, langLinksFilter, limit, startTitle);
     }
@@ -244,15 +252,21 @@ public sealed class PageService : IPageService
             {
                 PaginationSize = 500,
                 ProtectionType = protectType,
-                ProtectionLevel = protectLevel
+                ProtectionLevel = protectLevel,
             };
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
             return result.ConvertAll(x => new WikiPageModel(x));
         }
         catch (Exception e)
         {
-            _logger.Fatal(e, "Failed to get pages. Site {Site}, protectType: {ProtectType}, protectLevel: {ProtectLevel}, limit: {Limit}", apiRoot,
-                protectType, protectLevel, limit);
+            _logger.Fatal(
+                e,
+                "Failed to get pages. Site {Site}, protectType: {ProtectType}, protectLevel: {ProtectLevel}, limit: {Limit}",
+                apiRoot,
+                protectType,
+                protectLevel,
+                limit
+            );
             return e;
         }
     }
@@ -262,18 +276,20 @@ public sealed class PageService : IPageService
         try
         {
             WikiSite site = await _wikiClientCache.GetWikiSite(apiRoot);
-            var gen = new SearchGenerator(site, keyword)
-            {
-                NamespaceIds = namespaces,
-                PaginationSize = Math.Min(limit, 500)
-            };
+            var gen = new SearchGenerator(site, keyword) { NamespaceIds = namespaces, PaginationSize = Math.Min(limit, 500) };
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
             return result.ConvertAll(x => new WikiPageModel(x));
         }
         catch (Exception e)
         {
-            _logger.Fatal(e, "Failed to get pages. Site {Site}, keyword: {Keyword}, namespaces: {Namespaces}, limit: {Limit}", apiRoot, keyword,
-                namespaces, limit);
+            _logger.Fatal(
+                e,
+                "Failed to get pages. Site {Site}, keyword: {Keyword}, namespaces: {Namespaces}, limit: {Limit}",
+                apiRoot,
+                keyword,
+                namespaces,
+                limit
+            );
             return e;
         }
     }
@@ -283,10 +299,7 @@ public sealed class PageService : IPageService
         try
         {
             WikiSite wikiSite = await _wikiClientCache.GetWikiSite(apiRoot);
-            var gen = new RecentChangesGenerator(wikiSite)
-            {
-                NamespaceIds = namespaces
-            };
+            var gen = new RecentChangesGenerator(wikiSite) { NamespaceIds = namespaces };
             List<WikiPage> result = await gen.EnumPagesAsync().Take(limit).ToListAsync();
             return result.ConvertAll(x => new WikiPageModel(x));
         }
@@ -302,10 +315,7 @@ public sealed class PageService : IPageService
         try
         {
             WikiSite wikiSite = await _wikiClientCache.GetWikiSite(apiRoot);
-            var gen = new ExternalUrlUsageGenerator(wikiSite)
-            {
-                Url = url
-            };
+            var gen = new ExternalUrlUsageGenerator(wikiSite) { Url = url };
 
             List<ExternalUrlUsageItem> result = await gen.EnumItemsAsync().Take(limit).ToListAsync();
             return result.ConvertAll(x => new WikiPageModel(new WikiPage(wikiSite, x.Title, x.NamespaceId)));
@@ -319,22 +329,24 @@ public sealed class PageService : IPageService
 
     public Result<List<WikiPageModel>> ConvertToSubject(List<WikiPageModel> pages)
     {
-        List<WikiPageModel> result = (from wikiPageModel in pages
-            select ConvertToSubject(wikiPageModel)
-            into subjectPageResult
-            where subjectPageResult is {IsSuccessful: true, Value: not null}
-            select subjectPageResult.Value).ToList();
+        List<WikiPageModel> result = (
+            from wikiPageModel in pages
+            select ConvertToSubject(wikiPageModel) into subjectPageResult
+            where subjectPageResult is { IsSuccessful: true, Value: not null }
+            select subjectPageResult.Value
+        ).ToList();
 
         return result;
     }
 
     public Result<List<WikiPageModel>> ConvertToTalk(List<WikiPageModel> pages)
     {
-        var result = (from wikiPageModel in pages
-            select ConvertToTalk(wikiPageModel)
-            into talkPageResult
-            where talkPageResult is {IsSuccessful: true, Value: not null}
-            select talkPageResult.Value).ToList();
+        var result = (
+            from wikiPageModel in pages
+            select ConvertToTalk(wikiPageModel) into talkPageResult
+            where talkPageResult is { IsSuccessful: true, Value: not null }
+            select talkPageResult.Value
+        ).ToList();
 
         return result;
     }
@@ -346,7 +358,8 @@ public sealed class PageService : IPageService
         PropertyFilterOption langLinksFilter,
         int limit,
         string? startTitle = null,
-        string? prefix = null)
+        string? prefix = null
+    )
     {
         try
         {
@@ -356,7 +369,7 @@ public sealed class PageService : IPageService
                 NamespaceId = namespaceId,
                 RedirectsFilter = redirectsFilter,
                 LanguageLinkFilter = langLinksFilter,
-                PaginationSize = 500
+                PaginationSize = 500,
             };
             if (startTitle is not null)
             {
@@ -373,10 +386,16 @@ public sealed class PageService : IPageService
         }
         catch (Exception e)
         {
-            _logger.Fatal(e,
+            _logger.Fatal(
+                e,
                 "Failed to get pages. Site {Site}, start title: {StartTitle}, prefix: {Prefix}, namespace: {NamespaceId}, redirectsFilter {RedirectsFilter}, limit: {Limit}",
                 apiRoot,
-                startTitle, prefix, namespaceId, redirectsFilter, limit);
+                startTitle,
+                prefix,
+                namespaceId,
+                redirectsFilter,
+                limit
+            );
             return e;
         }
     }

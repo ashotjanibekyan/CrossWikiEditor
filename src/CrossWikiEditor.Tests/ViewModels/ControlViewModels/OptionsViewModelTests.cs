@@ -21,10 +21,9 @@ public class OptionsViewModelTests : BaseTest
         {
             AddToSummary = true,
             IgnoreLinks = true,
-            IgnoreMore = false
+            IgnoreMore = false,
         };
-        _dialogService.ShowDialog<NormalFindAndReplaceRules>(Arg.Any<FindAndReplaceViewModel>())
-            .Returns(rules);
+        _dialogService.ShowDialog<NormalFindAndReplaceRules>(Arg.Any<FindAndReplaceViewModel>()).Returns(rules);
 
         // act
         _sut.OpenNormalFindAndReplaceDialogCommand.Execute(null);
@@ -41,13 +40,11 @@ public class OptionsViewModelTests : BaseTest
         {
             AddToSummary = true,
             IgnoreLinks = true,
-            IgnoreMore = false
+            IgnoreMore = false,
         };
-        _dialogService.ShowDialog<NormalFindAndReplaceRules>(Arg.Any<FindAndReplaceViewModel>())
-            .Returns(rules);
+        _dialogService.ShowDialog<NormalFindAndReplaceRules>(Arg.Any<FindAndReplaceViewModel>()).Returns(rules);
         _sut.OpenNormalFindAndReplaceDialogCommand.Execute(null);
-        _dialogService.ShowDialog<NormalFindAndReplaceRules>(Arg.Any<FindAndReplaceViewModel>())
-            .Returns(null as NormalFindAndReplaceRules);
+        _dialogService.ShowDialog<NormalFindAndReplaceRules>(Arg.Any<FindAndReplaceViewModel>()).Returns(null as NormalFindAndReplaceRules);
 
         // act
         _sut.OpenNormalFindAndReplaceDialogCommand.Execute(null);

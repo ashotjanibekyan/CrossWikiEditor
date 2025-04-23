@@ -13,10 +13,12 @@ public sealed partial class StatusBarViewModel : ViewModelBase
     private readonly IDialogService _dialogService;
     private readonly IViewModelFactory _viewModelFactory;
 
-    public StatusBarViewModel(IViewModelFactory viewModelFactory,
+    public StatusBarViewModel(
+        IViewModelFactory viewModelFactory,
         IDialogService dialogService,
         ISettingsService settingsService,
-        IMessengerWrapper messenger)
+        IMessengerWrapper messenger
+    )
     {
         _viewModelFactory = viewModelFactory;
         _dialogService = dialogService;
@@ -38,7 +40,8 @@ public sealed partial class StatusBarViewModel : ViewModelBase
     [NotifyPropertyChangedFor(nameof(CurrentWiki))]
     public partial string LanguageCode { get; set; }
 
-    [ObservableProperty] public partial string Project { get; set; }
+    [ObservableProperty]
+    public partial string Project { get; set; }
 
     [RelayCommand]
     private async Task UsernameClicked()

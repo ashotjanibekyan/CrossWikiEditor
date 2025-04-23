@@ -15,10 +15,13 @@ public sealed class NewPagesListProvider : LimitedListProviderBase, INeedNamespa
     private readonly ISettingsService _settingsService;
     private readonly IViewModelFactory _viewModelFactory;
 
-    public NewPagesListProvider(IDialogService dialogService,
+    public NewPagesListProvider(
+        IDialogService dialogService,
         IPageService pageService,
         ISettingsService settingsService,
-        IViewModelFactory viewModelFactory) : base(dialogService)
+        IViewModelFactory viewModelFactory
+    )
+        : base(dialogService)
     {
         _pageService = pageService;
         _settingsService = settingsService;
@@ -27,7 +30,7 @@ public sealed class NewPagesListProvider : LimitedListProviderBase, INeedNamespa
 
     public override string Title => "New pages";
     public override string ParamTitle => string.Empty;
-    public override bool CanMake => _namespaces is {Length: > 0};
+    public override bool CanMake => _namespaces is { Length: > 0 };
 
     public async Task GetAdditionalParams()
     {

@@ -8,10 +8,7 @@ public sealed class PromptViewModelTests : BaseTest
     public void SetUp()
     {
         SetUpServices();
-        _sut = new PromptViewModel("title", "text")
-        {
-            IsNumeric = true
-        };
+        _sut = new PromptViewModel("title", "text") { IsNumeric = true };
     }
 
     [Test]

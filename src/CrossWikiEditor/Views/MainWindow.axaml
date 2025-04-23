@@ -24,7 +24,7 @@
             DataContext="{Binding MenuViewModel}" />
         <Grid Grid.Row="1" RowDefinitions="*,1,*">
             <Grid Grid.Row="0">
-                <av:HtmlPanel x:Name="_htmlPanel" />
+                <av:HtmlPanel x:Name="HtmlPanel" />
             </Grid>
             <GridSplitter
                 Grid.Row="1"

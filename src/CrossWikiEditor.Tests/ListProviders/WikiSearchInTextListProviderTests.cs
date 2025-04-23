@@ -8,10 +8,7 @@ public sealed class WikiSearchInTextListProviderTests : ListProvidersBaseTest<Wi
         SetUpServices();
         SetUpUserSettings("hyw", ProjectEnum.Wikipedia);
         _selectNamespacesViewModel = new SelectNamespacesViewModel([], false);
-        _sut = new WikiSearchInTextListProvider(_dialogService, _pageService, _settingsService)
-        {
-            Param = "start from here"
-        };
+        _sut = new WikiSearchInTextListProvider(_dialogService, _pageService, _settingsService) { Param = "start from here" };
         _expectedPages = Fakers.GetWikiPageModelFaker(_userSettings.GetApiUrl(), _wikiClientCache).Generate(4);
     }
 
@@ -31,8 +28,7 @@ public sealed class WikiSearchInTextListProviderTests : ListProvidersBaseTest<Wi
     public async Task MakeList_ShouldReturnPageServiceResults()
     {
         // arrange
-        _pageService.WikiSearch(_userSettings.GetApiUrl(), _sut.Param, Arg.Is<int[]>(x => x[0] == 0), 73)
-            .Returns(_expectedPages);
+        _pageService.WikiSearch(_userSettings.GetApiUrl(), _sut.Param, Arg.Is<int[]>(x => x[0] == 0), 73).Returns(_expectedPages);
 
         await MakeList_ShouldReturnServiceResults(_expectedPages);
     }
@@ -41,7 +37,8 @@ public sealed class WikiSearchInTextListProviderTests : ListProvidersBaseTest<Wi
     public async Task MakeList_ShouldReturnUnsuccessfulResult_WhenPageServiceReturnsUnsuccessfulResult()
     {
         // arrange
-        _pageService.WikiSearch(_userSettings.GetApiUrl(), _sut.Param, Arg.Is<int[]>(x => x[0] == 0), 73)
+        _pageService
+            .WikiSearch(_userSettings.GetApiUrl(), _sut.Param, Arg.Is<int[]>(x => x[0] == 0), 73)
             .Returns(new Exception("failed to get pages"));
 
         // act

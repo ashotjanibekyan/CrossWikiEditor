@@ -13,9 +13,8 @@ public class CategoriesOnPageListProvider : LimitedListProviderBase
     private readonly ICategoryService _categoryService;
     private readonly ISettingsService _settingsService;
 
-    public CategoriesOnPageListProvider(ICategoryService categoryService,
-        IDialogService dialogService,
-        ISettingsService settingsService) : base(dialogService)
+    public CategoriesOnPageListProvider(ICategoryService categoryService, IDialogService dialogService, ISettingsService settingsService)
+        : base(dialogService)
     {
         _categoryService = categoryService;
         _settingsService = settingsService;

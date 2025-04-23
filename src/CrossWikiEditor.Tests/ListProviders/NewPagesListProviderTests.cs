@@ -10,10 +10,7 @@ public sealed class NewPagesListProviderTests : ListProvidersBaseTest<NewPagesLi
         SetUpServices();
         SetUpUserSettings("hyw", ProjectEnum.Wikipedia);
         _selectNamespacesViewModel = new SelectNamespacesViewModel([], false);
-        _sut = new NewPagesListProvider(_dialogService, _pageService, _settingsService, _viewModelFactory)
-        {
-            Param = "start from here"
-        };
+        _sut = new NewPagesListProvider(_dialogService, _pageService, _settingsService, _viewModelFactory) { Param = "start from here" };
         _dialogService.ShowDialog<int[]?>(_selectNamespacesViewModel).Returns(_testArray);
         _viewModelFactory.GetSelectNamespacesViewModel().Returns(_selectNamespacesViewModel);
         _expectedPages = Fakers.GetWikiPageModelFaker(_userSettings.GetApiUrl(), _wikiClientCache).Generate(4);
@@ -41,8 +38,7 @@ public sealed class NewPagesListProviderTests : ListProvidersBaseTest<NewPagesLi
     public async Task MakeList_ShouldReturnPageServiceResults()
     {
         // arrange
-        _pageService.GetNewPages(_userSettings.GetApiUrl(), Arg.Is<int[]>(x => x.SequenceEqual(_testArray)), 73)
-            .Returns(_expectedPages);
+        _pageService.GetNewPages(_userSettings.GetApiUrl(), Arg.Is<int[]>(x => x.SequenceEqual(_testArray)), 73).Returns(_expectedPages);
 
         await MakeList_ShouldReturnServiceResults(_expectedPages);
     }
@@ -51,7 +47,8 @@ public sealed class NewPagesListProviderTests : ListProvidersBaseTest<NewPagesLi
     public async Task MakeList_ShouldReturnUnsuccessfulResult_WhenPageServiceReturnsUnsuccessfulResult()
     {
         // arrange
-        _pageService.GetNewPages(_userSettings.GetApiUrl(), Arg.Is<int[]>(x => x.SequenceEqual(_testArray)), 73)
+        _pageService
+            .GetNewPages(_userSettings.GetApiUrl(), Arg.Is<int[]>(x => x.SequenceEqual(_testArray)), 73)
             .Returns(new Exception("failed to get pages"));
 
         // act

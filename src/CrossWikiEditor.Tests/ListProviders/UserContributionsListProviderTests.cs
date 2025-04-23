@@ -8,10 +8,7 @@ public sealed class UserContributionsListProviderTests : ListProvidersBaseTest<U
         SetUpServices();
         SetUpUserSettings("hyw", ProjectEnum.Wikipedia);
         _selectNamespacesViewModel = new SelectNamespacesViewModel([], false);
-        _sut = new UserContributionsListProvider(_dialogService, _settingsService, _userService)
-        {
-            Param = "start from here"
-        };
+        _sut = new UserContributionsListProvider(_dialogService, _settingsService, _userService) { Param = "start from here" };
         _expectedPages = Fakers.GetWikiPageModelFaker(_userSettings.GetApiUrl(), _wikiClientCache).Generate(4);
     }
 
@@ -31,8 +28,7 @@ public sealed class UserContributionsListProviderTests : ListProvidersBaseTest<U
     public async Task MakeList_ShouldReturnPageServiceResults()
     {
         // arrange
-        _userService.GetUserContributionsPages(_userSettings.GetApiUrl(), _sut.Param, 73)
-            .Returns(_expectedPages);
+        _userService.GetUserContributionsPages(_userSettings.GetApiUrl(), _sut.Param, 73).Returns(_expectedPages);
 
         await MakeList_ShouldReturnServiceResults(_expectedPages);
     }
@@ -41,8 +37,7 @@ public sealed class UserContributionsListProviderTests : ListProvidersBaseTest<U
     public async Task MakeList_ShouldReturnUnsuccessfulResult_WhenPageServiceReturnsUnsuccessfulResult()
     {
         // arrange
-        _userService.GetUserContributionsPages(_userSettings.GetApiUrl(), _sut.Param, 73)
-            .Returns(new Exception("failed to get pages"));
+        _userService.GetUserContributionsPages(_userSettings.GetApiUrl(), _sut.Param, 73).Returns(new Exception("failed to get pages"));
 
         // act
         Result<List<WikiPageModel>> result = await _sut.MakeList(73);

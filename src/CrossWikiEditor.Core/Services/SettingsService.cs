@@ -39,12 +39,9 @@ public sealed class SettingsService : ISettingsService
         }
 
         _currentSettings ??= GetDefaultSettings();
-        _jsonSerializerOptions = new JsonSerializerOptions
-        {
-            WriteIndented = true
-        };
-        messenger.Register<LanguageCodeChangedMessage>(this, (r, m) => _currentSettings.UserWiki!.LanguageCode = m.Value);
-        messenger.Register<ProjectChangedMessage>(this, (r, m) => _currentSettings.UserWiki!.Project = m.Value);
+        _jsonSerializerOptions = new JsonSerializerOptions { WriteIndented = true };
+        messenger.Register<LanguageCodeChangedMessage>(this, (_, m) => _currentSettings.UserWiki.LanguageCode = m.Value);
+        messenger.Register<ProjectChangedMessage>(this, (_, m) => _currentSettings.UserWiki.Project = m.Value);
     }
 
     public UserSettings GetDefaultSettings()
@@ -76,7 +73,7 @@ public sealed class SettingsService : ISettingsService
             File.Move(_currentSettingsPath, $"./oldSettings/{DateTime.Now:yyyyMMdd_HHmmss}_settings.json");
         }
 
-        string? json = JsonSerializer.Serialize(_currentSettings, _jsonSerializerOptions);
+        string json = JsonSerializer.Serialize(_currentSettings, _jsonSerializerOptions);
         File.WriteAllText(_currentSettingsPath, json);
     }
 

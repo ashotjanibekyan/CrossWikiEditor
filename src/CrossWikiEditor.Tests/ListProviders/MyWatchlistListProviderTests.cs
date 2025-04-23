@@ -15,8 +15,7 @@ public sealed class MyWatchlistListProviderTests : ListProvidersBaseTest<MyWatch
     public async Task MakeList_ShouldReturnPageServiceResults()
     {
         // arrange
-        _userService.GetWatchlistPages(73)
-            .Returns(_expectedPages);
+        _userService.GetWatchlistPages(73).Returns(_expectedPages);
 
         await MakeList_ShouldReturnServiceResults(_expectedPages);
     }

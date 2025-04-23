@@ -8,10 +8,7 @@ public sealed class RecentChangesListProviderTests : ListProvidersBaseTest<Recen
         SetUpServices();
         SetUpUserSettings("hyw", ProjectEnum.Wikipedia);
         _selectNamespacesViewModel = new SelectNamespacesViewModel([], false);
-        _sut = new RecentChangesListProvider(_dialogService, _pageService, _settingsService, _viewModelFactory)
-        {
-            Param = "start from here"
-        };
+        _sut = new RecentChangesListProvider(_dialogService, _pageService, _settingsService, _viewModelFactory) { Param = "start from here" };
         _dialogService.ShowDialog<int[]?>(_selectNamespacesViewModel).Returns([7, 2, 3, 9]);
         _viewModelFactory.GetSelectNamespacesViewModel().Returns(_selectNamespacesViewModel);
         _expectedPages = Fakers.GetWikiPageModelFaker(_userSettings.GetApiUrl(), _wikiClientCache).Generate(4);
@@ -39,7 +36,8 @@ public sealed class RecentChangesListProviderTests : ListProvidersBaseTest<Recen
     public async Task MakeList_ShouldReturnPageServiceResults()
     {
         // arrange
-        _pageService.GetRecentlyChangedPages(_userSettings.GetApiUrl(), Arg.Is<int[]>(x => x.SequenceEqual(new[] {7, 2, 3, 9})), 73)
+        _pageService
+            .GetRecentlyChangedPages(_userSettings.GetApiUrl(), Arg.Is<int[]>(x => x.SequenceEqual(new[] { 7, 2, 3, 9 })), 73)
             .Returns(_expectedPages);
 
         await MakeList_ShouldReturnServiceResults(_expectedPages);
@@ -49,7 +47,8 @@ public sealed class RecentChangesListProviderTests : ListProvidersBaseTest<Recen
     public async Task MakeList_ShouldReturnUnsuccessfulResult_WhenPageServiceReturnsUnsuccessfulResult()
     {
         // arrange
-        _pageService.GetRecentlyChangedPages(_userSettings.GetApiUrl(), Arg.Is<int[]>(x => x.SequenceEqual(new[] {7, 2, 3, 9})), 73)
+        _pageService
+            .GetRecentlyChangedPages(_userSettings.GetApiUrl(), Arg.Is<int[]>(x => x.SequenceEqual(new[] { 7, 2, 3, 9 })), 73)
             .Returns(new Exception("failed to get pages"));
 
         // act

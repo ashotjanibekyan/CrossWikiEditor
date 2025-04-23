@@ -74,7 +74,7 @@ public static partial class Tools
 
         // If the URL structure is not as expected, attempt to extract from the path
         string path = UnescapeDataStringRec(uri.AbsolutePath);
-        string? extractedTitle = path[(path.LastIndexOf('/') + 1)..];
+        string extractedTitle = path[(path.LastIndexOf('/') + 1)..];
 
         return extractedTitle.Replace("_", " ");
     }

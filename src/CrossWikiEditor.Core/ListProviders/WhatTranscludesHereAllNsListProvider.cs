@@ -13,9 +13,8 @@ public sealed class WhatTranscludesHereAllNsListProvider : LimitedListProviderBa
     private readonly IPageService _pageService;
     private readonly ISettingsService _settingsService;
 
-    public WhatTranscludesHereAllNsListProvider(IDialogService dialogService,
-        IPageService pageService,
-        ISettingsService settingsService) : base(dialogService)
+    public WhatTranscludesHereAllNsListProvider(IDialogService dialogService, IPageService pageService, ISettingsService settingsService)
+        : base(dialogService)
     {
         _pageService = pageService;
         _settingsService = settingsService;

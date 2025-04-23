@@ -27,8 +27,7 @@ public sealed class CategoryRecursiveListProviderTests : ListProvidersBaseTest<C
     public async Task MakeList_ShouldReturnServiceResults()
     {
         // arrange
-        _categoryService.GetPagesOfCategory(_settingsService.CurrentApiUrl, _sut.Param, 73, int.MaxValue)
-            .Returns(_expectedPages);
+        _categoryService.GetPagesOfCategory(_settingsService.CurrentApiUrl, _sut.Param, 73, int.MaxValue).Returns(_expectedPages);
 
         await base.MakeList_ShouldReturnServiceResults(_expectedPages);
     }
@@ -37,7 +36,8 @@ public sealed class CategoryRecursiveListProviderTests : ListProvidersBaseTest<C
     public async Task MakeList_ShouldReturnUnsuccessfulResult_WhenServiceReturnsUnsuccessfulResult()
     {
         // arrange
-        _categoryService.GetPagesOfCategory(_settingsService.CurrentApiUrl, _sut.Param, 73, int.MaxValue)
+        _categoryService
+            .GetPagesOfCategory(_settingsService.CurrentApiUrl, _sut.Param, 73, int.MaxValue)
             .Returns(new Exception("failed to get pages"));
 
         // act

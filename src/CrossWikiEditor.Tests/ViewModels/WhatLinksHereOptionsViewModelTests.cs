@@ -44,10 +44,16 @@ public sealed class WhatLinksHereOptionsViewModelTests : BaseTest
         sut.OkCommand.Execute(_dialog);
 
         // assert
-        _dialog.Received(1).Close(Arg.Is<NamespacesAndRedirectFilterOptions>(options =>
-            options.IncludeRedirects == sut.IncludeRedirects
-            && (int) options.RedirectFilter == sut.SelectedRedirectFilter
-            && Enumerable.OrderBy(options.Namespaces, e => e)
-                .SequenceEqual(sut.Namespaces.Where(x => x.IsChecked).Select(n => n.Id).OrderBy(e => e))));
+        _dialog
+            .Received(1)
+            .Close(
+                Arg.Is<NamespacesAndRedirectFilterOptions>(options =>
+                    options.IncludeRedirects == sut.IncludeRedirects
+                    && (int)options.RedirectFilter == sut.SelectedRedirectFilter
+                    && Enumerable
+                        .OrderBy(options.Namespaces, e => e)
+                        .SequenceEqual(sut.Namespaces.Where(x => x.IsChecked).Select(n => n.Id).OrderBy(e => e))
+                )
+            );
     }
 }

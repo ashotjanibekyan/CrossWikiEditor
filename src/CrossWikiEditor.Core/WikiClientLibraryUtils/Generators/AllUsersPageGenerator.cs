@@ -8,20 +8,15 @@ namespace CrossWikiEditor.Core.WikiClientLibraryUtils.Generators;
 
 public sealed class AllUsersPageGenerator : WikiList<WikiPage>
 {
-    public AllUsersPageGenerator(WikiSite site) : base(site)
-    {
-    }
+    public AllUsersPageGenerator(WikiSite site)
+        : base(site) { }
 
     public string? StartFrom { get; set; } = null;
     public override string ListName => "allusers";
 
     public override IEnumerable<KeyValuePair<string, object?>> EnumListParameters()
     {
-        return new Dictionary<string, object?>
-        {
-            {"aulimit", "max"},
-            {"aufrom", StartFrom}
-        };
+        return new Dictionary<string, object?> { { "aulimit", "max" }, { "aufrom", StartFrom } };
     }
 
     protected override WikiPage ItemFromJson(JToken json)
