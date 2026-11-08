@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using CrossWikiEditor.Core.Services.WikiServices;
 
 namespace CrossWikiEditor.Tests.Utils;
 
@@ -13,7 +14,7 @@ public sealed class LanguageSpecificRegexesTests : BaseTest
         const string apiRoot = "https://en.wikipedia.org/w/api.php?";
         _settingsService.CurrentApiUrl.Returns(apiRoot);
         _settingsService.GetCurrentSettings().Returns(new UserSettings { UserWiki = new UserWiki("en", ProjectEnum.Wikipedia) });
-        var enWiki = new WikiSite(new WikiClient(), apiRoot);
+        var enWiki = new WikiSite(WikiClientCache.CreateWikiClient(), apiRoot);
         await enWiki.Initialization;
         _wikiClientCache.GetWikiSite(apiRoot).Returns(enWiki);
         _sut = new LanguageSpecificRegexes(_settingsService, _wikiClientCache, _messenger);

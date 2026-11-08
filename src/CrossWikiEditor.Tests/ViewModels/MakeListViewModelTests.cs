@@ -2,6 +2,7 @@
 using System.Text;
 using System.Web;
 using CommunityToolkit.Mvvm.Messaging;
+using CrossWikiEditor.Core.Services.WikiServices;
 using CrossWikiEditor.Core.Utils.Extensions;
 
 namespace CrossWikiEditor.Tests.ViewModels;
@@ -9,7 +10,7 @@ namespace CrossWikiEditor.Tests.ViewModels;
 public sealed class MakeListViewModelTests : BaseTest
 {
     private const string ApiRoot = "https://hy.wikipedia.org/w/api.php?";
-    private readonly WikiClient _wikiClient = new();
+    private readonly WikiClient _wikiClient = WikiClientCache.CreateWikiClient();
     private MakeListViewModel _sut;
 
     [SetUp]
@@ -32,6 +33,12 @@ public sealed class MakeListViewModelTests : BaseTest
         _settingsService.GetCurrentSettings().Returns(new UserSettings { UserWiki = new UserWiki("hy", ProjectEnum.Wikipedia) });
         _settingsService.CurrentApiUrl.Returns(ApiRoot);
         _wikiClientCache.GetWikiSite(Arg.Any<string>()).Returns(new WikiSite(_wikiClient, ApiRoot));
+    }
+
+    [OneTimeTearDown]
+    public void OneTimeTearDown()
+    {
+        _wikiClient.Dispose();
     }
 
     #region Messenger

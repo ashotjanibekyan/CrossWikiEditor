@@ -19,6 +19,10 @@ public interface IWikiClientCache
 
 public sealed class WikiClientCache : IWikiClientCache
 {
+    // Wikimedia rejects requests without a descriptive User-Agent (HTTP 403).
+    // See https://meta.wikimedia.org/wiki/User-Agent_policy
+    public const string UserAgent = "CrossWikiEditor/1.0 (https://github.com/ashotjanibekyan/CrossWikiEditor)";
+
     private readonly ConcurrentDictionary<string, WikiClient> _wikiClients = new();
     private readonly ConcurrentDictionary<string, WikiSite> _wikiSites = new();
     private readonly ILogger _logger;
@@ -32,12 +36,14 @@ public sealed class WikiClientCache : IWikiClientCache
     {
         if (forceNew || !_wikiClients.TryGetValue(apiRoot, out WikiClient? client))
         {
-            client = new WikiClient();
+            client = CreateWikiClient();
             _wikiClients[apiRoot] = client;
         }
 
         return client;
     }
+
+    public static WikiClient CreateWikiClient() => new() { ClientUserAgent = UserAgent };
 
     public async Task<WikiSite> GetWikiSite(string apiRoot, bool forceNew = false)
     {
