@@ -6,103 +6,53 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DesignWidth="480"
     x:DataType="controlViewModels:OptionsViewModel"
-    Classes="DialogWindow"
     mc:Ignorable="d">
-    <Grid Margin="3" RowDefinitions="Auto,Auto,Auto">
-        <HeaderedContentControl
-            Grid.Row="0"
-            Margin="3"
-            Background="Black"
-            Header="Automatic changes">
-            <Grid
-                Margin="3"
-                ColumnDefinitions="2*,*"
-                RowDefinitions="*,*,*">
-                <CheckBox
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    IsChecked="{Binding AutoTag}">
-                    Auto tag
-                </CheckBox>
-                <CheckBox
-                    Grid.Row="1"
-                    Grid.Column="0"
-                    IsChecked="{Binding ApplyGeneralFixes}">
-                    Apply general fixes
-                </CheckBox>
-                <CheckBox
-                    Grid.Row="2"
-                    Grid.Column="0"
-                    IsChecked="{Binding UnicodifyWholePage}">
-                    Unicodify whole page
-                </CheckBox>
-                <Grid
-                    Grid.Row="0"
-                    Grid.RowSpan="3"
-                    Grid.Column="1">
-                    <Button>
-                        <StackPanel Orientation="Vertical">
-                            <TextBlock>Auto changes</TextBlock>
-                            <TextBlock HorizontalAlignment="Center">skip options</TextBlock>
-                        </StackPanel>
-                    </Button>
-                </Grid>
+    <StackPanel Margin="12" Spacing="10">
+        <HeaderedContentControl Header="Automatic changes">
+            <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Grid.Column="0">
+                    <CheckBox IsChecked="{Binding AutoTag}">Auto tag</CheckBox>
+                    <CheckBox IsChecked="{Binding ApplyGeneralFixes}">Apply general fixes</CheckBox>
+                    <CheckBox IsChecked="{Binding UnicodifyWholePage}">Unicodify whole page</CheckBox>
+                </StackPanel>
+                <Button
+                    Grid.Column="1"
+                    Width="150"
+                    VerticalAlignment="Center">
+                    <TextBlock TextAlignment="Center" TextWrapping="Wrap">Auto changes skip options</TextBlock>
+                </Button>
             </Grid>
         </HeaderedContentControl>
-        <Border
-            Grid.Row="1"
-            Margin="3"
-            BorderBrush="Black"
-            BorderThickness="1">
-            <Grid
-                Margin="3"
-                ColumnDefinitions="*,*"
-                RowDefinitions="*,*,*,*,*">
-                <CheckBox
-                    Grid.Row="0"
-                    Grid.RowSpan="3"
-                    Grid.Column="0"
-                    IsChecked="{Binding FindAndReplace}">
-                    Find and replace
-                </CheckBox>
-                <Button
-                    Grid.Row="0"
+
+        <HeaderedContentControl Header="Find and replace">
+            <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Grid.Column="0">
+                    <CheckBox IsChecked="{Binding FindAndReplace}">Enable find and replace</CheckBox>
+                    <TextBlock
+                        Margin="0,8,0,2"
+                        Classes="Muted"
+                        Text="Skip page if" />
+                    <CheckBox Margin="12,0,0,0" IsChecked="{Binding SkipIfNoReplacement}">no replacement</CheckBox>
+                    <CheckBox Margin="12,0,0,0" IsChecked="{Binding SkipIfOnlyMinorReplacementMade}">only minor replacement made</CheckBox>
+                </StackPanel>
+                <StackPanel
                     Grid.Column="1"
-                    Command="{Binding OpenNormalFindAndReplaceDialogCommand}">
-                    Normal settings
-                </Button>
-                <Button Grid.Row="1" Grid.Column="1">
-                    Advanced settings
-                </Button>
-                <Button Grid.Row="2" Grid.Column="1">
-                    Template substitution
-                </Button>
-                <Grid
-                    Grid.Row="3"
-                    Grid.RowSpan="2"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="2">
-                    <StackPanel Orientation="Horizontal">
-                        <Label Margin="3">Skip if</Label>
-                        <StackPanel Orientation="Vertical">
-                            <CheckBox IsChecked="{Binding SkipIfNoReplacement}">no replacement</CheckBox>
-                            <CheckBox IsChecked="{Binding SkipIfOnlyMinorReplacementMade}">only minor replacement made</CheckBox>
-                        </StackPanel>
-                    </StackPanel>
-                </Grid>
+                    Width="150"
+                    Spacing="6">
+                    <Button HorizontalAlignment="Stretch" Command="{Binding OpenNormalFindAndReplaceDialogCommand}">Normal settings</Button>
+                    <Button HorizontalAlignment="Stretch">Advanced settings</Button>
+                    <Button HorizontalAlignment="Stretch">Template substitution</Button>
+                </StackPanel>
             </Grid>
-        </Border>
-        <Border
-            Grid.Row="2"
-            Margin="3"
-            BorderBrush="Black"
-            BorderThickness="1">
-            <StackPanel Margin="3">
+        </HeaderedContentControl>
+
+        <HeaderedContentControl Header="Typo fixing">
+            <StackPanel>
                 <CheckBox IsChecked="{Binding RegexTypoFixing}">Regex typo fixing</CheckBox>
                 <CheckBox IsChecked="{Binding SkipIfNoTypoFixed}">Skip if no typo fixed</CheckBox>
             </StackPanel>
-        </Border>
-    </Grid>
+        </HeaderedContentControl>
+    </StackPanel>
 </UserControl>

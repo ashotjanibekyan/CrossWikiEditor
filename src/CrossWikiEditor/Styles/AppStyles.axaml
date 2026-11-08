@@ -1,0 +1,188 @@
+<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+        <Border Width="420" Padding="16" Background="{DynamicResource AppBackgroundBrush}">
+            <StackPanel Spacing="12">
+                <Border Classes="Card" Padding="12">
+                    <StackPanel Spacing="8">
+                        <TextBlock Classes="PanelTitle" Text="Panel title" />
+                        <HeaderedContentControl Header="Group">
+                            <StackPanel>
+                                <CheckBox Content="Option one" IsChecked="True" />
+                                <CheckBox Content="Option two" />
+                            </StackPanel>
+                        </HeaderedContentControl>
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <Button Classes="accent" Content="Accent" />
+                            <Button Classes="success" Content="Success" />
+                            <Button Content="Default" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Border>
+    </Design.PreviewWith>
+
+    <Styles.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="AppBackgroundBrush" Color="#ECEFF3" />
+                    <SolidColorBrush x:Key="AppSurfaceBrush" Color="#FFFFFF" />
+                    <SolidColorBrush x:Key="AppSubtleSurfaceBrush" Color="#F7F8FA" />
+                    <SolidColorBrush x:Key="AppBorderBrush" Color="#D6DBE2" />
+                    <SolidColorBrush x:Key="AppMutedForegroundBrush" Color="#5A6472" />
+                    <SolidColorBrush x:Key="AppSuccessBrush" Color="#14866D" />
+                    <SolidColorBrush x:Key="AppSuccessPointerOverBrush" Color="#0F7560" />
+                    <SolidColorBrush x:Key="AppSuccessPressedBrush" Color="#0B5E4D" />
+                    <SolidColorBrush x:Key="AppDangerForegroundBrush" Color="#BF3C2C" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="AppBackgroundBrush" Color="#1B1D21" />
+                    <SolidColorBrush x:Key="AppSurfaceBrush" Color="#24272C" />
+                    <SolidColorBrush x:Key="AppSubtleSurfaceBrush" Color="#2B2F35" />
+                    <SolidColorBrush x:Key="AppBorderBrush" Color="#3A3F47" />
+                    <SolidColorBrush x:Key="AppMutedForegroundBrush" Color="#A2ABB7" />
+                    <SolidColorBrush x:Key="AppSuccessBrush" Color="#1C9878" />
+                    <SolidColorBrush x:Key="AppSuccessPointerOverBrush" Color="#22AD89" />
+                    <SolidColorBrush x:Key="AppSuccessPressedBrush" Color="#178066" />
+                    <SolidColorBrush x:Key="AppDangerForegroundBrush" Color="#F2766A" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+
+            <FontFamily x:Key="AppMonospaceFont">Cascadia Mono, Consolas, Menlo, DejaVu Sans Mono, monospace</FontFamily>
+
+            <!--  Simple 24x24 icon geometries used with PathIcon  -->
+            <StreamGeometry x:Key="IconPlay">M7,4.5 L7,19.5 L19.5,12 Z</StreamGeometry>
+            <StreamGeometry x:Key="IconStop">M6,6 L18,6 L18,18 L6,18 Z</StreamGeometry>
+            <StreamGeometry x:Key="IconSkip">M5,5 L14,12 L5,19 Z M16,5 L19,5 L19,19 L16,19 Z</StreamGeometry>
+            <StreamGeometry x:Key="IconCheck">M9,16.2 L4.8,12 L3.4,13.4 L9,19 L21,7 L19.6,5.6 Z</StreamGeometry>
+            <StreamGeometry x:Key="IconAdd">M11,4 L13,4 L13,11 L20,11 L20,13 L13,13 L13,20 L11,20 L11,13 L4,13 L4,11 L11,11 Z</StreamGeometry>
+            <StreamGeometry x:Key="IconFilter">M3,5 L21,5 L14,13 L14,19 L10,21 L10,13 Z</StreamGeometry>
+            <StreamGeometry x:Key="IconRemove">M5,11 L19,11 L19,13 L5,13 Z</StreamGeometry>
+            <StreamGeometry x:Key="IconList">M4,6 L20,6 L20,8 L4,8 Z M4,11 L20,11 L20,13 L4,13 Z M4,16 L14,16 L14,18 L4,18 Z</StreamGeometry>
+            <StreamGeometry x:Key="IconSearch">M10,3 A7,7 0 1 1 10,17 A7,7 0 1 1 10,3 Z M10,5 A5,5 0 1 0 10,15 A5,5 0 1 0 10,5 Z M14.6,16 L16,14.6 L21.4,20 L20,21.4 Z</StreamGeometry>
+            <StreamGeometry x:Key="IconUser">M12,4 A4,4 0 1 1 12,12 A4,4 0 1 1 12,4 Z M4,20 C4,16.5 7.6,14 12,14 C16.4,14 20,16.5 20,20 Z</StreamGeometry>
+        </ResourceDictionary>
+    </Styles.Resources>
+
+    <!--  Surfaces  -->
+    <Style Selector="Border.Card">
+        <Setter Property="Background" Value="{DynamicResource AppSurfaceBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AppBorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="ClipToBounds" Value="True" />
+    </Style>
+
+    <!--  HeaderedContentControl is used as a "group box" throughout the app  -->
+    <Style Selector="HeaderedContentControl">
+        <Setter Property="Background" Value="{DynamicResource AppSubtleSurfaceBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AppBorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="6" />
+        <Setter Property="Padding" Value="10,2,10,8" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="{TemplateBinding CornerRadius}">
+                    <DockPanel>
+                        <ContentPresenter
+                            Name="PART_HeaderPresenter"
+                            Margin="10,7,10,2"
+                            Content="{TemplateBinding Header}"
+                            DockPanel.Dock="Top"
+                            FontSize="12"
+                            FontWeight="SemiBold"
+                            Foreground="{DynamicResource AppMutedForegroundBrush}" />
+                        <ContentPresenter
+                            Name="PART_ContentPresenter"
+                            Padding="{TemplateBinding Padding}"
+                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}" />
+                    </DockPanel>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <!--  Typography  -->
+    <Style Selector="TextBlock.PanelTitle">
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+    <Style Selector="TextBlock.Muted">
+        <Setter Property="Foreground" Value="{DynamicResource AppMutedForegroundBrush}" />
+    </Style>
+    <Style Selector="TextBlock.FieldLabel">
+        <Setter Property="Foreground" Value="{DynamicResource AppMutedForegroundBrush}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="0,0,8,0" />
+    </Style>
+    <Style Selector="TextBlock.EmptyState">
+        <Setter Property="Foreground" Value="{DynamicResource AppMutedForegroundBrush}" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="TextAlignment" Value="Center" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+
+    <!--  Tabs: Fluent's default header size is far too big for a dense tool UI  -->
+    <Style Selector="TabItem">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="MinHeight" Value="38" />
+        <Setter Property="Padding" Value="12,0" />
+    </Style>
+
+    <!--  Denser check boxes / radio buttons  -->
+    <Style Selector="CheckBox, RadioButton">
+        <Setter Property="MinHeight" Value="28" />
+    </Style>
+
+    <!--  Buttons  -->
+    <Style Selector="Button">
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+    </Style>
+    <Style Selector="Button PathIcon">
+        <Setter Property="Width" Value="12" />
+        <Setter Property="Height" Value="12" />
+    </Style>
+    <Style Selector="Button.success">
+        <Setter Property="Background" Value="{DynamicResource AppSuccessBrush}" />
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+    <Style Selector="Button.success:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource AppSuccessPointerOverBrush}" />
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+    <Style Selector="Button.success:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource AppSuccessPressedBrush}" />
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+    <Style Selector="Button.danger">
+        <Setter Property="Foreground" Value="{DynamicResource AppDangerForegroundBrush}" />
+    </Style>
+    <Style Selector="Button.Chip">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Padding" Value="8,2" />
+        <Setter Property="MinHeight" Value="0" />
+        <Setter Property="CornerRadius" Value="4" />
+    </Style>
+
+    <!--  Dense list of page titles  -->
+    <Style Selector="ListBox.Dense ListBoxItem">
+        <Setter Property="Padding" Value="8,3" />
+        <Setter Property="MinHeight" Value="0" />
+    </Style>
+
+    <!--  Thin, unobtrusive splitters between cards  -->
+    <Style Selector="GridSplitter.Gap">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="MinWidth" Value="0" />
+        <Setter Property="MinHeight" Value="0" />
+    </Style>
+</Styles>

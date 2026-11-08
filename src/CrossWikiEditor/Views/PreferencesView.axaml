@@ -7,15 +7,16 @@
     xmlns:viewModels="clr-namespace:CrossWikiEditor.Core.ViewModels;assembly=CrossWikiEditor.Core"
     x:Name="This"
     Title="Preferences"
-    MaxWidth="600"
-    MaxHeight="400"
-    d:DesignHeight="400"
-    d:DesignWidth="600"
+    Width="640"
+    Height="480"
+    MinWidth="520"
+    MinHeight="360"
+    d:DesignHeight="480"
+    d:DesignWidth="640"
     x:DataType="viewModels:PreferencesViewModel"
     Classes="DialogWindow"
-    SizeToContent="WidthAndHeight"
     mc:Ignorable="d">
-    <Grid Margin="10" RowDefinitions="*,Auto">
+    <Grid Margin="16,8,16,16" RowDefinitions="*,Auto">
         <TabControl Grid.Row="0">
             <TabItem Header="General">
                 <StackPanel>
@@ -24,7 +25,10 @@
                     <CheckBox Content="Save page list with settings" IsChecked="{Binding SavePageListWithSettings}" />
                     <CheckBox Content="Low thread priority (works better in background)" IsChecked="{Binding LowThreadPriority}" />
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="On load: " />
+                        <TextBlock
+                            Margin="0,0,8,0"
+                            VerticalAlignment="Center"
+                            Text="On load" />
                         <ComboBox SelectedIndex="0">
                             <ComboBoxItem Content="Show changes" />
                             <ComboBoxItem Content="Show preview" />
@@ -36,11 +40,11 @@
             </TabItem>
             <TabItem Header="Site" IsSelected="True">
                 <StackPanel>
-                    <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto">
+                    <Grid Classes="Form" ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto">
                         <TextBlock
                             Grid.Row="0"
                             Grid.Column="0"
-                            Text="Project:" />
+                            Text="Project" />
                         <ComboBox
                             Grid.Row="0"
                             Grid.Column="1"
@@ -50,7 +54,7 @@
                         <TextBlock
                             Grid.Row="1"
                             Grid.Column="0"
-                            Text="Language:" />
+                            Text="Language" />
                         <ComboBox
                             Grid.Row="1"
                             Grid.Column="1"
@@ -63,23 +67,37 @@
                             Content="Suppress &quot;Using AWB&quot;"
                             IsChecked="{Binding SuppressUsingAwb}" />
                     </Grid>
-                    <TextBlock Text="Wikis not related to Wikimedia are not guaranteed to function properly." />
+                    <TextBlock
+                        Margin="0,4,0,8"
+                        Classes="Muted"
+                        Text="Wikis not related to Wikimedia are not guaranteed to function properly."
+                        TextWrapping="Wrap" />
                     <CheckBox Content="Ignore {{bots}} and {{nobots}}" IsChecked="{Binding IgnoreNoBots}" />
                     <CheckBox Content="Empty page list on project change" IsChecked="{Binding EmptyPageListOnProjectChange}" />
                 </StackPanel>
             </TabItem>
             <TabItem Header="Editing and saving">
                 <StackPanel>
-                    <HeaderedContentControl Background="Black" Header="Auto save edit box">
-                        <StackPanel Margin="6">
+                    <HeaderedContentControl Header="Auto save edit box">
+                        <StackPanel Spacing="6">
                             <StackPanel Orientation="Horizontal">
                                 <CheckBox Content="Automatically save edit box every" />
-                                <NumericUpDown ShowButtonSpinner="False" />
-                                <Label Content="seconds" />
+                                <NumericUpDown
+                                    Width="60"
+                                    Margin="8,0,0,0"
+                                    ShowButtonSpinner="False" />
+                                <TextBlock
+                                    Margin="8,0,0,0"
+                                    VerticalAlignment="Center"
+                                    Text="seconds" />
                             </StackPanel>
                             <Grid ColumnDefinitions="Auto,*,Auto">
-                                <Label Grid.Column="0" Content="File: " />
-                                <TextBox Grid.Column="1" />
+                                <TextBlock
+                                    Grid.Column="0"
+                                    Margin="0,0,8,0"
+                                    VerticalAlignment="Center"
+                                    Text="File" />
+                                <TextBox Grid.Column="1" Margin="0,0,8,0" />
                                 <Button Grid.Column="2" Content="Browse" />
                             </Grid>
                         </StackPanel>
@@ -89,7 +107,7 @@
                     <CheckBox Content="Add &quot;using AWB&quot; to when deleting or protecting pages" />
 
                     <StackPanel Orientation="Horizontal" Spacing="10">
-                        <Label Content="When ready to save: " />
+                        <TextBlock VerticalAlignment="Center" Text="When ready to save" />
                         <CheckBox Content="Flash" />
                         <CheckBox Content="Beep" />
                     </StackPanel>
@@ -97,7 +115,7 @@
                 </StackPanel>
             </TabItem>
             <TabItem Header="Tools">
-                <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto">
+                <Grid Classes="Form" ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto">
                     <TextBlock
                         Grid.Row="0"
                         Grid.Column="0"
@@ -183,18 +201,30 @@
                 </ScrollViewer>
             </TabItem>
         </TabControl>
-        <Grid Grid.Row="1" ColumnDefinitions="Auto,*,Auto,Auto">
-            <TextBlock Grid.Column="0" Text=" &quot;Save settings as default&quot; to retain values" />
-            <Button
-                Grid.Column="2"
-                Command="{Binding SaveCommand}"
-                CommandParameter="{Binding #This}"
-                Content="Ok" />
-            <Button
-                Grid.Column="3"
-                Command="{Binding CancelCommand}"
-                CommandParameter="{Binding #This}"
-                Content="Cancel" />
+        <Grid
+            Grid.Row="1"
+            Margin="0,12,0,0"
+            ColumnDefinitions="*,Auto">
+            <TextBlock
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Classes="Muted"
+                FontSize="12"
+                Text="Use &quot;Save settings as default&quot; to retain these values."
+                TextWrapping="Wrap" />
+            <StackPanel Grid.Column="1" Classes="DialogButtons">
+                <Button
+                    Classes="accent"
+                    Command="{Binding SaveCommand}"
+                    CommandParameter="{Binding #This}"
+                    Content="OK"
+                    IsDefault="True" />
+                <Button
+                    Command="{Binding CancelCommand}"
+                    CommandParameter="{Binding #This}"
+                    Content="Cancel"
+                    IsCancel="True" />
+            </StackPanel>
         </Grid>
     </Grid>
 </Window>

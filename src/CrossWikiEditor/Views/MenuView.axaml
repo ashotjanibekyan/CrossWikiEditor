@@ -42,7 +42,7 @@
             <Separator />
             <MenuItem Header="Filter..." />
             <MenuItem Header="Save list..." />
-            <MenuItem Header="lear current list..." />
+            <MenuItem Header="Clear current list..." />
         </MenuItem>
         <MenuItem Header="Plugins">
             <MenuItem Header="Load..." />

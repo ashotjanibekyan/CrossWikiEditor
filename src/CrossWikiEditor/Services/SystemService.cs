@@ -39,7 +39,7 @@ public sealed class SystemService : ISystemService
 
     public async Task<string?> GetClipboardTextAsync()
     {
-        return await _clipboard.GetTextAsync();
+        return await _clipboard.TryGetTextAsync();
     }
 
     public async Task SetClipboardTextAsync(string? text)

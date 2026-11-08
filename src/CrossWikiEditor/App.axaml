@@ -4,40 +4,17 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     RequestedThemeVariant="Light">
     <Application.Styles>
-        <SimpleTheme />
-        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Simple.xaml" />
-        <StyleInclude Source="./Styles/ButtonStyles.axaml" />
-        <StyleInclude Source="./Styles/DialogStyles.axaml" />
-        <StyleInclude Source="avares://AvaloniaEdit/Themes/Simple/AvaloniaEdit.xaml" />
-        <Style Selector="HeaderedContentControl">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate>
-                        <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,*">
-                            <Border
-                                Grid.Row="0"
-                                Grid.Column="0"
-                                Margin="5,0,0,0"
-                                Padding="5,0,5,0"
-                                Background="White"
-                                ZIndex="1">
-                                <TextBlock FontWeight="Bold" Text="{TemplateBinding Header}" />
-                            </Border>
-                            <Border
-                                Grid.Row="0"
-                                Grid.RowSpan="2"
-                                Grid.Column="0"
-                                Grid.ColumnSpan="2"
-                                Margin="0,10,0,0"
-                                BorderBrush="{TemplateBinding Background}"
-                                BorderThickness="1">
-                                <ContentPresenter Content="{TemplateBinding Content}" />
-                            </Border>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
+        <FluentTheme DensityStyle="Compact">
+            <FluentTheme.Palettes>
+                <!--  Wikimedia "progressive" blue as the accent colour  -->
+                <ColorPaletteResources x:Key="Light" Accent="#3366CC" />
+                <ColorPaletteResources x:Key="Dark" Accent="#6D8FE0" />
+            </FluentTheme.Palettes>
+        </FluentTheme>
+        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
+        <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
+        <StyleInclude Source="/Styles/AppStyles.axaml" />
+        <StyleInclude Source="/Styles/ButtonStyles.axaml" />
+        <StyleInclude Source="/Styles/DialogStyles.axaml" />
     </Application.Styles>
 </Application>

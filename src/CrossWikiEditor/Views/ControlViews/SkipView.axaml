@@ -5,48 +5,44 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DesignWidth="480"
     mc:Ignorable="d">
-    <Grid RowDefinitions="Auto,Auto,Auto">
-        <HeaderedContentControl
-            Grid.Row="0"
-            Margin="3"
-            Background="Black"
-            Header="Text">
-            <Grid Margin="3" RowDefinitions="*,*,*,*">
-                <Grid Grid.Row="0" ColumnDefinitions="*,2*">
+    <StackPanel Margin="12" Spacing="10">
+        <HeaderedContentControl Header="Text">
+            <StackPanel Spacing="2">
+                <Grid ColumnDefinitions="140,*">
                     <CheckBox Grid.Column="0" IsChecked="True">
-                        Contains:
+                        Contains
                     </CheckBox>
-                    <TextBox Grid.Column="1" />
+                    <TextBox Grid.Column="1" VerticalAlignment="Center" />
                 </Grid>
-                <Grid Grid.Row="1" ColumnDefinitions="*,*,*">
-                    <CheckBox Grid.Column="0">Regex</CheckBox>
-                    <CheckBox Grid.Column="1">Case sensitive</CheckBox>
-                    <CheckBox Grid.Column="2">Check after</CheckBox>
-                </Grid>
-                <Grid Grid.Row="2" ColumnDefinitions="*,2*">
+                <StackPanel
+                    Margin="28,0,0,6"
+                    Orientation="Horizontal"
+                    Spacing="16">
+                    <CheckBox>Regex</CheckBox>
+                    <CheckBox>Case sensitive</CheckBox>
+                    <CheckBox>Check after</CheckBox>
+                </StackPanel>
+                <Grid ColumnDefinitions="140,*">
                     <CheckBox Grid.Column="0" IsChecked="True">
-                        Doesn't contain:
+                        Doesn't contain
                     </CheckBox>
-                    <TextBox Grid.Column="1" />
+                    <TextBox Grid.Column="1" VerticalAlignment="Center" />
                 </Grid>
-                <Grid Grid.Row="3" ColumnDefinitions="*,*,*">
-                    <CheckBox Grid.Column="0">Regex</CheckBox>
-                    <CheckBox Grid.Column="1">Case sensitive</CheckBox>
-                    <CheckBox Grid.Column="2">Check after</CheckBox>
-                </Grid>
-            </Grid>
+                <StackPanel
+                    Margin="28,0,0,0"
+                    Orientation="Horizontal"
+                    Spacing="16">
+                    <CheckBox>Regex</CheckBox>
+                    <CheckBox>Case sensitive</CheckBox>
+                    <CheckBox>Check after</CheckBox>
+                </StackPanel>
+            </StackPanel>
         </HeaderedContentControl>
-        <HeaderedContentControl
-            Grid.Row="1"
-            Margin="3"
-            Background="Black"
-            Header="Text">
-            <Grid
-                Margin="3"
-                ColumnDefinitions="*,*"
-                RowDefinitions="*,*,*,*,*,*,*">
+
+        <HeaderedContentControl Header="General skip options">
+            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
                 <CheckBox Grid.Row="0" Grid.Column="0">
                     Page is in use
                 </CheckBox>
@@ -56,14 +52,20 @@
                 <CheckBox Grid.Row="1" Grid.Column="0">
                     Page contains no links
                 </CheckBox>
+                <CheckBox Grid.Row="1" Grid.Column="1">
+                    Page is redirect
+                </CheckBox>
                 <CheckBox Grid.Row="2" Grid.Column="0">
                     No changes are made
+                </CheckBox>
+                <CheckBox Grid.Row="2" Grid.Column="1">
+                    No alert
                 </CheckBox>
                 <CheckBox
                     Grid.Row="3"
                     Grid.Column="0"
-                    Margin="25,0,0,0">
-                    Only whitespaces
+                    Margin="24,0,0,0">
+                    Only whitespace
                 </CheckBox>
                 <CheckBox Grid.Row="3" Grid.Column="1">
                     Only casing
@@ -71,7 +73,7 @@
                 <CheckBox
                     Grid.Row="4"
                     Grid.Column="0"
-                    Margin="25,0,0,0">
+                    Margin="24,0,0,0">
                     Only genfixes
                 </CheckBox>
                 <CheckBox Grid.Row="4" Grid.Column="1">
@@ -80,36 +82,21 @@
                 <CheckBox
                     Grid.Row="5"
                     Grid.Column="0"
-                    Margin="25,0,0,0">
+                    Margin="24,0,0,0">
                     Only cosmetic changes
                 </CheckBox>
-                <CheckBox Grid.Row="6" Grid.Column="0">
-                    Page is redirect
-                </CheckBox>
-                <CheckBox Grid.Row="6" Grid.Column="1">
-                    No alert
-                </CheckBox>
             </Grid>
         </HeaderedContentControl>
-        <HeaderedContentControl
-            Grid.Row="2"
-            Margin="3"
-            Background="Black"
-            Header="Text">
-            <Grid Margin="3" ColumnDefinitions="*,*,*">
+
+        <HeaderedContentControl Header="Page">
+            <StackPanel Orientation="Horizontal" Spacing="20">
+                <RadioButton Content="Exists" GroupName="PageExistence" />
+                <RadioButton Content="Doesn't exist" GroupName="PageExistence" />
                 <RadioButton
-                    Grid.Column="0"
-                    Content="Exists"
-                    GroupName="PageExistence" />
-                <RadioButton
-                    Grid.Column="1"
-                    Content="Doesn't exist"
-                    GroupName="PageExistence" />
-                <RadioButton
-                    Grid.Column="2"
                     Content="Don't care"
-                    GroupName="PageExistence" />
-            </Grid>
+                    GroupName="PageExistence"
+                    IsChecked="True" />
+            </StackPanel>
         </HeaderedContentControl>
-    </Grid>
+    </StackPanel>
 </UserControl>

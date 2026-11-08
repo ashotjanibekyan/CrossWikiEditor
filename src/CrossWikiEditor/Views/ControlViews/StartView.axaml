@@ -6,163 +6,153 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DesignWidth="480"
     x:DataType="controlViewModels:StartViewModel"
     mc:Ignorable="d">
-    <Grid
-        Margin="3"
-        ColumnDefinitions="*,*"
-        RowDefinitions="Auto,*">
-        <Label
-            Grid.Row="0"
-            Grid.Column="0"
-            VerticalAlignment="Center">
-            Default Summary
-        </Label>
+    <UserControl.Styles>
+        <Style Selector="Grid.Actions Button">
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="Margin" Value="0,0,0,6" />
+        </Style>
+        <Style Selector="Grid.Stats TextBlock">
+            <Setter Property="Margin" Value="0,2" />
+        </Style>
+        <Style Selector="Grid.Stats TextBlock:nth-child(odd)">
+            <Setter Property="Foreground" Value="{DynamicResource AppMutedForegroundBrush}" />
+            <Setter Property="Margin" Value="0,2,12,2" />
+        </Style>
+        <Style Selector="Grid.Stats TextBlock:nth-child(even)">
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+    </UserControl.Styles>
 
-        <!--  Left column  -->
+    <Grid Margin="12" RowDefinitions="Auto,Auto,*">
+        <!--  Edit summary  -->
+        <TextBlock
+            Grid.Row="0"
+            Margin="0,0,0,4"
+            Classes="Muted"
+            Text="Default summary" />
         <Grid
             Grid.Row="1"
-            Grid.Column="0"
-            RowDefinitions="Auto,Auto,*">
-            <StackPanel Grid.Row="0" Orientation="Horizontal">
-                <CheckBox Margin="0,0,10,0">Lock</CheckBox>
-                <CheckBox>Minor edit</CheckBox>
-            </StackPanel>
-
-            <HeaderedContentControl
-                Grid.Row="1"
-                Background="Black"
-                Header="Page statistics">
-                <StackPanel Margin="3">
-                    <StackPanel Orientation="Horizontal">
-                        <Label>Words:</Label>
-                        <Label Content="{Binding WordsStats}" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label>Links:</Label>
-                        <Label Content="{Binding LinksStats}" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label>Images:</Label>
-                        <Label Content="{Binding ImagesStats}" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label>Categories:</Label>
-                        <Label Content="{Binding CategoriesStats}" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label>Interwiki links:</Label>
-                        <Label Content="{Binding InterwikiLinksStats}" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label>Dates O/I/A:</Label>
-                        <Label Content="{Binding DatesStats}" />
-                    </StackPanel>
-                </StackPanel>
-            </HeaderedContentControl>
-            <HeaderedContentControl
-                Grid.Row="2"
-                Margin="3"
-                Background="Black"
-                Header="Alerts">
-                <Grid Margin="3,10,3,3" RowDefinitions="*,2*">
-                    <TextBox VerticalAlignment="Stretch" />
-                </Grid>
-            </HeaderedContentControl>
+            Margin="0,0,0,10"
+            ColumnDefinitions="*,Auto,Auto">
+            <TextBox
+                Grid.Column="0"
+                Margin="0,0,12,0"
+                Watermark="Edit summary" />
+            <CheckBox Grid.Column="1" Margin="0,0,12,0">Lock</CheckBox>
+            <CheckBox Grid.Column="2">Minor edit</CheckBox>
         </Grid>
 
-        <!--  Right column  -->
-        <Grid
-            Grid.Row="1"
-            Grid.Column="1"
-            Margin="3">
-            <StackPanel>
-                <Button
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Center"
-                    Command="{Binding StartCommand}">
-                    Start
-                </Button>
-                <Button
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Center"
-                    Command="{Binding StopCommand}">
-                    Stop
-                </Button>
-                <Grid ColumnDefinitions="*,*">
+        <Grid Grid.Row="2" ColumnDefinitions="*,12,*">
+            <!--  Left column  -->
+            <Grid Grid.Column="0" RowDefinitions="Auto,*">
+                <HeaderedContentControl
+                    Grid.Row="0"
+                    Margin="0,0,0,10"
+                    Header="Page statistics">
+                    <Grid
+                        Classes="Stats"
+                        ColumnDefinitions="*,Auto"
+                        RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Words" />
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding WordsStats}" />
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Links" />
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding LinksStats}" />
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Images" />
+                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding ImagesStats}" />
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Categories" />
+                        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding CategoriesStats}" />
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="Interwiki links" />
+                        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding InterwikiLinksStats}" />
+                        <TextBlock Grid.Row="5" Grid.Column="0" Text="Dates O/I/A" />
+                        <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding DatesStats}" />
+                    </Grid>
+                </HeaderedContentControl>
+                <HeaderedContentControl Grid.Row="1" Header="Alerts">
+                    <TextBox
+                        MinHeight="60"
+                        IsReadOnly="True"
+                        TextWrapping="Wrap" />
+                </HeaderedContentControl>
+            </Grid>
+
+            <!--  Right column  -->
+            <StackPanel Grid.Column="2">
+                <Grid Classes="Actions" ColumnDefinitions="*,6,*">
                     <Button
                         Grid.Column="0"
-                        HorizontalAlignment="Stretch"
-                        HorizontalContentAlignment="Center">
-                        Preview
+                        Classes="accent"
+                        Command="{Binding StartCommand}">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <PathIcon Data="{StaticResource IconPlay}" />
+                            <TextBlock Text="Start" />
+                        </StackPanel>
                     </Button>
-                    <Button
-                        Grid.Column="1"
-                        HorizontalAlignment="Stretch"
-                        HorizontalContentAlignment="Center">
-                        Diff
+                    <Button Grid.Column="2" Command="{Binding StopCommand}">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <PathIcon Data="{StaticResource IconStop}" />
+                            <TextBlock Text="Stop" />
+                        </StackPanel>
                     </Button>
                 </Grid>
-                <Grid ColumnDefinitions="*,*">
+
+                <Grid
+                    Classes="Actions"
+                    ColumnDefinitions="*,6,*"
+                    RowDefinitions="Auto,Auto,Auto">
+                    <Button Grid.Row="0" Grid.Column="0">Preview</Button>
+                    <Button Grid.Row="0" Grid.Column="2">Diff</Button>
+                    <Button Grid.Row="1" Grid.Column="0">Watch</Button>
+                    <Button Grid.Row="1" Grid.Column="2">Move</Button>
+                    <Button Grid.Row="2" Grid.Column="0">Protect</Button>
                     <Button
-                        Grid.Column="0"
-                        HorizontalAlignment="Stretch"
-                        HorizontalContentAlignment="Center">
-                        Watch
-                    </Button>
-                    <Button
-                        Grid.Column="1"
-                        HorizontalAlignment="Stretch"
-                        HorizontalContentAlignment="Center">
-                        Move
-                    </Button>
-                </Grid>
-                <Grid ColumnDefinitions="*,*">
-                    <Button
-                        Grid.Column="0"
-                        HorizontalAlignment="Stretch"
-                        HorizontalContentAlignment="Center">
-                        Protect
-                    </Button>
-                    <Button
-                        Grid.Column="1"
-                        HorizontalAlignment="Stretch"
-                        HorizontalContentAlignment="Center">
+                        Grid.Row="2"
+                        Grid.Column="2"
+                        Classes="danger">
                         Delete
                     </Button>
                 </Grid>
 
-                <Button
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Center"
-                    Command="{Binding SkipCommand}">
-                    Skip
-                </Button>
-                <Button
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Center"
-                    Background="Green"
-                    Command="{Binding SaveCommand}">
-                    Save
-                </Button>
-                <HeaderedContentControl
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    Background="Black"
-                    Header="Find">
-                    <StackPanel>
-                        <TextBox />
-                        <Grid ColumnDefinitions="*,*">
-                            <CheckBox Grid.Column="0">Regex</CheckBox>
+                <Grid Classes="Actions" ColumnDefinitions="*,6,*">
+                    <Button
+                        Grid.Column="0"
+                        MinHeight="40"
+                        Command="{Binding SkipCommand}">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <PathIcon Data="{StaticResource IconSkip}" />
+                            <TextBlock Text="Skip" />
+                        </StackPanel>
+                    </Button>
+                    <Button
+                        Grid.Column="2"
+                        MinHeight="40"
+                        Classes="success"
+                        Command="{Binding SaveCommand}">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <PathIcon Data="{StaticResource IconCheck}" />
+                            <TextBlock FontWeight="SemiBold" Text="Save" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
+
+                <HeaderedContentControl Margin="0,4,0,0" Header="Find">
+                    <StackPanel Spacing="4">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <TextBox Grid.Column="0" Margin="0,0,6,0" />
                             <Button
                                 Grid.Column="1"
-                                HorizontalAlignment="Stretch"
-                                HorizontalContentAlignment="Center">
-                                Find
+                                AutomationProperties.Name="Find"
+                                ToolTip.Tip="Find">
+                                <PathIcon Data="{StaticResource IconSearch}" />
                             </Button>
                         </Grid>
-                        <CheckBox>Case sensitive</CheckBox>
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <CheckBox>Regex</CheckBox>
+                            <CheckBox>Case sensitive</CheckBox>
+                        </StackPanel>
                     </StackPanel>
                 </HeaderedContentControl>
             </StackPanel>

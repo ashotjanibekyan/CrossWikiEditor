@@ -12,30 +12,28 @@
     d:DesignWidth="800"
     x:DataType="viewModels:MakeListViewModel"
     mc:Ignorable="d">
-    <Grid Margin="3" RowDefinitions="Auto,Auto,Auto,Auto,*,Auto">
-        <Label
+    <Grid Margin="12" RowDefinitions="Auto,Auto,Auto,Auto,Auto,*,Auto">
+        <TextBlock
             Grid.Row="0"
-            Margin="3"
-            HorizontalAlignment="Center"
-            Content="Make list" />
+            Margin="0,0,0,10"
+            Classes="PanelTitle"
+            Text="Make list" />
+
         <Grid
             Grid.Row="1"
-            Margin="3"
-            VerticalAlignment="Center"
             ColumnDefinitions="Auto,*"
             RowDefinitions="Auto,Auto">
-            <Label
+            <TextBlock
                 Grid.Row="0"
                 Grid.Column="0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center">
-                Source:
-            </Label>
+                Classes="FieldLabel"
+                Text="Source" />
             <ComboBox
                 Grid.Row="0"
                 Grid.Column="1"
                 HorizontalAlignment="Stretch"
                 ItemsSource="{Binding ListProviders}"
+                MaxDropDownHeight="480"
                 SelectedIndex="0"
                 SelectedItem="{Binding SelectedListProvider}">
                 <ComboBox.ItemTemplate>
@@ -45,53 +43,82 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
 
-            <Label
+            <TextBlock
                 Grid.Row="1"
                 Grid.Column="0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Content="{Binding SelectedListProvider.ParamTitle, StringFormat='{}{0}:'}"
-                IsVisible="{Binding SelectedListProvider.ParamTitle, Converter={x:Static converters:Converters.IsNotNullOrWhiteSpace}}" />
+                Margin="0,8,8,0"
+                Classes="FieldLabel"
+                IsVisible="{Binding SelectedListProvider.ParamTitle, Converter={x:Static converters:Converters.IsNotNullOrWhiteSpace}}"
+                Text="{Binding SelectedListProvider.ParamTitle}" />
             <TextBox
                 Grid.Row="1"
                 Grid.Column="1"
+                Margin="0,8,0,0"
                 HorizontalAlignment="Stretch"
-                IsEnabled="{Binding SelectedListProvider.ParamTitle, Converter={x:Static converters:Converters.IsNotNullOrWhiteSpace}}"
+                IsVisible="{Binding SelectedListProvider.ParamTitle, Converter={x:Static converters:Converters.IsNotNullOrWhiteSpace}}"
                 Text="{Binding SelectedListProvider.Param}" />
         </Grid>
-        <Label
-            Grid.Row="2"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Center"
-            Content="{Binding Pages.Count, StringFormat='{}{0} pages'}" />
+
         <Button
             Grid.Row="2"
-            Margin="3"
-            HorizontalAlignment="Center"
+            Margin="0,10,0,0"
+            HorizontalAlignment="Stretch"
+            Classes="accent"
             Command="{Binding MakeListCommand}">
-            Make list
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <PathIcon Data="{StaticResource IconList}" />
+                <TextBlock Text="Make list" />
+            </StackPanel>
         </Button>
+
+        <Separator Grid.Row="3" Margin="0,12" />
+
         <Grid
-            Grid.Row="3"
-            Margin="3"
-            VerticalAlignment="Center"
+            Grid.Row="4"
+            Margin="0,0,0,8"
             ColumnDefinitions="*,Auto">
             <TextBox
                 Grid.Column="0"
-                HorizontalAlignment="Stretch"
-                Text="{Binding NewPageTitle}" />
+                Margin="0,0,6,0"
+                Text="{Binding NewPageTitle}"
+                Watermark="Add a page title…">
+                <TextBox.KeyBindings>
+                    <KeyBinding Command="{Binding AddNewPageCommand}" Gesture="Enter" />
+                </TextBox.KeyBindings>
+            </TextBox>
             <Button
                 Grid.Column="1"
-                VerticalAlignment="Center"
-                Command="{Binding AddNewPageCommand}">
-                +
+                VerticalAlignment="Stretch"
+                Command="{Binding AddNewPageCommand}"
+                AutomationProperties.Name="Add page"
+                ToolTip.Tip="Add page to list">
+                <PathIcon Data="{StaticResource IconAdd}" />
             </Button>
         </Grid>
-        <Grid Grid.Row="4">
+
+        <Border
+            Grid.Row="5"
+            BorderBrush="{DynamicResource AppBorderBrush}"
+            BorderThickness="1"
+            ClipToBounds="True"
+            CornerRadius="4">
+            <DockPanel>
+                <Border
+                    Padding="8,4"
+                    Background="{DynamicResource AppSubtleSurfaceBrush}"
+                    BorderBrush="{DynamicResource AppBorderBrush}"
+                    BorderThickness="0,0,0,1"
+                    DockPanel.Dock="Top">
+                    <TextBlock
+                        Classes="Muted"
+                        FontSize="12"
+                        Text="{Binding Pages.Count, StringFormat='{}{0} pages'}" />
+                </Border>
             <ListBox
-                Margin="3"
+                Background="Transparent"
+                Classes="Dense"
                 ItemsSource="{Binding Pages}"
-                ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                ScrollViewer.HorizontalScrollBarVisibility="Auto"
                 SelectedItems="{Binding SelectedPages}"
                 SelectionMode="Multiple">
                 <ListBox.ContextMenu>
@@ -206,23 +233,30 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-        </Grid>
-        <Grid Grid.Row="5" ColumnDefinitions="*,*">
+            </DockPanel>
+        </Border>
+
+        <Grid
+            Grid.Row="6"
+            Margin="0,10,0,0"
+            ColumnDefinitions="*,8,*">
             <Button
-                x:Name="RemoveButton"
                 Grid.Column="0"
-                HorizontalAlignment="Center"
-                HorizontalContentAlignment="Center"
+                HorizontalAlignment="Stretch"
                 Command="{Binding RemoveCommand}">
-                Remove
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <PathIcon Data="{StaticResource IconRemove}" />
+                    <TextBlock Text="Remove" />
+                </StackPanel>
             </Button>
             <Button
-                Grid.Column="1"
-                Width="{Binding #RemoveButton.Bounds.Width}"
-                HorizontalAlignment="Center"
-                HorizontalContentAlignment="Center"
+                Grid.Column="2"
+                HorizontalAlignment="Stretch"
                 Command="{Binding FilterCommand}">
-                Filter
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <PathIcon Data="{StaticResource IconFilter}" />
+                    <TextBlock Text="Filter" />
+                </StackPanel>
             </Button>
         </Grid>
     </Grid>

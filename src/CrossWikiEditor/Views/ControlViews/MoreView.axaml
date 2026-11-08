@@ -8,69 +8,75 @@
     xmlns:settings="using:CrossWikiEditor.Core.Settings"
     xmlns:utils="using:CrossWikiEditor.Converters"
     d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DesignWidth="480"
     x:DataType="controlVm:MoreViewModel"
     mc:Ignorable="d">
-    <Grid Margin="3" RowDefinitions="Auto,Auto,Auto">
+    <UserControl.Styles>
+        <Style Selector="Grid.Form > :is(Control)">
+            <Setter Property="Margin" Value="0,3" />
+        </Style>
+        <Style Selector="Grid.Form > :is(Control)[(Grid.Column)=0]">
+            <Setter Property="Margin" Value="0,3,8,3" />
+        </Style>
+        <Style Selector="Grid.Form > ComboBox">
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+        </Style>
+    </UserControl.Styles>
+    <StackPanel Margin="12" Spacing="10">
         <HeaderedContentControl
-            Grid.Row="0"
-            Margin="3"
-            Background="Black"
-            Header="Append/Prepend text">
-            <Grid Margin="3" RowDefinitions="Auto,*,Auto">
-                <Grid Grid.Row="0" ColumnDefinitions="*,*,*,*">
+            Header="Append / prepend text">
+            <StackPanel Spacing="6">
+                <Grid ColumnDefinitions="*,Auto,Auto">
                     <CheckBox Grid.Column="0" IsChecked="{Binding IsAppendOrPrependEnabled}">
                         Enabled
                     </CheckBox>
                     <RadioButton
-                        Grid.Column="2"
+                        Grid.Column="1"
+                        Margin="0,0,12,0"
                         Content="Append"
                         GroupName="Mode"
                         IsChecked="{Binding IsAppend}" />
                     <RadioButton
-                        Grid.Column="3"
+                        Grid.Column="2"
                         Content="Prepend"
                         GroupName="Mode"
                         IsChecked="{Binding !IsAppend}" />
                 </Grid>
                 <TextBox
-                    Grid.Row="1"
-                    Height="70"
+                    Height="80"
                     AcceptsReturn="True"
+                    FontFamily="{StaticResource AppMonospaceFont}"
                     Text="{Binding AppendOrPrependContent}"
-                    TextWrapping="Wrap" />
-                <Grid Grid.Row="2" ColumnDefinitions="Auto,Auto,Auto,*">
-                    <Label Grid.Column="0" VerticalAlignment="Center">
-                        Use:
-                    </Label>
+                    TextWrapping="Wrap"
+                    Watermark="Text to append or prepend" />
+                <Grid ColumnDefinitions="Auto,Auto,Auto,*">
+                    <TextBlock Grid.Column="0" Classes="FieldLabel">Use</TextBlock>
                     <NumericUpDown
                         Grid.Column="1"
+                        Width="60"
                         IsEnabled="{Binding IsAppendOrPrependEnabled}"
                         ShowButtonSpinner="False"
                         Value="{Binding AppendOrPrependNewLines}" />
-                    <Label
+                    <TextBlock
                         Grid.Column="2"
-                        Margin="10,0,0,0"
-                        VerticalAlignment="Center">
+                        Margin="8,0,0,0"
+                        Classes="FieldLabel">
                         newlines
-                    </Label>
+                    </TextBlock>
                     <CheckBox
                         Grid.Column="3"
                         HorizontalAlignment="Right"
                         IsChecked="{Binding ShouldSortMetadataAfterAppendOrPrepend}"
                         IsEnabled="{Binding IsAppendOrPrependEnabled}">
-                        Sort meta data after
+                        Sort metadata after
                     </CheckBox>
                 </Grid>
-            </Grid>
+            </StackPanel>
         </HeaderedContentControl>
         <HeaderedContentControl
-            Grid.Row="1"
-            Margin="3"
-            Background="Black"
             Header="Files">
             <Grid
-                Margin="3"
+                Classes="Form"
                 ColumnDefinitions="*,*"
                 RowDefinitions="Auto,Auto,Auto">
                 <ComboBox
@@ -99,7 +105,8 @@
                 <Label
                     Grid.Row="1"
                     Grid.Column="0"
-                    HorizontalAlignment="Right">
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center">
                     <Label.IsVisible>
                         <MultiBinding Converter="{x:Static utils:Converters.FirstEqualsToAnyConverter}">
                             <Binding Path="FileType" />
@@ -111,7 +118,8 @@
                 <Label
                     Grid.Row="1"
                     Grid.Column="0"
-                    HorizontalAlignment="Right">
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center">
                     <Label.IsVisible>
                         <MultiBinding Converter="{x:Static utils:Converters.FirstEqualsToAnyConverter}">
                             <Binding Path="FileType" />
@@ -150,12 +158,9 @@
             </Grid>
         </HeaderedContentControl>
         <HeaderedContentControl
-            Grid.Row="2"
-            Margin="3"
-            Background="Black"
             Header="Categories">
             <Grid
-                Margin="3"
+                Classes="Form"
                 ColumnDefinitions="*,*"
                 RowDefinitions="Auto,Auto,Auto">
                 <ComboBox
@@ -184,7 +189,8 @@
                 <Label
                     Grid.Row="1"
                     Grid.Column="0"
-                    HorizontalAlignment="Right">
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center">
                     <Label.IsVisible>
                         <MultiBinding Converter="{x:Static utils:Converters.FirstEqualsToAnyConverter}">
                             <Binding Path="CategoryType" />
@@ -231,9 +237,9 @@
                             <Binding Source="{x:Static settings:CategoryTaskType.Remove}" />
                         </MultiBinding>
                     </CheckBox.IsEnabled>
-                    Remove softkey
+                    Remove sortkey
                 </CheckBox>
             </Grid>
         </HeaderedContentControl>
-    </Grid>
+    </StackPanel>
 </UserControl>

@@ -89,9 +89,9 @@ public sealed class StringEncryptionService : IStringEncryptionService
 
     public static (byte[] Key, byte[] IV) GenerateKeyAndIv(string passphrase)
     {
-        using var deriveBytes = new Rfc2898DeriveBytes(passphrase, Salt, 10000, HashAlgorithmName.SHA256);
-        byte[] key = deriveBytes.GetBytes(32);
-        byte[] iv = deriveBytes.GetBytes(16);
-        return (key, iv);
+        // Equivalent to the former Rfc2898DeriveBytes.GetBytes(32) followed by GetBytes(16):
+        // both read consecutive bytes from the same PBKDF2 output stream.
+        byte[] derived = Rfc2898DeriveBytes.Pbkdf2(passphrase, Salt, 10000, HashAlgorithmName.SHA256, 48);
+        return (derived[..32], derived[32..]);
     }
 }

@@ -1,6 +1,29 @@
-﻿<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Style Selector="Window.DialogWindow">
         <Setter Property="WindowStartupLocation" Value="CenterOwner" />
         <Setter Property="ShowInTaskbar" Value="False" />
+    </Style>
+
+    <Style Selector="Window.DialogWindow TabControl">
+        <Setter Property="Padding" Value="0,12,0,0" />
+    </Style>
+
+    <!--  Bottom row of a dialog holding OK / Cancel style buttons  -->
+    <Style Selector="StackPanel.DialogButtons">
+        <Setter Property="Orientation" Value="Horizontal" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="Spacing" Value="8" />
+    </Style>
+    <Style Selector="StackPanel.DialogButtons > Button">
+        <Setter Property="MinWidth" Value="88" />
+    </Style>
+
+    <!--  Label / field grids: labels centred against their field, with a gap  -->
+    <Style Selector="Grid.Form > TextBlock, Grid.Form > Label">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="0,4,12,4" />
+    </Style>
+    <Style Selector="Grid.Form > ComboBox, Grid.Form > TextBox, Grid.Form > CheckBox, Grid.Form > NumericUpDown">
+        <Setter Property="Margin" Value="0,4" />
     </Style>
 </Styles>

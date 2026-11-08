@@ -7,25 +7,21 @@
     xmlns:viewModels="clr-namespace:CrossWikiEditor.Core.ViewModels;assembly=CrossWikiEditor.Core"
     x:Name="This"
     Title="Profiles"
-    Width="600"
+    Width="640"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="viewModels:ProfilesViewModel"
     Classes="DialogWindow"
-    SizeToContent="WidthAndHeight"
+    SizeToContent="Height"
     mc:Ignorable="d">
-    <Window.Styles>
-        <Style Selector="Button">
-            <Setter Property="HorizontalContentAlignment" Value="Center" />
-            <Setter Property="Width" Value="70" />
-        </Style>
-    </Window.Styles>
-    <Grid Margin="10" RowDefinitions="Auto,Auto,*,Auto">
+    <Grid Margin="16" RowDefinitions="Auto,Auto,Auto">
         <DataGrid
             Grid.Row="0"
-            Height="300"
-            BorderBrush="Gray"
-            BorderThickness="2"
+            Height="280"
+            BorderBrush="{DynamicResource AppBorderBrush}"
+            BorderThickness="1"
+            CornerRadius="4"
+            GridLinesVisibility="Horizontal"
             IsReadOnly="True"
             ItemsSource="{Binding Profiles}"
             SelectedItem="{Binding SelectedProfile}"
@@ -35,42 +31,47 @@
                 <DataGridTextColumn Binding="{Binding Username}" Header="Username" />
                 <DataGridCheckBoxColumn Binding="{Binding IsPasswordSaved}" Header="Password saved?" />
                 <DataGridTextColumn Binding="{Binding DefaultSettingsPath}" Header="Default settings" />
-                <DataGridTextColumn Binding="{Binding Notes}" Header="Notes" />
+                <DataGridTextColumn
+                    Width="*"
+                    Binding="{Binding Notes}"
+                    Header="Notes" />
             </DataGrid.Columns>
         </DataGrid>
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
+        <Grid
+            Grid.Row="1"
+            Margin="0,8,0,0"
+            ColumnDefinitions="Auto,*,Auto">
             <Button
+                Grid.Column="0"
+                MinWidth="88"
+                Classes="accent"
                 Command="{Binding LoginCommand}"
                 CommandParameter="{Binding #This}"
-                Content="Login"
+                Content="Log in"
                 IsEnabled="{Binding SelectedProfile, Converter={x:Static ObjectConverters.IsNotNull}}" />
-            <Button Command="{Binding AddCommand}" Content="Add" />
-            <Button
-                Command="{Binding EditCommand}"
-                Content="Edit..."
-                IsEnabled="{Binding SelectedProfile, Converter={x:Static ObjectConverters.IsNotNull}}" />
-            <Button
-                Command="{Binding DeleteCommand}"
-                Content="Delete"
-                IsEnabled="{Binding SelectedProfile, Converter={x:Static ObjectConverters.IsNotNull}}" />
-        </StackPanel>
-        <StackPanel Grid.Row="2" />
+            <StackPanel Grid.Column="2" Classes="DialogButtons">
+                <Button Command="{Binding AddCommand}" Content="Add…" />
+                <Button
+                    Command="{Binding EditCommand}"
+                    Content="Edit…"
+                    IsEnabled="{Binding SelectedProfile, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                <Button
+                    Classes="danger"
+                    Command="{Binding DeleteCommand}"
+                    Content="Delete"
+                    IsEnabled="{Binding SelectedProfile, Converter={x:Static ObjectConverters.IsNotNull}}" />
+            </StackPanel>
+        </Grid>
         <HeaderedContentControl
-            Grid.Row="3"
-            Margin="10"
-            Background="Black"
-            Header="Quick Login">
+            Grid.Row="2"
+            Margin="0,16,0,0"
+            Header="Quick login">
             <Grid
-                Margin="10"
+                Classes="Form"
                 ColumnDefinitions="Auto,*,Auto"
                 RowDefinitions="Auto,Auto">
-                <TextBlock Grid.Row="0" Grid.Column="0">
-                    Username:
-                </TextBlock>
-                <TextBlock Grid.Row="1" Grid.Column="0">
-                    Password:
-                </TextBlock>
-
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Username" />
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Password" />
                 <TextBox
                     Grid.Row="0"
                     Grid.Column="1"
@@ -78,17 +79,19 @@
                 <TextBox
                     Grid.Row="1"
                     Grid.Column="1"
+                    PasswordChar="•"
+                    RevealPassword="False"
                     Text="{Binding Password}" />
-
                 <Button
                     Grid.Row="0"
                     Grid.RowSpan="2"
                     Grid.Column="2"
+                    MinWidth="88"
+                    Margin="12,0,0,0"
                     VerticalAlignment="Center"
-                    HorizontalContentAlignment="Center"
                     Command="{Binding QuickLoginCommand}"
                     CommandParameter="{Binding #This}"
-                    Content="Login" />
+                    Content="Log in" />
             </Grid>
         </HeaderedContentControl>
     </Grid>

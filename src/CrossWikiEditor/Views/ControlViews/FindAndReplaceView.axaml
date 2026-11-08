@@ -3,7 +3,6 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controlViewModels="clr-namespace:CrossWikiEditor.Core.ViewModels.ControlViewModels;assembly=CrossWikiEditor.Core"
-    xmlns:controls="clr-namespace:CrossWikiEditor.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     x:Name="This"
@@ -12,62 +11,65 @@
     d:DesignWidth="800"
     x:DataType="controlViewModels:FindAndReplaceViewModel"
     Classes="DialogWindow"
+    Height="560"
+    MinHeight="360"
     SizeToContent="Width"
     mc:Ignorable="d">
-    <Grid Margin="4" RowDefinitions="Auto,*">
+    <Grid Margin="16" RowDefinitions="Auto,*,Auto">
         <Grid
             Grid.Row="0"
-            ColumnDefinitions="Auto,Auto,Auto,Auto"
-            RowDefinitions="Auto,Auto,Auto">
-            <CheckBox
-                Grid.Row="0"
-                Grid.Column="0"
-                Content="Ignore external/interwiki links, images, nowiki, math and &lt;!- -&gt;"
-                IsChecked="{Binding IgnoreLinks}" />
-            <CheckBox
-                Grid.Row="1"
-                Grid.Column="0"
-                Content="Ignore templates, refs, link targets, and headings"
-                IsChecked="{Binding IgnoreMore}" />
-            <TextBlock Grid.Row="2" Grid.Column="0">
-                <Run>See</Run>
-                <controls:Hyperlink Href="https://en.wikipedia.org/wiki/Regular_expression" Text="regular expressions on Wikipedia" />
-                <Run>/ in</Run>
-                <controls:Hyperlink Href="https://learn.microsoft.com/en-us/dotnet/standard/base-types/regular-expressions" Text=".NET docs" />
-            </TextBlock>
-
-            <CheckBox
-                Grid.Row="0"
-                Grid.Column="1"
-                Content="Add replacements to edit summary"
-                IsChecked="{Binding AddToSummary}" />
+            Margin="0,0,0,12"
+            ColumnDefinitions="*,24,Auto">
+            <StackPanel Grid.Column="0">
+                <CheckBox Content="Ignore external/interwiki links, images, nowiki, math and &lt;!-- --&gt;" IsChecked="{Binding IgnoreLinks}" />
+                <CheckBox Content="Ignore templates, refs, link targets, and headings" IsChecked="{Binding IgnoreMore}" />
+                <CheckBox Content="Add replacements to edit summary" IsChecked="{Binding AddToSummary}" />
+                <StackPanel
+                    Margin="0,6,0,0"
+                    Orientation="Horizontal"
+                    Spacing="4">
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        Classes="Muted"
+                        Text="Regex help:" />
+                    <HyperlinkButton
+                        Padding="2,0"
+                        Content="Regular expressions on Wikipedia"
+                        NavigateUri="https://en.wikipedia.org/wiki/Regular_expression" />
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        Classes="Muted"
+                        Text="·" />
+                    <HyperlinkButton
+                        Padding="2,0"
+                        Content=".NET regex docs"
+                        NavigateUri="https://learn.microsoft.com/en-us/dotnet/standard/base-types/regular-expressions" />
+                </StackPanel>
+            </StackPanel>
             <Grid
-                Grid.Row="2"
-                Grid.Column="1"
-                ColumnDefinitions="Auto,*,Auto">
-                <TextBlock Grid.Column="0" Text="Search: " />
-                <TextBox Grid.Column="1" />
-                <Button Grid.Column="2" Content="Ok" />
-            </Grid>
-            <Button
-                Grid.Row="0"
                 Grid.Column="2"
-                Command="{Binding SaveCommand}"
-                CommandParameter="{Binding #This}"
-                Content="Ok" />
-            <Button
-                Grid.Row="0"
-                Grid.Column="3"
-                Content="Cancel" />
-            <Button
-                Grid.Row="1"
-                Grid.Column="3"
-                Command="{Binding CleanCommand}"
-                Content="Clear" />
+                VerticalAlignment="Bottom"
+                ColumnDefinitions="*,Auto">
+                <TextBox
+                    Grid.Column="0"
+                    Width="220"
+                    Margin="0,0,6,0"
+                    Watermark="Search rules" />
+                <Button
+                    Grid.Column="1"
+                    AutomationProperties.Name="Search rules"
+                    ToolTip.Tip="Search rules">
+                    <PathIcon Data="{StaticResource IconSearch}" />
+                </Button>
+            </Grid>
         </Grid>
         <DataGrid
             Grid.Row="1"
             MinHeight="200"
+            BorderBrush="{DynamicResource AppBorderBrush}"
+            BorderThickness="1"
+            CornerRadius="4"
+            GridLinesVisibility="All"
             CanUserResizeColumns="True"
             CanUserSortColumns="False"
             ItemsSource="{Binding NormalFindAndReplaceRules}">
@@ -114,5 +116,23 @@
                     IsReadOnly="False" />
             </DataGrid.Columns>
         </DataGrid>
+        <Grid
+            Grid.Row="2"
+            Margin="0,12,0,0"
+            ColumnDefinitions="Auto,*,Auto">
+            <Button
+                Grid.Column="0"
+                MinWidth="88"
+                Command="{Binding CleanCommand}"
+                Content="Clear" />
+            <StackPanel Grid.Column="2" Classes="DialogButtons">
+                <Button
+                    Classes="accent"
+                    Command="{Binding SaveCommand}"
+                    CommandParameter="{Binding #This}"
+                    Content="OK" />
+                <Button Content="Cancel" />
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>

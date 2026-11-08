@@ -9,5 +9,15 @@
     d:DesignWidth="800"
     x:DataType="reportViewModels:EditBoxViewModel"
     mc:Ignorable="d">
-    <TextBox Text="{Binding Content}" />
+    <TextBox
+        Padding="10,8"
+        AcceptsReturn="True"
+        AcceptsTab="True"
+        Background="Transparent"
+        BorderThickness="0"
+        CornerRadius="0"
+        FontFamily="{StaticResource AppMonospaceFont}"
+        FontSize="13"
+        Text="{Binding Content}"
+        TextWrapping="Wrap" />
 </UserControl>

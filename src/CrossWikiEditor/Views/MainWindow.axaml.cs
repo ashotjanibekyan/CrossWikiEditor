@@ -20,8 +20,7 @@ public sealed partial class MainWindow : Window, IOwner
         string url =
             "https://hy.wikipedia.org/w/api.php?action=compare&format=json&fromrev=9956865&torev=9955494&toslots=&prop=diff&difftype=table&formatversion=2";
         string jsonResult = GetJsonFromUrl(url);
-        var parsed = JObject.Parse(jsonResult);
-        JToken? result = parsed["compare"]?["body"];
+        JToken? result = string.IsNullOrWhiteSpace(jsonResult) ? null : JObject.Parse(jsonResult)["compare"]?["body"];
         HtmlPanel.Text = $"""
             <html>
                 <head>
@@ -48,6 +47,7 @@ public sealed partial class MainWindow : Window, IOwner
         try
         {
             using var client = new HttpClient();
+            client.DefaultRequestHeaders.UserAgent.ParseAdd("CrossWikiEditor/1.0");
             HttpResponseMessage response = client.GetAsync(url).Result;
             response.EnsureSuccessStatusCode();
             return response.Content.ReadAsStringAsync().Result;
